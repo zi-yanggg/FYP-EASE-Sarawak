@@ -1207,7 +1207,7 @@
                     Looking for short-term storage? Our Kuching Luggage Storage service keeps your luggage safe
                     for as long as needed while you explore the city worry-free!
                 </p>
-                <a href="payment" class="btn-card">BOOK NOW</a>
+                <a href="#" onclick="bookStorage()" class="btn-card">BOOK NOW</a>
             </div>
 
             <!-- Card 2 - Standard (In Town Delivery) -->
@@ -1221,7 +1221,7 @@
                     Enjoy our complimentary Kuching Luggage Transfer with 24 hours of secure storage, offering
                     seamless transfers between selected locations for added convenience!
                 </p>
-                <a href="intowndelivery" class="btn-card">BOOK NOW</a>
+                <a href="#" onclick="bookDelivery()" class="btn-card">BOOK NOW</a>
             </div>
 
             <!-- Card 3 - On-demand -->
