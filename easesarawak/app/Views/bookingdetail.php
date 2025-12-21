@@ -46,6 +46,18 @@
             gap: 2rem;
         }
 
+        @media (max-width: 900px) {
+            .booking-detail-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            .left-column, .right-column {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+
         .booking-detail-header {
             text-align: center;
             margin-bottom: 2rem;
@@ -55,7 +67,47 @@
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
             align-items: start;
-            margin-bottom: 2rem;
+        }
+
+        .left-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .right-content {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 2rem;
+        }
+        .booking-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+            opacity: 0.95;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 900px) {
+            .booking-detail-header {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .left-content {
+                order: 1;
+                align-items: center;
+            }
+            .right-content {
+                order: 2;
+                padding-top: 0;
+                margin-bottom: 1rem;
+                justify-content: center;
+            }
         }
 
         .booking-detail-header h1 {
@@ -97,6 +149,12 @@
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
+        }
+        @media (max-width: 600px) {
+            .booking-details-card, .pricing-card {
+                padding: 1rem;
+                border-radius: 10px;
+            }
         }
 
         .pricing-card {
@@ -271,6 +329,13 @@
             gap: 1rem;
             align-items: center;
         }
+        @media (max-width: 600px) {
+            .promo-input-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+        }
 
         .promo-input {
             flex: 1;
@@ -279,6 +344,8 @@
             border-radius: 8px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .promo-input:focus {
@@ -296,6 +363,8 @@
             cursor: pointer;
             transition: background 0.3s ease;
             white-space: nowrap;
+            width: 100%;
+            max-width: 350px;
         }
 
         .promo-btn:hover {
@@ -332,6 +401,16 @@
             justify-content: center;
             margin-top: 2rem;
             grid-column: 1 / -1;
+        }
+        @media (max-width: 600px) {
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .btn {
+                width: 100%;
+                min-width: 0;
+            }
         }
 
         .btn {

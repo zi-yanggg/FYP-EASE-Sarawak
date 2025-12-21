@@ -36,6 +36,7 @@
         .customer-detail-container {
             max-width: 900px;
             margin: 0 auto;
+            margin-top: 2rem;
             padding: 2rem;
             min-height: calc(100vh - 200px);
         }
