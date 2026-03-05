@@ -36,6 +36,7 @@
         .customer-detail-container {
             max-width: 900px;
             margin: 0 auto;
+            margin-top: 2rem;
             padding: 2rem;
             min-height: calc(100vh - 200px);
         }
@@ -308,9 +309,9 @@
             </div>
         </form>
 
-        <div class="action-buttons">
+        <!-- <div class="action-buttons">
             <button type="button" class="btn btn-submit" onclick="goToPayment()">Payment </button>
-        </div>
+        </div> -->
 
         <div class="action-buttons">
             <a href="bookingdetail" class="btn btn-back">
@@ -477,7 +478,7 @@
                         alert('Booking submitted successfully! Order ID: ' + data.order_id);
                         
                         // Redirect to confirmation page
-                        window.location.href = 'booking-confirmation?order_id=' + data.order_id;
+                        window.location.href = 'payment';
                     } else {
                         alert('Error submitting booking: ' + data.message);
                         submitButton.innerHTML = originalText;
