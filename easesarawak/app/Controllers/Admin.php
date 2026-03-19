@@ -181,6 +181,109 @@ class Admin extends BaseController
         ]);
     }
 
+    public function exportRevenue()
+    {
+        $format    = $this->request->getGet('format') ?? 'pdf';
+        $startDate = $this->request->getGet('start_date') ?? date('Y-m-01');
+        $endDate   = $this->request->getGet('end_date')   ?? date('Y-m-t');
+
+        $db      = \Config\Database::connect();
+        $builder = $db->table('`order`');
+        $builder->where('is_deleted', 0);
+        $builder->where('DATE(created_date) >=', $startDate);
+        $builder->where('DATE(created_date) <=', $endDate);
+        $builder->orderBy('created_date', 'ASC');
+        $orders = $builder->get()->getResultArray();
+
+        $totalRevenue = array_sum(array_column($orders, 'amount'));
+        $totalOrders  = count($orders);
+
+        $byService = [];
+        foreach ($orders as $o) {
+            $svc = ucfirst(strtolower($o['service_type'] ?? 'Other'));
+            if (!isset($byService[$svc])) {
+                $byService[$svc] = ['count' => 0, 'total' => 0];
+            }
+            $byService[$svc]['count']++;
+            $byService[$svc]['total'] += $o['amount'];
+        }
+
+        if ($format === 'csv') {
+            return $this->_exportCsv($orders, $startDate, $endDate, $byService, $totalRevenue);
+        }
+
+        // PDF: render a print-friendly branded invoice view
+        $data = [
+            'orders'       => $orders,
+            'startDate'    => $startDate,
+            'endDate'      => $endDate,
+            'totalRevenue' => $totalRevenue,
+            'totalOrders'  => $totalOrders,
+            'byService'    => $byService,
+            'generatedAt'  => date('d M Y, h:i A'),
+        ];
+
+        return view('admin/invoice_export', $data);
+    }
+
+    private function _exportCsv(array $orders, string $startDate, string $endDate, array $byService, float $totalRevenue)
+    {
+        $filename = 'EASE-Sarawak-Revenue-' . $startDate . '-to-' . $endDate . '.csv';
+        $tmp = fopen('php://temp', 'w+');
+
+        // UTF-8 BOM so Excel opens it correctly
+        fwrite($tmp, "\xEF\xBB\xBF");
+
+        fputcsv($tmp, ['EASE Sarawak - Revenue Invoice Report']);
+        fputcsv($tmp, ['Period: ' . date('d M Y', strtotime($startDate)) . ' to ' . date('d M Y', strtotime($endDate))]);
+        fputcsv($tmp, ['Generated: ' . date('d M Y, h:i A')]);
+        fputcsv($tmp, []);
+
+        // Service summary block
+        fputcsv($tmp, ['--- Service Summary ---']);
+        fputcsv($tmp, ['Service', 'Orders', 'Revenue (RM)']);
+        foreach ($byService as $svc => $info) {
+            fputcsv($tmp, [$svc, $info['count'], number_format($info['total'], 2)]);
+        }
+        fputcsv($tmp, ['TOTAL', count($orders), number_format($totalRevenue, 2)]);
+        fputcsv($tmp, []);
+
+        // Order detail headers
+        fputcsv($tmp, ['--- Order Details ---']);
+        fputcsv($tmp, [
+            'Order ID', 'Order Date', 'Customer Name', 'Email', 'Phone',
+            'Service Type', 'Payment Method', 'Promo Code', 'Status', 'Amount (RM)'
+        ]);
+
+        $statusMap = [0 => 'Pending', 1 => 'In Progress', 2 => 'Completed'];
+        foreach ($orders as $order) {
+            fputcsv($tmp, [
+                '#' . $order['order_id'],
+                date('d M Y', strtotime($order['created_date'])),
+                trim($order['first_name'] . ' ' . $order['last_name']),
+                $order['email'],
+                $order['phone'],
+                strtoupper($order['service_type'] ?? '-'),
+                $order['payment_method'] ?? '-',
+                $order['promo_code'] ?: '-',
+                $statusMap[$order['status']] ?? 'Unknown',
+                number_format($order['amount'], 2),
+            ]);
+        }
+
+        fputcsv($tmp, []);
+        fputcsv($tmp, ['', '', '', '', '', '', '', '', 'TOTAL', number_format($totalRevenue, 2)]);
+
+        rewind($tmp);
+        $csvContent = stream_get_contents($tmp);
+        fclose($tmp);
+
+        return $this->response
+            ->setHeader('Content-Type', 'text/csv; charset=UTF-8')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($csvContent);
+    }
+
     public function order()
     {
         helper('form');

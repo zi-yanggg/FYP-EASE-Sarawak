@@ -38,6 +38,7 @@ $routes->post('reset_password/(:any)', 'AuthController::resetPassword/$1');
 // Admin Portal routes
 $routes->get('/admin', 'Admin::index');
 $routes->get('/report', 'Admin::report');
+$routes->get('/report/export', 'Admin::exportRevenue');
 $routes->get('/order', 'Admin::order');
 $routes->get('/change_status/(:num)', 'Admin::change_status/$1');
 $routes->get('/user', 'Admin::user');
