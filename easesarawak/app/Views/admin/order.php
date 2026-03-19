@@ -125,12 +125,12 @@ $endDate    = $_GET['end_date'] ?? '';
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="orderDetailsContent" class="text-center py-3 text-muted">
+                <div id="orderDetailsContent" class="py-3 text-muted">
                     <i class="fa fa-spinner fa-spin me-2"></i>Loading...
                 </div>
             </div>
             <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-update" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
                     <i class="fa fa-times me-1"></i>Close
                 </button>
             </div>
@@ -316,7 +316,7 @@ $endDate    = $_GET['end_date'] ?? '';
                         <div class="container-fluid">
                             <!-- Section 1 -->
                             <div class="card border-0 shadow-sm mb-3 rounded-3">
-                                <div class="card-header bg-light fw-semibold">
+                                <div class="card-header fw-semibold" style="background: #f2be00ff;">
                                     Customer Information
                                 </div>
                                 <div class="card-body">
@@ -329,7 +329,12 @@ $endDate    = $_GET['end_date'] ?? '';
                                         </div>
                                         <div class="col-md-6">
                                             <p><strong>ID Number:</strong> ${o.id_num}</p>
-                                            <p><strong>Social:</strong> ${o.social}</p>
+                                            <p><strong>Social:</strong> ${
+                                                o.social == 1 ? "WhatsApp" :
+                                                o.social == 2 ? "WeChat" :
+                                                o.social == 3 ? "LINE" :
+                                                "Unknown"
+                                            }</p>
                                             <p><strong>Social Number:</strong> ${o.social_num}</p>
                                         </div>
                                     </div>
@@ -338,7 +343,7 @@ $endDate    = $_GET['end_date'] ?? '';
 
                             <!-- Section 2 -->
                             <div class="card border-0 shadow-sm mb-3 rounded-3">
-                                <div class="card-header bg-light fw-semibold">
+                                <div class="card-header fw-semibold" style="background: #f2be00ff;">
                                     Order Information
                                 </div>
                                 <div class="card-body">
@@ -353,16 +358,16 @@ $endDate    = $_GET['end_date'] ?? '';
                                         <div class="col-md-6">
                                             <p><strong>Status:</strong> ${
                                                 o.status == 0
-                                                    ? '<span class="badge bg-warning text-dark">Pending</span>'
+                                                    ? '<span class="badge-pending">Pending</span>'
                                                     : o.status == 1
-                                                    ? '<span class="badge bg-info text-dark">In Progress</span>'
-                                                    : '<span class="badge bg-success">Completed</span>'
+                                                    ? '<span class="badge-progress">In Progress</span>'
+                                                    : '<span class="badge-completed">Completed</span>'
                                             }</p>
                                             <p><strong>Amount:</strong> RM${o.amount}</p>
                                             <p><strong>Payment Method:</strong> ${o.payment_method}</p>
                                             <p><strong>Upload:</strong> ${
                                                 o.upload
-                                                    ? `<a href="<?= base_url('uploads/'); ?>${o.upload}" target="_blank" class="text-decoration-none text-primary">View File</a>`
+                                                    ? `<a href="<?= base_url('uploads/'); ?>${o.upload}" target="_blank" class="text-decoration-none">View File</a>`
                                                     : 'No file uploaded'
                                             }</p>
                                             <p><strong>Modified By:</strong> ${o.modified_by_username || '-'}</p>
@@ -373,7 +378,7 @@ $endDate    = $_GET['end_date'] ?? '';
 
                             <!-- Section 3 -->
                             <div class="card border-0 shadow-sm rounded-3">
-                                <div class="card-header bg-light fw-semibold">
+                                <div class="card-header fw-semibold" style="background: #f2be00ff;">
                                     Order Details
                                 </div>
                                 <div class="card-body">
@@ -387,11 +392,11 @@ $endDate    = $_GET['end_date'] ?? '';
 
                             <!-- Section 4 -->
                             <div class="card border-0 shadow-sm rounded-3">
-                                <div class="card-header bg-light fw-semibold">
+                                <div class="card-header fw-semibold" style="background: #f2be00ff;">
                                     <i class="fa fa- me-2 text-primary"></i>Comment
                                 </div>
                                 <div class="card-body">
-                                    <pre class="bg-light p-3 rounded" style="font-size: 0.9rem; white-space: pre-wrap;">${o.comment || '-'}</pre>
+                                    <p class="bg-light p-3 rounded" style="font-size: 0.9rem; white-space: pre-wrap;">${o.comment || '-'}</p>
                                 </div>
                             </div>
                         </div>
