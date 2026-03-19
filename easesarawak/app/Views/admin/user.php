@@ -37,7 +37,8 @@
                                 <td><?= $index + 1 ?></td>
                                 <td><?= esc($user['username']) ?></td>
                                 <td>
-                                    <span class="badge <?= $user['role'] == 1 ? 'badge-superadmin' : 'badge-admin' ?>">
+                                    <!-- <span class="badge <?= $user['role'] == 1 ? 'badge-superadmin' : 'badge-admin' ?>"> -->
+                                    <span>
                                         <?= $user['role'] == 1 ? 'Superadmin' : 'Admin' ?>
                                     </span>
                                 </td>
@@ -50,8 +51,8 @@
                                 <?php endif; ?>
                                 <?php if (session()->get('role') === '1'): ?>
                                     <td>
-                                        <a href="<?= base_url('edit_user/' . $user['user_id']); ?>" class="btn btn-sm" style="background: #f2be00"><i class="fa fa-edit"></i></a>
-                                        <a href="<?= base_url('delete_user/' . $user['user_id']); ?>" class="btn btn-sm" style="color: #fff; background: #900707ff" title="Delete User" onclick="return confirm('Are you sure you want to delete this user?')">
+                                        <a href="<?= base_url('edit_user/' . $user['user_id']); ?>" class="btn btn-sm" style="background: #f2be00; font-size:15px;"><i class="fa fa-edit"></i></a>
+                                        <a href="<?= base_url('delete_user/' . $user['user_id']); ?>" class="btn btn-sm" style="color: #fff; background: #900707ff; font-size:15px;" title="Delete User" onclick="return confirm('Are you sure you want to delete this user?')">
                                             <i class="bi bi-trash3"></i>
                                         </a>
                                     </td>
