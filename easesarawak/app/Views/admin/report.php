@@ -197,15 +197,48 @@
             <div>
                 <div class="section-label">Booking Patterns</div>
                 <div class="card rpt-card">
-                    <div class="rpt-card-header d-flex align-items-center gap-2">
-                        <i class="fas fa-clock"></i>
-                        <span class="rpt-title">Peak Booking Times</span>
+                    <div class="rpt-card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-clock"></i>
+                            <span class="rpt-title">Peak Booking Times</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <select id="peakService" class="report-select">
+                                <option value="all">All Services</option>
+                                <option value="storage">Storage</option>
+                                <option value="delivery">Delivery</option>
+                            </select>
+                            <select id="peakRange" class="report-select">
+                                <option value="all">All Time</option>
+                                <option value="this-month" selected>This Month</option>
+                                <option value="last-3">Last 3 Months</option>
+                                <option value="this-year">This Year</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Custom date range (shown + enabled only when Custom Range is selected) -->
+                    <div id="peakCustomWrap" style="display:none; padding:8px 16px 0; gap:8px;" class="d-flex align-items-center flex-wrap">
+                        <div class="d-flex align-items-center gap-2">
+                            <label style="font-size:.78rem; font-weight:600; color:#888; white-space:nowrap;">From</label>
+                            <input type="date" id="peakStart" class="form-control rpt-input" style="max-width:145px;" value="<?= date('Y-m-01') ?>" disabled>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <label style="font-size:.78rem; font-weight:600; color:#888; white-space:nowrap;">To</label>
+                            <input type="date" id="peakEnd" class="form-control rpt-input" style="max-width:145px;" value="<?= date('Y-m-d') ?>" disabled>
+                        </div>
                     </div>
                     <div class="card-body p-3" style="position:relative; height:260px;">
+                        <div id="peakLoading" style="display:none; position:absolute; inset:0; background:rgba(255,255,255,0.85); z-index:10; align-items:center; justify-content:center;">
+                            <div class="text-center">
+                                <div class="spinner-border" style="color:var(--gold);" role="status"></div>
+                                <div style="font-size:.8rem; color:#888; margin-top:8px;">Loading…</div>
+                            </div>
+                        </div>
                         <div id="peakEmpty" class="chart-empty">
                             <i class="fas fa-clock"></i>
                             <p class="fw-semibold">No booking data yet</p>
-                            <p style="font-size:.78rem;">Orders will appear here once recorded.</p>
+                            <p style="font-size:.78rem;">Try a different service or date range.</p>
                         </div>
                         <canvas id="peakTimesChart"></canvas>
                     </div>
@@ -413,74 +446,137 @@
     });
 
     // ── Peak Booking Times ──
-    const hours  = <?= json_encode($hours ?? []); ?>;
-    const counts = <?= json_encode($hourCounts ?? []); ?>;
+    let peakChart = null;
 
-    const peakCanvas = document.getElementById('peakTimesChart');
-    const peakEmpty  = document.getElementById('peakEmpty');
+    function showPeakEmpty(show) {
+        document.getElementById('peakEmpty').style.display      = show ? 'flex' : 'none';
+        document.getElementById('peakTimesChart').style.display = show ? 'none' : 'block';
+    }
 
-    if (!hours || hours.length === 0) {
-        peakEmpty.style.display  = 'flex';
-        peakCanvas.style.display = 'none';
-    } else {
-        peakEmpty.style.display  = 'none';
-        peakCanvas.style.display = 'block';
+    function loadPeakData(service = 'all', range = 'this-month') {
+        // Show/hide and enable/disable the custom date inputs
+        const isCustom = range === 'custom';
+        const customWrap = document.getElementById('peakCustomWrap');
+        customWrap.style.display = isCustom ? 'flex' : 'none';
+        document.getElementById('peakStart').disabled = !isCustom;
+        document.getElementById('peakEnd').disabled   = !isCustom;
 
-        const peakMax = Math.max(...counts) || 1;
-        const peakColors = counts.map(c => {
-            const t = c / peakMax;
-            const r = Math.round(242 + (201 - 242) * t);
-            const g = Math.round(224 + (157 - 224) * t);
-            const b = Math.round(128 + (0   - 128) * t);
-            return `rgb(${r},${g},${b})`;
-        });
-        const peakHover = counts.map(c => {
-            const t = c / peakMax;
-            return `rgba(${Math.round(242+(180-242)*t)},${Math.round(190+(130-190)*t)},0,0.8)`;
-        });
+        // For custom range, validate and only fetch when both dates are filled and valid
+        let url = `<?= base_url('admin/getPeakTimesData'); ?>?service=${service}&range=${range}`;
+        if (range === 'custom') {
+            const startEl = document.getElementById('peakStart');
+            const endEl   = document.getElementById('peakEnd');
+            const start   = startEl.value;
+            const end     = endEl.value;
+            if (!start || !end) return;
+            if (start > end) {
+                startEl.classList.add('is-invalid');
+                endEl.classList.add('is-invalid');
+                endEl.setCustomValidity('End date must be on or after the start date.');
+                endEl.reportValidity();
+                return;
+            }
+            startEl.classList.remove('is-invalid');
+            endEl.classList.remove('is-invalid');
+            endEl.setCustomValidity('');
+            url += `&start=${start}&end=${end}`;
+        }
 
-        new Chart(peakCanvas, {
-            type: 'bar',
-            data: {
-                labels: hours.map(fmtHour),
-                datasets: [{
-                    label: 'Orders',
-                    data: counts,
-                    backgroundColor: peakColors, hoverBackgroundColor: peakHover,
-                    borderRadius: 6, borderSkipped: false,
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                animation: { duration: 650, easing: 'easeInOutQuart' },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'rgba(30,22,0,0.88)',
-                        padding: 10, cornerRadius: 8,
-                        titleColor: '#f2be00', bodyColor: '#fff',
-                        callbacks: {
-                            title: items => fmtHour(hours[items[0].dataIndex]),
-                            label: ctx => '  ' + ctx.parsed.y + ' order' + (ctx.parsed.y !== 1 ? 's' : '')
+        document.getElementById('peakLoading').style.display = 'flex';
+        showPeakEmpty(false);
+
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('peakLoading').style.display = 'none';
+
+                if (!data.hours || data.hours.length === 0) {
+                    if (peakChart) { peakChart.destroy(); peakChart = null; }
+                    showPeakEmpty(true);
+                    return;
+                }
+
+                showPeakEmpty(false);
+                const canvas = document.getElementById('peakTimesChart');
+                if (peakChart) peakChart.destroy();
+
+                const peakMax = Math.max(...data.counts) || 1;
+                const peakColors = data.counts.map(c => {
+                    const t = c / peakMax;
+                    const r = Math.round(242 + (201 - 242) * t);
+                    const g = Math.round(224 + (157 - 224) * t);
+                    const b = Math.round(128 + (0   - 128) * t);
+                    return `rgb(${r},${g},${b})`;
+                });
+                const peakHover = data.counts.map(c => {
+                    const t = c / peakMax;
+                    return `rgba(${Math.round(242+(180-242)*t)},${Math.round(190+(130-190)*t)},0,0.8)`;
+                });
+
+                peakChart = new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels: data.hours.map(fmtHour),
+                        datasets: [{
+                            label: 'Orders',
+                            data: data.counts,
+                            backgroundColor: peakColors, hoverBackgroundColor: peakHover,
+                            borderRadius: 6, borderSkipped: false,
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        animation: { duration: 650, easing: 'easeInOutQuart' },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(30,22,0,0.88)',
+                                padding: 10, cornerRadius: 8,
+                                titleColor: '#f2be00', bodyColor: '#fff',
+                                callbacks: {
+                                    title: items => fmtHour(data.hours[items[0].dataIndex]),
+                                    label: ctx => '  ' + ctx.parsed.y + ' order' + (ctx.parsed.y !== 1 ? 's' : '')
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid:   { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+                                border: { display: false },
+                                ticks:  { stepSize: 1, precision: 0, color: '#999', font: { size: 11 }, callback: (v) => Number.isInteger(v) ? v : null }
+                            },
+                            x: {
+                                grid:   { display: false },
+                                border: { display: false },
+                                ticks:  { color: '#999', font: { size: 10 }, maxRotation: 45, minRotation: 0 }
+                            }
                         }
                     }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid:   { color: 'rgba(0,0,0,0.05)', drawBorder: false },
-                        border: { display: false },
-                        ticks:  { stepSize: 1, color: '#999', font: { size: 11 } }
-                    },
-                    x: {
-                        grid:   { display: false },
-                        border: { display: false },
-                        ticks:  { color: '#999', font: { size: 10 }, maxRotation: 45, minRotation: 0 }
-                    }
-                }
-            }
-        });
+                });
+            })
+            .catch(() => {
+                document.getElementById('peakLoading').style.display = 'none';
+                showPeakEmpty(true);
+            });
     }
+
+    document.getElementById('peakService').addEventListener('change', function() {
+        loadPeakData(this.value, document.getElementById('peakRange').value);
+    });
+    document.getElementById('peakRange').addEventListener('change', function() {
+        loadPeakData(document.getElementById('peakService').value, this.value);
+    });
+    document.getElementById('peakStart').addEventListener('change', function() {
+        if (document.getElementById('peakRange').value === 'custom')
+            loadPeakData(document.getElementById('peakService').value, 'custom');
+    });
+    document.getElementById('peakEnd').addEventListener('change', function() {
+        if (document.getElementById('peakRange').value === 'custom')
+            loadPeakData(document.getElementById('peakService').value, 'custom');
+    });
+
+    loadPeakData();
 </script>
 
 <?= $this->include('admin/footer'); ?>

@@ -132,11 +132,12 @@ class Admin extends BaseController
 
     public function getRevenueData()
     {
-        $service = $this->request->getGet('service');
+        $service   = $this->request->getGet('service');
         $timeframe = $this->request->getGet('timeframe');
 
-        $db = \Config\Database::connect();
-        $builder = $db->table('order');
+        $db      = \Config\Database::connect();
+        $builder = $db->table('`order`');
+        $builder->where('is_deleted', 0);
 
         if ($service !== 'all') {
             $builder->where('service_type', $service);
@@ -144,12 +145,16 @@ class Admin extends BaseController
 
         if ($timeframe === 'day') {
             $builder->select('DATE(created_date) as label, SUM(amount) as total');
-            $builder->groupBy('DATE(created_date)');
+            $builder->groupBy(['DATE(created_date)']);
             $builder->orderBy('DATE(created_date)', 'ASC');
         } elseif ($timeframe === 'week') {
-            $builder->select('YEARWEEK(created_date, 1) as label, SUM(amount) as total');
-            $builder->groupBy('YEARWEEK(created_date, 1)');
-            $builder->orderBy('YEARWEEK(created_date, 1)', 'ASC');
+            // Use YEARWEEK without the mode argument to avoid a comma inside the
+            // function call — CI4's query builder splits select/groupBy strings on
+            // commas, which would break "YEARWEEK(created_date, 1)" into two invalid
+            // SQL fragments.  Mode-0 week numbering is close enough for reporting.
+            $builder->select('YEARWEEK(created_date) as label, SUM(amount) as total');
+            $builder->groupBy(['YEARWEEK(created_date)']);
+            $builder->orderBy('YEARWEEK(created_date)', 'ASC');
         } else { // month
             $builder->select('YEAR(created_date) as y, MONTH(created_date) as label, SUM(amount) as total');
             $builder->groupBy(['YEAR(created_date)', 'MONTH(created_date)']);
@@ -178,6 +183,51 @@ class Admin extends BaseController
         return $this->response->setJSON([
             'labels' => $labels,
             'values' => $values
+        ]);
+    }
+
+    public function getPeakTimesData()
+    {
+        $service = $this->request->getGet('service');
+        $range   = $this->request->getGet('range');
+
+        $db      = \Config\Database::connect();
+        $builder = $db->table('`order`');
+        $builder->select('HOUR(created_date) AS hour, COUNT(order_id) AS count');
+        $builder->where('is_deleted', 0);
+
+        if ($service !== 'all') {
+            $builder->where('service_type', $service);
+        }
+
+        switch ($range) {
+            case 'this-month':
+                $builder->where('created_date >=', date('Y-m-01 00:00:00'));
+                $builder->where('created_date <=', date('Y-m-t 23:59:59'));
+                break;
+            case 'last-3':
+                $builder->where('created_date >=', date('Y-m-01 00:00:00', strtotime('-2 months')));
+                break;
+            case 'this-year':
+                $builder->where('created_date >=', date('Y-01-01 00:00:00'));
+                break;
+            case 'custom':
+                $start = $this->request->getGet('start');
+                $end   = $this->request->getGet('end');
+                if ($start) $builder->where('DATE(created_date) >=', $start);
+                if ($end)   $builder->where('DATE(created_date) <=', $end);
+                break;
+            // 'all' → no date filter
+        }
+
+        $builder->groupBy(['HOUR(created_date)']);
+        $builder->orderBy('hour', 'ASC');
+
+        $results = $builder->get()->getResultArray();
+
+        return $this->response->setJSON([
+            'hours'  => array_map('intval', array_column($results, 'hour')),
+            'counts' => array_map('intval', array_column($results, 'count')),
         ]);
     }
 
