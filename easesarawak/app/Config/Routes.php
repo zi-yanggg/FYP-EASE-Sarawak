@@ -46,6 +46,7 @@ $routes->match(['get', 'post'], '/create_user', 'Admin::create_user');
 $routes->get('/order/getDetails/(:num)', 'Admin::getDetails/$1');
 $routes->post('/save_note', 'Admin::save_note');
 $routes->get('/admin/getRevenueData', 'Admin::getRevenueData');
+$routes->get('/admin/getPeakTimesData', 'Admin::getPeakTimesData');
 $routes->get('/admin/promo_code', 'PromoCodeController::index');
 $routes->get('/admin/promo_code/create', 'PromoCodeController::create');
 $routes->post('/admin/promo_code/store', 'PromoCodeController::store');
