@@ -2,6 +2,10 @@
 
 <style>
     .dataTables_filter { display: none !important; }
+    .dataTables_paginate {
+        display: flex !important;
+        justify-content: left !important;
+    }
 </style>
 
 <div class="container mt-4">
@@ -42,7 +46,7 @@
                             <?php if (!empty($list) && is_array($list)): ?>
                                 <?php foreach ($list as $p): ?>
                                     <tr>
-                                        <td><?= esc($p['promo_id']); ?></td>
+                                        <td><?= esc($p['id']); ?></td>
                                         <td><?= esc($p['code']); ?></td>
                                         <td><?= esc($p['discount_type'] ?? 'percentage'); ?></td>
                                         <td>
@@ -56,8 +60,8 @@
                                         <td><?= esc($p['expired_date'] ?? ''); ?></td>
                                         <td><?= esc($p['created_date'] ?? $p['created_at'] ?? ''); ?></td>
                                         <td class="text-center">
-                                            <a href="<?= base_url('/admin/promo_code/edit/'.$p['promo_id']); ?>" class="btn btn-sm btn-dark me-1" title="Edit"><i class="fa fa-edit"></i></a>
-                                            <a href="<?= base_url('/admin/promo_code/delete/'.$p['promo_id']); ?>" class="btn btn-sm btn-danger btn-delete" data-id="<?= $p['promo_id']; ?>" title="Delete"><i class="fa fa-trash"></i></a>
+                                            <a href="<?= base_url('/admin/promo_code/edit/'.$p['id']); ?>" class="btn btn-sm" style="background: #f2be00" title="Edit"><i class="fa fa-edit"></i></a>
+                                            <a href="<?= base_url('/admin/promo_code/delete/'.$p['id']); ?>" class="btn btn-sm" style="background: #900707ff" data-id="<?= $p['id']; ?>" title="Delete"><i class="bi bi-trash3" style="color: white;"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -92,7 +96,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         if (window.jQuery && $.fn.DataTable && document.querySelector('#promoTable')) {
-            $('#promoTable').DataTable({ pageLength: 25, responsive: true, order: [[0, 'desc']] });
+            $('#promoTable').DataTable({ pageLength: 25, responsive: true, order: [[0, 'desc']], info: false });
         }
 
         document.querySelectorAll('.btn-delete').forEach(btn => {
