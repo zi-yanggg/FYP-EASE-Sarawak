@@ -470,9 +470,7 @@
                     console.log('Parsed response data:', data);
                     
                     if (data.success) {
-                        // Clear session storage
-                        sessionStorage.removeItem('bookingData');
-                        sessionStorage.removeItem('customerData');
+                        sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
                         
                         // Show success message
                         alert('Booking submitted successfully! Order ID: ' + data.order_id);
