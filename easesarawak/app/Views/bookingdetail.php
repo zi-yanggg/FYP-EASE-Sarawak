@@ -1188,16 +1188,40 @@
         }
 
         function calculateTotal() {
+            const bookingData = JSON.parse(sessionStorage.getItem('bookingData'));
             const subtotal = basePrice * currentQuantity;
+
+            // Calculate extra charges
+            let insuranceCharge = insuranceSelected ? (3 * currentQuantity) : 0;
+
+            // Calculate extra time charges
+            const start = new Date(bookingData.dropoffDate + ' ' + bookingData.dropoffTime);
+            const end = new Date(bookingData.pickupDate + ' ' + bookingData.pickupTime);
+            const diffHours = Math.ceil((end - start) / (1000 * 60 * 60));
+            let extraStoragePrice = 0;
+            let baseHours, extraRate;
+            if (bookingData.service === 'delivery') {
+                baseHours = 24;
+                extraRate = 6;
+            } else {
+                baseHours = 12;
+                extraRate = 6;
+            }
+            const exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
+            extraStoragePrice = extraRate * exceededTimes * currentQuantity;
+
+            // Discount
             let discountAmount = 0;
             if (appliedPromoCode && promoDiscount > 0) {
                 if (promoType === 'amount') {
                     discountAmount = promoDiscount;
                 } else {
-                    discountAmount = subtotal * promoDiscount / 100;
+                    discountAmount = (subtotal + extraStoragePrice + insuranceCharge) * promoDiscount / 100;
                 }
             }
-            return Math.max(0, subtotal - discountAmount);
+
+            // Final total
+            return Math.max(0, subtotal + extraStoragePrice + insuranceCharge - discountAmount);
         }
 
         function formatDate(dateString) {
