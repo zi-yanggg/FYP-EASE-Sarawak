@@ -593,6 +593,33 @@
                 margin: 0 auto;
             }
         }
+
+        .tab-btn i {
+            margin-right: 0.5em;
+            margin-left: -0.5em;
+            font-size: 1.7em;
+            vertical-align: middle;
+        }
+
+        .input-icon-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon-group i {
+            position: absolute;
+            left: 1rem;
+            z-index: 2;
+            font-size: 1.2em;
+            color: #888;
+            pointer-events: none;
+        }
+
+        .input-icon-group input,
+        .input-icon-group select {
+            padding-left: 2.5em;
+        }
     </style>
 </head>
 <body>
@@ -617,8 +644,8 @@
 
         <!-- Service Tabs - positioned above forms -->
         <div class="service-tabs">
-            <button class="tab-btn active" onclick="showService('delivery')">In Town Delivery</button>
-            <button class="tab-btn" onclick="showService('storage')">Luggage Storage</button>
+            <button class="tab-btn active" onclick="showService('delivery')"><i class="bi bi-suitcase"></i> In Town Delivery</button>
+            <button class="tab-btn" onclick="showService('storage')"><i class="bi bi-house-door"></i> Luggage Storage</button>
         </div>
 
         <!-- Forms Section - Full Width -->
@@ -641,18 +668,21 @@
                     <div class="form-group">
                         <label for="origin">Where is your origin? <i class="bi bi-info-circle"></i></label>
                         <div class="dropdown-group">
-                            <select id="origin-category" name="origin_category" onchange="updateOriginSpecific()">
+                            <div class="input-icon-group">
+                                <i class="bi bi-pin-map-fill"></i>
+                                <select id="origin-category" name="origin_category" onchange="updateOriginSpecific()">
                                 <option value="">Choose Category</option>
                                 <option value="ease-storage">Ease Storage Hub @ Plaza Aurora</option>
                                 <option value="hotel">Hotel</option>
                                 <option value="shopping-mall">Shopping Mall</option>
                                 <option value="airport">Airport</option>
                                 <option value="other">Other Location</option>
-                            </select>
+                                </select>
+                            </div>
                             <select id="origin-specific" name="origin_specific" disabled>
                                 <option value="">Select category first</option>
                             </select>
-                        </div>
+                            </div>
                         <div id="origin-address" class="address-input hidden">
                             <input type="text" id="origin-address-text" name="origin_address" placeholder="Please enter your specific address">
                         </div>
@@ -660,14 +690,17 @@
                     <div class="form-group">
                         <label for="destination">Where is your destination? <i class="bi bi-info-circle"></i></label>
                         <div class="dropdown-group">
-                            <select id="destination-category" name="destination_category" onchange="updateDestinationSpecific()">
-                                <option value="">Choose Category</option>
-                                <option value="ease-storage">Ease Storage Hub @ Plaza Aurora</option>
-                                <option value="hotel">Hotel</option>
-                                <option value="shopping-mall">Shopping Mall</option>
-                                <option value="airport">Airport</option>
-                                <option value="other">Other Location</option>
-                            </select>
+                            <div class="input-icon-group">
+                                <i class="bi bi-geo-alt-fill"></i>
+                                <select id="destination-category" name="destination_category" onchange="updateDestinationSpecific()">
+                                    <option value="">Choose Category</option>
+                                    <option value="ease-storage">Ease Storage Hub @ Plaza Aurora</option>
+                                    <option value="hotel">Hotel</option>
+                                    <option value="shopping-mall">Shopping Mall</option>
+                                    <option value="airport">Airport</option>
+                                    <option value="other">Other Location</option>
+                                </select>
+                            </div>
                             <select id="destination-specific" name="destination_specific" disabled>
                                 <option value="">Select category first</option>
                             </select>
@@ -680,8 +713,14 @@
                     <div class="form-group">
                         <label for="dropoff-datetime">Drop-off date & time <i class="bi bi-info-circle"></i></label>
                         <div class="datetime-group">
-                            <input type="date" id="dropoff-date" name="dropoff_date">
-                            <input type="time" id="dropoff-time" name="dropoff_time" value="14:00">
+                            <div class="input-icon-group">
+                                <i class="bi bi-calendar-week"></i>
+                                <input type="date" id="dropoff-date" name="dropoff_date">
+                            </div>
+                            <div class="input-icon-group">
+                                <i class="bi bi-clock-fill"></i>
+                                <input type="time" id="dropoff-time" name="dropoff_time" value="14:00">
+                            </div>
                         </div>
                         <div id="dropoff-time-warning" class="time-warning">
                             <i class="bi bi-exclamation-triangle"></i>
@@ -691,8 +730,14 @@
                     <div class="form-group">
                         <label for="pickup-datetime">Pick-up date & time <i class="bi bi-info-circle"></i></label>
                         <div class="datetime-group">
-                            <input type="date" id="pickup-date" name="pickup_date">
-                            <input type="time" id="pickup-time" name="pickup_time" value="16:00">
+                            <div class="input-icon-group">
+                                <i class="bi bi-calendar-event"></i>
+                                <input type="date" id="pickup-date" name="pickup_date">
+                            </div>
+                            <div class="input-icon-group">
+                                <i class="bi bi-clock"></i>
+                                <input type="time" id="pickup-time" name="pickup_time" value="16:00">
+                            </div>
                         </div>
                         <div id="pickup-time-warning" class="time-warning">
                             <i class="bi bi-exclamation-triangle"></i>
@@ -722,9 +767,12 @@
                     <!-- Top row: Storage Location | Luggage Quantity -->
                     <div class="form-group">
                         <label for="storage-location">Storage Location <i class="bi bi-info-circle"></i></label>
-                        <select id="storage-location" name="storage_location">
-                            <option value="ease-plaza-aurora">EASE Storage Hub @ Plaza Aurora</option>
-                        </select>
+                        <div class="input-icon-group">
+                            <i class="bi bi-geo-alt-fill"></i>
+                            <select id="storage-location" name="storage_location">
+                                <option value="ease-plaza-aurora">EASE Storage Hub @ Plaza Aurora</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="quantity">Luggage Quantity <i class="bi bi-info-circle"></i></label>
@@ -742,8 +790,14 @@
                     <div class="form-group">
                         <label for="storage-dropoff-datetime">Drop-off date & time <i class="bi bi-info-circle"></i></label>
                         <div class="datetime-group">
-                            <input type="date" id="storage-dropoff-date" name="storage_dropoff_date">
-                            <input type="time" id="storage-dropoff-time" name="storage_dropoff_time" value="12:00">
+                            <div class="input-icon-group">
+                                <i class="bi bi-calendar-week"></i>
+                                <input type="date" id="storage-dropoff-date" name="storage_dropoff_date">
+                            </div>
+                            <div class="input-icon-group">
+                                <i class="bi bi-clock-fill"></i>
+                                <input type="time" id="storage-dropoff-time" name="storage_dropoff_time" value="12:00">
+                            </div>
                         </div>
                         <div id="storage-dropoff-time-warning" class="time-warning">
                             <i class="bi bi-exclamation-triangle"></i>
@@ -753,8 +807,14 @@
                     <div class="form-group">
                         <label for="storage-pickup-datetime">Pick-up date & time <i class="bi bi-info-circle"></i></label>
                         <div class="datetime-group">
-                            <input type="date" id="storage-pickup-date" name="storage_pickup_date">
-                            <input type="time" id="storage-pickup-time" name="storage_pickup_time" value="14:00">
+                            <div class="input-icon-group">
+                                <i class="bi bi-calendar"></i>
+                                <input type="date" id="storage-pickup-date" name="storage_pickup_date">
+                            </div>
+                            <div class="input-icon-group">
+                                <i class="bi bi-clock"></i>
+                                <input type="time" id="storage-pickup-time" name="storage_pickup_time" value="14:00">
+                            </div>
                         </div>
                         <div id="storage-pickup-time-warning" class="time-warning">
                             <i class="bi bi-exclamation-triangle"></i>
