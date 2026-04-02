@@ -1,3 +1,9 @@
+<?php
+helper('translation');
+
+$easeLang = normalize_site_locale(session('site_lang') ?? ($_COOKIE['site_lang'] ?? 'en'));
+$easeCatalog = ease_translation_catalog();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -103,6 +109,21 @@
         </div>
     </div>
 
+    <!-- Translate script -->
+    <script>
+    const EASE_LANG = <?= json_encode($easeLang, JSON_UNESCAPED_UNICODE) ?>;
+    const EASE_TRANSLATIONS = <?= json_encode($easeCatalog, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+
+    function t(key) {
+        return (EASE_TRANSLATIONS[EASE_LANG] && EASE_TRANSLATIONS[EASE_LANG][key]) || key;
+    }
+
+    function bookingLocale() {
+        if (EASE_LANG === 'zh') return 'zh-CN';
+        if (EASE_LANG === 'ms') return 'ms-MY';
+        return 'en-US';
+    }
+    </script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -178,7 +199,7 @@
         // =====order summary base storage price =====
         if (baseStoragePrice > 0) {
             html += '<div class="summary-item">' +
-                        '<span>' + quantity + ' Standard Luggage</span>' +
+                        '<span>' + quantity + '' +t('Standard Luggage') + '</span>' +
                         '<span>RM ' + baseStoragePrice.toFixed(2) + '</span>' +
                     '</div>';
         }
@@ -186,13 +207,13 @@
         // ===== order summary “Subsequent 12 Hours x 3 Excess”  =====
         if (extraStoragePrice > 0 && exceededTimes > 0) {
             html += '<div class="summary-item">' +
-                        '<span>Subsequent 12 Hours x ' + exceededTimes + ' Excess</span>' +
+                        '<span>' +t('Subsequent 12 Hours x') + exceededTimes + '' +t('Excess') + '</span>' +
                         '<span></span>' +
                     '</div>';
 
             // order summary total price
             html += '<div class="summary-item">' +
-                        '<span>' + quantity + ' Standard Luggage</span>' +
+                        '<span>' + quantity + '' +t('Standard Luggage') + '</span>' +
                         '<span>RM ' + extraStoragePrice.toFixed(2) + '</span>' +
                     '</div>';
         }
@@ -201,7 +222,7 @@
         var finalTotal = baseStoragePrice + extraStoragePrice;
 
         html += '<div class="summary-total">' +
-                    '<span>Total</span>' +
+                    '<span>' + t('Total') + '</span>' +
                     '<span>RM ' + finalTotal.toFixed(2) + '</span>' +
                 '</div>';
 

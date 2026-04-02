@@ -1,5 +1,11 @@
+<?php
+helper('translation');
+
+$easeLang = normalize_site_locale(session('site_lang') ?? ($_COOKIE['site_lang'] ?? 'en'));
+$easeCatalog = ease_translation_catalog();
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= esc($easeLang) ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -444,7 +450,7 @@
 
 <body>
     <?= $this->include('navbar/navbar') ?>
-    
+
     <main class="booking-detail-container">
         <div class="booking-detail-header">
             <!-- Left Content -->
@@ -493,6 +499,22 @@
     </main>
     
     <?= $this->include('footer/footer') ?>
+
+    <!-- Translate script -->
+    <script>
+    const EASE_LANG = <?= json_encode($easeLang, JSON_UNESCAPED_UNICODE) ?>;
+    const EASE_TRANSLATIONS = <?= json_encode($easeCatalog, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+
+    function t(key) {
+        return (EASE_TRANSLATIONS[EASE_LANG] && EASE_TRANSLATIONS[EASE_LANG][key]) || key;
+    }
+
+    function bookingLocale() {
+        if (EASE_LANG === 'zh') return 'zh-CN';
+        if (EASE_LANG === 'ms') return 'ms-MY';
+        return 'en-US';
+    }
+    </script>
 
     <script>
         let currentQuantity = 1;
@@ -550,7 +572,7 @@
             
             // Service type badge
             html += `<div class="service-type-badge">
-                ${bookingData.service === 'delivery' ? 'In Town Delivery' : 'Luggage Storage'}
+                ${bookingData.service === 'delivery' ? t('In Town Delivery') : t('Luggage Storage')}
             </div>`;
 
             html += '<div class="booking-details-card">';
@@ -559,23 +581,23 @@
                 // Delivery service details - GROUPED SEND FROM AND DELIVER TO
                 html += `
                     <div class="detail-section">
-                        <h3><i class="bi bi-geo-alt-fill"></i> Pickup & Delivery Details</h3>
+                        <h3><i class="bi bi-geo-alt-fill"></i> ${t('Pickup & Delivery Details')}</h3>
                         
                     <!-- SEND FROM GROUP -->
                     <div class="detail-row">
                         <div class="detail-label">
                             <div style="display: flex; flex-direction: column; align-items: center;">
-                                <strong style="font-size: 1.2rem; margin-bottom: 8px;">Send From</strong>
+                                <strong style="font-size: 1.2rem; margin-bottom: 8px;">${t('Send From')}</strong>
                                 <img src="assets/images/send-from.png" alt="Send From" style="width: 120px; height: 120px; margin-bottom: 12px;">
                             </div>
                         </div>
                         <div class="detail-value">
                             <div class="location-info">
-                                <strong>Origin: ${bookingData.origin}</strong>
+                                <strong>${t('Origin:')} ${bookingData.origin}</strong>
                                 ${bookingData.originAddress ? `<span>${bookingData.originAddress}</span>` : ''}
                                 <div class="datetime-info" style="margin-top: 0.5rem;">
-                                    <strong>Drop-off: ${formatDate(bookingData.dropoffDate)}</strong>
-                                    <span>at ${formatTime(bookingData.dropoffTime)}</span>
+                                    <strong>${t('Drop-off:')} ${formatDate(bookingData.dropoffDate)}</strong>
+                                    <span>${t('at')} ${formatTime(bookingData.dropoffTime)}</span>
                                 </div>
                             </div>
                         </div>
@@ -585,17 +607,17 @@
                     <div class="detail-row">
                         <div class="detail-label">
                             <div style="display: flex; flex-direction: column; align-items: center;">
-                                <strong style="font-size: 1.2rem; margin-bottom: 8px;">Deliver To</strong>
+                                <strong style="font-size: 1.2rem; margin-bottom: 8px;">${t('Deliver To')}</strong>
                                 <img src="assets/images/deliver-to.png" alt="Deliver To" style="width: 120px; height: 120px; margin-bottom: 12px;">
                             </div>
                         </div>
                         <div class="detail-value">
                             <div class="location-info">
-                                <strong>Destination: ${bookingData.destination}</strong>
+                                <strong>${t('Destination:')} ${bookingData.destination}</strong>
                                 ${bookingData.destinationAddress ? `<span>${bookingData.destinationAddress}</span>` : ''}
                                 <div class="datetime-info" style="margin-top: 0.5rem;">
-                                    <strong>Pick-up: ${formatDate(bookingData.pickupDate)}</strong>
-                                    <span>at ${formatTime(bookingData.pickupTime)}</span>
+                                    <strong>${t('Pick-up:')} ${formatDate(bookingData.pickupDate)}</strong>
+                                    <span>${t('at')} ${formatTime(bookingData.pickupTime)}</span>
                                 </div>
                             </div>
                         </div>
@@ -606,24 +628,24 @@
                         <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
                             <i class="bi bi-info-circle-fill" style="color: #ff6b35; margin-top: 2px; flex-shrink: 0;"></i>
                             <div>
-                                <strong style="color: #d32f2f; font-size: 1.1rem;">Attention Please</strong><br>
-                                Selected a hotel as your service point? Concierge/Front desk service is for hotel guests only. Kindly upload your stay documents to help us get access, or meet us outside at the main entrance.<br><br>
-                                Please ensure you've selected the correct location, date and time for drop off or pick up. Additional charges may apply for late arrivals or incorrect destination delivery.
+                                <strong style="color: #d32f2f; font-size: 1.1rem;">${t('Attention Please')}</strong><br>
+                                ${t('Selected a hotel as your service point? Concierge/Front desk service is for hotel guests only. Kindly upload your stay documents to help us get access, or meet us outside at the main entrance.')}<br><br>
+                                ${t("Please ensure you've selected the correct location, date and time for drop off or pick up. Additional charges may apply for late arrivals or incorrect destination delivery.")}
                             </div>
                         </div>
                     </div>
 
                     <!-- Quantity and Promo Section - ONLY for delivery -->
                     <div class="detail-section">
-                        <h3><i class="bi bi-box"></i> Luggage Quantity & Promo</h3>
+                        <h3><i class="bi bi-box"></i> ${t('Luggage Quantity & Promo')}</h3>
                         
                         <div class="detail-row">
                             <img src="assets/images/luggage-quantity.png" alt="Luggage Quantity" style="width: 120px; height: 120px; margin-right: 24px; vertical-align: middle;">
                             <div class="detail-label" style="flex: 2; flex-direction: column; align-items: flex-start; display: flex;">
-                                <div style="font-weight:bold; font-size:1.1rem;">Max Weight and Dimension</div>
+                                <div style="font-weight:bold; font-size:1.1rem;">${t('Max Weight and Dimension')}</div>
                                 <div style="font-weight:normal; font-size:1rem; margin-top:4px;">
-                                    23kg per item 180cm in total<br>
-                                    dimensions (Length + Width + Height)
+                                    ${t('23kg per item 180cm in total')}<br>
+                                    ${t('dimensions (Length + Width + Height)')}
                                 </div>
                             </div>
                             <div class="detail-value" style="flex: 1; margin-left: auto;">
@@ -644,24 +666,24 @@
                         <div class="detail-row">
                             <div class="detail-label">
                                 <input type="checkbox" id="insuranceCheckbox" onchange="toggleInsurance()" />
-                                <label for="insuranceCheckbox" style="margin-left:8px; font-weight:bold;">Add Insurance (RM 3 per luggage)</label>
+                                <label for="insuranceCheckbox" style="margin-left:8px; font-weight:bold;">${t('Add Insurance (RM 3 per luggage)')}</label>
                             </div>
                         </div>
                         
                         <div class="detail-row">
-                            <div class="detail-label">Promo Code:</div>
+                            <div class="detail-label">${t('Promo Code:')}</div>
                             <div class="detail-value" style="flex: 3;">
                                 <div class="promo-section">
                                     <div class="promo-input-group">
                                         <input type="text" 
                                             class="promo-input" 
                                             id="promoCodeInput" 
-                                            placeholder="Enter promo code" 
+                                            placeholder=${t("Enter promo code")}
                                             maxlength="20"
                                             value="${appliedPromoCode}"
                                             ${appliedPromoCode ? 'disabled' : ''}>
                                         <button type="button" class="promo-btn" onclick="applyPromoCode()" id="applyPromoBtn" ${appliedPromoCode ? 'disabled' : ''}>
-                                            ${appliedPromoCode ? 'Applied' : 'Apply'}
+                                            ${t(appliedPromoCode ? 'Applied' : 'Apply')}
                                         </button>
                                     </div>
                                     <div id="promoMessage" class="promo-message" style="display: ${appliedPromoCode ? 'block' : 'none'};">
@@ -682,22 +704,22 @@
                 // Storage service details - GROUPED DROP-OFF AND PICK-UP
                 html += `
                     <div class="detail-section">
-                        <h3><i class="bi bi-building"></i> Storage Details</h3>
+                        <h3><i class="bi bi-building"></i> ${t('Storage Details')}</h3>
                         
                         <!-- STORAGE DROP-OFF GROUP -->
                         <div class="detail-row">
                             <div class="detail-label">
                                 <div style="display: flex; flex-direction: column; align-items: center;">
-                                    <strong style="font-size: 1.2rem; margin-bottom: 8px;">Storage Drop-off</strong>
+                                    <strong style="font-size: 1.2rem; margin-bottom: 8px;">${t('Storage Drop-off')}</strong>
                                     <img src="assets/images/send-from.png" alt="Drop-off" style="width: 120px; height: 120px; margin-bottom: 12px;">
                                 </div>
                             </div>
                             <div class="detail-value">
                                 <div class="location-info">
-                                    <strong>Location: ${bookingData.storageLocation}</strong>
+                                    <strong>${t('Location:')} ${bookingData.storageLocation}</strong>
                                     <div class="datetime-info" style="margin-top: 0.5rem;">
-                                        <strong>Drop-off: ${formatDate(bookingData.dropoffDate)}</strong>
-                                        <span>at ${formatTime(bookingData.dropoffTime)}</span>
+                                        <strong>${t('Drop-off:')} ${formatDate(bookingData.dropoffDate)}</strong>
+                                        <span>${t('at')} ${formatTime(bookingData.dropoffTime)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -707,35 +729,35 @@
                         <div class="detail-row">
                             <div class="detail-label">
                                 <div style="display: flex; flex-direction: column; align-items: center;">
-                                    <strong style="font-size: 1.2rem; margin-bottom: 8px;">Storage Pick-up</strong>
+                                    <strong style="font-size: 1.2rem; margin-bottom: 8px;">${t('Storage Pick-up')}</strong>
                                     <img src="assets/images/deliver-to.png" alt="Pick-up" style="width: 120px; height: 120px; margin-bottom: 12px;">
                                 </div>
                             </div>
                             <div class="detail-value">
                                 <div class="location-info">
-                                    <strong>Location: ${bookingData.storageLocation}</strong>
+                                    <strong>${t('Location:')}${bookingData.storageLocation}</strong>
                                     <div class="datetime-info" style="margin-top: 0.5rem;">
-                                        <strong>Pick-up: ${formatDate(bookingData.pickupDate)}</strong>
-                                        <span>at ${formatTime(bookingData.pickupTime)}</span>
+                                        <strong>${t('Pick-up: ')}${formatDate(bookingData.pickupDate)}</strong>
+                                        <span>${t('at')} ${formatTime(bookingData.pickupTime)}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div id="storageMap" style="width:100%;height:300px;margin-top:1rem;border-radius:8px;"></div>
                         <div style="background:#f5f5dc;border:1px solid #ddd;border-radius:8px;padding:1rem;margin-top:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-size:1rem;">
-                            <strong>Address</strong><br>
+                            <strong>${t('Address')}</strong><br>
                             No.118, Level 1, Plaza Aurora, Jln McDougall, Plaza Aurora, 93000 Kuching, Sarawak, Malaysia
                         </div>
                     <!-- Promo Section ONLY - NO quantity for storage -->
                     <div class="detail-section">
-                        <h3><i class="bi bi-tag"></i> Promo Code</h3>
+                        <h3><i class="bi bi-tag"></i>${t('Promo Code')}</h3>
                         <div class="detail-row">
                             <img src="assets/images/luggage-quantity.png" alt="Luggage Quantity" style="width: 120px; height: 120px; margin-right: 24px; vertical-align: middle;">
                             <div class="detail-label" style="flex: 2; flex-direction: column; align-items: flex-start; display: flex;">
-                                <div style="font-weight:bold; font-size:1.1rem;">Max Weight and Dimension</div>
+                                <div style="font-weight:bold; font-size:1.1rem;">${t('Max Weight and Dimension')}</div>
                                 <div style="font-weight:normal; font-size:1rem; margin-top:4px;">
-                                    23kg per item 180cm in total<br>
-                                    dimensions (Length + Width + Height)
+                                    ${t('23kg per item 180cm in total')}<br>
+                                    ${t("dimensions (Length + Width + Height)")}
                                 </div>
                             </div>
                         </div>
@@ -743,24 +765,24 @@
                         <div class="detail-row">
                             <div class="detail-label">
                                 <input type="checkbox" id="insuranceCheckbox" onchange="toggleInsurance()" />
-                                <label for="insuranceCheckbox" style="margin-left:8px; font-weight:bold;">Add Insurance (RM 3 per luggage)</label>
+                                <label for="insuranceCheckbox" style="margin-left:8px; font-weight:bold;">${t('Add Insurance (RM 3 per luggage)')}</label>
                             </div>
                         </div>
 
                         <div class="detail-row">
-                            <div class="detail-label">Promo Code:</div>
+                            <div class="detail-label">${t('Promo Code:')}</div>
                             <div class="detail-value" style="flex: 3;">
                                 <div class="promo-section">
                                     <div class="promo-input-group">
                                         <input type="text" 
                                             class="promo-input" 
                                             id="promoCodeInput" 
-                                            placeholder="Enter promo code" 
+                                            placeholder=${t("Enter promo code")}
                                             maxlength="20"
                                             value="${appliedPromoCode}"
                                             ${appliedPromoCode ? 'disabled' : ''}>
                                         <button type="button" class="promo-btn" onclick="applyPromoCode()" id="applyPromoBtn" ${appliedPromoCode ? 'disabled' : ''}>
-                                            ${appliedPromoCode ? 'Applied' : 'Apply'}
+                                            ${t(appliedPromoCode ? 'Applied' : 'Apply')}
                                         </button>
                                     </div>
                                     <div id="promoMessage" class="promo-message" style="display: ${appliedPromoCode ? 'block' : 'none'};">
@@ -817,25 +839,25 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-row"><span class="price-label">Kuching Luggage Transfer</span></div>
-                    <div class="price-row"><span class="price-label">Selected Transfer Point</span></div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Transfer')}</span></div>
+                    <div class="price-row"><span class="price-label">${t('Selected Transfer Point')}</span></div>
                     <div class="price-row">
-                        <span class="price-label">${currentQuantity} Standard Luggage</span>
+                        <span class="price-label">${currentQuantity} ${t('Standard Luggage')}</span>
                     </div>
-                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
                     <div class="price-row">
-                        <span class="price-label">First 24 Hours</span>
+                        <span class="price-label">${t('First 24 Hours')}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                         <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess</span>
+                        <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} Excess</span>
                         
                     </div>
                     <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                         <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
                     </div>
                 `;
@@ -871,7 +893,7 @@
                 const total = Math.max(0, baseStoragePrice + extraStoragePrice + insuranceCharge - discountAmount);
                 html += `
                     <div class="price-row">
-                        <span class="price-label">Total:</span>
+                        <span class="price-label">${t('Total:')}</span>
                         <span class="price-value total-value">MYR ${total.toFixed(2)}</span>
                     </div>
                 `;
@@ -884,20 +906,20 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
                     <div class="price-row">
-                        <span class="price-label">First 12 Hours</span>
+                        <span class="price-label">${t('First 12 Hours')}</span>
                     </div>
                     <div class="price-row">
-                    <span class="price-value">${currentQuantity} Standard Luggage</span>
+                    <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                     <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess</span>
+                        <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} ${t('Excess')}</span>
                         
                     </div>
                     <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                         <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
                     </div>
                 `;
@@ -933,7 +955,7 @@
                 const total = Math.max(0, baseStoragePrice + extraStoragePrice + insuranceCharge - discountAmount);
                 html += `
                     <div class="price-row">
-                        <span class="price-label">Total:</span>
+                        <span class="price-label">${t('Total:')}</span>
                         <span class="price-value total-value">MYR ${total.toFixed(2)}</span>
                     </div>
                 `;

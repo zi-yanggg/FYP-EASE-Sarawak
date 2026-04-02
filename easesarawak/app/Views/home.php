@@ -795,7 +795,7 @@
             <h2>KUCHING HANDS-FREE TRAVEL
             </h2>
             <p>
-                Discover the best of Kuching – We ensure you a smooth and hassle-free journey
+                Discover the best of Kuching – We ensure you a smooth and hassle-free journey 
                 with our easy-to-use Kuching Luggage Storage and Delivery service.
             </p>
             <a href="#contact" class="btn btn-primary">CONTACT NOW</a>
