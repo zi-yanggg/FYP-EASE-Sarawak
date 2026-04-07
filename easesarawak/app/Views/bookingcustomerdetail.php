@@ -330,7 +330,7 @@
                         <i class="bi bi-cloud-upload"></i>
                         <p>No file chosen</p>
                         <p>Select a file or drop it here</p>
-                        <input type="file" id="documentUpload" name="documentUpload" style="display: none;" accept="image/*,.pdf,.doc,.docx">
+                        <input type="file" id="documentUpload" name="documentUpload[]" style="display: none;" accept="image/*,.pdf,.doc,.docx" multiple>
                     </div>
                     <div class="file-info" id="fileInfo"></div>
                 </div>
@@ -414,23 +414,26 @@
                 const files = e.dataTransfer.files;
                 if (files.length > 0) {
                     fileInput.files = files;
-                    updateFileInfo(files[0]);
+                    updateFileInfo(files);
                 }
             });
 
             fileInput.addEventListener('change', function() {
                 if (fileInput.files.length > 0) {
-                    updateFileInfo(fileInput.files[0]);
+                    updateFileInfo(fileInput.files);
                 }
             });
 
-            function updateFileInfo(file) {
+            function updateFileInfo(files) {
                 fileInfo.style.display = 'block';
-                fileInfo.innerHTML = `
-                    <i class="bi bi-file-earmark"></i>
-                    <strong>${file.name}</strong> (${(file.size / 1024 / 1024).toFixed(2)} MB)
-                `;
-                fileUpload.querySelector('p').textContent = 'File selected: ' + file.name;
+                let html = '';
+                for (let i = 0; i < files.length; i++) {
+                    html += `<div><i class="bi bi-file-earmark"></i> <strong>${files[i].name}</strong> (${(files[i].size / 1024 / 1024).toFixed(2)} MB)</div>`;
+                }
+                fileInfo.innerHTML = html;
+                fileUpload.querySelector('p').textContent = files.length === 1
+                    ? 'File selected: ' + files[0].name
+                    : files.length + ' files selected';
             }
 
             // Special luggage handling
@@ -505,7 +508,9 @@
             // Add file if selected
             const fileInput = document.getElementById('documentUpload');
             if (fileInput.files.length > 0) {
-                formData.append('documentUpload', fileInput.files[0]);
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    formData.append('documentUpload[]', fileInput.files[i]);
+                }
             }
 
             // Debug: Log the data being sent
