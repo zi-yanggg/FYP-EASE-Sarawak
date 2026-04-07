@@ -111,7 +111,7 @@
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: 2.5rem;
         }
 
         .file-upload {
@@ -203,6 +203,37 @@
                 flex-direction: column;
             }
         }
+
+        .custom-tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .custom-tooltip-text {
+            visibility: hidden;
+            width: 240px;
+            background-color: #f2be00;
+            color: #333;
+            text-align: left;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%; /* Show above the icon */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .custom-tooltip-wrapper:hover .custom-tooltip-text,
+        .custom-tooltip-wrapper:focus-within .custom-tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -224,32 +255,56 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="firstName">First Name <i class="bi bi-info-circle"></i></label>
+                        <label for="firstName">First Name
+                            <span class="custom-tooltip-wrapper">
+                                <i class="bi bi-info-circle"></i>
+                                <span class="custom-tooltip-text">Enter your legal first name as it appears on your ID</span>
+                            </span></label>
                         <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
                     </div>
                     <div class="form-group">
-                        <label for="lastName">Last Name <i class="bi bi-info-circle"></i></label>
+                        <label for="lastName">Last Name
+                            <span class="custom-tooltip-wrapper">
+                                <i class="bi bi-info-circle"></i>
+                                <span class="custom-tooltip-text">Enter your legal last name as it appears on your ID</span>
+                            </span></label>
                         <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="identificationNumber">Identification Number <i class="bi bi-info-circle"></i></label>
+                    <label for="identificationNumber">Identification Number 
+                        <span class="custom-tooltip-wrapper">
+                                <i class="bi bi-info-circle"></i>
+                                <span class="custom-tooltip-text">Provide your ID number (e.g., Passport, driving license or NRIC) for verification</span>
+                            </span></label>
                     <input type="text" id="identificationNumber" name="identificationNumber" placeholder="Enter your identification" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email Address <i class="bi bi-info-circle"></i></label>
+                    <label for="email">Email Address 
+                        <span class="custom-tooltip-wrapper">
+                                <i class="bi bi-info-circle"></i>
+                                <span class="custom-tooltip-text">Enter a valid email address where we can send your booking details and updates.</span>
+                            </span></label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Phone Number <i class="bi bi-info-circle"></i></label>
+                    <label for="phone">Phone Number 
+                        <span class="custom-tooltip-wrapper">
+                                <i class="bi bi-info-circle"></i>
+                                <span class="custom-tooltip-text">Provide a contact number where we can reach you for booking-related updates.</span>
+                            </span></label>
                     <input type="tel" id="phone" name="phone" placeholder="Enter your phone" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Social Contact <i class="bi bi-info-circle"></i></label>
+                    <label>Social Contact 
+                        <span class="custom-tooltip-wrapper">
+                                <i class="bi bi-info-circle"></i>
+                                <span class="custom-tooltip-text">Add your social media handle (e.g., WhatsApp, Facebook, Line or WeChat) for easier communication.</span>
+                            </span></label>
                     <div class="form-row">
                         <div class="form-group">
                             <select id="socialContactType" name="socialContactType" required>
@@ -266,7 +321,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Baggage photo/Travel documents upload (Optional) <i class="bi bi-info-circle"></i></label>
+                    <label>Baggage photo/Travel documents upload (Optional) 
+                        <span class="custom-tooltip-wrapper">
+                                <i class="bi bi-info-circle"></i>
+                                <span class="custom-tooltip-text">Upload a photo of your luggage, or travel documents if you are using hotel concierge/front desk service.</span>
+                            </span></label>
                     <div class="file-upload" id="fileUpload">
                         <i class="bi bi-cloud-upload"></i>
                         <p>No file chosen</p>
@@ -278,7 +337,11 @@
             </div>
 
             <div class="form-group">
-                <label>Do you have a special luggage? <i class="bi bi-info-circle"></i></label>
+                <label>Do you have a special luggage? 
+                    <span class="custom-tooltip-wrapper">
+                                <i class="bi bi-info-circle"></i>
+                                <span class="custom-tooltip-text">For oversized items. Please select if your baggage exceeds the standard size limit.</span>
+                            </span></label>
                 <div style="margin-bottom: 1rem;">
                     <label style="display: inline-flex; align-items: center; margin-right: 2rem; font-weight: normal; cursor: pointer;">
                         <input type="radio" id="specialLuggageYes" name="specialLuggage" value="1" style="margin-right: 0.5rem; width: auto;">
