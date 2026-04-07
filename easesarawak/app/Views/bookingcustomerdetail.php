@@ -89,11 +89,15 @@
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 0.8rem;
+            padding-left: 0.8rem;
+            padding-right: 0.8rem;
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
+            box-sizing: border-box;
         }
 
         .form-group input:focus,

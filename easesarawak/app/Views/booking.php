@@ -620,6 +620,38 @@
         .input-icon-group select {
             padding-left: 2.5em;
         }
+
+        .custom-tooltip-wrapper {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        margin-left: 0.5rem;
+        }
+
+        .custom-tooltip-text {
+        visibility: hidden;
+        width: 240px;
+        background-color: #f2be00;
+        color: #333;
+        text-align: left;
+        border-radius: 6px;
+        padding: 8px 12px;
+        position: absolute;
+        z-index: 9999;
+        bottom: 125%; /* Show above the icon */
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.2s;
+        font-size: 0.95rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .custom-tooltip-wrapper:hover .custom-tooltip-text,
+        .custom-tooltip-wrapper:focus-within .custom-tooltip-text {
+        visibility: visible;
+        opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -666,7 +698,12 @@
                 <div class="form-columns">
                     <!-- Top row: Origin | Destination -->
                     <div class="form-group">
-                        <label for="origin">Where is your origin? <i class="bi bi-info-circle"></i></label>
+                        <label for="origin">Where is your origin? 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select your luggage drop off location.</span>
+                        </span>
+                        </label>
                         <div class="dropdown-group">
                             <div class="input-icon-group">
                                 <i class="bi bi-pin-map-fill"></i>
@@ -688,7 +725,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="destination">Where is your destination? <i class="bi bi-info-circle"></i></label>
+                        <label for="destination">Where is your destination? 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select your luggage pick up location.</span>
+                        </span>
+                        </label>
                         <div class="dropdown-group">
                             <div class="input-icon-group">
                                 <i class="bi bi-geo-alt-fill"></i>
@@ -711,7 +753,12 @@
                     </div>
                     <!-- Bottom row: Drop-off | Pick-up -->
                     <div class="form-group">
-                        <label for="dropoff-datetime">Drop-off date & time <i class="bi bi-info-circle"></i></label>
+                        <label for="dropoff-datetime">Drop-off date & time 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select date and time you will drop off your luggage.</span>
+                        </span>
+                        </label>
                         <div class="datetime-group">
                             <div class="input-icon-group">
                                 <i class="bi bi-calendar-week"></i>
@@ -728,7 +775,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="pickup-datetime">Pick-up date & time <i class="bi bi-info-circle"></i></label>
+                        <label for="pickup-datetime">Pick-up date & time 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select date and time you will collect up your luggage.</span>
+                        </span>
+                        </label>
                         <div class="datetime-group">
                             <div class="input-icon-group">
                                 <i class="bi bi-calendar-event"></i>
@@ -766,7 +818,12 @@
                 <div class="form-columns">
                     <!-- Top row: Storage Location | Luggage Quantity -->
                     <div class="form-group">
-                        <label for="storage-location">Storage Location <i class="bi bi-info-circle"></i></label>
+                        <label for="storage-location">Storage Location 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select where you would like to store your luggage.</span>
+                        </span>
+                        </label>
                         <div class="input-icon-group">
                             <i class="bi bi-geo-alt-fill"></i>
                             <select id="storage-location" name="storage_location">
@@ -775,7 +832,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="quantity">Luggage Quantity <i class="bi bi-info-circle"></i></label>
+                        <label for="quantity">Luggage Quantity 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select the number of bags you want to store.</span>
+                        </span>
+                        </label>
                         <select id="quantity" name="quantity">
                             <option value="1">1 piece</option>
                             <option value="2">2 pieces</option>
@@ -788,7 +850,12 @@
                     </div>
                     <!-- Bottom row: Drop-off | Pick-up -->
                     <div class="form-group">
-                        <label for="storage-dropoff-datetime">Drop-off date & time <i class="bi bi-info-circle"></i></label>
+                        <label for="storage-dropoff-datetime">Drop-off date & time 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select date and time you will drop off your luggage.</span>
+                        </span>
+                        </label>
                         <div class="datetime-group">
                             <div class="input-icon-group">
                                 <i class="bi bi-calendar-week"></i>
@@ -805,7 +872,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="storage-pickup-datetime">Pick-up date & time <i class="bi bi-info-circle"></i></label>
+                        <label for="storage-pickup-datetime">Pick-up date & time 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select date and time you will collect your luggage.</span>
+                        </span>
+                        </label>
                         <div class="datetime-group">
                             <div class="input-icon-group">
                                 <i class="bi bi-calendar"></i>
