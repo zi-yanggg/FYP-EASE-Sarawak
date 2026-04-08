@@ -1378,11 +1378,21 @@
 
             <!-- RIGHT SIDE -->
             <div class="connect-right">
-                <h2 class="pill-title">
+                <div class="button-row">
+                <h2 class="pill-title active active-form-btn " data-form="message-form">
                     <span class="dot"></span>
                     MESSAGE US TODAY
                     <span class="dot"></span>
                 </h2>
+                <h3 class="pill-title refund-form-btn" data-form="refund-form">
+                    <span class="dot"></span>
+                    REFUND FORM
+                    <span class="dot"></span>
+                </h3>
+                </div>
+
+                <!-- Message Us Today Form (unchanged) -->
+            <div class="form-content active" id="message-form">
                 <p class="tagline">FILL THE FORM BELOW</p>
                 <p class="message-desc">Travel Light. Travel Smart. Travel with EASE.</p>
 
@@ -1395,6 +1405,55 @@
                     <textarea placeholder="Your Message" rows="5" required></textarea>
                     <button type="submit">SUBMIT FORM</button>
                 </form>
+            </div>
+             <!-- Refund Form -->
+            <div class="form-content" id="refund-form">
+                <p class="tagline">FILL THE FORM BELOW</p>
+                <p class="message-desc">Submit your refund request quickly and easily.</p>
+
+                <?php if (session()->getFlashdata('refund_status')): ?>
+                    <div class="alert <?= session()->getFlashdata('refund_status') === 'success' ? 'alert-success' : 'alert-danger' ?>" style="margin-bottom:15px; padding:12px; border-radius:8px; background: <?= session()->getFlashdata('refund_status') === 'success' ? '#d1fae5' : '#fee2e2' ?>; color: <?= session()->getFlashdata('refund_status') === 'success' ? '#065f46' : '#991b1b' ?>; border: 1px solid <?= session()->getFlashdata('refund_status') === 'success' ? '#a7f3d0' : '#fecaca' ?>;">
+                        <?= session()->getFlashdata('refund_message') ?>
+                    </div>
+                <?php endif; ?>
+
+                <form class="contact-form" id="refundForm" method="POST" action="<?= base_url('refund/submit') ?>" enctype="multipart/form-data">
+                    <?= csrf_field() ?>
+
+                    <input type="text" name="full_name" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="text" name="phone_number" placeholder="Phone Number" required>
+                    <input type="text" name="order_id" placeholder="Order ID" required>
+
+                    <div class="row-inputs">
+                        <input type="text"
+                            name="date_of_purchase"
+                            placeholder="Date of Purchase"
+                            onfocus="(this.type='date')"
+                            onblur="(this.type='text')"
+                            required>
+                    </div>
+
+                    <select name="service_type" required>
+                        <option value="">Select Service Type</option>
+                        <option value="Town Delivery">Town Delivery</option>
+                        <option value="Luggage Storage">Luggage Storage</option>
+                    </select>
+
+                    <input type="text" name="bank_name" placeholder="Bank Name">
+                    <input type="text" name="account_holder_name" placeholder="Account Holder Name">
+                    <input type="text" name="account_number" placeholder="Account Number">
+                    <textarea name="reason_for_refund" placeholder="Reason for Refund"></textarea>
+
+                    <label>
+                        <input type="checkbox" name="declaration" value="1" required>
+                        I declare that the information I have provided in this form is accurate and complete to the best of my knowledge.
+                        I understand that submission of this form does not guarantee a refund and that additional information may be requested.
+                    </label>
+
+                    <button type="submit" name="submitRefund">SUBMIT FORM</button>
+                </form>
+            </div>
             </div>
         </div>
     </section>
@@ -1418,11 +1477,11 @@
         function bookStorage() {
             // Set service preference in sessionStorage
             sessionStorage.setItem('preferredService', 'storage');
-
+            
             // Clear any existing booking data to start fresh
             sessionStorage.removeItem('bookingData');
             sessionStorage.removeItem('isEditing');
-
+            
             // Redirect to booking page
             window.location.href = 'booking';
         }
@@ -1431,16 +1490,53 @@
         function bookDelivery() {
             // Set service preference in sessionStorage
             sessionStorage.setItem('preferredService', 'delivery');
-
+            
             // Clear any existing booking data to start fresh
             sessionStorage.removeItem('bookingData');
             sessionStorage.removeItem('isEditing');
-
+            
             // Redirect to booking page
             window.location.href = 'booking';
         }
-    </script>
 
+        //Refund form function
+        const pillTitles = document.querySelectorAll('.button-row .pill-title');
+        const formContents = document.querySelectorAll('.form-content');
+
+        pillTitles.forEach(title => {
+            title.addEventListener('click', () => {
+                pillTitles.forEach(t => {
+                    t.classList.remove('active', 'active-form-btn');
+                });
+
+                title.classList.add('active', 'active-form-btn');
+
+                formContents.forEach(f => f.classList.remove('active'));
+
+                const targetForm = title.getAttribute('data-form');
+                document.getElementById(targetForm).classList.add('active');
+            });
+        });
+
+        <?php if (session()->getFlashdata('refund_status')): ?>
+            const refundButton = document.querySelector('[data-form="refund-form"]');
+            const refundPanel = document.getElementById('refund-form');
+
+            pillTitles.forEach(t => t.classList.remove('active', 'active-form-btn'));
+            formContents.forEach(f => f.classList.remove('active'));
+
+            if (refundButton) refundButton.classList.add('active', 'active-form-btn');
+            if (refundPanel) refundPanel.classList.add('active');
+
+            setTimeout(() => {
+                alert(<?= json_encode(session()->getFlashdata('refund_message')) ?>);
+                const connectSection = document.getElementById('connect');
+                if (connectSection) {
+                    connectSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 200);
+        <?php endif; ?>
+    </script>
 </body>
 
 </html>

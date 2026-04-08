@@ -326,7 +326,16 @@
                                     </ul>
                                 </div>
                             </li>
+                            
+                            <li class="nav-item">
+                                <a href="<?= base_url('/admin/refund_request'); ?>">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <p>Refund Request</p>
+                                </a>
+                            </li>
                         <?php endif; ?>
+
+
 
                         <!-- <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#tables">

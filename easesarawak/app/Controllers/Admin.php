@@ -562,4 +562,18 @@ class Admin extends BaseController
         $model->update($id, ['base_price' => $base_price]);
         return redirect()->to('/admin/service_management')->with('success', 'Base price updated!');
     }
+
+    public function refund_request()
+    {
+        $db = \Config\Database::connect();
+
+        $refunds = $db->table('refund_form')
+            ->orderBy('created_at', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        return $this->render('admin/refund_request', [
+            'refunds' => $refunds
+        ]);
+    }
 }
