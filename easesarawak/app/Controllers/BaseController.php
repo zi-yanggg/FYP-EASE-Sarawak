@@ -36,7 +36,7 @@ abstract class BaseController extends Controller
      *
      * @var list<string>
      */
-    protected $helpers = [];
+    protected $helpers = ['translation'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -81,6 +81,18 @@ abstract class BaseController extends Controller
                 }
             }
         }
+
+        // Apply site locale from query/session/cookie on every request
+        $locale = $request->getGet('lang')
+            ?? session()->get('site_lang')
+            ?? $request->getCookie('site_lang')
+            ?? config('App')->defaultLocale;
+
+        if (function_exists('normalize_site_locale')) {
+            $locale = normalize_site_locale($locale);
+        }
+
+        $request->setLocale($locale);
     }
 
     protected function render($view, $data = [])

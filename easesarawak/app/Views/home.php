@@ -1143,8 +1143,8 @@
             <h1>KUCHING<br>HANDS-FREE TRAVEL</h1>
 
             <p>
-                Discover the best of Kuching – We ensure you a smooth and hassle-free journey with
-                our easy-to-use Kuching Luggage Storage and Delivery service.
+                Discover the best of Kuching – We ensure you a smooth and hassle-free journey 
+                with our easy-to-use Kuching Luggage Storage and Delivery service.
             </p>
 
             <div class="hero-buttons">
