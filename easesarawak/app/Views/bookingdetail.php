@@ -43,13 +43,25 @@ $easeCatalog = ease_translation_catalog();
         }
 
         .booking-detail-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
             min-height: calc(100vh - 200px);
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .booking-detail-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            .left-column, .right-column {
+                width: 100%;
+                max-width: 100%;
+            }
         }
 
         .booking-detail-header {
@@ -61,18 +73,66 @@ $easeCatalog = ease_translation_catalog();
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
             align-items: start;
-            margin-bottom: 2rem;
         }
 
-        .booking-detail-header h1 {
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 0.5rem;
+        .left-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .right-content {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 2rem;
+        }
+        .booking-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+            opacity: 0.95;
+            margin-top: 0;
+            margin-bottom: 0;
         }
 
-        .booking-detail-header p {
-            font-size: 1.1rem;
-            color: #666;
+        @media (max-width: 900px) {
+            .booking-detail-header {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .left-content {
+                order: 1;
+                align-items: center;
+            }
+            .right-content {
+                order: 2;
+                padding-top: 0;
+                margin-bottom: 1rem;
+                justify-content: center;
+            }
+        }
+
+        .booking-tagline h1 {
+            font-family: 'EurostarRegular', sans-serif;
+            font-size: 3rem;
+            color: #000000;
+            font-weight: bold;
+            margin-left: 20px;
+            margin-top: 120px;
+            line-height: 1.3;
+        }
+
+        .booking-tagline p {
+            font-family: 'EurostarRegular', sans-serif;
+            font-size: 1.3rem;
+            color: #000000;
+            margin-left: 20px;
+            line-height: 1.6;
+            max-width: 500px;
         }
 
         .left-column {
@@ -90,7 +150,7 @@ $easeCatalog = ease_translation_catalog();
             background: #f2be00;
             color: white;
             padding: 0.5rem 1.5rem;
-            border-radius: 25px;
+            border-radius: 0;
             font-weight: bold;
             font-size: 1.1rem;
             margin-bottom: 2rem;
@@ -100,9 +160,15 @@ $easeCatalog = ease_translation_catalog();
         .booking-details-card, .pricing-card {
             background: white;
             padding: 2rem;
-            border-radius: 15px;
+            border-radius: 0;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
+        }
+        @media (max-width: 600px) {
+            .booking-details-card, .pricing-card {
+                padding: 1rem;
+                border-radius: 0;
+            }
         }
 
         .pricing-card {
@@ -193,7 +259,7 @@ $easeCatalog = ease_translation_catalog();
         .location-info {
             background: #f8f9fa;
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: 0;
             margin: 0.5rem 0;
         }
 
@@ -211,7 +277,7 @@ $easeCatalog = ease_translation_catalog();
         .datetime-info {
             background: #e3f2fd;
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: 0;
             margin: 0.5rem 0;
         }
 
@@ -232,7 +298,7 @@ $easeCatalog = ease_translation_catalog();
             background: #007bff;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 0;
             width: 40px;
             height: 40px;
             display: flex;
@@ -257,7 +323,7 @@ $easeCatalog = ease_translation_catalog();
         .quantity-display {
             background: #f8f9fa;
             border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 0;
             padding: 0.5rem 1rem;
             min-width: 60px;
             text-align: center;
@@ -268,7 +334,7 @@ $easeCatalog = ease_translation_catalog();
         .promo-section {
             background: #f8f9fa;
             padding: 1.5rem;
-            border-radius: 10px;
+            border-radius: 0;
             margin: 1rem 0;
         }
 
@@ -277,14 +343,23 @@ $easeCatalog = ease_translation_catalog();
             gap: 1rem;
             align-items: center;
         }
+        @media (max-width: 600px) {
+            .promo-input-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+        }
 
         .promo-input {
             flex: 1;
             padding: 0.75rem;
             border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 0;
             font-size: 1rem;
             transition: border-color 0.3s ease;
+            width: 160px;
+            box-sizing: border-box;
         }
 
         .promo-input:focus {
@@ -297,11 +372,13 @@ $easeCatalog = ease_translation_catalog();
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border-radius: 0;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s ease;
             white-space: nowrap;
+            width: 160px;
+            max-width: 350px;
         }
 
         .promo-btn:hover {
@@ -316,7 +393,7 @@ $easeCatalog = ease_translation_catalog();
         .promo-message {
             margin-top: 0.5rem;
             padding: 0.5rem;
-            border-radius: 5px;
+            border-radius: 0;
             font-size: 0.9rem;
         }
 
@@ -339,11 +416,21 @@ $easeCatalog = ease_translation_catalog();
             margin-top: 2rem;
             grid-column: 1 / -1;
         }
+        @media (max-width: 600px) {
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .btn {
+                width: 100%;
+                min-width: 0;
+            }
+        }
 
         .btn {
             padding: 1rem 2rem;
             border: none;
-            border-radius: 25px;
+            border-radius: 0;
             font-size: 1.15rem;
             font-weight: bold;
             cursor: pointer;
@@ -464,10 +551,6 @@ $easeCatalog = ease_translation_catalog();
             <!-- Right Content - Image -->
             <div class="right-content">
                 <img src="<?= base_url('assets/images/bookingpage.png') ?>" alt="Booking Service" class="booking-image">
-            </div>
-            <div class="bottom-content">
-                <h1>Booking Details</h1>
-                <p>Please review your booking information</p>
             </div>
         </div>
 
@@ -1131,16 +1214,40 @@ $easeCatalog = ease_translation_catalog();
         }
 
         function calculateTotal() {
+            const bookingData = JSON.parse(sessionStorage.getItem('bookingData'));
             const subtotal = basePrice * currentQuantity;
+
+            // Calculate extra charges
+            let insuranceCharge = insuranceSelected ? (3 * currentQuantity) : 0;
+
+            // Calculate extra time charges
+            const start = new Date(bookingData.dropoffDate + ' ' + bookingData.dropoffTime);
+            const end = new Date(bookingData.pickupDate + ' ' + bookingData.pickupTime);
+            const diffHours = Math.ceil((end - start) / (1000 * 60 * 60));
+            let extraStoragePrice = 0;
+            let baseHours, extraRate;
+            if (bookingData.service === 'delivery') {
+                baseHours = 24;
+                extraRate = 6;
+            } else {
+                baseHours = 12;
+                extraRate = 6;
+            }
+            const exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
+            extraStoragePrice = extraRate * exceededTimes * currentQuantity;
+
+            // Discount
             let discountAmount = 0;
             if (appliedPromoCode && promoDiscount > 0) {
                 if (promoType === 'amount') {
                     discountAmount = promoDiscount;
                 } else {
-                    discountAmount = subtotal * promoDiscount / 100;
+                    discountAmount = (subtotal + extraStoragePrice + insuranceCharge) * promoDiscount / 100;
                 }
             }
-            return Math.max(0, subtotal - discountAmount);
+
+            // Final total
+            return Math.max(0, subtotal + extraStoragePrice + insuranceCharge - discountAmount);
         }
 
         function formatDate(dateString) {

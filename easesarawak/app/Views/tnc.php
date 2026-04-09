@@ -42,7 +42,7 @@
             background-image: url("assets/images/loading-of-luggage-to-airplane.webp");
             background-size: cover;
             background-position: center;
-            margin-top: 113.5px;
+            margin-top: 90px;
         }
 
         .title-overlay {
@@ -93,15 +93,9 @@
             padding: 70px 50px;
         }
 
-        .content-container h2 {
-            font-size: 2.7rem;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
         .content-container h3 {
             font-size: 1.8rem;
-            margin-top: 30px;
+            /* margin-top: 30px; */
             margin-bottom: 15px;
             color: #333;
         }
@@ -133,6 +127,11 @@
             color: #f2be00;
             /* text-decoration: none; */
         }
+        @media (max-width: 768px) {
+            .about-title{
+                margin-top: 70px;
+            }
+        }
     </style>
 </head>
 
@@ -148,8 +147,6 @@
     <!-- Title -->
     <section class="content">
         <div class="content-container">
-            <h2>TERMS AND CONDITIONS</h2>
-
             <h3>Definition of Luggage</h3>
             <p><strong>Standard Luggage</strong> is defined by airline regulations and can be checked or carried on the customer’s intended flight. Each piece of standard luggage must not exceed a total of 180 cm in dimensions and must weigh no more than 23kg. Items such as sports equipment (including but not limited to surfboards, snowboards, golf bags, and bicycles), musical instruments (such as cellos, guitars, pianos, and drums), and baby strollers/carriages are NOT considered standard luggage.
 

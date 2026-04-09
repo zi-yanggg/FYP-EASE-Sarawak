@@ -17,7 +17,7 @@
             color: #e60000ff;
             margin-top: 80px;
             margin-bottom: 2rem;
-            border-radius: 12px;
+            border-radius: 0;
             padding: 0;
             min-height: 0;
             height: auto;
@@ -55,6 +55,14 @@
             margin-top: 0;
             padding: 2rem;
             min-height: calc(100vh - 200px);
+        }
+
+        @media (max-width: 900px) {
+            .booking-container {
+                margin-left: 0;
+                margin-right: 0;
+                padding: 1rem;
+            }
         }
 
         /* Header and tagline section */
@@ -126,7 +134,7 @@
             border: 2px solid #000000; 
             border-bottom: none; 
             padding: 1.5rem 3rem; 
-            border-radius: 10px 10px 0 0;
+            border-radius: 0;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 1.2rem;
@@ -175,13 +183,20 @@
         .booking-form {
             background: white;
             padding: 3rem;
-            border-radius: 0 15px 15px 15px; 
+            border-radius: 0; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             margin-bottom: 0; 
             width: 100%;
             border: 2px solid #f2be00; 
             border-top: none; 
             min-height: 400px;
+        }
+
+        @media (max-width: 600px) {
+            .booking-form {
+                padding: 0.5rem;
+                border-radius: 0;
+            }
         }
 
         /* Two column layout for form fields */
@@ -222,22 +237,23 @@
             width: 100%;
             padding: 1.2rem;
             border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 0;
             font-size: 1rem;
             transition: border-color 0.3s ease;
+            box-sizing: border-box;
         }
 
         .form-group select:focus,
         .form-group input:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #ddd;
         }
 
         .dropdown-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 1rem;
-            align-items: center;
+            align-items: stretch;
             min-height: 44px;
         }
 
@@ -254,7 +270,7 @@
         .time-warning {
             background-color: #fff3cd;
             border: 1px solid #ffeaa7;
-            border-radius: 5px;
+            border-radius: 0;
             color: #856404;
             padding: 0.75rem;
             margin-top: 0.5rem;
@@ -274,14 +290,14 @@
             width: 100%;
             padding: 0.8rem;
             border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 0;
             font-size: 1rem;
             transition: border-color 0.3s ease;
         }
 
         .address-input input:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #ddd;
         }
 
         .address-input input::placeholder {
@@ -298,21 +314,29 @@
             padding-top: 1rem;
             border-top: 1px solid #eee;
         }
+        @media (max-width: 600px) {
+            .continue-section {
+                justify-content: center;
+            }
+        }
 
         .continue-btn {
-            background: #f2be00; 
-            color: white;
+            background: #f2be00;         
+            color: #000;              
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            font-size: 1rem;
+            padding: 0.6rem 1.2rem;   
+            border-radius: 0;
+            font-size: 1.4rem;
             cursor: pointer;
             transition: background 0.3s ease;
-            font-weight: bold; 
+            font-weight: bold;
+            width: 100%;
+            max-width: 240px;         
+            height: 2.4em;           
         }
 
         .continue-btn:hover {
-            background: #000000ff; 
+            background: #f8d864;      
         }
 
         .service-description-section {
@@ -345,7 +369,7 @@
             align-items: center;
             background-color: #f8f8f8;
             padding: 2rem;
-            border-radius: 8px;
+            border-radius: 0;
             margin-left: 2rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -359,12 +383,38 @@
             text-align: left;
         }
 
+        select {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 0;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+
+            /* Custom filled arrow */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='black' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='5,7 10,13 15,7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            background-size: 20px;
+            padding-right: 48px; 
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
+
         /* Limit dropdown height to show 5 options with scroll */
         select#quantity {
             width: 100%;
             padding: 1.2rem;
             border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 0;
             font-size: 1rem;
             background-color: white;
             cursor: pointer;
@@ -413,9 +463,13 @@
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
+
+            .left-content {
+                order: 1;
+            }
             
             .right-content {
-                order: -1;
+                order: 2;
                 padding-top: 0;
                 margin-bottom: 2rem;
             }
@@ -436,66 +490,65 @@
 
         @media (max-width: 768px) {
             .booking-container {
-                padding: 1rem;
+                padding: 0.5rem;
             }
-            
             .booking-tagline {
                 text-align: center;
             }
-            
             .booking-tagline h1 {
                 font-size: 1.5rem;
             }
-            
             .booking-tagline p {
                 font-size: 1rem;
                 max-width: none;
             }
-            
             .service-tabs {
                 flex-direction: column;
                 justify-content: center;
             }
-            
             .tab-btn {
-                border-radius: 10px !important; 
+                border-radius: 0 !important; 
                 border-bottom: 2px solid #000000 !important; 
                 margin-bottom: 0.5rem;
             }
-            
             .tab-btn.active {
                 background: #f2be00 !important; 
                 border-bottom: 2px solid #f2be00 !important; 
                 color: #000000 !important; 
             }
-            
             .tab-btn:not(.active) {
                 background: #000000 !important; 
                 color: white !important; 
                 border-bottom: 2px solid #000000 !important; 
             }
-            
             .booking-form {
-                border-radius: 15px; 
+                border-radius: 0; 
                 border-top: 2px solid #f2be00; 
                 margin-top: 1rem;
             }
-            
             .form-columns {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
-            
+            .form-group,
+            .form-group label,
+            .form-group input,
+            .form-group select {
+                width: 100%;
+                box-sizing: border-box;
+            }
             .dropdown-group,
             .datetime-group {
                 grid-template-columns: 1fr;
             }
-            
+            .continue-btn {
+                width: 100%;
+                min-width: 0;
+            }
             .booking-image {
                 max-width: 300px;
                 margin-top: 0;
             }
-            
             body {
                 padding-top: 90px;
             }
@@ -561,11 +614,111 @@
                 text-align: center;
             }
             .custom-content-block img {
-                border-radius: 12px 12px 0 0 !important;
+                border-radius: 0 !important;
                 width: 100% !important;
                 max-width: 350px;
                 margin: 0 auto;
             }
+        }
+
+        .tab-btn i {
+            margin-right: 0.5em;
+            margin-left: -0.5em;
+            font-size: 1.7em;
+            vertical-align: middle;
+        }
+
+        .input-icon-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon-group .square-icon {
+            position: absolute;
+            left: 0; /* flush with left edge */
+            top: 0;
+            height: 100%;
+            width: 2.6em; /* match select height for a square look */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+            margin: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .input-icon-group i {
+            position: absolute;
+            left: 1rem;
+            z-index: 2;
+            font-size: 1.2em;
+            color: #888;
+            pointer-events: none;
+        }
+
+        .input-icon-group input,
+        .input-icon-group select {
+            padding-left: 4em;
+            border-radius: 0;
+        }
+
+        .input-icon-group select#quantity {
+            padding-left: 4em;
+        }
+
+        .custom-tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+
+        .custom-tooltip-text {
+            visibility: hidden;
+            width: 240px;
+            background-color: #f2be00;
+            color: #333;
+            text-align: left;
+            border-radius: 0;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 9999;
+            bottom: 125%; /* Show above the icon */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .custom-tooltip-wrapper:hover .custom-tooltip-text,
+        .custom-tooltip-wrapper:focus-within .custom-tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .square-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.2em;
+            height: 2.6em;
+            background: #000;
+            color: #f2be00;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 0.5em;
+            font-family: Miranda Sans, sans-serif;
+            border-radius: 0; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .square-icon i {
+            color: #f2be00; /* or #fff for white */
+            font-size: 1.2em;
         }
     </style>
 </head>
@@ -591,8 +744,8 @@
 
         <!-- Service Tabs - positioned above forms -->
         <div class="service-tabs">
-            <button class="tab-btn active" onclick="showService('delivery')">In Town Delivery</button>
-            <button class="tab-btn" onclick="showService('storage')">Luggage Storage</button>
+            <button class="tab-btn active" onclick="showService('delivery')"><i class="bi bi-suitcase"></i> In Town Delivery</button>
+            <button class="tab-btn" onclick="showService('storage')"><i class="bi bi-house-door"></i> Luggage Storage</button>
         </div>
 
         <!-- Forms Section - Full Width -->
@@ -613,49 +766,88 @@
                 <div class="form-columns">
                     <!-- Top row: Origin | Destination -->
                     <div class="form-group">
-                        <label for="origin">Where is your origin? <i class="bi bi-info-circle"></i></label>
+                        <label for="origin">Where is your origin? 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select your luggage drop off location.</span>
+                        </span>
+                        </label>
                         <div class="dropdown-group">
-                            <select id="origin-category" name="origin_category" onchange="updateOriginSpecific()">
+                            <div class="input-icon-group">
+                                <span class="square-icon">A</span>
+                                <select id="origin-category" name="origin_category" onchange="updateOriginSpecific()">
                                 <option value="">Choose Category</option>
                                 <option value="ease-storage">Ease Storage Hub @ Plaza Aurora</option>
                                 <option value="hotel">Hotel</option>
                                 <option value="shopping-mall">Shopping Mall</option>
                                 <option value="airport">Airport</option>
                                 <option value="other">Other Location</option>
-                            </select>
-                            <select id="origin-specific" name="origin_specific" disabled>
-                                <option value="">Select category first</option>
-                            </select>
-                        </div>
+                                </select>
+                            </div>
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                                <select id="origin-specific" name="origin_specific" disabled>
+                                    <option value="">Select category first</option>
+                                </select>
+                            </div>
+                            </div>
                         <div id="origin-address" class="address-input hidden">
-                            <input type="text" id="origin-address-text" name="origin_address" placeholder="Please enter your specific address">
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                                <input type="text" id="origin-address-text" name="origin_address" placeholder="Please enter your specific address">
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="destination">Where is your destination? <i class="bi bi-info-circle"></i></label>
+                        <label for="destination">Where is your destination? 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select your luggage pick up location.</span>
+                        </span>
+                        </label>
                         <div class="dropdown-group">
-                            <select id="destination-category" name="destination_category" onchange="updateDestinationSpecific()">
-                                <option value="">Choose Category</option>
-                                <option value="ease-storage">Ease Storage Hub @ Plaza Aurora</option>
-                                <option value="hotel">Hotel</option>
-                                <option value="shopping-mall">Shopping Mall</option>
-                                <option value="airport">Airport</option>
-                                <option value="other">Other Location</option>
-                            </select>
-                            <select id="destination-specific" name="destination_specific" disabled>
-                                <option value="">Select category first</option>
-                            </select>
+                            <div class="input-icon-group">
+                                <span class="square-icon">B</span>
+                                <select id="destination-category" name="destination_category" onchange="updateDestinationSpecific()">
+                                    <option value="">Choose Category</option>
+                                    <option value="ease-storage">Ease Storage Hub @ Plaza Aurora</option>
+                                    <option value="hotel">Hotel</option>
+                                    <option value="shopping-mall">Shopping Mall</option>
+                                    <option value="airport">Airport</option>
+                                    <option value="other">Other Location</option>
+                                </select>
+                            </div>
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                                <select id="destination-specific" name="destination_specific" disabled>
+                                    <option value="">Select category first</option>
+                                </select>
+                            </div>
                         </div>
                         <div id="destination-address" class="address-input hidden">
-                            <input type="text" id="destination-address-text" name="destination_address" placeholder="Please enter your specific address">
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                                <input type="text" id="destination-address-text" name="destination_address" placeholder="Please enter your specific address">
+                            </div>
                         </div>
                     </div>
                     <!-- Bottom row: Drop-off | Pick-up -->
                     <div class="form-group">
-                        <label for="dropoff-datetime">Drop-off date & time <i class="bi bi-info-circle"></i></label>
+                        <label for="dropoff-datetime">Drop-off date & time 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select date and time you will drop off your luggage.</span>
+                        </span>
+                        </label>
                         <div class="datetime-group">
-                            <input type="date" id="dropoff-date" name="dropoff_date">
-                            <input type="time" id="dropoff-time" name="dropoff_time" value="14:00">
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-calendar-week"></i></i></span>
+                                <input type="date" id="dropoff-date" name="dropoff_date">
+                            </div>
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-clock"></i></span>
+                                <input type="time" id="dropoff-time" name="dropoff_time" value="14:00">
+                            </div>
                         </div>
                         <div id="dropoff-time-warning" class="time-warning">
                             <i class="bi bi-exclamation-triangle"></i>
@@ -663,10 +855,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="pickup-datetime">Pick-up date & time <i class="bi bi-info-circle"></i></label>
+                        <label for="pickup-datetime">Pick-up date & time 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select date and time you will collect up your luggage.</span>
+                        </span>
+                        </label>
                         <div class="datetime-group">
-                            <input type="date" id="pickup-date" name="pickup_date">
-                            <input type="time" id="pickup-time" name="pickup_time" value="16:00">
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-calendar-week"></i></span>
+                                <input type="date" id="pickup-date" name="pickup_date">
+                            </div>
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-clock"></i></span>
+                                <input type="time" id="pickup-time" name="pickup_time" value="16:00">
+                            </div>
                         </div>
                         <div id="pickup-time-warning" class="time-warning">
                             <i class="bi bi-exclamation-triangle"></i>
@@ -695,29 +898,56 @@
                 <div class="form-columns">
                     <!-- Top row: Storage Location | Luggage Quantity -->
                     <div class="form-group">
-                        <label for="storage-location">Storage Location <i class="bi bi-info-circle"></i></label>
-                        <select id="storage-location" name="storage_location">
-                            <option value="ease-plaza-aurora">EASE Storage Hub @ Plaza Aurora</option>
-                        </select>
+                        <label for="storage-location">Storage Location 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select where you would like to store your luggage.</span>
+                        </span>
+                        </label>
+                        <div class="input-icon-group">
+                            <span class="square-icon">A</span>
+                            <select id="storage-location" name="storage_location">
+                                <option value="ease-plaza-aurora">EASE Storage Hub @ Plaza Aurora</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="quantity">Luggage Quantity <i class="bi bi-info-circle"></i></label>
-                        <select id="quantity" name="quantity">
-                            <option value="1">1 piece</option>
-                            <option value="2">2 pieces</option>
-                            <option value="3">3 pieces</option>
-                            <option value="4">4 pieces</option>
-                            <option value="5">5 pieces</option>
-                            <option value="6">6 pieces</option>
-                            <option value="7">7 pieces</option>
-                        </select>
+                        <label for="quantity">Luggage Quantity 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select the number of bags you want to store.</span>
+                        </span>
+                        </label>
+                        <div class="input-icon-group">
+                            <span class="square-icon"><i class="bi bi-suitcase2"></i></span>
+                            <select id="quantity" name="quantity">
+                                <option value="1">1 piece</option>
+                                <option value="2">2 pieces</option>
+                                <option value="3">3 pieces</option>
+                                <option value="4">4 pieces</option>
+                                <option value="5">5 pieces</option>
+                                <option value="6">6 pieces</option>
+                                <option value="7">7 pieces</option>
+                            </select>
+                        </div>
                     </div>
                     <!-- Bottom row: Drop-off | Pick-up -->
                     <div class="form-group">
-                        <label for="storage-dropoff-datetime">Drop-off date & time <i class="bi bi-info-circle"></i></label>
+                        <label for="storage-dropoff-datetime">Drop-off date & time 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select date and time you will drop off your luggage.</span>
+                        </span>
+                        </label>
                         <div class="datetime-group">
-                            <input type="date" id="storage-dropoff-date" name="storage_dropoff_date">
-                            <input type="time" id="storage-dropoff-time" name="storage_dropoff_time" value="12:00">
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-calendar-week"></i></span>
+                                <input type="date" id="storage-dropoff-date" name="storage_dropoff_date">
+                            </div>
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-clock"></i></span>
+                                <input type="time" id="storage-dropoff-time" name="storage_dropoff_time" value="12:00">
+                            </div>
                         </div>
                         <div id="storage-dropoff-time-warning" class="time-warning">
                             <i class="bi bi-exclamation-triangle"></i>
@@ -725,10 +955,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="storage-pickup-datetime">Pick-up date & time <i class="bi bi-info-circle"></i></label>
+                        <label for="storage-pickup-datetime">Pick-up date & time 
+                            <span class="custom-tooltip-wrapper" tabindex="0">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="custom-tooltip-text">Select date and time you will collect your luggage.</span>
+                        </span>
+                        </label>
                         <div class="datetime-group">
-                            <input type="date" id="storage-pickup-date" name="storage_pickup_date">
-                            <input type="time" id="storage-pickup-time" name="storage_pickup_time" value="14:00">
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-calendar-week"></i></span>
+                                <input type="date" id="storage-pickup-date" name="storage_pickup_date">
+                            </div>
+                            <div class="input-icon-group">
+                                <span class="square-icon"><i class="bi bi-clock"></i></span>
+                                <input type="time" id="storage-pickup-time" name="storage_pickup_time" value="14:00">
+                            </div>
                         </div>
                         <div id="storage-pickup-time-warning" class="time-warning">
                             <i class="bi bi-exclamation-triangle"></i>
@@ -1384,12 +1625,15 @@
         }
 
         function updateLocationDropdown(category, specificSelect, addressDiv) {
+            const iconGroup = specificSelect.closest('.input-icon-group');
             if (category === 'other') {
                 specificSelect.style.display = 'none';
                 addressDiv.classList.remove('hidden');
                 addressDiv.querySelector('input').setAttribute('required', 'required');
+                if (iconGroup) iconGroup.style.display = 'none';
             } else if (category && locationData[category]) {
                 specificSelect.style.display = 'block';
+                if (iconGroup) iconGroup.style.display = 'flex';
                 specificSelect.disabled = false;
                 addressDiv.classList.add('hidden');
                 addressDiv.querySelector('input').removeAttribute('required');
@@ -1415,6 +1659,7 @@
                 }
             } else {
                 specificSelect.style.display = 'block';
+                if (iconGroup) iconGroup.style.display = 'flex';
                 specificSelect.disabled = true;
                 specificSelect.innerHTML = '<option value="">Select category first</option>';
                 addressDiv.classList.add('hidden');

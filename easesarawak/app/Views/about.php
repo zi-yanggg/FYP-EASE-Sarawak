@@ -42,7 +42,7 @@
             background-image: url("assets/images/ease-1-2.webp");
             background-size: cover;
             background-position: center;
-            margin-top: 113.5px;
+            margin-top: 90px;
         }
 
         .title-overlay {
@@ -244,7 +244,11 @@
             margin: 30px auto;
             overflow: hidden;
             user-select: none;
-            height: 260px;
+            min-height: 260px;
+            /* Changed from fixed height */
+            height: auto;
+            padding-bottom: 50px;
+            /* Space for indicators */
         }
 
         .testimonial {
@@ -255,13 +259,16 @@
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
             padding: 0 20px;
-            /* optional, spacing */
             box-sizing: border-box;
+            pointer-events: none;
+            /* Prevent interaction when hidden */
         }
 
         .testimonial.active {
             opacity: 1;
-            position: absolute;
+            position: relative;
+            /* Changed to relative for active */
+            pointer-events: auto;
         }
 
         .testimonial p {
@@ -281,8 +288,11 @@
             margin-top: 15px;
             text-align: center;
             position: absolute;
-            left:47%;
+            left: 50%;
+            transform: translateX(-50%);
+            /* Better centering */
             bottom: 10px;
+            width: 100%;
         }
 
         .indicators span {
@@ -300,13 +310,155 @@
             background-color: #f2be00;
         }
 
-        @keyframes fade {
-            from {
-                opacity: 0;
+        /* ──────────────────────────────────────────────────────────────
+   MOBILE: Offer section – Text first, then full-width image below
+   ────────────────────────────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .about-title{
+                margin-top: 70px;
+            }
+            .offer {
+                flex-direction: column;
+                padding: 30px 20px;
+                gap: 30px;
             }
 
-            to {
-                opacity: 1;
+            .left {
+                order: 1;
+                padding: 0;
+                text-align: center;
+            }
+
+            .right {
+                order: 2;
+                width: 100%;
+                height: 420px;
+                /* adjust if you want it taller/shorter */
+                margin-top: 10px;
+                padding: 0;
+            }
+
+            /* This is the crucial part – force the background image on mobile */
+            .offer-image {
+                background: url('assets/images/side-view-traveler-with-suitcase-1.webp') center/cover no-repeat !important;
+                width: 100% !important;
+                height: 100% !important;
+                border-radius: 12px;
+            }
+
+            .btn-wrapper {
+                display: flex;
+                justify-content: center;
+                margin-top: 2rem;
+            }
+
+            .btn-offer {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .right {
+                height: 320px;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .impact-flex {
+                flex-direction: column;
+                /* stack items vertically */
+                gap: 0;
+            }
+
+            .impact-item {
+                flex-direction: row;
+                /* keep icon + text side by side */
+                align-items: center;
+                padding: 28px 20px;
+                border-right: none !important;
+                /* remove old vertical line */
+                border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+                /* new horizontal divider */
+            }
+
+            /* Remove bottom border from the very last item */
+            .impact-item:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* Tablet */
+        @media screen and (max-width: 768px) {
+            .testimonial-carousel {
+                min-height: 300px;
+                margin: 20px auto;
+            }
+
+            .testimonial {
+                padding: 0 15px;
+            }
+
+            .testimonial p {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+
+            .client-experience-content h3 {
+                font-size: 1.3rem;
+                padding: 0 15px;
+            }
+        }
+
+        /* Mobile */
+        @media screen and (max-width: 480px) {
+            .testimonial-carousel {
+                min-height: 350px;
+                /* More height for longer text */
+                margin: 15px auto;
+                padding-bottom: 40px;
+            }
+
+            .testimonial {
+                padding: 0 10px;
+            }
+
+            .testimonial p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+                text-align: center;
+            }
+
+            .testimonial strong {
+                font-size: 0.9rem;
+            }
+
+            .indicators span {
+                height: 10px;
+                width: 10px;
+                margin: 0 3px;
+            }
+
+            .pill-title {
+                font-size: 0.5rem;
+                padding: 0 10px;
+            }
+
+            .client-experience-content h3 {
+                font-size: 2rem;
+                padding: 0 10px;
+            }
+        }
+
+        /* Extra small devices */
+        @media screen and (max-width: 360px) {
+            .testimonial-carousel {
+                min-height: 400px;
+            }
+
+            .testimonial p {
+                font-size: 0.85rem;
             }
         }
     </style>

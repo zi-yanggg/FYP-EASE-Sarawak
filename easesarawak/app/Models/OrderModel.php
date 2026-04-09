@@ -272,7 +272,16 @@ class OrderModel extends Model
             log_message('info', 'OrderModel: Special luggage: ' . $specialLuggage . ', Note: ' . $specialLuggageNote);
 
             // Handle file upload
-            $uploadedFilePath = $this->handleFileUpload($request->getFile('documentUpload'));
+            $uploadedFilePaths = [];
+            $files = $request->getFileMultiple('documentUpload');
+            if ($files) {
+                foreach ($files as $file) {
+                    $path = $this->handleFileUpload($file);
+                    if ($path) {
+                        $uploadedFilePaths[] = $path;
+                    }
+                }
+            }
 
             // Format order details JSON
             $orderDetailsJson = $this->formatOrderDetailsJson($bookingData);
@@ -315,7 +324,7 @@ class OrderModel extends Model
                 'phone' => $phone,
                 'social' => $social,
                 'social_num' => $socialContactValue,
-                'upload' => $uploadedFilePath,
+                'upload' => json_encode($uploadedFilePaths),
                 'special' => $special,
                 'special_note' => $specialNote,
                 'order_details_json' => $orderDetailsJson,
@@ -342,7 +351,7 @@ class OrderModel extends Model
                     'success' => true,
                     'order_id' => $orderId,
                     'message' => 'Order saved successfully',
-                    'uploaded_file' => $uploadedFilePath
+                    'uploaded_file' => json_encode($uploadedFilePaths)
                 ];
             } else {
                 log_message('error', 'OrderModel: Failed to save order');

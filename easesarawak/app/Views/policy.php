@@ -42,7 +42,7 @@
             background-image: url("assets/images/man-pulling-out-hand-luggage-from-compartment-while-traveling-by-plane-e1726141753879.jpg");
             background-size: cover;
             background-position: center;
-            margin-top: 113.5px;
+            margin-top: 90px;
         }
 
         .title-overlay {
@@ -110,6 +110,12 @@
             font-size: 1.2rem;
             margin-bottom: 15px;
             color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .about-title{
+                margin-top: 70px;
+            }
         }
     </style>
 </head>

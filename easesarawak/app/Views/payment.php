@@ -219,7 +219,9 @@ $easeCatalog = ease_translation_catalog();
         }
 
         // ===== total price calculation =====
-        var finalTotal = baseStoragePrice + extraStoragePrice;
+        var finalTotal = (bookingData.totalPrice !== undefined)
+            ? Number(bookingData.totalPrice)
+            : (baseStoragePrice + extraStoragePrice);
 
         html += '<div class="summary-total">' +
                     '<span>' + t('Total') + '</span>' +

@@ -52,6 +52,8 @@
                 justify-content: center;
                 /* center form on mobile */
                 align-items: center;
+                background: url("<?= base_url('assets/images/bg-small-screen-login.png') ?>") no-repeat center center;
+                background-size: cover;
             }
 
             .card-login {

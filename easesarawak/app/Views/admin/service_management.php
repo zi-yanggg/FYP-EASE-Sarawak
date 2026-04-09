@@ -56,33 +56,42 @@
     }
 </style>
 
-<div class="service-container">
-    <h3>Service Base Prices</h3>
+<div class="container mt-5 pt-4">
+    <div class="d-flex align-items-center mb-4" style="padding-top: 70px; padding-left: 20px;">
+        <h3 class="fw-bold mb-0 me-3"><i class="fas fa-cogs me-2"></i>Service Base Prices</h3>
+        <span class="text-muted">Manage base prices for each service</span>
+    </div>
+
     <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
+        <div class="alert alert-success text-center"><?= session()->getFlashdata('success') ?></div>
     <?php endif; ?>
-    <table class="service-table">
-        <thead>
-            <tr>
-                <th>Service Type</th>
-                <th>Base Price (RM)</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($services as $service): ?>
-            <tr>
-                <td><?= esc(ucfirst($service['service_type'])) ?></td>
-                <td>
-                    <form method="post" action="<?= base_url('/admin/service_management/update/'.$service['id']) ?>" style="display:inline;">
-                        <?= csrf_field() ?>
-                        <input type="number" step="1" name="base_price" value="<?= esc($service['base_price']) ?>">
-                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                    </form>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+
+    <div class="card shadow-sm" style="margin: 10px;">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Service Type</th>
+                        <th>Base Price (RM)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($services as $service): ?>
+                    <tr>
+                        <td><?= esc(ucfirst($service['service_type'])) ?></td>
+                        <td>
+                            <form method="post" action="<?= base_url('/admin/service_management/update/'.$service['id']) ?>" style="display:inline;">
+                                <?= csrf_field() ?>
+                                <input type="number" step="1" name="base_price" value="<?= esc($service['base_price']) ?>" class="form-control d-inline-block" style="width: 100px;">
+                                <button type="submit" class="btn btn-primary btn-sm ms-2">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <?= $this->include('admin/footer'); ?>

@@ -38,6 +38,7 @@ $routes->post('reset_password/(:any)', 'AuthController::resetPassword/$1');
 // Admin Portal routes
 $routes->get('/admin', 'Admin::index');
 $routes->get('/report', 'Admin::report');
+$routes->get('/report/export', 'Admin::exportRevenue');
 $routes->get('/order', 'Admin::order');
 $routes->get('/change_status/(:num)', 'Admin::change_status/$1');
 $routes->get('/user', 'Admin::user');
@@ -45,6 +46,7 @@ $routes->match(['get', 'post'], '/create_user', 'Admin::create_user');
 $routes->get('/order/getDetails/(:num)', 'Admin::getDetails/$1');
 $routes->post('/save_note', 'Admin::save_note');
 $routes->get('/admin/getRevenueData', 'Admin::getRevenueData');
+$routes->get('/admin/getPeakTimesData', 'Admin::getPeakTimesData');
 $routes->get('/admin/promo_code', 'PromoCodeController::index');
 $routes->get('/admin/promo_code/create', 'PromoCodeController::create');
 $routes->post('/admin/promo_code/store', 'PromoCodeController::store');
@@ -65,3 +67,5 @@ $routes->get('order_activity_log/(:num)', 'Admin::order_activity_log/$1');
 
 // Language switch
 $routes->get('language/(:segment)', 'LanguageController::change/$1');
+$routes->get('/transaction_history', 'Admin::transaction_history');
+$routes->get('order_activity_log/(:num)', 'Admin::order_activity_log/$1');

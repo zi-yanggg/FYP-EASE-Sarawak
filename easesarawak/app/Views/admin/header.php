@@ -49,7 +49,7 @@
 
         #orderModal .card-header {
             border-bottom: 1px solid #e9ecef;
-            font-size: 1rem;
+            font-size: 1.2rem;
         }
 
         #orderModal p {
@@ -73,6 +73,14 @@
         .badge-pending {
             background-color: #f2be00;
             color: #000;
+            font-size: 1rem;
+            padding: 6px 12px;
+            font-weight: 600;
+        }
+
+        .badge-progress {
+            background-color: #5B532C;
+            color: #ffffff;
             font-size: 1rem;
             padding: 6px 12px;
             font-weight: 600;
@@ -290,6 +298,11 @@
                                     <li>
                                         <a href="<?= base_url('/report'); ?>">
                                             <span class="sub-item">Report</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('/transaction_history'); ?>">
+                                            <span class="sub-item">Transaction History</span>
                                         </a>
                                     </li>
                                 </ul>
