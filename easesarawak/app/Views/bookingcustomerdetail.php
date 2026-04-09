@@ -39,6 +39,108 @@
             margin-top: 2rem;
             padding: 2rem;
             min-height: calc(100vh - 200px);
+            margin-left: 0;
+            padding-left: 70px;
+        }
+
+        .customer-detail-main {
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-top: 2rem;
+            padding: 2rem 0;
+            justify-content: flex-start;
+        }
+
+        #customerForm {
+            flex: 2;
+            min-width: 900px;
+            margin-left: 0;
+        }
+
+        #bookingSummaryForm {
+            flex: 1;
+            min-width: 400px;
+            height: 900px;
+        }
+
+        /* Booking summary section styles */
+        .booking-summary-section {
+            margin-bottom: 1.5em;
+            padding-bottom: 1.5em;
+            border-bottom: 2px solid #f2be00;
+        }
+
+        .booking-summary-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .booking-summary-heading {
+            color: #f2be00;
+            font-weight: bold;
+            font-size: 1.15em;
+            margin-bottom: 0.5em;
+            letter-spacing: 0.5px;
+        }
+
+        .booking-summary-label {
+            color: #888;
+            font-size: 0.98em;
+            margin-bottom: 0.2em;
+        }
+
+        .booking-summary-value {
+            font-weight: bold;
+            font-size: 1.08em;
+            margin-bottom: 0.7em;
+        }
+
+        .booking-summary-total {
+            color: #f2be00;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 0.5em;
+        }
+
+        @media (max-width: 1000px) {
+            .customer-detail-main {
+                flex-direction: column;
+            }
+            #bookingSummaryForm {
+                margin-top: 2rem;
+            }
+        }
+
+        .price-heading {
+            color: #f2be00;
+            font-weight: bold;
+            font-size: 1.15em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+        }
+        .price-label {
+            color: #000;
+            font-weight: bold;
+        }
+        .price-value {
+            font-weight: bold;
+            color: #333;
+        }
+        .discount-value {
+            color: #e67e22;
+        }
+        .total-value {
+            color: #f2be00;
+            font-size: 1.15em;
         }
 
         .customer-detail-header {
@@ -61,7 +163,7 @@
         .section {
             background: white;
             padding: 2rem;
-            border-radius: 15px;
+            border-radius: 0;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
         }
@@ -94,17 +196,44 @@
             padding-top: 0.8rem;
             padding-bottom: 0.8rem;
             border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 0;
             font-size: 1rem;
             transition: border-color 0.3s ease;
             box-sizing: border-box;
+        }
+
+        .socialform-group select {
+            width: 100%;
+            padding-left: 0.8rem;
+            padding-right: 0.8rem;
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 0;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='black' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='5,7 10,13 15,7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            background-size: 20px;
+            padding-right: 48px;
+        }
+
+        select::-ms-expand {
+            display: none;
         }
 
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #ddd;
         }
 
         .form-group textarea {
@@ -120,7 +249,7 @@
 
         .file-upload {
             border: 2px dashed #ddd;
-            border-radius: 8px;
+            border-radius: 0;
             padding: 2rem;
             text-align: center;
             cursor: pointer;
@@ -152,7 +281,7 @@
             margin-top: 0.5rem;
             padding: 0.5rem;
             background: #f8f9fa;
-            border-radius: 5px;
+            border-radius: 0;
             font-size: 0.9rem;
         }
 
@@ -166,7 +295,7 @@
         .btn {
             padding: 1rem 2rem;
             border: none;
-            border-radius: 25px;
+            border-radius: 0;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
@@ -220,7 +349,7 @@
             background-color: #f2be00;
             color: #333;
             text-align: left;
-            border-radius: 6px;
+            border-radius: 0;
             padding: 8px 12px;
             position: absolute;
             z-index: 10;
@@ -250,131 +379,139 @@
             <p>Please provide your contact information</p>
         </div>
 
-        <form id="customerForm">
-            <!-- Customer Information Section -->
-            <div class="section">
-                <h2 class="section-title">
-                    <i class="bi bi-person-fill"></i> CUSTOMER INFORMATION
-                </h2>
+        <div class="customer-detail-main">
+            <form id="customerForm">
+                <!-- Customer Information Section -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <i class="bi bi-person-fill"></i> CUSTOMER INFORMATION
+                    </h2>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="firstName">First Name
-                            <span class="custom-tooltip-wrapper">
-                                <i class="bi bi-info-circle"></i>
-                                <span class="custom-tooltip-text">Enter your legal first name as it appears on your ID</span>
-                            </span></label>
-                        <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name
-                            <span class="custom-tooltip-wrapper">
-                                <i class="bi bi-info-circle"></i>
-                                <span class="custom-tooltip-text">Enter your legal last name as it appears on your ID</span>
-                            </span></label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="identificationNumber">Identification Number 
-                        <span class="custom-tooltip-wrapper">
-                                <i class="bi bi-info-circle"></i>
-                                <span class="custom-tooltip-text">Provide your ID number (e.g., Passport, driving license or NRIC) for verification</span>
-                            </span></label>
-                    <input type="text" id="identificationNumber" name="identificationNumber" placeholder="Enter your identification" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address 
-                        <span class="custom-tooltip-wrapper">
-                                <i class="bi bi-info-circle"></i>
-                                <span class="custom-tooltip-text">Enter a valid email address where we can send your booking details and updates.</span>
-                            </span></label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone Number 
-                        <span class="custom-tooltip-wrapper">
-                                <i class="bi bi-info-circle"></i>
-                                <span class="custom-tooltip-text">Provide a contact number where we can reach you for booking-related updates.</span>
-                            </span></label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Social Contact 
-                        <span class="custom-tooltip-wrapper">
-                                <i class="bi bi-info-circle"></i>
-                                <span class="custom-tooltip-text">Add your social media handle (e.g., WhatsApp, Facebook, Line or WeChat) for easier communication.</span>
-                            </span></label>
                     <div class="form-row">
                         <div class="form-group">
-                            <select id="socialContactType" name="socialContactType" required>
-                                <option value="">Select social platform</option>
-                                <option value="whatsapp">WhatsApp</option>
-                                <option value="wechat">WeChat</option>
-                                <option value="line">Line</option>
-                            </select>
+                            <label for="firstName">First Name
+                                <span class="custom-tooltip-wrapper">
+                                    <i class="bi bi-info-circle"></i>
+                                    <span class="custom-tooltip-text">Enter your legal first name as it appears on your ID</span>
+                                </span></label>
+                            <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="socialContactValue" name="socialContactValue" placeholder="Enter your contact number" required>
+                            <label for="lastName">Last Name
+                                <span class="custom-tooltip-wrapper">
+                                    <i class="bi bi-info-circle"></i>
+                                    <span class="custom-tooltip-text">Enter your legal last name as it appears on your ID</span>
+                                </span></label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="identificationNumber">Identification Number 
+                            <span class="custom-tooltip-wrapper">
+                                    <i class="bi bi-info-circle"></i>
+                                    <span class="custom-tooltip-text">Provide your ID number (e.g., Passport, driving license or NRIC) for verification</span>
+                                </span></label>
+                        <input type="text" id="identificationNumber" name="identificationNumber" placeholder="Enter your identification" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address 
+                            <span class="custom-tooltip-wrapper">
+                                    <i class="bi bi-info-circle"></i>
+                                    <span class="custom-tooltip-text">Enter a valid email address where we can send your booking details and updates.</span>
+                                </span></label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number 
+                            <span class="custom-tooltip-wrapper">
+                                    <i class="bi bi-info-circle"></i>
+                                    <span class="custom-tooltip-text">Provide a contact number where we can reach you for booking-related updates.</span>
+                                </span></label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Social Contact 
+                            <span class="custom-tooltip-wrapper">
+                                    <i class="bi bi-info-circle"></i>
+                                    <span class="custom-tooltip-text">Add your social media handle (e.g., WhatsApp, Facebook, Line or WeChat) for easier communication.</span>
+                                </span></label>
+                        <div class="form-row">
+                            <div class="socialform-group">
+                                <select id="socialContactType" name="socialContactType" required>
+                                    <option value="">Select social platform</option>
+                                    <option value="whatsapp">WhatsApp</option>
+                                    <option value="wechat">WeChat</option>
+                                    <option value="line">Line</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="socialContactValue" name="socialContactValue" placeholder="Enter your contact number" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Baggage photo/Travel documents upload (Optional) 
+                            <span class="custom-tooltip-wrapper">
+                                    <i class="bi bi-info-circle"></i>
+                                    <span class="custom-tooltip-text">Upload a photo of your luggage, or travel documents if you are using hotel concierge/front desk service.</span>
+                                </span></label>
+                        <div class="file-upload" id="fileUpload">
+                            <i class="bi bi-cloud-upload"></i>
+                            <p>No file chosen</p>
+                            <p>Select a file or drop it here</p>
+                            <input type="file" id="documentUpload" name="documentUpload[]" style="display: none;" accept="image/*,.pdf,.doc,.docx" multiple>
+                        </div>
+                        <div class="file-info" id="fileInfo"></div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Baggage photo/Travel documents upload (Optional) 
+                    <label>Do you have a special luggage? 
                         <span class="custom-tooltip-wrapper">
-                                <i class="bi bi-info-circle"></i>
-                                <span class="custom-tooltip-text">Upload a photo of your luggage, or travel documents if you are using hotel concierge/front desk service.</span>
-                            </span></label>
-                    <div class="file-upload" id="fileUpload">
-                        <i class="bi bi-cloud-upload"></i>
-                        <p>No file chosen</p>
-                        <p>Select a file or drop it here</p>
-                        <input type="file" id="documentUpload" name="documentUpload[]" style="display: none;" accept="image/*,.pdf,.doc,.docx" multiple>
+                                    <i class="bi bi-info-circle"></i>
+                                    <span class="custom-tooltip-text">For oversized items. Please select if your baggage exceeds the standard size limit.</span>
+                                </span></label>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: inline-flex; align-items: center; margin-right: 2rem; font-weight: normal; cursor: pointer;">
+                            <input type="radio" id="specialLuggageYes" name="specialLuggage" value="1" style="margin-right: 0.5rem; width: auto;">
+                            Yes
+                        </label>
+                        <label style="display: inline-flex; align-items: center; font-weight: normal; cursor: pointer;">
+                            <input type="radio" id="specialLuggageNo" name="specialLuggage" value="0" style="margin-right: 0.5rem; width: auto;" checked>
+                            No
+                        </label>
                     </div>
-                    <div class="file-info" id="fileInfo"></div>
-                </div>
-            </div>
+                    
+                    <!-- Attention notice -->
+                    <div style="margin-top: 1.5rem; padding: 1rem; background-color: #fff3cd; border: 0 solid #ffeaa7; border-radius: 8px;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #856404; font-size: 1rem;">
+                            <i class="bi bi-exclamation-triangle-fill" style="color: #f39c12; margin-right: 0.5rem;"></i>
+                            Attention Please
+                        </h4>
+                        <p style="margin: 0; color: #856404; font-size: 0.9rem;">
+                            Please ensure all information provided is accurate and complete to avoid any delays or service interruptions.
+                        </p>
+                    </div>
 
-            <div class="form-group">
-                <label>Do you have a special luggage? 
-                    <span class="custom-tooltip-wrapper">
-                                <i class="bi bi-info-circle"></i>
-                                <span class="custom-tooltip-text">For oversized items. Please select if your baggage exceeds the standard size limit.</span>
-                            </span></label>
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: inline-flex; align-items: center; margin-right: 2rem; font-weight: normal; cursor: pointer;">
-                        <input type="radio" id="specialLuggageYes" name="specialLuggage" value="1" style="margin-right: 0.5rem; width: auto;">
-                        Yes
-                    </label>
-                    <label style="display: inline-flex; align-items: center; font-weight: normal; cursor: pointer;">
-                        <input type="radio" id="specialLuggageNo" name="specialLuggage" value="0" style="margin-right: 0.5rem; width: auto;" checked>
-                        No
-                    </label>
+                    <!-- Special Luggage Note input (hidden by default) -->
+                    <div id="specialLuggageNoteDiv" style="display: none; margin-top: 1rem;">
+                        <label for="specialLuggageNote">Special Luggage Note </label>
+                        <textarea id="specialLuggageNote" name="specialLuggageNote" placeholder="Please describe your special luggage requirements..." rows="3"></textarea>
+                    </div>
                 </div>
-                
-                <!-- Attention notice -->
-                <div style="margin-top: 1.5rem; padding: 1rem; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px;">
-                    <h4 style="margin: 0 0 0.5rem 0; color: #856404; font-size: 1rem;">
-                        <i class="bi bi-exclamation-triangle-fill" style="color: #f39c12; margin-right: 0.5rem;"></i>
-                        Attention Please
-                    </h4>
-                    <p style="margin: 0; color: #856404; font-size: 0.9rem;">
-                        Please ensure all information provided is accurate and complete to avoid any delays or service interruptions.
-                    </p>
-                </div>
+            </form>
 
-                <!-- Special Luggage Note input (hidden by default) -->
-                <div id="specialLuggageNoteDiv" style="display: none; margin-top: 1rem;">
-                    <label for="specialLuggageNote">Special Luggage Note <i class="bi bi-info-circle"></i></label>
-                    <textarea id="specialLuggageNote" name="specialLuggageNote" placeholder="Please describe your special luggage requirements..." rows="3"></textarea>
-                </div>
-            </div>
-        </form>
+            <form id="bookingSummaryForm" class="section">
+                <h2 class="section-title"><i class="bi bi-clipboard-check"></i> BOOKING SUMMARY</h2>
+                <div id="bookingSummary"></div>
+                <div id="pricing-content"></div>
+            </form>
+        </div>
 
         <!-- <div class="action-buttons">
             <button type="button" class="btn btn-submit" onclick="goToPayment()">Payment </button>
@@ -462,6 +599,61 @@
             
             // Initialize on page load
             toggleSpecialLuggageNote();
+
+            const bookingSummaryDiv = document.getElementById('bookingSummary');
+            if (bookingSummaryDiv) {
+                const bookingData = JSON.parse(sessionStorage.getItem('bookingData'));
+                let summaryHtml = '';
+                let pricingHtml = '';
+
+                if (bookingData) {
+                    // --- Summary Section ---
+                    if (bookingData.service === 'storage') {
+                        summaryHtml = `
+                            <div class="booking-summary-section">
+                                <div class="booking-summary-heading">Luggage Storage</div>
+                            </div>
+                            <div class="booking-summary-section">
+                                <div class="booking-summary-label">Storage Location</div>
+                                <div class="booking-summary-value">${bookingData.storageLocation || '-'}</div>
+                            </div>
+                            <div class="booking-summary-section">
+                                <div class="booking-summary-label">Drop-off date & time</div>
+                                <div class="booking-summary-value">${bookingData.dropoffDate || '-'} Time: ${bookingData.dropoffTime || '-'}</div>
+                            </div>
+                            <div class="booking-summary-section">
+                                <div class="booking-summary-label">Pick-up date & time</div>
+                                <div class="booking-summary-value">${bookingData.pickupDate || '-'} Time: ${bookingData.pickupTime || '-'}</div>
+                            </div>
+                        `;
+                    } else {
+                        summaryHtml = `
+                            <div class="booking-summary-section">
+                                <div class="booking-summary-heading">${bookingData.service ? bookingData.service.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'In-town Delivery'}</div>
+                            </div>
+                            <div class="booking-summary-section">
+                                <div class="booking-summary-label">Drop-off your luggage from</div>
+                                <div class="booking-summary-value">${bookingData.origin || '-'}</div>
+                            </div>
+                            <div class="booking-summary-section">
+                                <div class="booking-summary-label">Drop-off date & time</div>
+                                <div class="booking-summary-value">${bookingData.dropoffDate || '-'} Time: ${bookingData.dropoffTime || '-'}</div>
+                            </div>
+                            <div class="booking-summary-section">
+                                <div class="booking-summary-label">Pick-up your luggage at</div>
+                                <div class="booking-summary-value">${bookingData.destination || '-'}</div>
+                            </div>
+                            <div class="booking-summary-section">
+                                <div class="booking-summary-label">Pick-up date & time</div>
+                                <div class="booking-summary-value">${bookingData.pickupDate || '-'} Time: ${bookingData.pickupTime || '-'}</div>
+                            </div>
+                        `;
+                    }
+                    bookingSummaryDiv.innerHTML = summaryHtml;
+                } else {
+                    bookingSummaryDiv.innerHTML = '<div style="color:#888;">No booking data found.</div>';
+                }
+            }
         });
 
         function submitBooking() {
@@ -567,6 +759,170 @@
                 submitButton.innerHTML = originalText;
                 submitButton.disabled = false;
             });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePricing();
+        });
+
+        function updatePricing() {
+            const pricingDiv = document.getElementById('pricing-content');
+            const bookingData = JSON.parse(sessionStorage.getItem('bookingData'));
+            if (!bookingData) {
+                pricingDiv.innerHTML = '<div class="no-data">No booking data found.</div>';
+                return;
+            }
+
+            // Get values from bookingData
+            const currentQuantity = parseInt(bookingData.quantity) || 1;
+            const insuranceSelected = bookingData.insuranceSelected === true
+                || bookingData.insuranceSelected === 'true'
+                || bookingData.insuranceSelected === 1
+                || bookingData.insuranceSelected === '1'
+                || bookingData.insuranceSelected === 'on';
+            const basePrice = bookingData.service === 'delivery' ? 24 : 18; // 24 for delivery, 18 for storage
+            const promoDiscount = parseFloat(bookingData.promoDiscount) || 0;
+            const promoType = bookingData.promoType || 'amount';
+            const appliedPromoCode = bookingData.promoCode || '';
+            const start = new Date(bookingData.dropoffDate + ' ' + bookingData.dropoffTime);
+            const end = new Date(bookingData.pickupDate + ' ' + bookingData.pickupTime);
+            const diffHours = Math.ceil((end - start) / (1000 * 60 * 60));
+            let html = '';
+
+            let insuranceCharge = insuranceSelected ? (3 * currentQuantity) : 0;
+
+            if (bookingData.service === 'delivery') {
+                // In Town Delivery
+                const baseHours = 24;
+                const extraRate = 6;
+                const exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
+                const baseStoragePrice = basePrice * currentQuantity;
+                const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
+
+                html += `
+                    <div class="price-heading">Pricing</div>
+                    <div class="price-row"><span class="price-label">Kuching Luggage Transfer</span></div>
+                    <div class="price-row"><span class="price-label">Selected Transfer Point</span></div>
+                    <div class="price-row">
+                        <span class="price-label">${currentQuantity} Standard Luggage</span>
+                    </div>
+                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-row">
+                        <span class="price-label">First 24 Hours</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
+                    </div>
+                `;
+
+                if (insuranceSelected) {
+                    html += `
+                        <div class="price-row">
+                            <span class="price-label">Insurance</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-value">${currentQuantity} Standard Luggage</span>
+                            <span class="price-value">MYR ${insuranceCharge.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+
+                // Discount
+                let discountAmount = 0;
+                if (appliedPromoCode && promoDiscount > 0) {
+                    if (promoType === 'amount') {
+                        discountAmount = promoDiscount;
+                    } else {
+                        discountAmount = (baseStoragePrice + extraStoragePrice) * promoDiscount / 100;
+                    }
+                    html += `
+                        <div class="price-row">
+                            <span class="price-label">Discount (${appliedPromoCode}):</span>
+                            <span class="price-value discount-value">-MYR ${discountAmount.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+
+                const total = Math.max(0, baseStoragePrice + extraStoragePrice + insuranceCharge - discountAmount);
+                html += `
+                    <div class="price-row">
+                        <span class="price-label">Total:</span>
+                        <span class="price-value total-value">MYR ${total.toFixed(2)}</span>
+                    </div>
+                `;
+            } else {
+                // Luggage Storage
+                const baseHours = 12;
+                const extraRate = 6;
+                const exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
+                const baseStoragePrice = basePrice * currentQuantity;
+                const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
+
+                html += `
+                    <div class="price-heading">Pricing</div>
+                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-row">
+                        <span class="price-label">First 12 Hours</span>
+                    </div>
+                    <div class="price-row">
+                    <span class="price-value">${currentQuantity} Standard Luggage</span>
+                    <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
+                    </div>
+                `;
+
+                if (insuranceSelected) {
+                    html += `
+                        <div class="price-row">
+                            <span class="price-label">Insurance</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-value">${currentQuantity} Standard Luggage</span>
+                            <span class="price-value">MYR ${insuranceCharge.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+
+                // Discount
+                let discountAmount = 0;
+                if (appliedPromoCode && promoDiscount > 0) {
+                    if (promoType === 'amount') {
+                        discountAmount = promoDiscount;
+                    } else {
+                        discountAmount = (baseStoragePrice + extraStoragePrice) * promoDiscount / 100;
+                    }
+                    html += `
+                        <div class="price-row">
+                            <span class="price-label">Discount (${appliedPromoCode}):</span>
+                            <span class="price-value discount-value">-MYR ${discountAmount.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+
+                const total = Math.max(0, baseStoragePrice + extraStoragePrice + insuranceCharge - discountAmount);
+                html += `
+                    <div class="price-row">
+                        <span class="price-label">Total:</span>
+                        <span class="price-value total-value">MYR ${total.toFixed(2)}</span>
+                    </div>
+                `;
+            }
+
+            pricingDiv.innerHTML = html;
         }
     </script>
 

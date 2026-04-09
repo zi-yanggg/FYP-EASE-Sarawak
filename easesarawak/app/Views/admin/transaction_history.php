@@ -32,7 +32,7 @@
                                 <th>#</th>
                                 <th>Stripe Payment ID</th>
                                 <th>Payment Intent ID</th>
-                                <th>Amount (RM)</th>
+                                <th>Amount</th>
                                 <th>Currency</th>
                                 <th>Status</th>
                                 <th>Date</th>
