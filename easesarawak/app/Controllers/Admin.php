@@ -6,6 +6,7 @@ use App\Models\Order_model;
 use App\Models\PaymentModel;
 use App\Models\User_model;
 use App\Models\ActivityLogModel;
+use App\Models\MessageModel;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -35,6 +36,7 @@ class Admin extends BaseController
         $order_model = new Order_model();
         $user_model = new User_model();
         $transaction_model = new PaymentModel();
+        $messageModel = new MessageModel();
 
         $order = $order_model->where('is_deleted', 0)->countAllResults();
         $user  = $user_model->where('is_deleted', 0)->countAllResults();
@@ -60,16 +62,81 @@ class Admin extends BaseController
             ->limit(5)
             ->findAll();
 
+        $messages = $messageModel->orderBy('created_date', 'DESC')
+            ->limit(4)
+            ->findAll();
+
         $data = [ 'order_count'    => $order,
                   'user_count'     => $user,
                   'sales'          => $sales,
                   'orders'         => $totalOrders,
                   'pending_orders' => $pending_orders,
                   'transactions'   => $transaction,
-                  'new_customers'      => $customer
+                  'new_customers'  => $customer,
+                  'messages'        => $messages
                 ];
 
         return $this->render('admin/dashboard', $data);
+    }
+
+    public function contact()
+    {
+        $messageModel = new MessageModel();
+        $perPage = 15;
+        $filter = $this->request->getGet('filter');
+        $messageId = $this->request->getGet('message_id');
+
+        if ($messageId) {
+            $messageModel->update($messageId, ['status' => 'read']);
+        }
+
+        $query = $messageModel->where('is_deleted', 0);
+
+        // Apply status filter
+        if ($filter === 'new') {
+            $query->where('status', 'new');
+        } elseif ($filter === 'read') {
+            $query->where('status', 'read');
+        }
+
+        $messages = $query
+            ->orderBy('created_date', 'DESC')
+            ->paginate($perPage, 'group1');
+
+        $pager = $messageModel->pager;
+
+        return $this->render('admin/contact', [
+            'messages' => $messages,
+            'pager'    => $pager,
+        ]);
+    }
+
+    public function markMessageRead($msg_id)
+    {
+        $messageModel = new MessageModel();
+        $messageModel->update($msg_id, ['status' => 'read']);
+        return $this->response->setJSON(['success' => true]);
+    }
+
+    public function markAllMessagesRead()
+    {
+        $messageModel = new MessageModel();
+        $messageModel->where('is_deleted', 0)
+            ->where('status !=', 'read')
+            ->set(['status' => 'read'])
+            ->update();
+
+        return $this->response->setJSON(['success' => true]);
+    }
+
+    public function getMessage($msg_id)
+    {
+        $messageModel = new MessageModel();
+        $message = $messageModel->find($msg_id);
+        if ($message) {
+            return $this->response->setJSON(['success' => true, 'message' => $message]);
+        }
+        return $this->response->setJSON(['success' => false]);
     }
 
     public function report()

@@ -1109,6 +1109,7 @@
                 font-size: 1.02rem;
             }
         }
+
         @media (max-width: 768px) {
             .cta-section h2 {
                 font-size: 2rem;
@@ -1386,13 +1387,13 @@
                 <p class="tagline">FILL THE FORM BELOW</p>
                 <p class="message-desc">Travel Light. Travel Smart. Travel with EASE.</p>
 
-                <form class="contact-form">
+                <form class="contact-form" method="post" action="<?= base_url('/message'); ?>">
                     <div class="row-inputs">
-                        <input type="email" placeholder="Your Email" required>
-                        <input type="text" placeholder="Your Phone Number" required>
+                        <input type="email" placeholder="Your Email" name="email" required>
+                        <input type="text" placeholder="Your Phone Number" name="phone" required>
                     </div>
-                    <input type="text" placeholder="Subject" required>
-                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <input type="text" placeholder="Subject" name="subject" required>
+                    <input type="text" name="message" placeholder="Your Message" required>
                     <button type="submit">SUBMIT FORM</button>
                 </form>
             </div>
