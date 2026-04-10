@@ -349,6 +349,11 @@ function timeAgo($datetime)
                                             <span class="sub-item">Report</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="<?= base_url('/transaction_history'); ?>">
+                                            <span class="sub-item">Transaction History</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>

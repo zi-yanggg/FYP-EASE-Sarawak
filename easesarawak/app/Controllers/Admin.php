@@ -629,4 +629,17 @@ class Admin extends BaseController
         $model->update($id, ['base_price' => $base_price]);
         return redirect()->to('/admin/service_management')->with('success', 'Base price updated!');
     }
+
+    public function transaction_history()
+    {
+        $paymentModel = new PaymentModel();
+        // Fetch all transactions, you can add filters or pagination as needed
+        $transactions = $paymentModel->orderBy('created_at', 'DESC')->findAll();
+
+        $data = [
+            'transactions' => $transactions
+        ];
+
+        return $this->render('admin/transaction_history', $data);
+    }
 }
