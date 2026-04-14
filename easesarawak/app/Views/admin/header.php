@@ -346,7 +346,7 @@ function timeAgo($datetime)
                                 <ul class="nav nav-collapse">
                                     <li>
                                         <a href="<?= base_url('/report'); ?>">
-                                            <span class="sub-item">Report</span>
+                                            <span class="sub-item">Revenue</span>
                                         </a>
                                     </li>
                                     <li>
