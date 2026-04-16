@@ -32,16 +32,94 @@
             box-sizing: border-box;
         }
 
-        body,
-        html {
+        body {
             font-family: 'EurostarRegular', sans-serif, Arial, 'BebasKai';
             line-height: 1.6;
-            width: 100%;
-            overflow-x: hidden;
         }
 
         /* Hero section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
 
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            /* semi-transparent black */
+            z-index: 1;
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: scale(1);
+            animation: zoom 20s ease-in-out infinite;
+            z-index: 0;
+            opacity: 0;
+        }
+
+        .hero::before {
+            background-image: url("assets/images/close-up-tourist-with-suitcase_11zon.webp");
+            animation-delay: 0s;
+        }
+
+        .hero::after {
+            background-image: url("assets/images/close-up-traveler-with-luggage_11zon.webp");
+            animation-delay: 10s;
+            /* Half of total duration */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 1rem;
+        }
+
+        .hero-content h1 {
+            font-size: 0.9rem;
+            margin-top: 4rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .hero-content h2 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content .btn {
+            font-size: 1.3rem;
+            margin: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
         .btn-primary {
             background: #f2be00;
@@ -525,10 +603,96 @@
 
         .connect-with-us .connect-right {
             flex: 1;
+            align-items:center;
             padding: 20px;
             background: black;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .connect-with-us .connect-right .button-row {
+            display: flex;
+            flex-direction: row; 
+            gap: 70px;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .button-row .pill-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover effect only */
+        .button-row .pill-title:hover {
+            box-shadow: 0 0 15px rgba(242, 190, 0, 0.7);
+            transform: translateY(-1px);
+        }
+
+        /* Active button after click */
+        .button-row .pill-title.active {
+            background: #e0b100;
+            color: #ffffff !important;
+        }
+
+        .button-row .pill-title.active .dot {
+            background: #ffd54a;
+        }
+
+        /* Non-active button */
+        .button-row .pill-title:not(.active) {
+            background: #ffffff;
+            color: #000000 !important;
+        }
+
+        .connect-with-us .connect-right.pill-title.active {
+        opacity: 1;
+        cursor: pointer;
+        position: relative; /* allow z-index to work */
+        z-index: 10;        /* bring buttons above other content */
+        }
+
+        .connect-with-us .connect-right.pill-title:not(.active) {
+        opacity: 0.5;
+        position: relative; /* allow z-index to work */
+        z-index: 10;        /* bring buttons above other content */
+        }
+
+        /* when button is clicked */
+        .pill-title.active {
+            background: #e0b100;
+            color: #ffffff;
+        }
+
+        .connect-right .contact-form select[name="service_type"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: none;
+            background: #222;       /* same as other inputs */
+            color: #fff;            /* same text color */
+            font-size: 14px;
+            box-sizing: border-box; /* ensure proper sizing */
+        }
+
+        /* Make the checkbox declaration text white */
+        .connect-right .contact-form label {
+            color: #ffffff; /* white text */
+        }
+
+        /* Hide inactive forms */
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
         }
 
         .connect-with-us .connect-right h2 {
@@ -538,6 +702,13 @@
             color: #333;
         }
 
+        .connect-with-us .connect-right h3 {
+            margin-top: 20px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
         .connect-with-us .connect-right .tagline {
             font-size: 40px;
             color: #fff;
@@ -656,6 +827,15 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .navbar .menu {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+
             .hero-content h1 {
                 font-size: 2rem;
             }
@@ -691,438 +871,6 @@
                 flex-direction: column;
             }
         }
-
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            min-height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            overflow: hidden;
-        }
-
-        /* First background image (visible first) */
-        .hero::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("assets/images/close-up-tourist-with-suitcase_11zon.webp") center/cover no-repeat;
-            animation: fadeSlide 20s infinite;
-            z-index: -2;
-        }
-
-        /* Second background image (appears after 10s) */
-        .hero::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("assets/images/close-up-traveler-with-luggage_11zon.webp") center/cover no-repeat;
-            animation: fadeSlide 20s infinite;
-            animation-delay: 10s;
-            z-index: -2;
-        }
-
-        /* Dark overlay */
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-        }
-
-        /* Content */
-        .hero-content {
-            margin-top: 100px;
-            max-width: 900px;
-            padding: 1rem;
-            z-index: 1;
-        }
-
-        .hero .pill {
-            display: inline-block;
-            background: #fff;
-            color: #000;
-            backdrop-filter: blur(10px);
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            margin-bottom: 20px;
-        }
-
-        .pill .dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #f2be00;
-            /* yellow color */
-            display: inline-block;
-        }
-
-        .hero h1 {
-            font-size: 5rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin: 20px 0;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-        }
-
-        .hero p {
-            font-size: 1.32rem;
-            max-width: 720px;
-            margin: 0 auto 45px;
-            line-height: 1.7;
-            opacity: 0.95;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 22px;
-            justify-content: center;
-            flex-wrap: nowrap;
-            /* ← keeps buttons side-by-side */
-        }
-
-        .btn-yellow {
-            background: #f2be00;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.12rem;
-            padding: 15px 34px;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            min-width: 170px;
-        }
-
-        .btn-yellow:hover {
-            background: black;
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        /* Cross-fade + subtle zoom animation */
-        @keyframes fadeSlide {
-            0% {
-                opacity: 0;
-                transform: scale(1);
-            }
-
-            5% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            45% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
-
-            50% {
-                opacity: 0;
-                transform: scale(1.12);
-            }
-
-            100% {
-                opacity: 0;
-            }
-        }
-
-        /* Mobile — exactly like capture3.png */
-        @media (max-width: 768px) {
-            .hero {
-                padding-top: 90px;
-                /* space for fixed navbar */
-                align-items: flex-start;
-            }
-
-            .hero-content {
-                margin-top: 8vh;
-                padding: 15px;
-            }
-
-            .hero h1 {
-                font-size: 3.3rem;
-                line-height: 1.15;
-            }
-
-            .hero p {
-                font-size: 1.15rem;
-                margin-bottom: 35px;
-            }
-
-            .hero-buttons {
-                gap: 16px;
-            }
-
-            .btn-yellow {
-                padding: 13px 28px;
-                font-size: 1rem;
-                min-width: 150px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2.9rem;
-            }
-
-            .btn-yellow {
-                padding: 12px 24px;
-            }
-        }
-
-        /* ==================== WHY CHOOSE EASE – MOBILE LIKE CAPTURE.PNG ==================== */
-        @media (max-width: 768px) {
-            .why-choose-ease {
-                padding: 4rem 1rem 5rem;
-                background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.65)),
-                    url('assets/images/valet-holding-baggage-side-view_23-2149901449-1 (1).webp') center/cover no-repeat;
-            }
-
-            .why-choose-ease .content {
-                flex-direction: column;
-                max-width: 100%;
-            }
-
-            /* Left side – text */
-            .left {
-                text-align: center;
-                margin-bottom: 3rem;
-                padding: 0 1rem;
-            }
-
-            .left h2.pill-title {
-                justify-content: center;
-                font-size: 1rem;
-            }
-
-            .left h3 {
-                font-size: 2.3rem !important;
-                margin: 1rem 0;
-            }
-
-            .left p {
-                font-size: 1.15rem;
-                line-height: 1.7;
-                max-width: 100%;
-            }
-
-            /* Right side – 4 reasons stacked vertically */
-            .right {
-                display: flex;
-                flex-direction: column;
-                gap: 1.8rem;
-                padding: 0 1rem;
-            }
-
-            /* Hide the cross lines on mobile */
-            .right::before,
-            .right::after {
-                display: none;
-            }
-
-            .quadrant {
-                background: rgba(255, 255, 255, 0.08);
-                backdrop-filter: blur(8px);
-                padding: 1.8rem 1.5rem;
-                border-radius: 16px;
-                border-left: 5px solid #f2be00;
-                text-align: left;
-            }
-
-            .quadrant h4 {
-                color: #f2be00;
-                font-size: 1.55rem;
-                font-weight: bold;
-                margin-bottom: 0.8rem;
-            }
-
-            .quadrant p {
-                font-size: 1.05rem;
-                line-height: 1.6;
-                color: #eee;
-            }
-        }
-
-        /* Extra small phones */
-        @media (max-width: 480px) {
-            .left h3 {
-                font-size: 2rem;
-            }
-
-            .quadrant {
-                padding: 1.5rem 1.3rem;
-            }
-
-            .quadrant h4 {
-                font-size: 1.45rem;
-            }
-        }
-
-        /* Fix squeezed geo icon on mobile */
-        @media (max-width: 480px) {
-            .contact-item {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                /* space between icon and text */
-                margin-bottom: 15px;
-            }
-
-            .icon-circle {
-                flex-shrink: 0;
-                /* ← THIS IS THE KEY LINE */
-                width: 50px;
-                height: 50px;
-                min-width: 50px;
-                /* prevents shrinking */
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .contact-text {
-                flex: 1;
-                min-width: 0;
-                /* allows text to wrap properly */
-            }
-
-            .contact-text .label {
-                font-size: 1.05rem;
-            }
-
-            .contact-text .value {
-                font-size: 0.98rem;
-                word-break: break-word;
-                /* prevents overflow on long address */
-            }
-        }
-
-        .connect-right .tagline,
-        .connect-right .message-desc {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .connect-right .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .connect-right .contact-form .row-inputs {
-            display: flex;
-            flex-direction: column;
-            /* stack on mobile */
-            gap: 1.2rem;
-        }
-
-        .connect-right .contact-form input,
-        .connect-right .contact-form textarea {
-            width: 100%;
-            padding: 1.1rem 1.4rem;
-            border: none;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(8px);
-            color: white;
-            font-size: 1.05rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-
-        .connect-right .contact-form input::placeholder,
-        .connect-right .contact-form textarea::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1rem;
-        }
-
-        /* Focus glow */
-        .connect-right .contact-form input:focus,
-        .connect-right .contact-form textarea:focus {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 0 3px rgba(242, 190, 0, 0.4);
-        }
-
-        .connect-right .contact-form textarea {
-            min-height: 130px;
-            resize: vertical;
-            font-family: inherit;
-        }
-
-        .connect-right .contact-form button {
-            background: #f2be00;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.15rem;
-            padding: 1.1rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 0.5rem;
-        }
-
-        .connect-right .contact-form button:hover {
-            background: #826704ff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Mobile – exactly like capture1.png */
-        @media (max-width: 768px) {
-            .connect-right {
-                padding: 2.5rem 1rem;
-            }
-
-            .connect-right .contact-form {
-                gap: 1.4rem;
-                padding: 0;
-            }
-
-            .connect-right .contact-form input,
-            .connect-right .contact-form textarea {
-                font-size: 1.05rem;
-                /* prevents zoom on iOS */
-                padding: 1.3rem 1.6rem;
-            }
-
-            .connect-right .contact-form input::placeholder,
-            .connect-right .contact-form textarea::placeholder {
-                font-size: 1.02rem;
-            }
-        }
-        @media (max-width: 768px) {
-            .cta-section h2 {
-                font-size: 2rem;
-            }
-
-            .cta-section p {
-                font-size: 1rem;
-            }
-
-            .cta-button {
-                padding: 6px 12px;
-                font-size: 1rem;
-            }
-        }
     </style>
 </head>
 
@@ -1130,27 +878,21 @@
     <?= $this->include('navbar/navbar') ?>
     <!-- Hero -->
     <section class="hero">
-        <!-- Two background images with cross-fade -->
         <div class="hero-overlay"></div>
-
         <div class="hero-content">
-            <div class="pill">
+            <h1 class="pill-title">
                 <span class="dot"></span>
                 EASE BAGGAGE SOLUTIONS
                 <span class="dot"></span>
-            </div>
-
-            <h1>KUCHING<br>HANDS-FREE TRAVEL</h1>
-
+            </h1>
+            <h2>KUCHING HANDS-FREE TRAVEL
+            </h2>
             <p>
                 Discover the best of Kuching – We ensure you a smooth and hassle-free journey 
                 with our easy-to-use Kuching Luggage Storage and Delivery service.
             </p>
-
-            <div class="hero-buttons">
-                <a href="#contact" class="btn-yellow">CONTACT NOW</a>
-                <a href="<?= base_url('/booking') ?>" class="btn-yellow">BOOK NOW</a>
-            </div>
+            <a href="#contact" class="btn btn-primary">CONTACT NOW</a>
+            <a href="booking" class="btn btn-primary">BOOK NOW</a>
         </div>
     </section>
 
@@ -1207,7 +949,7 @@
                     Looking for short-term storage? Our Kuching Luggage Storage service keeps your luggage safe
                     for as long as needed while you explore the city worry-free!
                 </p>
-                <a href="#" onclick="bookStorage()" class="btn-card">BOOK NOW</a>
+                <button><a href="payment" class="btn-card">BOOK NOW</a></button> <!--change code -->
             </div>
 
             <!-- Card 2 - Standard (In Town Delivery) -->
@@ -1221,7 +963,7 @@
                     Enjoy our complimentary Kuching Luggage Transfer with 24 hours of secure storage, offering
                     seamless transfers between selected locations for added convenience!
                 </p>
-                <a href="#" onclick="bookDelivery()" class="btn-card">BOOK NOW</a>
+                <button><a href="intowndelivery" class="btn-card">BOOK NOW</a></button> <!--change code-->
             </div>
 
             <!-- Card 3 - On-demand -->
@@ -1378,11 +1120,21 @@
 
             <!-- RIGHT SIDE -->
             <div class="connect-right">
-                <h2 class="pill-title">
+                <div class="button-row">
+                <h2 class="pill-title active active-form-btn " data-form="message-form">
                     <span class="dot"></span>
                     MESSAGE US TODAY
                     <span class="dot"></span>
                 </h2>
+                <h3 class="pill-title refund-form-btn" data-form="refund-form">
+                    <span class="dot"></span>
+                    REFUND FORM
+                    <span class="dot"></span>
+                </h3>
+                </div>
+
+                <!-- Message Us Today Form (unchanged) -->
+            <div class="form-content active" id="message-form">
                 <p class="tagline">FILL THE FORM BELOW</p>
                 <p class="message-desc">Travel Light. Travel Smart. Travel with EASE.</p>
 
@@ -1395,6 +1147,50 @@
                     <textarea placeholder="Your Message" rows="5" required></textarea>
                     <button type="submit">SUBMIT FORM</button>
                 </form>
+            </div>
+
+            <!-- Refund Form -->
+            <div class="form-content" id="refund-form">
+                <p class="tagline">FILL THE FORM BELOW</p>
+                <p class="message-desc">Submit your refund request quickly and easily.</p>
+
+                <form class="contact-form" id="refundForm" method="POST" action="<?= base_url('refund/submit') ?>" enctype="multipart/form-data">
+                    <?= csrf_field() ?>
+
+                    <input type="text" name="full_name" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="text" name="phone_number" placeholder="Phone Number" required>
+                    <input type="text" name="order_id" placeholder="Order ID" required>
+
+                    <div class="row-inputs">
+                        <input type="text"
+                            name="date_of_purchase"
+                            placeholder="Date of Purchase"
+                            onfocus="(this.type='date')"
+                            onblur="(this.type='text')"
+                            required>
+                    </div>
+
+                    <select name="service_type" required>
+                        <option value="">Select Service Type</option>
+                        <option value="Town Delivery">Town Delivery</option>
+                        <option value="Luggage Storage">Luggage Storage</option>
+                    </select>
+
+                    <input type="text" name="bank_name" placeholder="Bank Name">
+                    <input type="text" name="account_holder_name" placeholder="Account Holder Name">
+                    <input type="text" name="account_number" placeholder="Account Number">
+                    <textarea name="reason_for_refund" placeholder="Reason for Refund"></textarea>
+
+                    <label>
+                        <input type="checkbox" name="declaration" value="1" required>
+                        I declare that the information I have provided in this form is accurate and complete to the best of my knowledge.
+                        I understand that submission of this form does not guarantee a refund and that additional information may be requested.
+                    </label>
+
+                    <button type="submit" name="submitRefund">SUBMIT FORM</button>
+                </form>
+            </div>
             </div>
         </div>
     </section>
@@ -1418,11 +1214,11 @@
         function bookStorage() {
             // Set service preference in sessionStorage
             sessionStorage.setItem('preferredService', 'storage');
-
+            
             // Clear any existing booking data to start fresh
             sessionStorage.removeItem('bookingData');
             sessionStorage.removeItem('isEditing');
-
+            
             // Redirect to booking page
             window.location.href = 'booking';
         }
@@ -1431,14 +1227,52 @@
         function bookDelivery() {
             // Set service preference in sessionStorage
             sessionStorage.setItem('preferredService', 'delivery');
-
+            
             // Clear any existing booking data to start fresh
             sessionStorage.removeItem('bookingData');
             sessionStorage.removeItem('isEditing');
-
+            
             // Redirect to booking page
             window.location.href = 'booking';
         }
+
+        //Refund form function
+        const pillTitles = document.querySelectorAll('.button-row .pill-title');
+        const formContents = document.querySelectorAll('.form-content');
+
+        pillTitles.forEach(title => {
+            title.addEventListener('click', () => {
+                pillTitles.forEach(t => {
+                    t.classList.remove('active', 'active-form-btn');
+                });
+
+                title.classList.add('active', 'active-form-btn');
+
+                formContents.forEach(f => f.classList.remove('active'));
+
+                const targetForm = title.getAttribute('data-form');
+                document.getElementById(targetForm).classList.add('active');
+            });
+        });
+
+        <?php if (session()->getFlashdata('refund_status')): ?>
+            const refundButton = document.querySelector('[data-form="refund-form"]');
+            const refundPanel = document.getElementById('refund-form');
+
+            pillTitles.forEach(t => t.classList.remove('active', 'active-form-btn'));
+            formContents.forEach(f => f.classList.remove('active'));
+
+            if (refundButton) refundButton.classList.add('active', 'active-form-btn');
+            if (refundPanel) refundPanel.classList.add('active');
+
+            setTimeout(() => {
+                alert(<?= json_encode(session()->getFlashdata('refund_message')) ?>);
+                const connectSection = document.getElementById('connect');
+                if (connectSection) {
+                    connectSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 200);
+        <?php endif; ?>
     </script>
 
 </body>

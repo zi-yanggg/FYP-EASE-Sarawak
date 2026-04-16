@@ -132,12 +132,11 @@ class Admin extends BaseController
 
     public function getRevenueData()
     {
-        $service   = $this->request->getGet('service');
+        $service = $this->request->getGet('service');
         $timeframe = $this->request->getGet('timeframe');
 
-        $db      = \Config\Database::connect();
-        $builder = $db->table('`order`');
-        $builder->where('is_deleted', 0);
+        $db = \Config\Database::connect();
+        $builder = $db->table('order');
 
         if ($service !== 'all') {
             $builder->where('service_type', $service);
@@ -145,16 +144,16 @@ class Admin extends BaseController
 
         if ($timeframe === 'day') {
             $builder->select('DATE(created_date) as label, SUM(amount) as total');
-            $builder->groupBy(['DATE(created_date)']);
+            $builder->groupBy('DATE(created_date)');
             $builder->orderBy('DATE(created_date)', 'ASC');
         } elseif ($timeframe === 'week') {
             // Use YEARWEEK without the mode argument to avoid a comma inside the
             // function call — CI4's query builder splits select/groupBy strings on
             // commas, which would break "YEARWEEK(created_date, 1)" into two invalid
             // SQL fragments.  Mode-0 week numbering is close enough for reporting.
-            $builder->select('YEARWEEK(created_date) as label, SUM(amount) as total');
-            $builder->groupBy(['YEARWEEK(created_date)']);
-            $builder->orderBy('YEARWEEK(created_date)', 'ASC');
+            $builder->select('YEARWEEK(created_date, 1) as label, SUM(amount) as total');
+            $builder->groupBy('YEARWEEK(created_date, 1)');
+            $builder->orderBy('YEARWEEK(created_date, 1)', 'ASC');
         } else { // month
             $builder->select('YEAR(created_date) as y, MONTH(created_date) as label, SUM(amount) as total');
             $builder->groupBy(['YEAR(created_date)', 'MONTH(created_date)']);
@@ -564,15 +563,25 @@ class Admin extends BaseController
     }
 
     public function transaction_history()
+    
+        public function refund_request()
     {
         $paymentModel = new PaymentModel();
         // Fetch all transactions, you can add filters or pagination as needed
         $transactions = $paymentModel->orderBy('created_at', 'DESC')->findAll();
+        $db = \Config\Database::connect();
 
         $data = [
             'transactions' => $transactions
         ];
+        $refunds = $db->table('refund_form')
+            ->orderBy('created_at', 'DESC')
+            ->get()
+            ->getResultArray();
 
         return $this->render('admin/transaction_history', $data);
+        return $this->render('admin/refund_request', [
+            'refunds' => $refunds
+        ]);
     }
 }
