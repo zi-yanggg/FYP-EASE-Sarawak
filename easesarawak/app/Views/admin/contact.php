@@ -156,8 +156,20 @@
                                                     <?php $messageStatus = trim((string) ($message['status'] ?? '')); ?>
                                                     <td><span class="badge <?= $messageStatus === 'read' ? 'badge-completed' : 'badge-pending' ?>"><?= ucfirst($messageStatus === '' ? 'new' : $messageStatus) ?></span></td>
                                                     <td class="text-end">
+                                                        <?php
+                                                        $replyEmail = trim((string) ($message['email'] ?? ''));
+                                                        $replySubject = 'Re: ' . ($message['subject'] ?? '');
+                                                        $replyBody = "Hi,\n\nRegarding your message:\n\n" . ($message['msg'] ?? '') . "\n\nBest regards,\nEASE SARAWAK";
+                                                        $replyUrl = $replyEmail !== ''
+                                                            ? 'https://mail.google.com/mail/?view=cm&fs=1'
+                                                                . '&to=' . rawurlencode($replyEmail)
+                                                                . '&su=' . rawurlencode($replySubject)
+                                                                . '&body=' . rawurlencode($replyBody)
+                                                            : '#';
+                                                        ?>
                                                         <button
                                                             type="button"
+                                                            title="View Message"
                                                             class="btn btn-icon btn-round btn-progress btn-sm view-message-btn"
                                                             data-email="<?= esc($message['email'], 'attr') ?>"
                                                             data-phone="<?= esc($message['phone'], 'attr') ?>"
@@ -167,6 +179,20 @@
                                                             data-msg-id="<?= esc($message['msg_id'], 'attr') ?>">
                                                             <i class="fas fa-external-link-alt"></i>
                                                         </button>
+                                                        <?php if ($replyEmail !== ''): ?>
+                                                            <a
+                                                                href="<?= esc($replyUrl, 'attr') ?>"
+                                                                class="btn btn-icon btn-round btn-sm btn-info ms-1"
+                                                                title="Reply in Gmail"
+                                                                target="_blank"
+                                                                rel="noopener noreferrer">
+                                                                <i class="fas fa-reply"></i>
+                                                            </a>
+                                                        <?php else: ?>
+                                                            <span class="btn btn-icon btn-round btn-sm btn-secondary ms-1 disabled" title="No email address" aria-disabled="true">
+                                                                <i class="fas fa-reply"></i>
+                                                            </span>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
