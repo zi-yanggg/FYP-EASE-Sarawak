@@ -310,6 +310,11 @@ function timeAgo($datetime)
                                             <span class="sub-item">Order Management</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="<?= base_url('/admin/calendar'); ?>">
+                                            <span class="sub-item">Booking Calendar</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -806,7 +811,7 @@ function timeAgo($datetime)
                                     <div class="quick-actions-scroll scrollbar-outer">
                                         <div class="quick-actions-items">
                                             <div class="row m-0">
-                                                <a class="col-6 col-md-4 p-0" href="#">
+                                                <a class="col-6 col-md-4 p-0" href="<?= base_url('/admin/calendar'); ?>">
                                                     <div class="quick-actions-item" style="color: #000;">
                                                         <div class="avatar-item bg-danger rounded-circle">
                                                             <i class="far fa-calendar-alt"></i>

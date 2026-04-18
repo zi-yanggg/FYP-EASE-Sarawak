@@ -1040,4 +1040,136 @@ class Admin extends BaseController
 
         return $this->render('admin/transaction_history', $data);
     }
+
+    public function calendar(): string
+    {
+        $orderModel = new Order_model();
+        $orders = $orderModel
+            ->select('order_id, first_name, last_name, service_type, status, order_details_json')
+            ->where('is_deleted', 0)
+            ->orderBy('created_date', 'DESC')
+            ->findAll();
+
+        $events = $this->buildCalendarEventsFromOrders($orders);
+
+        $initialView = $this->request->getGet('view');
+        $allowedViews = ['dayGridMonth', 'timeGridWeek', 'timeGridDay'];
+        if (! in_array($initialView, $allowedViews, true)) {
+            $initialView = 'dayGridMonth';
+        }
+
+        return $this->render('admin/calendar', [
+            'calendar_events_json' => json_encode($events, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP),
+            'initial_view'           => $initialView,
+        ]);
+    }
+
+    /**
+     * @param list<array<string, mixed>> $orders
+     * @return list<array<string, mixed>>
+     */
+    private function buildCalendarEventsFromOrders(array $orders): array
+    {
+        $events = [];
+
+        foreach ($orders as $order) {
+            $raw = $order['order_details_json'] ?? '';
+            if ($raw === null || $raw === '') {
+                continue;
+            }
+
+            $details = json_decode($raw, true);
+            if (! is_array($details)) {
+                continue;
+            }
+
+            $dropoff = $details['Drop-off DateTime'] ?? null;
+            $pickup  = $details['Pickup DateTime'] ?? null;
+
+            $customer = trim(($order['first_name'] ?? '') . ' ' . ($order['last_name'] ?? ''));
+            $service  = (string) ($order['service_type'] ?? '');
+            $orderId  = (int) ($order['order_id'] ?? 0);
+            $status   = (int) ($order['status'] ?? 0);
+
+            foreach (['dropoff' => $dropoff, 'pickup' => $pickup] as $type => $dtStr) {
+                $startIso = $this->parseOrderDetailDateTime($dtStr);
+                if ($startIso === null) {
+                    continue;
+                }
+
+                $startTs = strtotime($startIso);
+                if ($startTs === false) {
+                    continue;
+                }
+
+                // Visible time block (drop-off / pickup are scheduled points)
+                $endIso = date('c', $startTs + 45 * 60);
+
+                $label = $type === 'dropoff' ? 'Drop-off' : 'Pickup';
+                $color = $this->calendarColorForStatus($status);
+
+                $events[] = [
+                    'id'              => $orderId . '-' . $type,
+                    'title'           => '#' . $orderId . ' · ' . $label . ' — ' . ($service !== '' ? strtoupper($service) : 'Order'),
+                    'start'           => $startIso,
+                    'end'             => $endIso,
+                    'backgroundColor' => $color['bg'],
+                    'borderColor'     => $color['border'],
+                    'textColor'       => $color['text'],
+                    'extendedProps'   => [
+                        'orderId'  => $orderId,
+                        'kind'     => $type,
+                        'customer' => $customer,
+                        'status'   => $status,
+                        'service'  => $service,
+                    ],
+                ];
+            }
+        }
+
+        return $events;
+    }
+
+    /**
+     * Values are stored like "Y-m-d at H:i" (see OrderModel::formatOrderDetailsJson).
+     */
+    private function parseOrderDetailDateTime(mixed $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        $value = trim((string) $value);
+        if (strcasecmp($value, 'Null') === 0) {
+            return null;
+        }
+
+        if (preg_match('/^(.+?)\s+at\s+(.+)$/u', $value, $m)) {
+            $combined = trim($m[1]) . ' ' . trim($m[2]);
+        } else {
+            $combined = $value;
+        }
+
+        $ts = strtotime($combined);
+        if ($ts === false) {
+            return null;
+        }
+
+        return date('c', $ts);
+    }
+
+    /**
+     * @return array{bg: string, border: string, text: string}
+     */
+    private function calendarColorForStatus(int $status): array
+    {
+        if ($status === 2) {
+            return ['bg' => '#198754', 'border' => '#146c43', 'text' => '#ffffff'];
+        }
+        if ($status === 1) {
+            return ['bg' => '#0d6efd', 'border' => '#0a58ca', 'text' => '#ffffff'];
+        }
+
+        return ['bg' => '#ffc107', 'border' => '#cc9a06', 'text' => '#212529'];
+    }
 }
