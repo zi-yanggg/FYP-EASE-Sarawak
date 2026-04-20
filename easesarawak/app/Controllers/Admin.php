@@ -1029,16 +1029,26 @@ class Admin extends BaseController
     }
 
     public function transaction_history()
+    
+        public function refund_request()
     {
         $paymentModel = new PaymentModel();
         // Fetch all transactions, you can add filters or pagination as needed
         $transactions = $paymentModel->orderBy('created_at', 'DESC')->findAll();
+        $db = \Config\Database::connect();
 
         $data = [
             'transactions' => $transactions
         ];
+        $refunds = $db->table('refund_form')
+            ->orderBy('created_at', 'DESC')
+            ->get()
+            ->getResultArray();
 
         return $this->render('admin/transaction_history', $data);
+        return $this->render('admin/refund_request', [
+            'refunds' => $refunds
+        ]);
     }
 
     public function calendar(): string

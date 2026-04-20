@@ -15,6 +15,8 @@ $routes->get('/booking', 'Home::booking');
 $routes->get('/bookingdetail', 'Home::bookingdetail');
 $routes->get('/bookingcustomerdetail', 'Home::bookingcustomerdetail');
 $routes->post('/saveOrder', 'Home::saveOrder');
+$routes->post('/refund/submit', 'Home::submitRefund');
+$routes->get('refund/view/(:num)', 'Home::viewRefundPdf/$1');
 $routes->post('/message', 'Home::message');
 
 // payment
@@ -66,6 +68,7 @@ $routes->post('/change_password', 'Profile::change_password');
 $routes->get('/admin/service_management', 'Admin::service_management');
 $routes->post('/admin/service_management/update/(:num)', 'Admin::update_service_price/$1');
 $routes->get('order_activity_log/(:num)', 'Admin::order_activity_log/$1');
+$routes->get('/admin/refund_request', 'Admin::refund_request');
 
 $routes->get('/admin/contact', 'Admin::contact');
 $routes->post('/admin/markMessageRead/(:num)', 'Admin::markMessageRead/$1');
@@ -76,4 +79,4 @@ $routes->get('/admin/getMessage/(:num)', 'Admin::getMessage/$1');
 $routes->get('language/(:segment)', 'LanguageController::change/$1');
 $routes->get('/transaction_history', 'Admin::transaction_history');
 $routes->get('order_activity_log/(:num)', 'Admin::order_activity_log/$1');
-
+$routes->get('order_activity_log/(:num)', 'Admin::order_activity_log/$1');

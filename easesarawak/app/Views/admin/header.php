@@ -63,7 +63,7 @@ function timeAgo($datetime)
 
         #orderModal .card-header {
             border-bottom: 1px solid #e9ecef;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         #orderModal p {
@@ -389,6 +389,13 @@ function timeAgo($datetime)
                                         </li>
                                     </ul>
                                 </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="<?= base_url('/admin/refund_request'); ?>">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <p>Refund Request</p>
+                                </a>
                             </li>
                         <?php endif; ?>
 
