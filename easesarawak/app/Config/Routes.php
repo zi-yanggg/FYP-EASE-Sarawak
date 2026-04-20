@@ -17,6 +17,7 @@ $routes->get('/bookingcustomerdetail', 'Home::bookingcustomerdetail');
 $routes->post('/saveOrder', 'Home::saveOrder');
 $routes->post('/refund/submit', 'Home::submitRefund');
 $routes->get('refund/view/(:num)', 'Home::viewRefundPdf/$1');
+$routes->post('/message', 'Home::message');
 
 // payment
 $routes->get('/booking_confirmation', 'Home::booking_confirmation');
@@ -42,6 +43,7 @@ $routes->get('/admin', 'Admin::index');
 $routes->get('/report', 'Admin::report');
 $routes->get('/report/export', 'Admin::exportRevenue');
 $routes->get('/order', 'Admin::order');
+$routes->get('/admin/calendar', 'Admin::calendar');
 $routes->get('/change_status/(:num)', 'Admin::change_status/$1');
 $routes->get('/user', 'Admin::user');
 $routes->match(['get', 'post'], '/create_user', 'Admin::create_user');
@@ -67,6 +69,11 @@ $routes->get('/admin/service_management', 'Admin::service_management');
 $routes->post('/admin/service_management/update/(:num)', 'Admin::update_service_price/$1');
 $routes->get('order_activity_log/(:num)', 'Admin::order_activity_log/$1');
 $routes->get('/admin/refund_request', 'Admin::refund_request');
+
+$routes->get('/admin/contact', 'Admin::contact');
+$routes->post('/admin/markMessageRead/(:num)', 'Admin::markMessageRead/$1');
+$routes->post('/admin/markAllMessagesRead', 'Admin::markAllMessagesRead');
+$routes->get('/admin/getMessage/(:num)', 'Admin::getMessage/$1');
 
 // Language switch
 $routes->get('language/(:segment)', 'LanguageController::change/$1');

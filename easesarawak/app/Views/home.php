@@ -871,6 +871,439 @@
                 flex-direction: column;
             }
         }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* First background image (visible first) */
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("assets/images/close-up-tourist-with-suitcase_11zon.webp") center/cover no-repeat;
+            animation: fadeSlide 20s infinite;
+            z-index: -2;
+        }
+
+        /* Second background image (appears after 10s) */
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("assets/images/close-up-traveler-with-luggage_11zon.webp") center/cover no-repeat;
+            animation: fadeSlide 20s infinite;
+            animation-delay: 10s;
+            z-index: -2;
+        }
+
+        /* Dark overlay */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        /* Content */
+        .hero-content {
+            margin-top: 100px;
+            max-width: 900px;
+            padding: 1rem;
+            z-index: 1;
+        }
+
+        .hero .pill {
+            display: inline-block;
+            background: #fff;
+            color: #000;
+            backdrop-filter: blur(10px);
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            margin-bottom: 20px;
+        }
+
+        .pill .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #f2be00;
+            /* yellow color */
+            display: inline-block;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin: 20px 0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero p {
+            font-size: 1.32rem;
+            max-width: 720px;
+            margin: 0 auto 45px;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 22px;
+            justify-content: center;
+            flex-wrap: nowrap;
+            /* ← keeps buttons side-by-side */
+        }
+
+        .btn-yellow {
+            background: #f2be00;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.12rem;
+            padding: 15px 34px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            min-width: 170px;
+        }
+
+        .btn-yellow:hover {
+            background: black;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Cross-fade + subtle zoom animation */
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            5% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            45% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+
+            50% {
+                opacity: 0;
+                transform: scale(1.12);
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Mobile — exactly like capture3.png */
+        @media (max-width: 768px) {
+            .hero {
+                padding-top: 90px;
+                /* space for fixed navbar */
+                align-items: flex-start;
+            }
+
+            .hero-content {
+                margin-top: 8vh;
+                padding: 15px;
+            }
+
+            .hero h1 {
+                font-size: 3.3rem;
+                line-height: 1.15;
+            }
+
+            .hero p {
+                font-size: 1.15rem;
+                margin-bottom: 35px;
+            }
+
+            .hero-buttons {
+                gap: 16px;
+            }
+
+            .btn-yellow {
+                padding: 13px 28px;
+                font-size: 1rem;
+                min-width: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.9rem;
+            }
+
+            .btn-yellow {
+                padding: 12px 24px;
+            }
+        }
+
+        /* ==================== WHY CHOOSE EASE – MOBILE LIKE CAPTURE.PNG ==================== */
+        @media (max-width: 768px) {
+            .why-choose-ease {
+                padding: 4rem 1rem 5rem;
+                background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.65)),
+                    url('assets/images/valet-holding-baggage-side-view_23-2149901449-1 (1).webp') center/cover no-repeat;
+            }
+
+            .why-choose-ease .content {
+                flex-direction: column;
+                max-width: 100%;
+            }
+
+            /* Left side – text */
+            .left {
+                text-align: center;
+                margin-bottom: 3rem;
+                padding: 0 1rem;
+            }
+
+            .left h2.pill-title {
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .left h3 {
+                font-size: 2.3rem !important;
+                margin: 1rem 0;
+            }
+
+            .left p {
+                font-size: 1.15rem;
+                line-height: 1.7;
+                max-width: 100%;
+            }
+
+            /* Right side – 4 reasons stacked vertically */
+            .right {
+                display: flex;
+                flex-direction: column;
+                gap: 1.8rem;
+                padding: 0 1rem;
+            }
+
+            /* Hide the cross lines on mobile */
+            .right::before,
+            .right::after {
+                display: none;
+            }
+
+            .quadrant {
+                background: rgba(255, 255, 255, 0.08);
+                backdrop-filter: blur(8px);
+                padding: 1.8rem 1.5rem;
+                border-radius: 16px;
+                border-left: 5px solid #f2be00;
+                text-align: left;
+            }
+
+            .quadrant h4 {
+                color: #f2be00;
+                font-size: 1.55rem;
+                font-weight: bold;
+                margin-bottom: 0.8rem;
+            }
+
+            .quadrant p {
+                font-size: 1.05rem;
+                line-height: 1.6;
+                color: #eee;
+            }
+        }
+
+        /* Extra small phones */
+        @media (max-width: 480px) {
+            .left h3 {
+                font-size: 2rem;
+            }
+
+            .quadrant {
+                padding: 1.5rem 1.3rem;
+            }
+
+            .quadrant h4 {
+                font-size: 1.45rem;
+            }
+        }
+
+        /* Fix squeezed geo icon on mobile */
+        @media (max-width: 480px) {
+            .contact-item {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                /* space between icon and text */
+                margin-bottom: 15px;
+            }
+
+            .icon-circle {
+                flex-shrink: 0;
+                /* ← THIS IS THE KEY LINE */
+                width: 50px;
+                height: 50px;
+                min-width: 50px;
+                /* prevents shrinking */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .contact-text {
+                flex: 1;
+                min-width: 0;
+                /* allows text to wrap properly */
+            }
+
+            .contact-text .label {
+                font-size: 1.05rem;
+            }
+
+            .contact-text .value {
+                font-size: 0.98rem;
+                word-break: break-word;
+                /* prevents overflow on long address */
+            }
+        }
+
+        .connect-right .tagline,
+        .connect-right .message-desc {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .connect-right .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .connect-right .contact-form .row-inputs {
+            display: flex;
+            flex-direction: column;
+            /* stack on mobile */
+            gap: 1.2rem;
+        }
+
+        .connect-right .contact-form input,
+        .connect-right .contact-form textarea {
+            width: 100%;
+            padding: 1.1rem 1.4rem;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            color: white;
+            font-size: 1.05rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .connect-right .contact-form input::placeholder,
+        .connect-right .contact-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        /* Focus glow */
+        .connect-right .contact-form input:focus,
+        .connect-right .contact-form textarea:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 3px rgba(242, 190, 0, 0.4);
+        }
+
+        .connect-right .contact-form textarea {
+            min-height: 130px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .connect-right .contact-form button {
+            background: #f2be00;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.15rem;
+            padding: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .connect-right .contact-form button:hover {
+            background: #826704ff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Mobile – exactly like capture1.png */
+        @media (max-width: 768px) {
+            .connect-right {
+                padding: 2.5rem 1rem;
+            }
+
+            .connect-right .contact-form {
+                gap: 1.4rem;
+                padding: 0;
+            }
+
+            .connect-right .contact-form input,
+            .connect-right .contact-form textarea {
+                font-size: 1.05rem;
+                /* prevents zoom on iOS */
+                padding: 1.3rem 1.6rem;
+            }
+
+            .connect-right .contact-form input::placeholder,
+            .connect-right .contact-form textarea::placeholder {
+                font-size: 1.02rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+
+            .cta-section p {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                padding: 6px 12px;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 
@@ -1138,13 +1571,13 @@
                 <p class="tagline">FILL THE FORM BELOW</p>
                 <p class="message-desc">Travel Light. Travel Smart. Travel with EASE.</p>
 
-                <form class="contact-form">
+                <form class="contact-form" method="post" action="<?= base_url('/message'); ?>">
                     <div class="row-inputs">
-                        <input type="email" placeholder="Your Email" required>
-                        <input type="text" placeholder="Your Phone Number" required>
+                        <input type="email" placeholder="Your Email" name="email" required>
+                        <input type="text" placeholder="Your Phone Number" name="phone" required>
                     </div>
-                    <input type="text" placeholder="Subject" required>
-                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <input type="text" placeholder="Subject" name="subject" required>
+                    <input type="text" name="message" placeholder="Your Message" required>
                     <button type="submit">SUBMIT FORM</button>
                 </form>
             </div>

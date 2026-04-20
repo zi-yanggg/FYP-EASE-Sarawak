@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\OrderModel;
+use App\Models\MessageModel;
 
 use TCPDF;
 
@@ -27,6 +28,23 @@ class Home extends BaseController
         }
 
         return view('home', ['prices' => $prices]);
+    }
+
+    public function message()
+    {
+        $data = [
+            'email' => $this->request->getPost('email'),
+            'phone' => $this->request->getPost('phone'),
+            'subject' => $this->request->getPost('subject'),
+            'msg' => $this->request->getPost('message'),
+            'status' => 'new',
+            'created_date' => date('Y-m-d H:i:s'),
+        ];
+
+        $messageModel = new MessageModel();
+        $messageModel->insert($data);
+
+        return redirect()->to('/#contact')->with('success', 'Thank you for contacting us! We will get back to you soon.');
     }
 
     public function about(): string

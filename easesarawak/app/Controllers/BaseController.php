@@ -9,6 +9,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\User_model;
+use App\Models\MessageModel;
 
 /**
  * Class BaseController
@@ -98,6 +99,19 @@ abstract class BaseController extends Controller
     protected function render($view, $data = [])
     {
         $data['user'] = $this->currentUser;
+
+        $messageModel = new MessageModel();
+        $data['headerMessages'] = $messageModel
+            ->where('is_deleted', 0)
+            ->orderBy('created_date', 'DESC')
+            ->limit(5)
+            ->findAll();
+
+        $data['newMessageCount'] = count(array_filter($data['headerMessages'], function($msg) {
+            $status = trim((string) ($msg['status'] ?? ''));
+            return $status === '' || $status === 'new';
+        }));
+
         return view($view, $data);
     }
 }
