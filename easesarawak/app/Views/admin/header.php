@@ -37,6 +37,25 @@
             },
         });
     </script> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const toggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        // Set initial state
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            body.classList.add('dark-mode');
+            toggle.checked = true;
+        }
+        toggle.addEventListener('change', function() {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+    });
+    </script>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/bootstrap.min.css') ?>" />
@@ -201,6 +220,72 @@
         .btn-completed:hover {
             background-color: #4d844d;
             color: #fff;
+        }
+
+        body.dark-mode {
+            background-color: #18191a;
+            color: #e4e6eb;
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .navbar,
+        body.dark-mode .footer,
+        body.dark-mode .sidebar,
+        body.dark-mode .main-header,
+        body.dark-mode .main-panel {
+            background-color: #242526 !important;
+            color: #e4e6eb !important;
+        }
+
+        body.dark-mode .table,
+        body.dark-mode .table th,
+        body.dark-mode .table td {
+            background-color: #242526 !important;
+            color: #e4e6eb !important;
+            border-color: #3a3b3c !important;
+        }
+
+        body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > * {
+            background-color: #2d2e2f !important;
+            color: #e4e6eb !important;
+        }
+
+        body.dark-mode .table-hover > tbody > tr:hover > * {
+            background-color: #3a3b3c !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .table-light th,
+        body.dark-mode .table-light td,
+        body.dark-mode thead.table-light th {
+            background-color: #1e1f20 !important;
+            color: #e4e6eb !important;
+        }
+
+        body.dark-mode,
+        body.dark-mode p,
+        body.dark-mode span,
+        body.dark-mode label,
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+        body.dark-mode h4, body.dark-mode h5, body.dark-mode h6,
+        body.dark-mode a:not(.btn),
+        body.dark-mode .card-title,
+        body.dark-mode .card-body {
+            color: #e4e6eb !important;
+        }
+
+        body.dark-mode .text-muted {
+            color: #adb5bd !important;
+        }
+
+        .form-switch .form-check-input {
+            width: 2.5em;
+            height: 1.3em;
+        }
+
+        .form-switch .form-check-input:checked {
+            background-color: #5B532C;
+            border-color: #5B532C;
         }
     </style>
 </head>
@@ -535,6 +620,14 @@
                                     </form>
                                 </ul>
                             </li>
+                            <li class="nav-item">
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                                <label class="form-check-label" for="darkModeToggle" style="cursor:pointer;">
+                                <i class="bi bi-moon"></i> Dark Mode
+                                </label>
+                            </div>
+                            </li>
                             <li class="nav-item topbar-icon dropdown hidden-caret">
                                 <a
                                     class="nav-link dropdown-toggle"
@@ -546,6 +639,7 @@
                                     aria-expanded="false">
                                     <i class="fa fa-envelope"></i>
                                 </a>
+                                
                                 <ul
                                     class="dropdown-menu messages-notif-box animated fadeIn"
                                     aria-labelledby="messageDropdown">
