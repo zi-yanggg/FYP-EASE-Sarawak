@@ -140,7 +140,7 @@
     <div class="page-inner" style="padding-top: 80px;">
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
             <div>
-                <h3 class="fw-bold mb-1"><i class="far fa-calendar-alt me-2"></i>Booking Calendar</h3>
+                <h3 class="fw-bold mb-1">Booking Calendar</h3>
             </div>
             <a href="<?= base_url('/order'); ?>" class="btn btn-outline-secondary btn-sm">
                 <i class="fas fa-list me-1"></i> Order List
