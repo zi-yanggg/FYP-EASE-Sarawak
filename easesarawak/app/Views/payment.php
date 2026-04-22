@@ -15,6 +15,7 @@ $easeCatalog = ease_translation_catalog();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/footer_style.css">
     <link rel="stylesheet" href="assets/css/payment_style.css">
+    <link rel="stylesheet" href="assets/css/navbar_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -437,7 +438,6 @@ $easeCatalog = ease_translation_catalog();
 </script>
 
 <input type="hidden" id="customerEmail" value="<?= esc($receiptEmail ?? '') ?>">
-
 
     <?= $this->include('footer/footer') ?>
 </body>

@@ -68,7 +68,7 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
         border: 1px solid #d9d9d9;
         padding: 12px 16px;
         border-radius: 4px;
-        font-size: 16px;
+        font-size: 23px;
         font-weight: 600;
         cursor: pointer;
         z-index: 9999;
@@ -97,7 +97,7 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
         background: none;
         border: none;
         padding: 14px 16px;
-        font-size: 16px;
+        font-size: 20px;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -111,7 +111,7 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
     }
 
     .lang-flag {
-        width: 24px;
+        width: 35px;
         height: 16px;
         object-fit: cover;
         border-radius: 2px;
@@ -120,26 +120,10 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
 
     .lang-caret {
         margin-left: auto;
-        font-size: 14px;
+        font-size: 20px;
         color: #666;
     }
 </style>
-
-<script>
-    function toggleLangMenu() {
-        const menu = document.getElementById('lang-options');
-        const caret = document.querySelector('.lang-caret');
-
-        if (menu.style.display === 'block') {
-            menu.style.display = 'none';
-            caret.textContent = '^';
-        } else {
-            menu.style.display = 'block';
-            caret.textContent = '˅';
-        }
-    }
-
-</script>
 
 <script>
     window.EASE_TRANSLATION = <?= $translationPayload ?>;
@@ -189,7 +173,6 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
     function changeLanguage(lang) {
         localStorage.setItem('selectedLangCode', lang);
         updateLangButton(lang);
-
         window.location.href = '<?= rtrim(base_url('language'), '/') ?>/' + encodeURIComponent(lang);
     }
 
@@ -199,7 +182,6 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
         }
 
         const normalized = originalValue.replace(/\s+/g, ' ').trim();
-
         if (!normalized || !map[normalized]) {
             return originalValue;
         }
@@ -209,7 +191,6 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
 
         const leadingWhitespace = leadingWhitespaceMatch ? leadingWhitespaceMatch[0] : '';
         const trailingWhitespace = trailingWhitespaceMatch ? trailingWhitespaceMatch[0] : '';
-
         return leadingWhitespace + map[normalized] + trailingWhitespace;
     }
 
@@ -222,23 +203,19 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
     function applyEaseTranslations() {
         const current = window.EASE_TRANSLATION?.current || 'en';
         const map = window.EASE_TRANSLATION?.translations?.[current] || {};
-
         if (current === 'en' || !Object.keys(map).length) {
             document.documentElement.lang = current;
             return;
         }
-
         const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
             acceptNode(node) {
                 if (!node.nodeValue || !node.nodeValue.trim()) {
                     return NodeFilter.FILTER_REJECT;
                 }
-
                 const parentTag = node.parentElement ? node.parentElement.tagName : '';
                 if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA'].includes(parentTag)) {
                     return NodeFilter.FILTER_REJECT;
                 }
-
                 return NodeFilter.FILTER_ACCEPT;
             }
         });

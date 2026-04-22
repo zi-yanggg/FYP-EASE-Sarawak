@@ -1029,8 +1029,6 @@ class Admin extends BaseController
     }
 
     public function transaction_history()
-    
-        public function refund_request()
     {
         $paymentModel = new PaymentModel();
         // Fetch all transactions, you can add filters or pagination as needed
@@ -1166,6 +1164,20 @@ class Admin extends BaseController
         }
 
         return date('c', $ts);
+    }
+    
+            public function refund_request()
+    {
+        $db = \Config\Database::connect();
+
+        $refunds = $db->table('refund_form')
+            ->orderBy('created_at', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        return $this->render('admin/refund_request', [
+            'refunds' => $refunds
+        ]);
     }
 
     /**
