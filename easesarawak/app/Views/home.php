@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/footer_style.css">
     <link rel="stylesheet" href="assets/css/navbar_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
     <style>
         @font-face {
@@ -872,77 +873,6 @@
             }
         }
 
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            min-height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            overflow: hidden;
-        }
-
-        /* First background image (visible first) */
-        .hero::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("assets/images/close-up-tourist-with-suitcase_11zon.webp") center/cover no-repeat;
-            animation: fadeSlide 20s infinite;
-            z-index: -2;
-        }
-
-        /* Second background image (appears after 10s) */
-        .hero::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("assets/images/close-up-traveler-with-luggage_11zon.webp") center/cover no-repeat;
-            animation: fadeSlide 20s infinite;
-            animation-delay: 10s;
-            z-index: -2;
-        }
-
-        /* Dark overlay */
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-        }
-
-        /* Content */
-        .hero-content {
-            margin-top: 100px;
-            max-width: 900px;
-            padding: 1rem;
-            z-index: 1;
-        }
-
-        .hero .pill {
-            display: inline-block;
-            background: #fff;
-            color: #000;
-            backdrop-filter: blur(10px);
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            margin-bottom: 20px;
-        }
-
         .pill .dot {
             width: 14px;
             height: 14px;
@@ -950,30 +880,6 @@
             background: #f2be00;
             /* yellow color */
             display: inline-block;
-        }
-
-        .hero h1 {
-            font-size: 5rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin: 20px 0;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-        }
-
-        .hero p {
-            font-size: 1.32rem;
-            max-width: 720px;
-            margin: 0 auto 45px;
-            line-height: 1.7;
-            opacity: 0.95;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 22px;
-            justify-content: center;
-            flex-wrap: nowrap;
-            /* ← keeps buttons side-by-side */
         }
 
         .btn-yellow {
@@ -1192,80 +1098,6 @@
             }
         }
 
-        .connect-right .tagline,
-        .connect-right .message-desc {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .connect-right .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .connect-right .contact-form .row-inputs {
-            display: flex;
-            flex-direction: column;
-            /* stack on mobile */
-            gap: 1.2rem;
-        }
-
-        .connect-right .contact-form input,
-        .connect-right .contact-form textarea {
-            width: 100%;
-            padding: 1.1rem 1.4rem;
-            border: none;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(8px);
-            color: white;
-            font-size: 1.05rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-
-        .connect-right .contact-form input::placeholder,
-        .connect-right .contact-form textarea::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1rem;
-        }
-
-        /* Focus glow */
-        .connect-right .contact-form input:focus,
-        .connect-right .contact-form textarea:focus {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 0 3px rgba(242, 190, 0, 0.4);
-        }
-
-        .connect-right .contact-form textarea {
-            min-height: 130px;
-            resize: vertical;
-            font-family: inherit;
-        }
-
-        .connect-right .contact-form button {
-            background: #f2be00;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.15rem;
-            padding: 1.1rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 0.5rem;
-        }
-
-        .connect-right .contact-form button:hover {
-            background: #826704ff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
         /* Mobile – exactly like capture1.png */
         @media (max-width: 768px) {
             .connect-right {
@@ -1382,7 +1214,7 @@
                     Looking for short-term storage? Our Kuching Luggage Storage service keeps your luggage safe
                     for as long as needed while you explore the city worry-free!
                 </p>
-                <button><a href="payment" class="btn-card">BOOK NOW</a></button> <!--change code -->
+                <a href="booking" class="btn-card">BOOK NOW</a>
             </div>
 
             <!-- Card 2 - Standard (In Town Delivery) -->
@@ -1396,7 +1228,7 @@
                     Enjoy our complimentary Kuching Luggage Transfer with 24 hours of secure storage, offering
                     seamless transfers between selected locations for added convenience!
                 </p>
-                <button><a href="intowndelivery" class="btn-card">BOOK NOW</a></button> <!--change code-->
+                <a href="booking" class="btn-card">BOOK NOW</a>
             </div>
 
             <!-- Card 3 - On-demand -->
@@ -1410,7 +1242,7 @@
                     Carrying oversized luggage or need a specific pickup/drop-off location? Our Kuching Luggage
                     Delivery service got you covered—flexible and hassle-free!
                 </p>
-                <a href="#" onclick="bookDelivery()" class="btn-card">BOOK NOW</a>
+                <a href="booking" class="btn-card">BOOK NOW</a>
             </div>
         </div>
     </section>

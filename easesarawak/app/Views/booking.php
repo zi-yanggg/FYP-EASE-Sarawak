@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="assets/css/navbar_style.css">
     <link rel="stylesheet" href="assets/css/navbar_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
     
     <style>
 
