@@ -799,7 +799,7 @@ class Admin extends BaseController
             ->setBody($csvContent);
     }
 
-    public function order()
+    public function order($id = null)
     {
         helper('form');
         
@@ -810,6 +810,18 @@ class Admin extends BaseController
 
         $orderModel = new Order_model();
 
+        // If specific order ID is provided, show that order
+        if ($id !== null) {
+            $order = $orderModel->find($id);
+            if ($order) {
+                $data['orders'] = [$order];
+                $data['pager'] = null;
+                $data['single_order'] = true;
+                return $this->render('admin/order', $data);
+            }
+        }
+
+        // Otherwise, show the order list with filters
         $orderModel->where('1=1'); // base
 
         if ($status !== null && $status !== '') {
@@ -830,6 +842,7 @@ class Admin extends BaseController
 
         $data['orders'] = $orderModel->where('is_deleted', 0)->paginate(10, 'group1');
         $data['pager'] = $orderModel->pager;
+        $data['single_order'] = false;
 
         return $this->render('admin/order', $data);
     }

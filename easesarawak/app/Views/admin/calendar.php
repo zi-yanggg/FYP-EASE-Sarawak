@@ -37,8 +37,8 @@
     #mini-calendar {
         width: 100%;
         max-width: 280px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
+        /* border: 1px solid #e0e0e0;
+        border-radius: 8px; */
         background: #fff;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         overflow: hidden;
@@ -240,7 +240,7 @@
             <div class="modal-body" id="calendarEventModalBody"></div>
             <div class="modal-footer border-0 flex-wrap gap-2">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                <a href="<?= base_url('/order'); ?>" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Order List</a>
+                <button type="button" class="btn btn-outline-primary btn-sm" id="calendarGoToOrder">View Order</button>
                 <button type="button" class="btn btn-primary btn-sm" id="calendarFetchOrderDetails" style="display:none;">
                     <i class="fas fa-info-circle me-1"></i> Full Order Details
                 </button>
@@ -251,12 +251,7 @@
 
 <?= $this->include('admin/footer'); ?>
 
-<!--
-    FullCalendar v6 — load order matters:
-    1. Core
-    2. Plugins (DayGrid, TimeGrid, MultiMonth, Interaction)
-    3. Your script
--->
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
@@ -329,6 +324,12 @@
                 right: '' // custom buttons rendered above
             },
 
+            eventTimeFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            },
+
             height: 'auto',
             contentHeight: 620,
             nowIndicator: true,
@@ -394,6 +395,7 @@
                     '<p class="text-muted small mb-0 mt-2">Tip: use <strong>Full order details</strong> for the same breakdown as Order Management.</p>';
 
                 document.getElementById('calendarFetchOrderDetails').style.display = oid ? 'inline-block' : 'none';
+                document.getElementById('calendarGoToOrder').style.display = oid ? 'inline-block' : 'none';
 
                 const modal = new bootstrap.Modal(modalEl);
                 modal.show();
@@ -518,6 +520,16 @@
                 .catch(function() {
                     body.innerHTML = '<div class="alert alert-danger mb-0">Request failed.</div>';
                 });
+        });
+
+        // ── View Order Button ─────────────────────────────────────────────────────
+        document.getElementById('calendarGoToOrder').addEventListener('click', function() {
+            const modalEl = document.getElementById('calendarEventModal');
+            const id = modalEl.dataset.orderId;
+            if (!id) return;
+
+            // Navigate to order page with specific order ID
+            window.location.href = '<?= base_url('/order'); ?>/' + id;
         });
 
     })();

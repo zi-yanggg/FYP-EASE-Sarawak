@@ -106,7 +106,9 @@ $endDate    = $_GET['end_date'] ?? '';
                 </div>
                 <!-- Pagination -->
                 <div class="d-flex justify-content-center mt-3">
-                    <?= $pager->links('group1', 'pagination') ?>
+                    <?php if (!empty($pager)): ?>
+                        <?= $pager->links('group1', 'pagination') ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

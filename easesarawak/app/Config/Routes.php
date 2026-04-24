@@ -41,6 +41,7 @@ $routes->get('/admin', 'Admin::index');
 $routes->get('/report', 'Admin::report');
 $routes->get('/report/export', 'Admin::exportRevenue');
 $routes->get('/order', 'Admin::order');
+$routes->get('/order/(:num)', 'Admin::order/$1');
 $routes->get('/admin/calendar', 'Admin::calendar');
 $routes->get('/change_status/(:num)', 'Admin::change_status/$1');
 $routes->get('/user', 'Admin::user');
