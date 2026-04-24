@@ -108,9 +108,44 @@
     }
 
     .cal-filter-btn.active {
-        background-color: #1572e8 !important;
+        background-color: #9a9da0 !important;
         color: #fff !important;
-        border-color: #1572e8 !important;
+        border-color: #9a9da0 !important;
+    }
+
+    /* Dropdown styles */
+    .admin-booking-cal-wrap .dropdown-toggle {
+        min-width: 90px;
+        text-align: left;
+        border: 1px solid #000;
+        border-radius: 20px;
+    }
+
+    .admin-booking-cal-wrap .dropdown-toggle::after {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .admin-booking-cal-wrap .dropdown-menu {
+        min-width: 100px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .admin-booking-cal-wrap .dropdown-item {
+        padding: 8px 14px;
+        font-size: 0.875rem;
+    }
+
+    .admin-booking-cal-wrap .dropdown-item:hover,
+    .admin-booking-cal-wrap .dropdown-item:focus {
+        background-color: #f0f0f0;
+    }
+
+    .admin-booking-cal-wrap .dropdown-item.active {
+        background-color: #9fa2a5;
+        color: #fff;
     }
 
     .cal-legend-dot {
@@ -153,14 +188,18 @@
                     <h5 class="card-title mb-0 fw-semibold">Schedule</h5>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <!-- View Filter Buttons -->
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="small text-white-50 text-nowrap">View</span>
-                        <div class="btn-group btn-group-sm" role="group" aria-label="Calendar views">
-                            <button type="button" class="btn btn-light btn-sm cal-filter-btn" data-cal-view="dayGridMonth">Month</button>
-                            <button type="button" class="btn btn-light btn-sm cal-filter-btn" data-cal-view="timeGridWeek">Week</button>
-                            <button type="button" class="btn btn-light btn-sm cal-filter-btn" data-cal-view="timeGridDay">Day</button>
-                            <button type="button" class="btn btn-light btn-sm cal-filter-btn" data-cal-view="multiMonthYear">Year</button>
+                    <!-- View Filter Dropdown -->
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="dropdown">
+                            <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="viewDropdown">
+                                Month
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-light">
+                                <li><a class="dropdown-item cal-filter-btn" href="#" data-cal-view="dayGridMonth">Month</a></li>
+                                <li><a class="dropdown-item cal-filter-btn" href="#" data-cal-view="timeGridWeek">Week</a></li>
+                                <li><a class="dropdown-item cal-filter-btn" href="#" data-cal-view="timeGridDay">Day</a></li>
+                                <li><a class="dropdown-item cal-filter-btn" href="#" data-cal-view="multiMonthYear">Year</a></li>
+                            </ul>
                         </div>
                     </div>
 
@@ -240,8 +279,23 @@
         const rawInitial = <?= json_encode($initial_view ?? 'dayGridMonth', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
         const initialView = viewNameMap[rawInitial] || rawInitial;
 
+        // View name to display text mapping
+        const viewNameToText = {
+            dayGridMonth: 'Month',
+            timeGridWeek: 'Week',
+            timeGridDay: 'Day',
+            multiMonthYear: 'Year'
+        };
+
         // ── Helpers ────────────────────────────────────────────────────────────────
         function syncFilterButtons(viewName) {
+            // Update dropdown button text
+            const dropdownBtn = document.getElementById('viewDropdown');
+            if (dropdownBtn) {
+                dropdownBtn.textContent = viewNameToText[viewName] || viewName;
+            }
+
+            // Update active state on dropdown items
             document.querySelectorAll('.cal-filter-btn').forEach(function(btn) {
                 btn.classList.toggle('active', btn.dataset.calView === viewName);
             });
@@ -398,9 +452,10 @@
 
         buildMiniCalendar();
 
-        // ── View Filter Buttons ────────────────────────────────────────────────────
+        // ── View Filter Dropdown ──────────────────────────────────────────────────
         document.querySelectorAll('.cal-filter-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
                 const v = btn.dataset.calView;
                 if (!v) return;
                 mainCalendar.changeView(v);
