@@ -285,6 +285,7 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
 </script>
 
 <script>
+    function easeTranslateValue(originalValue, map) {
     // Normalize internal whitespace:
     // - turns newlines, tabs, multiple spaces into a single space
     // - keeps matching stable even if HTML is split across lines

@@ -58,13 +58,25 @@ $endDate    = $_GET['end_date'] ?? '';
                                         <td><?= esc($order['phone']); ?></td>
                                         <td><?= date('d M Y, h:i A', strtotime($order['created_date'])); ?></td>
                                         <td class="text-center">
+                                            <?php
+                                            $statusMap = [
+                                                0 => 'Pending',
+                                                1 => 'In Progress',
+                                                2 => 'Completed'
+                                            ];
+                                            $nextStatus = ($order['status'] + 1) % 3;
+                                            ?>
+                                            
                                             <a href="<?= base_url('/change_status/' . $order['order_id']); ?>"
-                                                class="btn btn-sm
+                                                class="btn btn-sm change-status-btn
                                                 <?php
                                                 if ($order['status'] == 0) echo 'btn-pending';
                                                 elseif ($order['status'] == 1) echo 'btn-progress';
                                                 else echo 'btn-completed';
-                                                ?>">
+                                                ?>"
+                                                data-order-id="<?= esc($order['order_id']); ?>"
+                                                data-current-status="<?= esc($statusMap[$order['status']]); ?>"
+                                                data-next-status="<?= esc($statusMap[$nextStatus]); ?>">
                                                 <?php
                                                 if ($order['status'] == 0) echo '<i class="fa fa-hourglass-start"></i>';
                                                 elseif ($order['status'] == 1) echo '<i class="fa fa-spinner"></i>';
@@ -246,6 +258,29 @@ $endDate    = $_GET['end_date'] ?? '';
 <?= $this->include('admin/footer'); ?>
 
 <script>
+    document.querySelectorAll('.change-status-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const url = this.getAttribute('href');
+        const orderId = this.getAttribute('data-order-id');
+        const currentStatus = this.getAttribute('data-current-status');
+        const nextStatus = this.getAttribute('data-next-status');
+
+        swal({
+            title: "Change order status?",
+            text: "Order ID: " + orderId + "\nCurrent status: " + currentStatus + "\nNew status: " + nextStatus,
+            icon: "warning",
+            buttons: ["Cancel", "Yes, change it"],
+            dangerMode: true
+        }).then((willChange) => {
+            if (willChange) {
+                window.location.href = url;
+            }
+        });
+    });
+});
+
     document.querySelectorAll('.btn-activity-log').forEach(button => {
         button.addEventListener('click', function() {
             const orderId = this.getAttribute('data-id');
@@ -411,6 +446,31 @@ $endDate    = $_GET['end_date'] ?? '';
         });
     });
 
+    document.querySelectorAll('.change-status-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const url = this.getAttribute('href');
+            const orderId = this.dataset.orderId;
+            const currentStatus = this.dataset.currentStatus;
+            const nextStatus = this.dataset.nextStatus;
+
+        swal({
+            title: "Change order status?",
+            text: "Order ID: " + orderId +
+                "\nCurrent status: " + currentStatus +
+                "\nNew status: " + nextStatus,
+            icon: "warning",
+            buttons: ["Cancel", "Yes, change it"],
+            dangerMode: true
+        }).then((willChange) => {
+            if (willChange) {
+                window.location.href = url;
+            }
+        });
+        });
+    });             
+
     $(document).ready(function() {
         // Show modal with existing note if any
         $('.btn-add-note').on('click', function() {
@@ -435,22 +495,32 @@ $endDate    = $_GET['end_date'] ?? '';
                 },
                 success: function(response) {
                     $('#noteModal').modal('hide');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Note Saved!',
-                        text: 'Your note has been successfully saved.',
+                    swal({
+                        title: "Note Saved!",
+                        text: "Your note has been successfully saved.",
+                        icon: "success",
                         timer: 1500,
-                        showConfirmButton: false
+                        buttons: false
                     });
                 },
                 error: function() {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Unable to save note. Please try again.'
-                    });
+            swal({
+                title: "Error",
+                text: "Unable to save note. Please try again.",
+                icon: "error"
+            });
                 }
             });
         });
     });
+
+<?php if ($popup = session()->getFlashdata('order_status_success')): ?>
+swal({
+    title: "Updated",
+    text: "Order status changed to <?= esc($popup['status']) ?>" +
+          "\nChanged by: <?= esc($popup['username']) ?>",
+    icon: "success",
+    button: "OK"
+});
+<?php endif; ?>
 </script>

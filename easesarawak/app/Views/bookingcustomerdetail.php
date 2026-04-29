@@ -1,3 +1,4 @@
+<?php helper('translation'); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -412,7 +413,7 @@
                         <label for="identificationNumber">Identification Number 
                             <span class="custom-tooltip-wrapper">
                                     <i class="bi bi-info-circle"></i>
-                                    <span class="custom-tooltip-text">Provide your ID number (e.g., Passport, driving license or NRIC) for verification</span>
+                                    <span class="custom-tooltip-text">Provide your ID number (e.g., Passport, driving license or NRIC) for verification.</span>
                                 </span></label>
                         <input type="text" id="identificationNumber" name="identificationNumber" placeholder="Enter your identification" required>
                     </div>
@@ -509,7 +510,9 @@
             </form>
 
             <form id="bookingSummaryForm" class="section">
-                <h2 class="section-title"><i class="bi bi-clipboard-check"></i> BOOKING SUMMARY</h2>
+                <h2 class="section-title">
+                    <i class="bi bi-clipboard-check"></i> <?= esc(ease_translate('BOOKING SUMMARY')) ?>
+                </h2>
                 <div id="bookingSummary"></div>
                 <div id="pricing-content"></div>
             </form>
@@ -532,6 +535,15 @@
     <?= $this->include('footer/footer') ?>
 
     <script>
+        const EASE_TRANSLATIONS = <?= json_encode(
+            ease_translation_catalog()[ease_current_lang()] ?? [],
+            JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
+        ) ?>;
+
+        function t(text) {
+            return EASE_TRANSLATIONS[text] || text;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // File upload handling
             const fileUpload = document.getElementById('fileUpload');
@@ -611,45 +623,45 @@
                 if (bookingData) {
                     // --- Summary Section ---
                     if (bookingData.service === 'storage') {
-                        summaryHtml = `
-                            <div class="booking-summary-section">
-                                <div class="booking-summary-heading">Luggage Storage</div>
-                            </div>
-                            <div class="booking-summary-section">
-                                <div class="booking-summary-label">Storage Location</div>
-                                <div class="booking-summary-value">${bookingData.storageLocation || '-'}</div>
-                            </div>
-                            <div class="booking-summary-section">
-                                <div class="booking-summary-label">Drop-off date & time</div>
-                                <div class="booking-summary-value">${bookingData.dropoffDate || '-'} Time: ${bookingData.dropoffTime || '-'}</div>
-                            </div>
-                            <div class="booking-summary-section">
-                                <div class="booking-summary-label">Pick-up date & time</div>
-                                <div class="booking-summary-value">${bookingData.pickupDate || '-'} Time: ${bookingData.pickupTime || '-'}</div>
-                            </div>
-                        `;
+                    summaryHtml = `
+                        <div class="booking-summary-section">
+                            <div class="booking-summary-heading">${t('Luggage Storage')}</div>
+                        </div>
+                        <div class="booking-summary-section">
+                            <div class="booking-summary-label">${t('Storage Location')}</div>
+                            <div class="booking-summary-value">${bookingData.storageLocation || '-'}</div>
+                        </div>
+                        <div class="booking-summary-section">
+                            <div class="booking-summary-label">${t('Drop-off date & time')}</div>
+                            <div class="booking-summary-value">${bookingData.dropoffDate || '-'} ${t('Time:')} ${bookingData.dropoffTime || '-'}</div>
+                        </div>
+                        <div class="booking-summary-section">
+                            <div class="booking-summary-label">${t('Pick-up date & time')}</div>
+                            <div class="booking-summary-value">${bookingData.pickupDate || '-'} ${t('Time:')} ${bookingData.pickupTime || '-'}</div>
+                        </div>
+                    `;
                     } else {
-                        summaryHtml = `
-                            <div class="booking-summary-section">
-                                <div class="booking-summary-heading">${bookingData.service ? bookingData.service.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'In-town Delivery'}</div>
-                            </div>
-                            <div class="booking-summary-section">
-                                <div class="booking-summary-label">Drop-off your luggage from</div>
-                                <div class="booking-summary-value">${bookingData.origin || '-'}</div>
-                            </div>
-                            <div class="booking-summary-section">
-                                <div class="booking-summary-label">Drop-off date & time</div>
-                                <div class="booking-summary-value">${bookingData.dropoffDate || '-'} Time: ${bookingData.dropoffTime || '-'}</div>
-                            </div>
-                            <div class="booking-summary-section">
-                                <div class="booking-summary-label">Pick-up your luggage at</div>
-                                <div class="booking-summary-value">${bookingData.destination || '-'}</div>
-                            </div>
-                            <div class="booking-summary-section">
-                                <div class="booking-summary-label">Pick-up date & time</div>
-                                <div class="booking-summary-value">${bookingData.pickupDate || '-'} Time: ${bookingData.pickupTime || '-'}</div>
-                            </div>
-                        `;
+                    summaryHtml = `
+                        <div class="booking-summary-section">
+                            <div class="booking-summary-heading">${t('Delivery')}</div>
+                        </div>
+                        <div class="booking-summary-section">
+                            <div class="booking-summary-label">${t('Drop-off your luggage from')}</div>
+                            <div class="booking-summary-value">${bookingData.origin || '-'}</div>
+                        </div>
+                        <div class="booking-summary-section">
+                            <div class="booking-summary-label">${t('Drop-off date & time')}</div>
+                            <div class="booking-summary-value">${bookingData.dropoffDate || '-'} ${t('Time:')} ${bookingData.dropoffTime || '-'}</div>
+                        </div>
+                        <div class="booking-summary-section">
+                            <div class="booking-summary-label">${t('Pick-up your luggage at')}</div>
+                            <div class="booking-summary-value">${bookingData.destination || '-'}</div>
+                        </div>
+                        <div class="booking-summary-section">
+                            <div class="booking-summary-label">${t('Pick-up date & time')}</div>
+                            <div class="booking-summary-value">${bookingData.pickupDate || '-'} ${t('Time:')} ${bookingData.pickupTime || '-'}</div>
+                        </div>
+                    `;
                     }
                     bookingSummaryDiv.innerHTML = summaryHtml;
                 } else {
@@ -802,33 +814,33 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-heading">Pricing</div>
-                    <div class="price-row"><span class="price-label">Kuching Luggage Transfer</span></div>
-                    <div class="price-row"><span class="price-label">Selected Transfer Point</span></div>
-                    <div class="price-row">
-                        <span class="price-label">${currentQuantity} Standard Luggage</span>
-                    </div>
-                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
-                    <div class="price-row">
-                        <span class="price-label">First 24 Hours</span>
-                    </div>
-                    <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
-                        <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
-                    </div>
-                    <div class="price-row">
-                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess</span>
-                    </div>
-                    <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
-                        <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
-                    </div>
+                <div class="price-heading">${t('Pricing')}</div>
+                <div class="price-row"><span class="price-label">${t('Kuching Luggage Transfer')}</span></div>
+                <div class="price-row"><span class="price-label">${t('Selected Transfer Point')}</span></div>
+                <div class="price-row">
+                    <span class="price-label">${currentQuantity} ${t('Standard Luggage')}</span>
+                </div>
+                <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
+                <div class="price-row">
+                    <span class="price-label">${t('First 24 Hours')}</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
+                    <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} ${t('Excess')}</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
+                    <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
+                </div>
                 `;
 
                 if (insuranceSelected) {
                     html += `
                         <div class="price-row">
-                            <span class="price-label">Insurance</span>
+                            <span class="price-label">${t('Insurance')}</span>
                         </div>
                         <div class="price-row">
                             <span class="price-value">${currentQuantity} Standard Luggage</span>
@@ -847,7 +859,7 @@
                     }
                     html += `
                         <div class="price-row">
-                            <span class="price-label">Discount (${appliedPromoCode}):</span>
+                            <span class="price-label">${t('Discount')} (${appliedPromoCode}):</span>
                             <span class="price-value discount-value">-MYR ${discountAmount.toFixed(2)}</span>
                         </div>
                     `;
@@ -856,7 +868,7 @@
                 const total = Math.max(0, baseStoragePrice + extraStoragePrice + insuranceCharge - discountAmount);
                 html += `
                     <div class="price-row">
-                        <span class="price-label">Total:</span>
+                        <span class="price-label">${t('Total:')}</span>
                         <span class="price-value total-value">MYR ${total.toFixed(2)}</span>
                     </div>
                 `;
@@ -869,10 +881,10 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-heading">Pricing</div>
-                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-heading">${t('Pricing')}</div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
                     <div class="price-row">
-                        <span class="price-label">First 12 Hours</span>
+                        <span class="price-label">${t('First 12 Hours')}</span>
                     </div>
                     <div class="price-row">
                     <span class="price-value">${currentQuantity} Standard Luggage</span>

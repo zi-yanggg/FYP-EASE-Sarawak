@@ -5,7 +5,7 @@ $easeLang = normalize_site_locale(session('site_lang') ?? ($_COOKIE['site_lang']
 $easeCatalog = ease_translation_catalog();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= esc($easeLang) ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -21,25 +21,7 @@ $easeCatalog = ease_translation_catalog();
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="assets/images/Ease_PNG_File-01.png" alt="EASE Logo">
-        </div>
-        <div class="menu">
-            <div class="dropdown">
-                <a>Menu <i class="bi bi-chevron-down"></i></a>
-                <div class="dropdown-content">
-                    <a href="#">Our Services</a>
-                    <a href="#">How It Works</a>
-                    <a href="#">Why Us</a>
-                    <a href="#">About Us</a>
-                    <a href="#">Contact Us</a>
-                </div>
-            </div>
-            <a href="#" class="btn">Book Now</a>
-        </div>
-    </nav>
+<?= $this->include('navbar/navbar') ?>
 
     <!-- Hero -->
     <section class="hero">
@@ -108,7 +90,6 @@ $easeCatalog = ease_translation_catalog();
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Translate script -->
     <script>
@@ -290,9 +271,21 @@ $easeCatalog = ease_translation_catalog();
 
 
   // read stripe public key from .env
-  const STRIPE_PUBLISHABLE_KEY = "<?= esc(env('STRIPE_PUBLISHABLE_KEY')) ?>";
-  const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-  const elements = stripe.elements();
+function getStripeLocale() {
+    if (EASE_LANG === 'zh') return 'zh';
+    if (EASE_LANG === 'ms') return 'ms';
+    return 'en';
+}
+
+const STRIPE_PUBLISHABLE_KEY = "<?= esc(env('STRIPE_PUBLISHABLE_KEY')) ?>";
+
+const stripe = Stripe(STRIPE_PUBLISHABLE_KEY, {
+    locale: getStripeLocale()
+});
+
+const elements = stripe.elements({
+    locale: getStripeLocale()
+});
 
   // card Elements
   const cardNumberElement = elements.create('cardNumber', { hidePostalCode: true });

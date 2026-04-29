@@ -1447,10 +1447,13 @@
                     <input type="text" name="account_number" placeholder="Account Number">
                     <textarea name="reason_for_refund" placeholder="Reason for Refund"></textarea>
 
+                    <?php
+                    $refundDeclaration = 'I declare that the information I have provided in this form is accurate and complete to the best of my knowledge. I understand that submission of this form does not guarantee a refund and that additional information may be requested.';
+                    ?>
+
                     <label>
                         <input type="checkbox" name="declaration" value="1" required>
-                        I declare that the information I have provided in this form is accurate and complete to the best of my knowledge.
-                        I understand that submission of this form does not guarantee a refund and that additional information may be requested.
+                        <span><?= esc(ease_translate($refundDeclaration)) ?></span>
                     </label>
 
                     <button type="submit" name="submitRefund">SUBMIT FORM</button>
