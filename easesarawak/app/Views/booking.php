@@ -1412,6 +1412,7 @@
             const warningDiv = document.getElementById('dropoff-time-warning');
             
             if (!isDateTimeValid(selectedDate, selectedTime)) {
+                updateDeliveryWarningMessage(warningDiv);
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
