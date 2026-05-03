@@ -949,10 +949,10 @@ $easeCatalog = ease_translation_catalog();
                 if (insuranceSelected) {
                     html += `
                         <div class="price-row">
-                            <span class="price-label">Insurance</span>
+                            <span class="price-label">${t('Insurance')}</span>
                         </div>
                         <div class="price-row">
-                            <span class="price-value">${currentQuantity} Standard Luggage</span>
+                            <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                             <span class="price-value">MYR ${insuranceCharge.toFixed(2)}</span>
                         </div>
                     `;
@@ -968,7 +968,7 @@ $easeCatalog = ease_translation_catalog();
                     }
                     html += `
                         <div class="price-row">
-                            <span class="price-label">Discount (${appliedPromoCode}):</span>
+                            <span class="price-label">${t('Discount')} (${appliedPromoCode}):</span>
                             <span class="price-value discount-value">-MYR ${discountAmount.toFixed(2)}</span>
                         </div>
                     `;
@@ -1011,10 +1011,10 @@ $easeCatalog = ease_translation_catalog();
                 if (insuranceSelected) {
                     html += `
                         <div class="price-row">
-                            <span class="price-label">Insurance</span>   
+                            <span class="price-label">${t('Insurance')}</span>   
                         </div>
                         <div class="price-row">
-                            <span class="price-value">${currentQuantity} Standard Luggage</span>
+                            <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                             <span class="price-value">MYR ${insuranceCharge.toFixed(2)}</span>
                         </div>
                     `;
@@ -1030,7 +1030,7 @@ $easeCatalog = ease_translation_catalog();
                     }
                     html += `
                         <div class="price-row">
-                            <span class="price-label">Discount (${appliedPromoCode}):</span>
+                            <span class="price-label">${t('Discount')} (${appliedPromoCode}):</span>
                             <span class="price-value discount-value">-MYR ${discountAmount.toFixed(2)}</span>
                         </div>
                     `;

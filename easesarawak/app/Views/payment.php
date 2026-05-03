@@ -309,7 +309,31 @@ const elements = stripe.elements({
     });
   });
 
-  
+    function getBookingData() {
+    try {
+        return JSON.parse(sessionStorage.getItem('bookingData') || '{}');
+    } catch (e) {
+        console.error('Cannot read bookingData:', e);
+        return {};
+    }
+    }
+
+    function getReceiptEmail() {
+    const hiddenEmail = (document.getElementById('customerEmail')?.value || '').trim();
+
+    if (hiddenEmail) {
+        return hiddenEmail;
+    }
+
+    const bookingData = getBookingData();
+    return (bookingData.email || bookingData.customerEmail || '').trim();
+    }
+
+    function getOrderId() {
+    const bookingData = getBookingData();
+    return bookingData.order_id || bookingData.orderId || '';
+    }
+
   // Complete Payment
   document.querySelector('.btn-primary').addEventListener('click', async function (e) {
     e.preventDefault();
@@ -319,6 +343,9 @@ const elements = stripe.elements({
       alert('Please enter the name on card.');
       return;
     }
+
+    const receiptEmail = getReceiptEmail();
+    const orderId = getOrderId();
 
     // Order Summary （RM）
     const orderTotalRm = getOrderTotalFromSummary();
@@ -334,11 +361,15 @@ const elements = stripe.elements({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: amountCents,
-          currency: "myr",
-          metadata: {
-            card_name: cardName
-          }
+        amount: amountCents,
+        currency: "myr",
+        receipt_email: receiptEmail,
+        metadata: {
+            card_name: cardName,
+            customer_email: receiptEmail,
+            order_id: orderId
+
+        }
         })
       });
 
@@ -361,7 +392,10 @@ const elements = stripe.elements({
       const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardNumberElement,          
-          billing_details: { name: cardName }
+          billing_details: { 
+            name: cardName,
+            email: receiptEmail || undefined
+        }
         }
       });
 
@@ -382,8 +416,6 @@ const elements = stripe.elements({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ payment_intent_id: paymentIntent.id })
       });
-      const receiptEmail = document.getElementById('customerEmail')?.value || "";
-  
     if (!storeRes.ok) {
         const text = await storeRes.text();
         console.error('store error', storeRes.status, text);
@@ -400,6 +432,7 @@ const elements = stripe.elements({
     try {
       const receiptForm = new FormData();
       receiptForm.append('email', receiptEmail);
+      receiptForm.append('order_id', orderId);
       receiptForm.append('amount_cents', amountCents);            
       receiptForm.append('currency', 'myr');
       receiptForm.append('status', paymentIntent.status);

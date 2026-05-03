@@ -363,6 +363,13 @@ if (! function_exists('ease_translation_catalog')) {
                 'Add your social media handle (e.g., WhatsApp, Facebook, Line or WeChat) for easier communication.' => 'Tambahkan nama pengguna media sosial anda (cth., WhatsApp, Facebook, Line atau WeChat) untuk komunikasi yang lebih mudah.',
                 'Upload a photo of your luggage, or travel documents if you are using hotel concierge/front desk service.' => 'Muat naik gambar bagasi atau dokumen perjalanan anda jika anda menggunakan perkhidmatan concierge/kaunter penerimaan tetamu hotel.',
                 'For oversized items. Please select if your baggage exceeds the standard size limit.' => 'Untuk barang bersaiz besar. Sila pilih jika bagasi anda melebihi had saiz standard.',
+                'Discount' => 'Diskaun',
+                'Select your luggage drop off location.' => 'Pilih lokasi penghantaran bagasi anda.',
+                'Select your luggage pick up location.' => 'Pilih lokasi pengambilan bagasi anda.',
+                'Select date and time you will drop off your luggage.' => 'Pilih tarikh dan masa anda akan menurunkan bagasi anda.',
+                'Select date and time you will collect up your luggage.' => 'Pilih tarikh dan masa anda akan mengambil bagasi anda.',
+                'Discount' => 'Diskaun',
+                'Discount' => 'Diskaun',
 
             ],
             'zh' => [
@@ -674,6 +681,11 @@ if (! function_exists('ease_translation_catalog')) {
                 'Payment succeeded, but failed to store in database.' => '付款成功，但保存到数据库失败。',
                 'Payment processed successfully!' => '付款处理成功！',
                 'Network error' => '网络错误',
+                'Discount' => '优惠',
+                'Select your luggage drop off location.' => 'Pilih lokasi penghantaran bagasi anda.',
+                'Select your luggage pick up location.' => 'Pilih lokasi pengambilan bagasi anda.',
+                'Select date and time you will drop off your luggage.' => 'Pilih tarikh dan masa anda akan menurunkan bagasi anda.',
+                'Select date and time you will collect up your luggage.' => 'Pilih tarikh dan masa anda akan mengambil bagasi anda.',
             ],
         ];
     }

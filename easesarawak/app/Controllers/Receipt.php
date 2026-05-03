@@ -29,6 +29,7 @@ class Receipt extends Controller
         $currency        = $this->request->getPost('currency') ?: 'myr';
         $status          = $this->request->getPost('status') ?: 'succeeded';
         $paymentIntentId = $this->request->getPost('payment_intent_id') ?? '';
+        $orderId = $this->request->getPost('order_id') ?? '';
 
         if (empty($email)) {
             return $this->response
@@ -42,6 +43,13 @@ class Receipt extends Controller
         $message = "
             <h2>EASE Sarawak Payment Receipt</h2>
             <p>Thank you for your payment.</p>
+        ";
+
+        if ($orderId) {
+            $message .= "<p><strong>Order ID:</strong> #" . esc($orderId) . "</p>";
+        }
+
+        $message .= "
             <p><strong>Amount:</strong> " . strtoupper($currency) . " {$amountDisplay}</p>
             <p><strong>Status:</strong> {$status}</p>
         ";

@@ -701,6 +701,12 @@
             formData.append('identificationNumber', document.getElementById('identificationNumber').value);
             formData.append('email', document.getElementById('email').value);
             formData.append('phone', document.getElementById('phone').value);
+            const customerEmail = document.getElementById('email').value.trim();
+
+            bookingData.email = customerEmail;
+            bookingData.customerEmail = customerEmail;
+
+            sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
             formData.append('socialContactType', document.getElementById('socialContactType').value);
             formData.append('socialContactValue', document.getElementById('socialContactValue').value);
             
@@ -748,6 +754,8 @@
                     console.log('Parsed response data:', data);
                     
                     if (data.success) {
+                        bookingData.order_id = data.order_id;
+                        bookingData.email = document.getElementById('email').value.trim();
                         sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
                         
                         // Show success message
@@ -843,7 +851,7 @@
                             <span class="price-label">${t('Insurance')}</span>
                         </div>
                         <div class="price-row">
-                            <span class="price-value">${currentQuantity} Standard Luggage</span>
+                            <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                             <span class="price-value">MYR ${insuranceCharge.toFixed(2)}</span>
                         </div>
                     `;
@@ -887,14 +895,14 @@
                         <span class="price-label">${t('First 12 Hours')}</span>
                     </div>
                     <div class="price-row">
-                    <span class="price-value">${currentQuantity} Standard Luggage</span>
+                    <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                     <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess</span>
+                        <span class="price-label">${t('Subsequent 12 Hours x')} ${t('exceededTimes')} Excess</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                         <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
                     </div>
                 `;
@@ -902,10 +910,10 @@
                 if (insuranceSelected) {
                     html += `
                         <div class="price-row">
-                            <span class="price-label">Insurance</span>
+                            <span class="price-label">${t('Insurance')}</span>
                         </div>
                         <div class="price-row">
-                            <span class="price-value">${currentQuantity} Standard Luggage</span>
+                            <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                             <span class="price-value">MYR ${insuranceCharge.toFixed(2)}</span>
                         </div>
                     `;
@@ -921,7 +929,7 @@
                     }
                     html += `
                         <div class="price-row">
-                            <span class="price-label">Discount (${appliedPromoCode}):</span>
+                            <span class="price-label">${t('Discount')} (${appliedPromoCode}):</span>
                             <span class="price-value discount-value">-MYR ${discountAmount.toFixed(2)}</span>
                         </div>
                     `;
@@ -930,7 +938,7 @@
                 const total = Math.max(0, baseStoragePrice + extraStoragePrice + insuranceCharge - discountAmount);
                 html += `
                     <div class="price-row">
-                        <span class="price-label">Total:</span>
+                        <span class="price-label">${t('Total:')}</span>
                         <span class="price-value total-value">MYR ${total.toFixed(2)}</span>
                     </div>
                 `;
