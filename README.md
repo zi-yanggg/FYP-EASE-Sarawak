@@ -1,40 +1,229 @@
-Setup Path
+# EASE Sarawak — Computing Technology Final Year Project
 
-cd E:\xampp\htdocs\Clone\FYP-EASE-Sarawak\easesarawak
+A booking and delivery management system for Sarawak, built with CodeIgniter 4. Features customer booking, Stripe payment processing, and an admin portal for order, user, promo code, service, and revenue management.
+
+---
+
+## Created by:
+
+* Benjamin Hii
+* Lim Zi Yang
+* Aung Zin Htet
+* Jostin Chok Yaw Seng
+
+---
+
+## Requirements
+
+| Dependency | Version |
+|------------|---------|
+| PHP | >= 8.1 |
+| MySQL | >= 5.7 |
+| XAMPP | >= 8.1 |
+| Composer | >= 2.x |
+
+---
+
+## Project Setup
+
+### 1. Clone the repository
+
+Place the project inside your XAMPP `htdocs` directory:
+
+```
+C:\xampp\htdocs\New\FYP-EASE-Sarawak\easesarawak\
+```
+
+### 2. Install dependencies
+
+Open a terminal inside the project root and run:
+
+```bash
 composer install
+```
 
-Install dependencies: PHP 7.4–8.2 with extensions (intl, mbstring, json, curl, openssl), Composer, and a web server (XAMPP’s Apache/MySQL works). Place the repo in E:/xampp/htdocs/FYP.
-Configure CI: copy env → .env; set CI_ENVIRONMENT = development, then uncomment app.baseURL and point it at your host (e.g. http://ease-sarawak/ once the vhost is ready). Update the DB section with your MySQL credentials (username, password, database name).
-Database: create the schema in phpMyAdmin and import sql/order.sql plus sql/user.sql (or run php spark migrate if you have migrations). Verify tables populate and credentials in .env match.
-Apache host: in httpd-vhosts.conf add a vhost pointing to E:/xampp/htdocs/FYP/public; in C:\Windows\System32\drivers\etc\hosts map 127.0.0.1 ease-sarawak. Restart Apache.
-Assets/links: ensure your views use helpers (base_url('assets/...'), site_url('policy'), etc.) so navigation and resources respect the new base URL.
-Launch: start Apache/MySQL from XAMPP, browse to http://ease-sarawak/. For CLI tasks use php spark … in E:/xampp/htdocs/FYP.
-Verify: log in as admin, test /report chart + export, check key pages and forms. Keep an eye on writable/logs/ and browser console for errors. If you change configs, clear caches with php spark cache:clear.
+### 3. Set up the environment file
 
-Run migrations:
+Copy the example env file and rename it:
 
-Run seeders:
+```bash
+cp env .env
+```
 
-All migrations maintain proper foreign key relationships, and seeders are designed to run in the correct order to avoid constraint violations!
+Open `.env` and configure the following:
 
+```ini
+CI_ENVIRONMENT = development
+
+app.baseURL = 'http://easesarawak.fyp/'
+
+database.default.hostname = localhost
+database.default.database = easesarawak
+database.default.username = root
+database.default.password =
+database.default.DBDriver = MySQLi
+database.default.port     = 3306
+```
+
+### 4. Create the database
+
+Open **phpMyAdmin** (`http://localhost/phpmyadmin`) and create a database named:
+
+```
+easesarawak
+```
+
+Then run the migrations:
+
+```bash
 php spark migrate
+```
 
-php spark db:seed Database_seeder
-Seed individual tables:
-php spark db:seed Users_seeder
-php spark db:seed Admins_seeder
-php spark db:seed Delivery_seeder
-# etc.
-Reset and re-seed the database:
-php spark migrate:rollback    # Roll back all migrations
-php spark migrate              # Run migrations again
-php spark db:seed Database_seeder  # Seed all data
+### 5. Configure Stripe (optional, for payments)
 
+Add your Stripe secret key to `.env`:
 
-Testing Login Credentials:
-https://fyp.easesarawak.com/admin
-allan96@gmail.com
-123
+```ini
+STRIPE_SECRET_KEY = sk_test_your_key_here
+STRIPE_WEBHOOK_SECRET = whsec_your_secret_here
+```
 
-Ben@gmail.com
-123
+---
+
+## Custom Local Domain Setup (`easesarawak.fyp`)
+
+To access the project at `http://easesarawak.fyp/` instead of `http://localhost/New/FYP-EASE-Sarawak/easesarawak/public/`, follow these steps.
+
+### Step 1 — Edit the Windows hosts file
+
+Open **Notepad as Administrator** and open the file:
+
+```
+C:\Windows\System32\drivers\etc\hosts
+```
+
+Add the following line at the bottom:
+
+```
+127.0.0.1   easesarawak.fyp
+```
+
+Save and close the file.
+
+### Step 2 — Enable Apache Virtual Hosts
+
+Open:
+
+```
+C:\xampp\apache\conf\httpd.conf
+```
+
+Find and uncomment this line (remove the `#`):
+
+```apache
+# Include conf/extra/httpd-vhosts.conf
+```
+
+It should look like:
+
+```apache
+Include conf/extra/httpd-vhosts.conf
+```
+
+### Step 3 — Add the Virtual Host
+
+Open:
+
+```
+C:\xampp\apache\conf\extra\httpd-vhosts.conf
+```
+
+Add the following block at the bottom:
+
+```apache
+<VirtualHost *:80>
+    DocumentRoot "C:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/public"
+    ServerName easesarawak.fyp
+    <Directory "C:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/public">
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+> If you still need the default `localhost` to work for other projects, also add this block:
+>
+> ```apache
+> <VirtualHost *:80>
+>     DocumentRoot "C:/xampp/htdocs"
+>     ServerName localhost
+> </VirtualHost>
+> ```
+
+### Step 4 — Update CodeIgniter base URL
+
+In your `.env` file, set:
+
+```ini
+app.baseURL = 'http://easesarawak.fyp/'
+```
+
+### Step 5 — Restart Apache
+
+Open the **XAMPP Control Panel** and click **Stop** then **Start** on Apache.
+
+### Step 6 — Verify
+
+Open your browser and go to:
+
+```
+http://easesarawak.fyp/
+```
+
+You should see the EASE Sarawak homepage.
+
+---
+
+## Project Structure
+
+```
+easesarawak/
+├── app/
+│   ├── Config/             # App, database, routes, filters configuration
+│   ├── Controllers/        # Admin, Home, Login, CardPayment, Profile, etc.
+│   ├── Database/           # Migrations and seeds
+│   ├── Filters/            # Auth and admin access filters
+│   ├── Helpers/            # Custom helper functions
+│   ├── Models/             # OrderModel, UserModel, PaymentModel, etc.
+│   └── Views/              # Booking, admin, auth, email templates
+├── public/                 # Web root (point Apache DocumentRoot here)
+│   └── assets/             # CSS, JS, images, fonts
+├── tests/                  # PHPUnit tests (unit, database, session)
+├── vendor/                 # Composer dependencies
+├── writable/               # Cache, logs, sessions, uploads
+├── .env                    # Environment configuration (not committed)
+├── env                     # Environment template
+└── composer.json
+```
+
+---
+
+## Key Routes
+
+| Method | URL | Description |
+|--------|-----|-------------|
+| GET | `/` | Homepage |
+| GET | `/booking` | Booking page |
+| GET/POST | `/payment` | Payment page (Stripe) |
+| GET | `/login` | Login page |
+| GET/POST | `/forgot_password` | Forgot password |
+| GET | `/admin` | Admin dashboard |
+| GET | `/order` | Admin — orders |
+| GET | `/user` | Admin — users |
+| GET | `/report` | Admin — revenue report |
+| GET | `/report/export` | Export revenue CSV |
+| GET | `/admin/promo_code` | Admin — promo codes |
+| GET | `/admin/service_management` | Admin — service pricing |
+
+---
