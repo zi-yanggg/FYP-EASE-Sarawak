@@ -116,30 +116,46 @@
             }
         }
 
-        .price-heading {
-            color: #f2be00;
-            font-weight: bold;
-            font-size: 1.15em;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
+        .pricing-header {
+            color: #333;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f2be00;
+            padding-bottom: 0.5rem;
         }
 
         .price-row {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
         }
+
+        .price-row:last-child {
+            border-bottom: none;
+            border-top: 2px solid #333;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+        }
+
         .price-label {
             color: #000;
             font-weight: bold;
         }
+
         .price-value {
             font-weight: bold;
             color: #333;
         }
+
         .discount-value {
             color: #e67e22;
         }
+
         .total-value {
             color: #f2be00;
             font-size: 1.15em;
@@ -511,6 +527,7 @@
             <form id="bookingSummaryForm" class="section">
                 <h2 class="section-title"><i class="bi bi-clipboard-check"></i> BOOKING SUMMARY</h2>
                 <div id="bookingSummary"></div>
+                <h3 class="pricing-header"><i class="bi bi-cash-stack"></i> PRICING</h3>
                 <div id="pricing-content"></div>
             </form>
         </div>
@@ -782,7 +799,7 @@
                 || bookingData.insuranceSelected === 1
                 || bookingData.insuranceSelected === '1'
                 || bookingData.insuranceSelected === 'on';
-            const basePrice = bookingData.service === 'delivery' ? 24 : 18; // 24 for delivery, 18 for storage
+            const basePrice = parseFloat(bookingData.basePrice) || (bookingData.service === 'delivery' ? 24 : 18);
             const promoDiscount = parseFloat(bookingData.promoDiscount) || 0;
             const promoType = bookingData.promoType || 'amount';
             const appliedPromoCode = bookingData.promoCode || '';
@@ -802,7 +819,6 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-heading">Pricing</div>
                     <div class="price-row"><span class="price-label">Kuching Luggage Transfer</span></div>
                     <div class="price-row"><span class="price-label">Selected Transfer Point</span></div>
                     <div class="price-row">
@@ -869,7 +885,6 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-heading">Pricing</div>
                     <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
                     <div class="price-row">
                         <span class="price-label">First 12 Hours</span>
