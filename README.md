@@ -13,6 +13,10 @@ A booking and delivery management system for Sarawak, built with CodeIgniter 4. 
 
 ---
 
+Currently, travellers and tourists face challenges in managing their luggage when transitioning between flights, hotels, or events. Manual bookings via calls or walk-ins lead to inefficiencies, poor customer experience, and lack of transparency in tracking luggage. The organisation requires a client-focused, web-based platform that enables easy booking, luggage tracking, delivery scheduling, and secure payment processing.
+
+---
+
 ## Requirements
 
 | Dependency | Version |
