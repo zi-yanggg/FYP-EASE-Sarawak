@@ -117,30 +117,46 @@
             }
         }
 
-        .price-heading {
-            color: #f2be00;
-            font-weight: bold;
-            font-size: 1.15em;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
+        .pricing-header {
+            color: #333;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f2be00;
+            padding-bottom: 0.5rem;
         }
 
         .price-row {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
         }
+
+        .price-row:last-child {
+            border-bottom: none;
+            border-top: 2px solid #333;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+        }
+
         .price-label {
             color: #000;
             font-weight: bold;
         }
+
         .price-value {
             font-weight: bold;
             color: #333;
         }
+
         .discount-value {
             color: #e67e22;
         }
+
         .total-value {
             color: #f2be00;
             font-size: 1.15em;
@@ -514,6 +530,7 @@
                     <i class="bi bi-clipboard-check"></i> <?= esc(ease_translate('BOOKING SUMMARY')) ?>
                 </h2>
                 <div id="bookingSummary"></div>
+                <h3 class="pricing-header"><i class="bi bi-cash-stack"></i> PRICING</h3>
                 <div id="pricing-content"></div>
             </form>
         </div>
@@ -802,7 +819,7 @@
                 || bookingData.insuranceSelected === 1
                 || bookingData.insuranceSelected === '1'
                 || bookingData.insuranceSelected === 'on';
-            const basePrice = bookingData.service === 'delivery' ? 24 : 18; // 24 for delivery, 18 for storage
+            const basePrice = parseFloat(bookingData.basePrice) || (bookingData.service === 'delivery' ? 24 : 18);
             const promoDiscount = parseFloat(bookingData.promoDiscount) || 0;
             const promoType = bookingData.promoType || 'amount';
             const appliedPromoCode = bookingData.promoCode || '';
@@ -822,27 +839,26 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                <div class="price-heading">${t('Pricing')}</div>
-                <div class="price-row"><span class="price-label">${t('Kuching Luggage Transfer')}</span></div>
-                <div class="price-row"><span class="price-label">${t('Selected Transfer Point')}</span></div>
-                <div class="price-row">
-                    <span class="price-label">${currentQuantity} ${t('Standard Luggage')}</span>
-                </div>
-                <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
-                <div class="price-row">
-                    <span class="price-label">${t('First 24 Hours')}</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
-                    <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} ${t('Excess')}</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
-                    <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
-                </div>
+                    <div class="price-row"><span class="price-label">Kuching Luggage Transfer</span></div>
+                    <div class="price-row"><span class="price-label">Selected Transfer Point</span></div>
+                    <div class="price-row">
+                        <span class="price-label">${currentQuantity} Standard Luggage</span>
+                    </div>
+                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-row">
+                        <span class="price-label">First 24 Hours</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
+                    </div>
                 `;
 
                 if (insuranceSelected) {
@@ -889,8 +905,7 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-heading">${t('Pricing')}</div>
-                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
+                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
                     <div class="price-row">
                         <span class="price-label">${t('First 12 Hours')}</span>
                     </div>
