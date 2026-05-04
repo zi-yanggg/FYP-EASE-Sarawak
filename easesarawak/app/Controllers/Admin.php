@@ -887,8 +887,12 @@ class Admin extends BaseController
                 'action' => 'Changed order status to ' . $statusText[$newStatus],
                 'modified_date' => date('Y-m-d H:i:s')
             ]);
-
-            session()->setFlashdata('success', 'Order status updated successfully.');
+            
+        session()->setFlashdata('order_status_success', [
+            'order_id' => $order_id,
+            'status'   => $statusText[$newStatus],
+            'username' => session()->get('username') ?: 'Unknown'
+        ]);
         } else {
             session()->setFlashdata('error', 'Order not found.');
         }
@@ -947,6 +951,28 @@ class Admin extends BaseController
                 'message' => 'Order not found.'
             ]);
         }
+    }
+
+    public function order_details($order_id)
+    {
+        $orderModel = new \App\Models\Order_model();
+        $order = $orderModel->getOrderWithUserById($order_id);
+
+        if (!$order) {
+            return redirect()->to(base_url('/admin/refund_request'))
+                ->with('error', 'Order not found.');
+        }
+
+        $details = json_decode($order['order_details_json'] ?? '{}', true);
+
+        if (!is_array($details)) {
+            $details = [];
+        }
+
+        return $this->render('admin/order_details', [
+            'order'   => $order,
+            'details' => $details
+        ]);
     }
 
     public function save_note()
@@ -1179,17 +1205,78 @@ class Admin extends BaseController
         return date('c', $ts);
     }
     
-            public function refund_request()
+    public function refund_request()
     {
         $db = \Config\Database::connect();
 
-        $refunds = $db->table('refund_form')
-            ->orderBy('created_at', 'DESC')
+        $refunds = $db->table('refund_form rf')
+            ->select('rf.*, u.username AS status_updated_username')
+            ->join('user u', 'u.user_id = rf.status_updated_by', 'left')
+            ->orderBy('rf.created_at', 'DESC')
             ->get()
             ->getResultArray();
 
         return $this->render('admin/refund_request', [
             'refunds' => $refunds
+        ]);
+    }
+
+    public function change_refund_status()
+    {
+        $refundId  = (int) $this->request->getPost('refund_id');
+        $newStatus = (int) $this->request->getPost('new_status');
+
+        $statusMap = [
+            0 => 'In Progress',
+            1 => 'Agreed',
+            2 => 'Rejected',
+        ];
+
+        if (!$refundId || !isset($statusMap[$newStatus]) || $newStatus === 0) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Invalid refund status.'
+            ]);
+        }
+
+        $db = \Config\Database::connect();
+
+        $refund = $db->table('refund_form')
+            ->where('id', $refundId)
+            ->get()
+            ->getRowArray();
+
+        if (!$refund) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Refund record not found.'
+            ]);
+        }
+
+        $userId   = session()->get('user_id');
+        $username = session()->get('username') ?: 'Unknown';
+        $now      = date('Y-m-d H:i:s');
+
+        $updated = $db->table('refund_form')
+            ->where('id', $refundId)
+            ->update([
+                'status_progress'   => $newStatus,
+                'status_updated_by' => $userId,
+                'status_updated_at' => $now,
+            ]);
+
+        if (!$updated) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Unable to update refund status.'
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'success'      => true,
+            'status_label' => $statusMap[$newStatus],
+            'username'     => $username,
+            'updated_at'   => $now,
         ]);
     }
 

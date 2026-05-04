@@ -36,16 +36,23 @@ class CardPayment extends BaseController
 
         $currency = strtolower($body['currency'] ?? 'myr');
         $metadata = $body['metadata'] ?? [];
+        $receiptEmail = trim((string)($body['receipt_email'] ?? ''));
 
         $this->initStripe();
 
         try {
-            $pi = PaymentIntent::create([
-                'amount'   => $amount,
-                'currency' => $currency,
-                'automatic_payment_methods' => ['enabled' => true],
-                'metadata' => $metadata,
-            ]);
+        $paymentIntentData = [
+            'amount'   => $amount,
+            'currency' => $currency,
+            'automatic_payment_methods' => ['enabled' => true],
+            'metadata' => $metadata,
+        ];
+
+        if (filter_var($receiptEmail, FILTER_VALIDATE_EMAIL)) {
+            $paymentIntentData['receipt_email'] = $receiptEmail;
+        }
+
+        $pi = PaymentIntent::create($paymentIntentData);
 
             return $this->response->setJSON([
                 'client_secret' => $pi->client_secret,

@@ -5,7 +5,7 @@ $easeLang = normalize_site_locale(session('site_lang') ?? ($_COOKIE['site_lang']
 $easeCatalog = ease_translation_catalog();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= esc($easeLang) ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -21,25 +21,7 @@ $easeCatalog = ease_translation_catalog();
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="assets/images/Ease_PNG_File-01.png" alt="EASE Logo">
-        </div>
-        <div class="menu">
-            <div class="dropdown">
-                <a>Menu <i class="bi bi-chevron-down"></i></a>
-                <div class="dropdown-content">
-                    <a href="#">Our Services</a>
-                    <a href="#">How It Works</a>
-                    <a href="#">Why Us</a>
-                    <a href="#">About Us</a>
-                    <a href="#">Contact Us</a>
-                </div>
-            </div>
-            <a href="#" class="btn">Book Now</a>
-        </div>
-    </nav>
+<?= $this->include('navbar/navbar') ?>
 
     <!-- Hero -->
     <section class="hero">
@@ -108,7 +90,6 @@ $easeCatalog = ease_translation_catalog();
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Translate script -->
     <script>
@@ -290,9 +271,21 @@ $easeCatalog = ease_translation_catalog();
 
 
   // read stripe public key from .env
-  const STRIPE_PUBLISHABLE_KEY = "<?= esc(env('STRIPE_PUBLISHABLE_KEY')) ?>";
-  const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-  const elements = stripe.elements();
+function getStripeLocale() {
+    if (EASE_LANG === 'zh') return 'zh';
+    if (EASE_LANG === 'ms') return 'ms';
+    return 'en';
+}
+
+const STRIPE_PUBLISHABLE_KEY = "<?= esc(env('STRIPE_PUBLISHABLE_KEY')) ?>";
+
+const stripe = Stripe(STRIPE_PUBLISHABLE_KEY, {
+    locale: getStripeLocale()
+});
+
+const elements = stripe.elements({
+    locale: getStripeLocale()
+});
 
   // card Elements
   const cardNumberElement = elements.create('cardNumber', { hidePostalCode: true });
@@ -316,7 +309,31 @@ $easeCatalog = ease_translation_catalog();
     });
   });
 
-  
+    function getBookingData() {
+    try {
+        return JSON.parse(sessionStorage.getItem('bookingData') || '{}');
+    } catch (e) {
+        console.error('Cannot read bookingData:', e);
+        return {};
+    }
+    }
+
+    function getReceiptEmail() {
+    const hiddenEmail = (document.getElementById('customerEmail')?.value || '').trim();
+
+    if (hiddenEmail) {
+        return hiddenEmail;
+    }
+
+    const bookingData = getBookingData();
+    return (bookingData.email || bookingData.customerEmail || '').trim();
+    }
+
+    function getOrderId() {
+    const bookingData = getBookingData();
+    return bookingData.order_id || bookingData.orderId || '';
+    }
+
   // Complete Payment
   document.querySelector('.btn-primary').addEventListener('click', async function (e) {
     e.preventDefault();
@@ -326,6 +343,9 @@ $easeCatalog = ease_translation_catalog();
       alert('Please enter the name on card.');
       return;
     }
+
+    const receiptEmail = getReceiptEmail();
+    const orderId = getOrderId();
 
     // Order Summary （RM）
     const orderTotalRm = getOrderTotalFromSummary();
@@ -341,11 +361,15 @@ $easeCatalog = ease_translation_catalog();
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: amountCents,
-          currency: "myr",
-          metadata: {
-            card_name: cardName
-          }
+        amount: amountCents,
+        currency: "myr",
+        receipt_email: receiptEmail,
+        metadata: {
+            card_name: cardName,
+            customer_email: receiptEmail,
+            order_id: orderId
+
+        }
         })
       });
 
@@ -368,7 +392,10 @@ $easeCatalog = ease_translation_catalog();
       const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardNumberElement,          
-          billing_details: { name: cardName }
+          billing_details: { 
+            name: cardName,
+            email: receiptEmail || undefined
+        }
         }
       });
 
@@ -389,8 +416,6 @@ $easeCatalog = ease_translation_catalog();
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ payment_intent_id: paymentIntent.id })
       });
-      const receiptEmail = document.getElementById('customerEmail')?.value || "";
-  
     if (!storeRes.ok) {
         const text = await storeRes.text();
         console.error('store error', storeRes.status, text);
@@ -407,6 +432,7 @@ $easeCatalog = ease_translation_catalog();
     try {
       const receiptForm = new FormData();
       receiptForm.append('email', receiptEmail);
+      receiptForm.append('order_id', orderId);
       receiptForm.append('amount_cents', amountCents);            
       receiptForm.append('currency', 'myr');
       receiptForm.append('status', paymentIntent.status);
