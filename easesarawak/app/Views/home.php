@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/footer_style.css">
     <link rel="stylesheet" href="assets/css/navbar_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
     <style>
         @font-face {
@@ -32,16 +33,94 @@
             box-sizing: border-box;
         }
 
-        body,
-        html {
+        body {
             font-family: 'EurostarRegular', sans-serif, Arial, 'BebasKai';
             line-height: 1.6;
-            width: 100%;
-            overflow-x: hidden;
         }
 
         /* Hero section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
 
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            /* semi-transparent black */
+            z-index: 1;
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: scale(1);
+            animation: zoom 20s ease-in-out infinite;
+            z-index: 0;
+            opacity: 0;
+        }
+
+        .hero::before {
+            background-image: url("assets/images/close-up-tourist-with-suitcase_11zon.webp");
+            animation-delay: 0s;
+        }
+
+        .hero::after {
+            background-image: url("assets/images/close-up-traveler-with-luggage_11zon.webp");
+            animation-delay: 10s;
+            /* Half of total duration */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 1rem;
+        }
+
+        .hero-content h1 {
+            font-size: 0.9rem;
+            margin-top: 4rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .hero-content h2 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content .btn {
+            font-size: 1.3rem;
+            margin: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
         .btn-primary {
             background: #f2be00;
@@ -525,10 +604,96 @@
 
         .connect-with-us .connect-right {
             flex: 1;
+            align-items:center;
             padding: 20px;
             background: black;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .connect-with-us .connect-right .button-row {
+            display: flex;
+            flex-direction: row; 
+            gap: 70px;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .button-row .pill-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover effect only */
+        .button-row .pill-title:hover {
+            box-shadow: 0 0 15px rgba(242, 190, 0, 0.7);
+            transform: translateY(-1px);
+        }
+
+        /* Active button after click */
+        .button-row .pill-title.active {
+            background: #e0b100;
+            color: #ffffff !important;
+        }
+
+        .button-row .pill-title.active .dot {
+            background: #ffd54a;
+        }
+
+        /* Non-active button */
+        .button-row .pill-title:not(.active) {
+            background: #ffffff;
+            color: #000000 !important;
+        }
+
+        .connect-with-us .connect-right.pill-title.active {
+        opacity: 1;
+        cursor: pointer;
+        position: relative; /* allow z-index to work */
+        z-index: 10;        /* bring buttons above other content */
+        }
+
+        .connect-with-us .connect-right.pill-title:not(.active) {
+        opacity: 0.5;
+        position: relative; /* allow z-index to work */
+        z-index: 10;        /* bring buttons above other content */
+        }
+
+        /* when button is clicked */
+        .pill-title.active {
+            background: #e0b100;
+            color: #ffffff;
+        }
+
+        .connect-right .contact-form select[name="service_type"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: none;
+            background: #222;       /* same as other inputs */
+            color: #fff;            /* same text color */
+            font-size: 14px;
+            box-sizing: border-box; /* ensure proper sizing */
+        }
+
+        /* Make the checkbox declaration text white */
+        .connect-right .contact-form label {
+            color: #ffffff; /* white text */
+        }
+
+        /* Hide inactive forms */
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
         }
 
         .connect-with-us .connect-right h2 {
@@ -538,6 +703,13 @@
             color: #333;
         }
 
+        .connect-with-us .connect-right h3 {
+            margin-top: 20px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
         .connect-with-us .connect-right .tagline {
             font-size: 40px;
             color: #fff;
@@ -656,6 +828,15 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .navbar .menu {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+
             .hero-content h1 {
                 font-size: 2rem;
             }
@@ -692,77 +873,6 @@
             }
         }
 
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            min-height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            overflow: hidden;
-        }
-
-        /* First background image (visible first) */
-        .hero::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("assets/images/close-up-tourist-with-suitcase_11zon.webp") center/cover no-repeat;
-            animation: fadeSlide 20s infinite;
-            z-index: -2;
-        }
-
-        /* Second background image (appears after 10s) */
-        .hero::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("assets/images/close-up-traveler-with-luggage_11zon.webp") center/cover no-repeat;
-            animation: fadeSlide 20s infinite;
-            animation-delay: 10s;
-            z-index: -2;
-        }
-
-        /* Dark overlay */
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-        }
-
-        /* Content */
-        .hero-content {
-            margin-top: 100px;
-            max-width: 900px;
-            padding: 1rem;
-            z-index: 1;
-        }
-
-        .hero .pill {
-            display: inline-block;
-            background: #fff;
-            color: #000;
-            backdrop-filter: blur(10px);
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            margin-bottom: 20px;
-        }
-
         .pill .dot {
             width: 14px;
             height: 14px;
@@ -770,30 +880,6 @@
             background: #f2be00;
             /* yellow color */
             display: inline-block;
-        }
-
-        .hero h1 {
-            font-size: 5rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin: 20px 0;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-        }
-
-        .hero p {
-            font-size: 1.32rem;
-            max-width: 720px;
-            margin: 0 auto 45px;
-            line-height: 1.7;
-            opacity: 0.95;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 22px;
-            justify-content: center;
-            flex-wrap: nowrap;
-            /* ← keeps buttons side-by-side */
         }
 
         .btn-yellow {
@@ -1012,80 +1098,6 @@
             }
         }
 
-        .connect-right .tagline,
-        .connect-right .message-desc {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .connect-right .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .connect-right .contact-form .row-inputs {
-            display: flex;
-            flex-direction: column;
-            /* stack on mobile */
-            gap: 1.2rem;
-        }
-
-        .connect-right .contact-form input,
-        .connect-right .contact-form textarea {
-            width: 100%;
-            padding: 1.1rem 1.4rem;
-            border: none;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(8px);
-            color: white;
-            font-size: 1.05rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-
-        .connect-right .contact-form input::placeholder,
-        .connect-right .contact-form textarea::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1rem;
-        }
-
-        /* Focus glow */
-        .connect-right .contact-form input:focus,
-        .connect-right .contact-form textarea:focus {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 0 3px rgba(242, 190, 0, 0.4);
-        }
-
-        .connect-right .contact-form textarea {
-            min-height: 130px;
-            resize: vertical;
-            font-family: inherit;
-        }
-
-        .connect-right .contact-form button {
-            background: #f2be00;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.15rem;
-            padding: 1.1rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 0.5rem;
-        }
-
-        .connect-right .contact-form button:hover {
-            background: #826704ff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
         /* Mobile – exactly like capture1.png */
         @media (max-width: 768px) {
             .connect-right {
@@ -1109,6 +1121,7 @@
                 font-size: 1.02rem;
             }
         }
+
         @media (max-width: 768px) {
             .cta-section h2 {
                 font-size: 2rem;
@@ -1130,27 +1143,21 @@
     <?= $this->include('navbar/navbar') ?>
     <!-- Hero -->
     <section class="hero">
-        <!-- Two background images with cross-fade -->
         <div class="hero-overlay"></div>
-
         <div class="hero-content">
-            <div class="pill">
+            <h1 class="pill-title">
                 <span class="dot"></span>
                 EASE BAGGAGE SOLUTIONS
                 <span class="dot"></span>
-            </div>
-
-            <h1>KUCHING<br>HANDS-FREE TRAVEL</h1>
-
+            </h1>
+            <h2>KUCHING HANDS-FREE TRAVEL
+            </h2>
             <p>
                 Discover the best of Kuching – We ensure you a smooth and hassle-free journey 
                 with our easy-to-use Kuching Luggage Storage and Delivery service.
             </p>
-
-            <div class="hero-buttons">
-                <a href="#contact" class="btn-yellow">CONTACT NOW</a>
-                <a href="<?= base_url('/booking') ?>" class="btn-yellow">BOOK NOW</a>
-            </div>
+            <a href="#contact" class="btn btn-primary">CONTACT NOW</a>
+            <a href="booking" class="btn btn-primary">BOOK NOW</a>
         </div>
     </section>
 
@@ -1207,7 +1214,7 @@
                     Looking for short-term storage? Our Kuching Luggage Storage service keeps your luggage safe
                     for as long as needed while you explore the city worry-free!
                 </p>
-                <a href="#" onclick="bookStorage()" class="btn-card">BOOK NOW</a>
+                <a href="booking" class="btn-card">BOOK NOW</a>
             </div>
 
             <!-- Card 2 - Standard (In Town Delivery) -->
@@ -1221,7 +1228,7 @@
                     Enjoy our complimentary Kuching Luggage Transfer with 24 hours of secure storage, offering
                     seamless transfers between selected locations for added convenience!
                 </p>
-                <a href="#" onclick="bookDelivery()" class="btn-card">BOOK NOW</a>
+                <a href="booking" class="btn-card">BOOK NOW</a>
             </div>
 
             <!-- Card 3 - On-demand -->
@@ -1235,7 +1242,7 @@
                     Carrying oversized luggage or need a specific pickup/drop-off location? Our Kuching Luggage
                     Delivery service got you covered—flexible and hassle-free!
                 </p>
-                <a href="#" onclick="bookDelivery()" class="btn-card">BOOK NOW</a>
+                <a href="booking" class="btn-card">BOOK NOW</a>
             </div>
         </div>
     </section>
@@ -1378,23 +1385,77 @@
 
             <!-- RIGHT SIDE -->
             <div class="connect-right">
-                <h2 class="pill-title">
+                <div class="button-row">
+                <h2 class="pill-title active active-form-btn " data-form="message-form">
                     <span class="dot"></span>
                     MESSAGE US TODAY
                     <span class="dot"></span>
                 </h2>
+                <h3 class="pill-title refund-form-btn" data-form="refund-form">
+                    <span class="dot"></span>
+                    REFUND FORM
+                    <span class="dot"></span>
+                </h3>
+                </div>
+
+                <!-- Message Us Today Form (unchanged) -->
+            <div class="form-content active" id="message-form">
                 <p class="tagline">FILL THE FORM BELOW</p>
                 <p class="message-desc">Travel Light. Travel Smart. Travel with EASE.</p>
 
-                <form class="contact-form">
+                <form class="contact-form" method="post" action="<?= base_url('/message'); ?>">
                     <div class="row-inputs">
-                        <input type="email" placeholder="Your Email" required>
-                        <input type="text" placeholder="Your Phone Number" required>
+                        <input type="email" placeholder="Your Email" name="email" required>
+                        <input type="text" placeholder="Your Phone Number" name="phone" required>
                     </div>
-                    <input type="text" placeholder="Subject" required>
-                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <input type="text" placeholder="Subject" name="subject" required>
+                    <input type="text" name="message" placeholder="Your Message" required>
                     <button type="submit">SUBMIT FORM</button>
                 </form>
+            </div>
+
+            <!-- Refund Form -->
+            <div class="form-content" id="refund-form">
+                <p class="tagline">FILL THE FORM BELOW</p>
+                <p class="message-desc">Submit your refund request quickly and easily.</p>
+
+                <form class="contact-form" id="refundForm" method="POST" action="<?= base_url('refund/submit') ?>" enctype="multipart/form-data">
+                    <?= csrf_field() ?>
+
+                    <input type="text" name="full_name" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="text" name="phone_number" placeholder="Phone Number" required>
+                    <input type="text" name="order_id" placeholder="Order ID" required>
+
+                    <div class="row-inputs">
+                        <input type="text"
+                            name="date_of_purchase"
+                            placeholder="Date of Purchase"
+                            onfocus="(this.type='date')"
+                            onblur="(this.type='text')"
+                            required>
+                    </div>
+
+                    <select name="service_type" required>
+                        <option value="">Select Service Type</option>
+                        <option value="Town Delivery">Town Delivery</option>
+                        <option value="Luggage Storage">Luggage Storage</option>
+                    </select>
+
+                    <input type="text" name="bank_name" placeholder="Bank Name">
+                    <input type="text" name="account_holder_name" placeholder="Account Holder Name">
+                    <input type="text" name="account_number" placeholder="Account Number">
+                    <textarea name="reason_for_refund" placeholder="Reason for Refund"></textarea>
+
+                    <label>
+                        <input type="checkbox" name="declaration" value="1" required>
+                        I declare that the information I have provided in this form is accurate and complete to the best of my knowledge.
+                        I understand that submission of this form does not guarantee a refund and that additional information may be requested.
+                    </label>
+
+                    <button type="submit" name="submitRefund">SUBMIT FORM</button>
+                </form>
+            </div>
             </div>
         </div>
     </section>
@@ -1418,11 +1479,11 @@
         function bookStorage() {
             // Set service preference in sessionStorage
             sessionStorage.setItem('preferredService', 'storage');
-
+            
             // Clear any existing booking data to start fresh
             sessionStorage.removeItem('bookingData');
             sessionStorage.removeItem('isEditing');
-
+            
             // Redirect to booking page
             window.location.href = 'booking';
         }
@@ -1431,14 +1492,52 @@
         function bookDelivery() {
             // Set service preference in sessionStorage
             sessionStorage.setItem('preferredService', 'delivery');
-
+            
             // Clear any existing booking data to start fresh
             sessionStorage.removeItem('bookingData');
             sessionStorage.removeItem('isEditing');
-
+            
             // Redirect to booking page
             window.location.href = 'booking';
         }
+
+        //Refund form function
+        const pillTitles = document.querySelectorAll('.button-row .pill-title');
+        const formContents = document.querySelectorAll('.form-content');
+
+        pillTitles.forEach(title => {
+            title.addEventListener('click', () => {
+                pillTitles.forEach(t => {
+                    t.classList.remove('active', 'active-form-btn');
+                });
+
+                title.classList.add('active', 'active-form-btn');
+
+                formContents.forEach(f => f.classList.remove('active'));
+
+                const targetForm = title.getAttribute('data-form');
+                document.getElementById(targetForm).classList.add('active');
+            });
+        });
+
+        <?php if (session()->getFlashdata('refund_status')): ?>
+            const refundButton = document.querySelector('[data-form="refund-form"]');
+            const refundPanel = document.getElementById('refund-form');
+
+            pillTitles.forEach(t => t.classList.remove('active', 'active-form-btn'));
+            formContents.forEach(f => f.classList.remove('active'));
+
+            if (refundButton) refundButton.classList.add('active', 'active-form-btn');
+            if (refundPanel) refundPanel.classList.add('active');
+
+            setTimeout(() => {
+                alert(<?= json_encode(session()->getFlashdata('refund_message')) ?>);
+                const connectSection = document.getElementById('connect');
+                if (connectSection) {
+                    connectSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 200);
+        <?php endif; ?>
     </script>
 
 </body>

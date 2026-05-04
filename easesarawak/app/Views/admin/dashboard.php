@@ -95,78 +95,83 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="card card-round">
-                    <div class="card-header">
-                        <div class="card-head-row card-tools-still-right">
-                            <div class="card-title">Pending Orders</div>
-                            <div class="card-tools">
-                                <div class="dropdown">
-                                    <button class="btn btn-icon btn-clean me-0"
-                                        type="button"
-                                        id="pendingDropdownButton"
-                                        data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu"
-                                        aria-labelledby="pendingDropdownButton">
-                                        <a class="dropdown-item" href="#">Export</a>
-                                        <a class="dropdown-item" href="#">Mark all as viewed</a>
-                                    </div>
-                                </div>
+    <div class="col-md-12">
+        <div class="card card-round">
+            <div class="card-header">
+                <div class="card-head-row card-tools-still-right">
+                    <div class="card-title">Pending Orders</div>
+                    <div class="card-tools">
+                        <div class="dropdown">
+                            <button class="btn btn-icon btn-clean me-0"
+                                type="button"
+                                id="pendingDropdownButton"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                            <div class="dropdown-menu"
+                                aria-labelledby="pendingDropdownButton">
+                                <a class="dropdown-item" href="#">Export</a>
+                                <a class="dropdown-item" href="#">Mark all as viewed</a>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card-body p-0">
-                        <?php if (!empty($pending_orders)): ?>
-                            <div class="table-responsive">
-                                <table class="table align-items-center mb-0">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th scope="col">Order ID</th>
-                                            <th scope="col">Customer</th>
-                                            <th scope="col">Order Date</th>
-                                            <th scope="col">Service</th>
-                                            <th scope="col" class="text-end">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($pending_orders as $order): ?>
-                                            <tr>
-                                                <th scope="row">
-                                                    <button class="btn btn-icon btn-round btn-warning btn-sm me-2">
-                                                        <i class="fa fa-clock"></i>
-                                                    </button>
-                                                    #<?= esc($order['order_id']); ?>
-                                                </th>
-
-                                                <td><?= esc($order['first_name']); ?> <?= esc($order['last_name']); ?></td>
-
-                                                <td>
-                                                    <?= date('M d, Y, g.i a', strtotime($order['created_date'])) ?>
-                                                </td>
-
-                                                <td>
-                                                    <?= strtoupper(esc($order['service_type'])); ?>
-                                                </td>
-
-                                                <td class="text-end">
-                                                    <span class="badge badge-pending">Pending</span>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <?php else: ?>
-                            <p class="text-muted p-3">No pending orders found.</p>
-                        <?php endif; ?>
-                    </div>
                 </div>
             </div>
+
+            <div class="card-body p-0">
+                <?php if (!empty($pending_orders)): ?>
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Customer</th>
+                                    <th scope="col">Order Date</th>
+                                    <th scope="col">Service</th>
+                                    <th scope="col" class="text-end">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingOrdersBody">
+                                <?php foreach ($pending_orders as $index => $order): ?>
+                                    <tr class="pending-order-row <?= $index >= 10 ? 'd-none' : ''; ?>"
+                                        data-index="<?= $index; ?>">
+                                        <th scope="row">
+                                            <button class="btn btn-icon btn-round btn-warning btn-sm me-2">
+                                                <i class="fa fa-clock"></i>
+                                            </button>
+                                            #<?= esc($order['order_id']); ?>
+                                        </th>
+                                        <td><?= esc($order['first_name']); ?> <?= esc($order['last_name']); ?></td>
+                                        <td><?= date('M d, Y, g.i a', strtotime($order['created_date'])) ?></td>
+                                        <td><?= strtoupper(esc($order['service_type'])); ?></td>
+                                        <td class="text-end">
+                                            <span class="badge badge-pending">Pending</span>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <?php if (count($pending_orders) > 10): ?>
+                        <div class="text-center py-3" id="viewMoreContainer">
+                            <button class="btn btn-sm btn-update me-2" id="viewMoreBtn">
+                                View More
+                            </button>
+                            <button class="btn btn-sm btn-cancel d-none" id="showLessBtn">
+                                Show Less
+                            </button>
+                        </div>
+                    <?php endif; ?>
+
+                <?php else: ?>
+                    <p class="text-muted p-3">No pending orders found.</p>
+                <?php endif; ?>
+            </div>
         </div>
+    </div>
+</div>
 
         <!-- <div class="row">
                         <div class="col-md-12">
@@ -384,7 +389,6 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <!-- Projects table -->
                             <table class="table align-items-center mb-0">
                                 <thead class="thead-light">
                                     <tr>
@@ -396,23 +400,21 @@
                                 </thead>
                                 <tbody>
                                     <?php if (!empty($transactions)): ?>
-                                        <?php foreach ($transactions as $t): ?>
-                                            <tr>
+                                        <?php foreach ($transactions as $index => $t): ?>
+                                            <tr class="transaction-row <?= $index >= 10 ? 'd-none' : ''; ?>"
+                                                data-index="<?= $index; ?>">
                                                 <th scope="row">
                                                     <button class="btn btn-icon btn-round btn-success btn-sm me-2">
                                                         <i class="fa fa-check"></i>
                                                     </button>
                                                     Payment from #<?= esc($t['stripe_payment_id']) ?>
                                                 </th>
-
                                                 <td class="text-end">
                                                     <?= date('M d, Y, g.i a', strtotime($t['created_at'])) ?>
                                                 </td>
-
                                                 <td class="text-end">
                                                     $<?= number_format($t['amount_cents'] / 100, 2) ?>
                                                 </td>
-
                                                 <td class="text-end">
                                                     <?php if ($t['status'] == 'succeeded'): ?>
                                                         <span class="badge badge-completed">Completed</span>
@@ -432,6 +434,17 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <?php if (!empty($transactions) && count($transactions) > 10): ?>
+                            <div class="text-center py-3" id="transactionViewMoreContainer">
+                                <button class="btn btn-sm btn-update me-2" id="transactionViewMoreBtn">
+                                    View More
+                                </button>
+                                <button class="btn btn-sm btn-cancel d-none" id="transactionShowLessBtn">
+                                    Show Less
+                                </button>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -439,3 +452,75 @@
     </div>
 </div>
 <?= $this->include('admin/footer'); ?>
+
+<script>
+    //Pending orders view more & show less function
+    (function () {
+        const viewMoreBtn = document.getElementById('viewMoreBtn');
+        const showLessBtn = document.getElementById('showLessBtn');
+        if (!viewMoreBtn || !showLessBtn) return;
+
+        const allRows = document.querySelectorAll('.pending-order-row');
+        const totalRows = allRows.length;
+        const batchSize = 10;
+        let visibleCount = 10;
+
+        function updateButtons() {
+            // Hide "View More" if everything is visible
+            viewMoreBtn.classList.toggle('d-none', visibleCount >= totalRows);
+            // Show "Show Less" only if more than initial 10 are visible
+            showLessBtn.classList.toggle('d-none', visibleCount <= 10);
+        }
+
+        viewMoreBtn.addEventListener('click', function () {
+            const nextVisible = Math.min(visibleCount + batchSize, totalRows);
+            for (let i = visibleCount; i < nextVisible; i++) {
+                allRows[i].classList.remove('d-none');
+            }
+            visibleCount = nextVisible;
+            updateButtons();
+        });
+
+        showLessBtn.addEventListener('click', function () {
+            for (let i = 10; i < totalRows; i++) {
+                allRows[i].classList.add('d-none');
+            }
+            visibleCount = 10;
+            updateButtons();
+        });
+    })();
+
+    //transaction history view more & show less function
+    (function () {
+        const viewMoreBtn = document.getElementById('transactionViewMoreBtn');
+        const showLessBtn = document.getElementById('transactionShowLessBtn');
+        if (!viewMoreBtn || !showLessBtn) return;
+
+        const allRows = document.querySelectorAll('.transaction-row');
+        const totalRows = allRows.length;
+        const batchSize = 10;
+        let visibleCount = 10;
+
+        function updateButtons() {
+            viewMoreBtn.classList.toggle('d-none', visibleCount >= totalRows);
+            showLessBtn.classList.toggle('d-none', visibleCount <= 10);
+        }
+
+        viewMoreBtn.addEventListener('click', function () {
+            const nextVisible = Math.min(visibleCount + batchSize, totalRows);
+            for (let i = visibleCount; i < nextVisible; i++) {
+                allRows[i].classList.remove('d-none');
+            }
+            visibleCount = nextVisible;
+            updateButtons();
+        });
+
+        showLessBtn.addEventListener('click', function () {
+            for (let i = 10; i < totalRows; i++) {
+                allRows[i].classList.add('d-none');
+            }
+            visibleCount = 10;
+            updateButtons();
+        });
+    })();
+</script>

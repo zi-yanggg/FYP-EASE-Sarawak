@@ -1,3 +1,17 @@
+<?php
+function timeAgo($datetime)
+{
+    $time = strtotime($datetime);
+    $diff = time() - $time;
+
+    if ($diff < 60) return "Just now";
+    if ($diff < 3600) return floor($diff / 60) . " minutes ago";
+    if ($diff < 86400) return floor($diff / 3600) . " hours ago";
+    if ($diff < 604800) return floor($diff / 86400) . " days ago";
+
+    return date('d M Y', $time);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,7 +82,7 @@
 
         #orderModal .card-header {
             border-bottom: 1px solid #e9ecef;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         #orderModal p {
@@ -131,6 +145,20 @@
         .btn-cancel:hover {
             background-color: #47421f;
             color: #fff;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .notif-img {
+            position: relative;
         }
 
         .avatar-title {
@@ -286,6 +314,25 @@
         .form-switch .form-check-input:checked {
             background-color: #5B532C;
             border-color: #5B532C;
+        .nav-pills.nav-secondary .nav-link.active,
+        .nav-pills.nav-secondary .nav-link.active:hover,
+        .nav-pills.nav-secondary .nav-link.active:focus {
+            background-color: #f2be00 !important;
+            color: #000 !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .btn-secondary {
+            background-color: #f2be00 !important;
+            border-color: #f2be00 !important;
+            color: #000 !important;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e6ac00 !important;
+            border-color: #e6ac00 !important;
+            color: #000 !important;
         }
     </style>
 </head>
@@ -346,6 +393,11 @@
                                             <span class="sub-item">Order Management</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="<?= base_url('/admin/calendar'); ?>">
+                                            <span class="sub-item">Booking Calendar</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -382,7 +434,7 @@
                                 <ul class="nav nav-collapse">
                                     <li>
                                         <a href="<?= base_url('/report'); ?>">
-                                            <span class="sub-item">Report</span>
+                                            <span class="sub-item">Revenue</span>
                                         </a>
                                     </li>
                                     <li>
@@ -413,8 +465,20 @@
                                                 <span class="sub-item">Promo Code</span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="<?= base_url('/admin/contact'); ?>">
+                                                <span class="sub-item">Contact</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="<?= base_url('/admin/refund_request'); ?>">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <p>Refund Request</p>
+                                </a>
                             </li>
                         <?php endif; ?>
 
@@ -638,6 +702,9 @@
                                     aria-haspopup="true"
                                     aria-expanded="false">
                                     <i class="fa fa-envelope"></i>
+                                    <?php if ($newMessageCount > 0): ?>
+                                        <span class="notification"><?php echo $newMessageCount; ?></span>
+                                    <?php endif; ?>
                                 </a>
                                 
                                 <ul
@@ -647,33 +714,45 @@
                                         <div
                                             class="dropdown-title d-flex justify-content-between align-items-center">
                                             Messages
-                                            <a href="#" class="small">Mark all as read</a>
+                                            <a href="#" id="markAllMessagesRead" class="small">Mark all as read</a>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="message-notif-scroll scrollbar-outer">
                                             <div class="notif-center">
-                                                <a href="#">
-                                                    <div class="notif-img">
-                                                        <img
-                                                            src="assets/img/jm_denis.jpg"
-                                                            alt="Img Profile" />
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="subject">Jimmy Denis</span>
-                                                        <span class="block"> How are you ? </span>
-                                                        <span class="time">5 minutes ago</span>
-                                                    </div>
-                                                </a>
-                                                <a href="#">
+                                                <?php if (!empty($headerMessages)): ?>
+                                                    <?php foreach ($headerMessages as $msg): ?>
+                                                        <a href="<?= base_url('admin/contact?message_id=' . $msg['msg_id']) ?>">
+                                                            <div class="notif-img">
+                                                                <img src="assets/img/default-user.png" alt="Img Profile" />
+                                                                <?php
+                                                                $messageStatus = trim((string) ($msg['status'] ?? ''));
+                                                                ?>
+                                                                <?php if ($messageStatus === '' || $messageStatus === 'new'): ?>
+                                                                    <span class="status-indicator bg-danger"></span>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                            <div class="notif-content">
+                                                                <span class="subject"><?= esc($msg['email']) ?></span>
+                                                                <span class="block"><?= esc($msg['msg']) ?></span>
+                                                                <span class="time">
+                                                                    <?= timeAgo($msg['created_date']) ?>
+                                                                </span>
+                                                            </div>
+                                                        </a>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <p>No messages yet.</p>
+                                                <?php endif; ?>
+                                                <!-- <a href="#">
                                                     <div class="notif-img">
                                                         <img
                                                             src="assets/img/chadengle.jpg"
                                                             alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
-                                                        <span class="subject">Chad</span>
-                                                        <span class="block"> Ok, Thanks ! </span>
+                                                        <span class="subject">Chad</span> -->
+                                                <!-- <span class="block"> Ok, Thanks ! </span>
                                                         <span class="time">12 minutes ago</span>
                                                     </div>
                                                 </a>
@@ -702,16 +781,45 @@
                                                         <span class="block"> Hi, Apa Kabar ? </span>
                                                         <span class="time">17 minutes ago</span>
                                                     </div>
-                                                </a>
+                                                </a> -->
                                             </div>
                                         </div>
                                     </li>
                                     <li>
-                                        <a class="see-all" href="javascript:void(0);">See all messages<i class="fa fa-angle-right"></i>
+                                        <a class="see-all" href="<?= base_url('admin/contact') ?>">See all messages<i class="fa fa-angle-right"></i>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const markAllLink = document.getElementById('markAllMessagesRead');
+                                    if (!markAllLink) {
+                                        return;
+                                    }
+
+                                    markAllLink.addEventListener('click', function(event) {
+                                        event.preventDefault();
+
+                                        fetch('<?= base_url('admin/markAllMessagesRead') ?>', {
+                                            method: 'POST',
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest'
+                                            }
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                document.querySelectorAll('.status-indicator').forEach(el => el.remove());
+                                                const countBadge = document.querySelector('#messageDropdown .notification');
+                                                if (countBadge) {
+                                                    countBadge.remove();
+                                                }
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
                             <li class="nav-item topbar-icon dropdown hidden-caret">
                                 <a
                                     class="nav-link dropdown-toggle"
@@ -802,7 +910,7 @@
                                     <div class="quick-actions-scroll scrollbar-outer">
                                         <div class="quick-actions-items">
                                             <div class="row m-0">
-                                                <a class="col-6 col-md-4 p-0" href="#">
+                                                <a class="col-6 col-md-4 p-0" href="<?= base_url('/admin/calendar'); ?>">
                                                     <div class="quick-actions-item" style="color: #000;">
                                                         <div class="avatar-item bg-danger rounded-circle">
                                                             <i class="far fa-calendar-alt"></i>
@@ -819,7 +927,7 @@
                                                         <span class="text">Booking Page</span>
                                                     </div>
                                                 </a>
-                                                <a class="col-6 col-md-4 p-0" href="#">
+                                                <a class="col-6 col-md-4 p-0" href="<?= base_url('/report') ?>">
                                                     <div class="quick-actions-item" style="color: #000;">
                                                         <div class="avatar-item bg-info rounded-circle">
                                                             <i class="fas fa-file-excel"></i>

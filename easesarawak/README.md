@@ -1,68 +1,229 @@
-# CodeIgniter 4 Application Starter
+# EASE Sarawak — Computing Technology Final Year Project
 
-## What is CodeIgniter?
+A booking and delivery management system for Sarawak, built with CodeIgniter 4. Features customer booking, Stripe payment processing, and an admin portal for order, user, promo code, service, and revenue management.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+---
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Created by:
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+* Benjamin Hii
+* Lim Zi Yang
+* Aung Zin Htet
+* Jostin Chok Yaw Seng
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+---
 
-## Installation & updates
+## Requirements
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+| Dependency | Version |
+|------------|---------|
+| PHP | >= 8.1 |
+| MySQL | >= 5.7 |
+| XAMPP | >= 8.1 |
+| Composer | >= 2.x |
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+---
 
-## Setup
+## Project Setup
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+### 1. Clone the repository
 
-## Important Change with index.php
+Place the project inside your XAMPP `htdocs` directory:
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+```
+C:\xampp\htdocs\New\FYP-EASE-Sarawak\easesarawak\
+```
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+### 2. Install dependencies
 
-**Please** read the user guide for a better explanation of how CI4 works!
+Open a terminal inside the project root and run:
 
-## Repository Management
+```bash
+composer install
+```
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+### 3. Set up the environment file
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+Copy the example env file and rename it:
 
-## Server Requirements
+```bash
+cp env .env
+```
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+Open `.env` and configure the following:
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+```ini
+CI_ENVIRONMENT = development
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+app.baseURL = 'http://easesarawak.fyp/'
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+database.default.hostname = localhost
+database.default.database = easesarawak
+database.default.username = root
+database.default.password =
+database.default.DBDriver = MySQLi
+database.default.port     = 3306
+```
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+### 4. Create the database
+
+Open **phpMyAdmin** (`http://localhost/phpmyadmin`) and create a database named:
+
+```
+easesarawak
+```
+
+Then run the migrations:
+
+```bash
+php spark migrate
+```
+
+### 5. Configure Stripe (optional, for payments)
+
+Add your Stripe secret key to `.env`:
+
+```ini
+STRIPE_SECRET_KEY = sk_test_your_key_here
+STRIPE_WEBHOOK_SECRET = whsec_your_secret_here
+```
+
+---
+
+## Custom Local Domain Setup (`easesarawak.fyp`)
+
+To access the project at `http://easesarawak.fyp/` instead of `http://localhost/New/FYP-EASE-Sarawak/easesarawak/public/`, follow these steps.
+
+### Step 1 — Edit the Windows hosts file
+
+Open **Notepad as Administrator** and open the file:
+
+```
+C:\Windows\System32\drivers\etc\hosts
+```
+
+Add the following line at the bottom:
+
+```
+127.0.0.1   easesarawak.fyp
+```
+
+Save and close the file.
+
+### Step 2 — Enable Apache Virtual Hosts
+
+Open:
+
+```
+C:\xampp\apache\conf\httpd.conf
+```
+
+Find and uncomment this line (remove the `#`):
+
+```apache
+# Include conf/extra/httpd-vhosts.conf
+```
+
+It should look like:
+
+```apache
+Include conf/extra/httpd-vhosts.conf
+```
+
+### Step 3 — Add the Virtual Host
+
+Open:
+
+```
+C:\xampp\apache\conf\extra\httpd-vhosts.conf
+```
+
+Add the following block at the bottom:
+
+```apache
+<VirtualHost *:80>
+    DocumentRoot "C:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/public"
+    ServerName easesarawak.fyp
+    <Directory "C:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/public">
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+> If you still need the default `localhost` to work for other projects, also add this block:
+>
+> ```apache
+> <VirtualHost *:80>
+>     DocumentRoot "C:/xampp/htdocs"
+>     ServerName localhost
+> </VirtualHost>
+> ```
+
+### Step 4 — Update CodeIgniter base URL
+
+In your `.env` file, set:
+
+```ini
+app.baseURL = 'http://easesarawak.fyp/'
+```
+
+### Step 5 — Restart Apache
+
+Open the **XAMPP Control Panel** and click **Stop** then **Start** on Apache.
+
+### Step 6 — Verify
+
+Open your browser and go to:
+
+```
+http://easesarawak.fyp/
+```
+
+You should see the EASE Sarawak homepage.
+
+---
+
+## Project Structure
+
+```
+easesarawak/
+├── app/
+│   ├── Config/             # App, database, routes, filters configuration
+│   ├── Controllers/        # Admin, Home, Login, CardPayment, Profile, etc.
+│   ├── Database/           # Migrations and seeds
+│   ├── Filters/            # Auth and admin access filters
+│   ├── Helpers/            # Custom helper functions
+│   ├── Models/             # OrderModel, UserModel, PaymentModel, etc.
+│   └── Views/              # Booking, admin, auth, email templates
+├── public/                 # Web root (point Apache DocumentRoot here)
+│   └── assets/             # CSS, JS, images, fonts
+├── tests/                  # PHPUnit tests (unit, database, session)
+├── vendor/                 # Composer dependencies
+├── writable/               # Cache, logs, sessions, uploads
+├── .env                    # Environment configuration (not committed)
+├── env                     # Environment template
+└── composer.json
+```
+
+---
+
+## Key Routes
+
+| Method | URL | Description |
+|--------|-----|-------------|
+| GET | `/` | Homepage |
+| GET | `/booking` | Booking page |
+| GET/POST | `/payment` | Payment page (Stripe) |
+| GET | `/login` | Login page |
+| GET/POST | `/forgot_password` | Forgot password |
+| GET | `/admin` | Admin dashboard |
+| GET | `/order` | Admin — orders |
+| GET | `/user` | Admin — users |
+| GET | `/report` | Admin — revenue report |
+| GET | `/report/export` | Export revenue CSV |
+| GET | `/admin/promo_code` | Admin — promo codes |
+| GET | `/admin/service_management` | Admin — service pricing |
+
+---
