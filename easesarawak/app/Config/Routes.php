@@ -76,3 +76,7 @@ $routes->get('language/(:segment)', 'LanguageController::change/$1');
 $routes->get('/transaction_history', 'Admin::transaction_history');
 $routes->get('order_activity_log/(:num)', 'Admin::order_activity_log/$1');
 
+// AI Chat assistant
+$routes->post('/admin/ai-chat', 'AiChat::chat');
+$routes->delete('/admin/ai-chat/clear', 'AiChat::clearHistory');
+
