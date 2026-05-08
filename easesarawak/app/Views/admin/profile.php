@@ -1,99 +1,139 @@
 <?= $this->include('admin/header'); ?>
 
-<div class="container">
-    <div class="page-inner">
-        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-                <h2 class="fw-bold mb-3">My Profile</h2>
+<link rel="stylesheet" href="<?= base_url('assets/css/admin/report.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/admin/profile.css') ?>">
+
+<div class="rpt-page container-fluid py-3">
+
+    <!-- ── Page Header ── -->
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+        <div>
+            <h3 class="fw-bold mb-0 rpt-h3">My Profile</h3>
+            <ul class="breadcrumbs mb-0">
+                <li class="nav-home"><a href="<?= base_url('/admin/dashboard') ?>"><i class="fa fa-home"></i></a></li>
+                <li class="separator"><i class="fa fa-angle-right"></i></li>
+                <li class="nav-item">Profile</li>
+            </ul>
+        </div>
+    </div>
+
+    <?php if (session()->getFlashdata('success')): ?>
+        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+            <?= session()->getFlashdata('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
+
+    <!-- ── Main Layout ── -->
+    <div class="row g-3 align-items-stretch">
+
+        <!-- Left: Profile Overview -->
+        <div class="col-lg-8 col-md-7 d-flex">
+            <div class="rpt-card prof-card w-100">
+                <div class="rpt-card-header">
+                    <span class="rpt-title"><i class="fas fa-user me-2"></i>Profile Overview</span>
+                </div>
+                <div class="card-body prof-card-body d-flex flex-column">
+                    <div class="prof-overview d-flex flex-column flex-sm-row align-items-center align-items-sm-start">
+                        <!-- Avatar with Edit Overlay -->
+                        <div class="prof-avatar-wrap me-sm-4 mb-3 mb-sm-0 flex-shrink-0">
+                            <img
+                                src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
+                                alt="Profile Picture"
+                                class="prof-avatar">
+                            <a href="<?= base_url('/edit_profile/' . $user['user_id']) ?>"
+                               class="prof-avatar-edit"
+                               title="Edit Profile Picture"
+                               aria-label="Edit Profile Picture">
+                                <i class="fas fa-camera"></i>
+                            </a>
+                        </div>
+
+                        <!-- User Details -->
+                        <div class="prof-details flex-grow-1 w-100">
+                            <div class="prof-name text-center text-sm-start"><?= esc($user['username']) ?></div>
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <div class="prof-info-row">
+                                        <span class="prof-info-label">Role</span>
+                                        <?php
+                                            $role       = $user['role'] == '1' ? 'Super Admin' : 'Admin';
+                                            $badgeClass = $user['role'] == '1' ? 'prof-badge-super' : 'prof-badge-admin';
+                                        ?>
+                                        <span><span class="prof-badge <?= $badgeClass ?>"><?= esc($role) ?></span></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="prof-info-row">
+                                        <span class="prof-info-label">Email</span>
+                                        <span class="prof-info-value text-truncate"><?= esc($user['email']) ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="prof-info-row">
+                                        <span class="prof-info-label">Password</span>
+                                        <span class="prof-info-value">••••••••</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="prof-info-row">
+                                        <span class="prof-info-label">Username</span>
+                                        <span class="prof-info-value"><?= esc($user['username']) ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Button -->
+                    <div class="prof-actions mt-auto">
+                        <hr class="prof-divider">
+                        <a href="<?= base_url('/edit_profile/' . $user['user_id']) ?>" class="btn rpt-export-btn">
+                            <i class="fas fa-edit me-1"></i> Edit Profile
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        <?php if (session()->getFlashdata('success')): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?= session()->getFlashdata('success') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <?php endif; ?>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-round">
-                    <div class="card-body">
-                        <div class="d-flex flex-column flex-md-row align-items-center">
-                            <!-- Profile Picture -->
-                            <div class="me-md-5 mb-4 mb-md-0">
-                                <img
-                                    src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
-                                    alt="Profile Picture"
-                                    class="avatar-img rounded-circle"
-                                    style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                            </div>
+        <!-- Right: Account Info + Security stacked -->
+        <div class="col-lg-4 col-md-5 d-flex">
+            <div class="prof-side-stack d-flex flex-column gap-3 w-100">
+                <div class="rpt-card prof-card flex-fill">
+                    <div class="rpt-card-header">
+                        <span class="rpt-title"><i class="fas fa-info-circle me-2"></i>Account Information</span>
+                    </div>
+                    <div class="card-body prof-card-body prof-info-body">
+                        <div class="prof-info-row mb-3">
+                            <span class="prof-info-label">Member Since</span>
+                            <span class="prof-info-value"><?= date('d M Y', strtotime($user['created_date'])) ?></span>
+                        </div>
+                        <hr class="prof-divider">
+                        <div class="prof-info-row mb-2">
+                            <span class="prof-info-label">Account Status</span>
+                            <span><span class="prof-badge prof-badge-active">Active</span></span>
+                        </div>
+                    </div>
+                </div>
 
-                            <!-- User Details -->
-                            <div class="flex-grow-1">
-                                <h4 class="mb-3"><b><?= esc($user['username']) ?></b></h4>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <p class="text-muted mb-1"><strong>Role:</strong></p>
-                                        <p class="mb-3">
-                                            <?php
-                                            $role = $user['role'] == '1' ? 'Super Admin' : 'Admin';
-                                            $badgeClass = $user['role'] == '1' ? 'badge-success' : 'badge-primary';
-                                            ?>
-                                            <span class="badge <?= $badgeClass ?>"><?= esc($role) ?></span>
-                                        </p>
-
-                                        <p class="text-muted mb-1"><strong>Email:</strong></p>
-                                        <p class="mb-3"><?= esc($user['email']) ?></p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p class="text-muted mb-1"><strong>Password:</strong></p>
-                                        <p class="mb-3">••••••••</p>
-                                    </div>
-                                </div>
-
-                                <!-- Edit Button -->
-                                <div class="mt-4">
-                                    <a href="<?= base_url('/edit_profile/' . $user['user_id']) ?>" class="btn btn-round" style="background: #f2be00df;">
-                                        <i class="fas fa-edit"></i> Edit Profile
-                                    </a>
-                                </div>
-                            </div>
+                <div class="rpt-card prof-card flex-fill">
+                    <div class="rpt-card-header">
+                        <span class="rpt-title"><i class="fas fa-shield-alt me-2"></i>Security</span>
+                    </div>
+                    <div class="card-body prof-card-body d-flex flex-column">
+                        <p class="prof-security-text">Keep your account secure by regularly updating your password.</p>
+                        <div class="mt-auto">
+                            <a href="<?= base_url('/change_password') ?>" class="btn rpt-export-btn">
+                                <i class="fas fa-key me-1"></i> Change Password
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Optional: Additional Info Cards -->
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <div class="card card-round">
-                    <div class="card-header">
-                        <h5 class="card-title">Account Information</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li><strong>User Since:</strong> <?= date('d M Y', strtotime($user['created_date'])) ?></li>
-                            <li><strong>Account Status:</strong> <span class="badge badge-success">Active</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card card-round">
-                    <div class="card-header">
-                        <h5 class="card-title">Security</h5>
-                    </div>
-                    <div class="card-body">
-                        <p>Keep your account secure by regularly updating your password.</p>
-                        <a href="<?= base_url('/change_password') ?>" class="btn btn-round" style="background: #f2be00df;">
-                            <i class="fas fa-key"></i> Change Password
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+
 </div>
 
 <?= $this->include('admin/footer'); ?>

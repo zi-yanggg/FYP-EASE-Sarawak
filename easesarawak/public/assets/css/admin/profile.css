@@ -1,0 +1,381 @@
+/* ============================================================
+   EASE Sarawak — Profile Page Styles (Report Theme)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oxanium:wght@400;500;600;700;800&display=swap');
+
+/* ── Profile Avatar Wrapper (for edit overlay) ── */
+.prof-avatar-wrap {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: inline-block;
+}
+
+/* ── Profile Avatar ── */
+.prof-avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    box-shadow: 0 4px 20px rgba(242, 190, 0, 0.28);
+    display: block;
+}
+
+/* ── Avatar Edit Button Overlay ── */
+.prof-avatar-edit {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #111;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--bg-card, #fff);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    text-decoration: none;
+    transition: background .2s ease, color .2s ease, transform .2s ease;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.prof-avatar-edit:hover,
+.prof-avatar-edit:focus {
+    background: var(--gold-dark, #c89a00);
+    color: #fff;
+    transform: scale(1.06);
+    outline: none;
+    text-decoration: none;
+}
+
+.prof-avatar-edit i {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+/* ── Name ── */
+.prof-name {
+    font-family: 'Oxanium', sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    word-break: break-word;
+}
+
+/* ── Field label / value pair ── */
+.prof-info-label {
+    font-size: .66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .9px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+}
+
+.prof-info-value {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* ── Badges ── */
+.prof-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: var(--radius-pill);
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    font-family: 'Oxanium', sans-serif;
+}
+
+.prof-badge-super {
+    background: var(--gold);
+    color: #111;
+}
+
+.prof-badge-admin {
+    background: var(--bg-muted);
+    color: var(--text-mid);
+    border: 1px solid var(--border-soft);
+}
+
+.prof-badge-active {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+/* ── Info row (label + value stacked) ── */
+.prof-info-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+/* ── Security text ── */
+.prof-security-text {
+    font-size: .9rem;
+    color: var(--text-mid);
+    margin-bottom: 1.25rem;
+    line-height: 1.55;
+}
+
+/* ── Divider between info fields ── */
+.prof-divider {
+    border: none;
+    border-top: 1px solid var(--border-soft);
+    margin: 12px 0;
+}
+
+/* ── Override card-body padding inside rpt-card ── */
+.rpt-card .card-body,
+.prof-card-body {
+    padding: 1.5rem;
+}
+
+/* Slightly larger bottom padding for compact info-only cards (e.g. Account Information)
+   so the last row doesn't sit flush against the bottom edge. */
+.rpt-card .card-body.prof-info-body,
+.prof-card-body.prof-info-body {
+    padding-bottom: 1.85rem;
+}
+
+/* ── Card / column consistency ── */
+.prof-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.prof-card-body {
+    flex: 1 1 auto;
+}
+
+.prof-side-stack {
+    height: 100%;
+    min-height: 100%;
+}
+
+.prof-side-stack > .rpt-card {
+    flex: 1 1 0;
+    min-height: 0;
+}
+
+/* ── Profile Overview block: align avatar + details ── */
+.prof-overview {
+    margin-bottom: 1.5rem;
+    gap: 1.25rem;
+}
+
+.prof-details {
+    min-width: 0; /* prevent flex overflow on long emails */
+}
+
+.prof-details .prof-info-value.text-truncate {
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: bottom;
+}
+
+/* ── Action row anchored to bottom of card ── */
+.prof-actions {
+    padding-top: .25rem;
+}
+
+/* ── Responsive: stack avatar above details on small screens ── */
+@media (max-width: 575.98px) {
+    .prof-avatar-wrap {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .prof-overview {
+        text-align: center;
+    }
+    .prof-overview .prof-info-row {
+        align-items: flex-start;
+    }
+}
+
+/* ============================================================
+   EDIT PROFILE — Form Theme (matches Reports/Revenue)
+   ============================================================ */
+
+/* Form field label */
+.prof-form-label {
+    display: block;
+    font-family: 'Oxanium', sans-serif;
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .9px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+}
+
+/* Help / hint text under inputs */
+.prof-form-help {
+    display: block;
+    font-size: .72rem;
+    color: var(--text-light);
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+/* Make rpt-input behave naturally inside the form (slightly taller) */
+.rpt-page .form-control.rpt-input {
+    width: 100%;
+    padding: 9px 14px;
+    min-height: 42px;
+    font-size: .9rem;
+    font-weight: 500;
+}
+
+.rpt-page .form-control.rpt-input:disabled,
+.rpt-page .form-control.rpt-input[readonly] {
+    background: var(--bg-muted) !important;
+    color: var(--text-mid) !important;
+    cursor: not-allowed;
+    opacity: .85;
+}
+
+/* Cancel / secondary button — matches rpt-export-btn shape (square inside .rpt-page) */
+.rpt-cancel-btn {
+    background: var(--bg-muted);
+    color: var(--text-mid);
+    border: 1px solid var(--border-soft);
+    border-radius: 0;
+    font-size: .84rem;
+    font-weight: 700;
+    padding: 8px 18px;
+    min-height: 38px;
+    transition: background .2s, color .2s, border-color .2s;
+    white-space: nowrap;
+}
+
+/* Match the .rpt-page flatten rule applied to rpt-export-btn et al. */
+.rpt-page .rpt-cancel-btn {
+    border-radius: 0 !important;
+}
+
+.rpt-cancel-btn:hover,
+.rpt-cancel-btn:focus {
+    background: #e9eaec;
+    color: var(--text-dark);
+    border-color: var(--text-light);
+    outline: none;
+    text-decoration: none;
+}
+
+/* Edit-page profile picture card — center the avatar overlay nicely */
+.prof-avatar-wrap label.prof-avatar-edit {
+    cursor: pointer;
+}
+
+/* ============================================================
+   CHANGE PASSWORD — Security Side Card
+   ============================================================ */
+
+.prof-security-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--gold-muted, rgba(242, 190, 0, 0.18));
+    color: var(--gold);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    align-self: flex-start;
+}
+
+.prof-security-heading {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0 0 .35rem;
+}
+
+.prof-tips-label {
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .9px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+.prof-tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.prof-tips-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: .85rem;
+    color: var(--text-mid);
+    line-height: 1.55;
+    padding: 4px 0;
+}
+
+.prof-tips-list li i {
+    color: var(--gold);
+    font-size: .85rem;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   CHANGE PASSWORD — Password Input Group with Toggle
+   ============================================================ */
+
+.prof-pass-group {
+    position: relative;
+    display: block;
+}
+
+.prof-pass-group .form-control.rpt-input {
+    padding-right: 46px; /* room for the eye toggle */
+}
+
+.prof-pass-toggle {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-mid);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+    padding: 0;
+    z-index: 2;
+}
+
+.prof-pass-toggle:hover,
+.prof-pass-toggle:focus {
+    background: var(--bg-muted);
+    color: var(--gold-dark, #d4a700);
+    outline: none;
+}
+
+.prof-pass-toggle i {
+    font-size: .9rem;
+    line-height: 1;
+}
