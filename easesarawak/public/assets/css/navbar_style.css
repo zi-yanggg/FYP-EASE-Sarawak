@@ -75,7 +75,7 @@
 }
 
 .navbar .btn:hover {
-    background: #000000ff;
+    background: #f2be00 !important;
 }
 
 /* Desktop menu */
@@ -154,8 +154,8 @@
 }
 
 /* Active menu item highlight */
-.navbar a.active,
-.mobile-menu a.active {
+.navbar a.active:not(.btn),
+.mobile-menu a.active:not(.btn) {
     color: #f2be00 !important;
     font-weight: bold;
 }
@@ -171,8 +171,8 @@
 /* Book Now button when active */
 .navbar .btn.active,
 .mobile-menu .btn.active {
-    background: #000;
-    color: #f2be00;
+    background: #f2be00 !important;
+    color: #fff !important;
     box-shadow: 0 0 0 2px #f2be00;
 }
 

@@ -65,6 +65,7 @@
             flex: 1;
             min-width: 400px;
             height: 900px;
+            height: auto;
         }
 
         /* Booking summary section styles */
