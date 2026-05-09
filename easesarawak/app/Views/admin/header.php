@@ -715,10 +715,6 @@ function timeAgo($datetime)
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
-                                        <a class="see-all" href="<?= base_url('admin/contact') ?>">See all notifications<i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </li>
                                 </ul>
                             </li>
                             <script>
