@@ -867,30 +867,39 @@
         }
 
         /* Force selected/current tab colors over Kaiadmin defaults. */
-        .sidebar .nav > .nav-item.active > a,
-        .sidebar .nav > .nav-item > a[data-toggle="collapse"][aria-expanded="true"],
-        .sidebar .nav .nav-collapse li.active > a {
+        .wrapper:not(.sidebar_minimize) .sidebar .nav > .nav-item.active > a,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav > .nav-item > a[data-toggle="collapse"][aria-expanded="true"],
+        .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-collapse li.active > a {
             background: #ffd24d;
             color: #2b2200;
         }
 
         /* Keep selected/current sidebar tab yellow across theme variants. */
-        .wrapper .sidebar .nav.nav-secondary > .nav-item.active > a,
-        .wrapper .sidebar .nav.nav-secondary > .nav-item > a[aria-expanded="true"],
-        .wrapper .sidebar[data-background-color="white"] .nav.nav-secondary > .nav-item.active > a,
-        .wrapper .sidebar[data-background-color="white"] .nav.nav-secondary > .nav-item > a[aria-expanded="true"],
-        .wrapper .sidebar .nav.nav-secondary > .nav-item .nav-collapse li.active > a {
+        .wrapper:not(.sidebar_minimize) .sidebar .nav.nav-secondary > .nav-item.active > a,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav.nav-secondary > .nav-item > a[aria-expanded="true"],
+        .wrapper:not(.sidebar_minimize) .sidebar[data-background-color="white"] .nav.nav-secondary > .nav-item.active > a,
+        .wrapper:not(.sidebar_minimize) .sidebar[data-background-color="white"] .nav.nav-secondary > .nav-item > a[aria-expanded="true"],
+        .wrapper:not(.sidebar_minimize) .sidebar .nav.nav-secondary > .nav-item .nav-collapse li.active > a {
             background: #ffd24d;
             color: #2b2200;
             border-radius: 0;
         }
 
-        .sidebar .nav > .nav-item.active > a i,
-        .sidebar .nav > .nav-item.active > a p,
-        .sidebar .nav > .nav-item > a[data-toggle="collapse"][aria-expanded="true"] i,
-        .sidebar .nav > .nav-item > a[data-toggle="collapse"][aria-expanded="true"] p,
-        .sidebar .nav .nav-collapse li.active > a .sub-item,
-        .sidebar .nav .nav-collapse li.active > a i {
+        /* Keep yellow tab highlight from touching the sidebar border line. */
+        .wrapper:not(.sidebar_minimize) .sidebar .nav.nav-secondary > .nav-item > a:hover,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav.nav-secondary > .nav-item > a:focus,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav.nav-secondary > .nav-item.active > a,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav.nav-secondary > .nav-item > a[aria-expanded="true"],
+        .wrapper:not(.sidebar_minimize) .sidebar .nav.nav-secondary > .nav-item .nav-collapse li.active > a {
+            margin-right: 3px;
+        }
+
+        .wrapper:not(.sidebar_minimize) .sidebar .nav > .nav-item.active > a i,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav > .nav-item.active > a p,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav > .nav-item > a[data-toggle="collapse"][aria-expanded="true"] i,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav > .nav-item > a[data-toggle="collapse"][aria-expanded="true"] p,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-collapse li.active > a .sub-item,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-collapse li.active > a i {
             color: #2b2200;
         }
 
@@ -1015,11 +1024,11 @@
         /* Expanded sidebar: compact tab layout and override Kaiadmin spacing. */
         .wrapper:not(.sidebar_minimize) .sidebar .nav > .nav-item > a,
         .wrapper:not(.sidebar_minimize) .sidebar .nav.nav-secondary > .nav-item > a {
-            padding-top: 3px;
-            padding-bottom: 3px;
+            padding-top: 2px;
+            padding-bottom: 2px;
             padding-left: 12px;
             padding-right: 8px;
-            min-height: 28px;
+            min-height: 27px;
             gap: 6px;
             line-height: 1.1;
         }
@@ -1036,8 +1045,14 @@
             font-size: 0.9rem;
         }
 
+        .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-item.active > a > i,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-item > a[aria-expanded="true"] > i,
+        .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-collapse li.active > a > i {
+            color: var(--ease-sidebar-icon-purple);
+        }
+
         .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-item > a > p {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             line-height: 1.1;
             padding-left: 12px;
         }
@@ -1049,9 +1064,10 @@
         }
 
         .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-section .text-section {
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             line-height: 1.2;
             letter-spacing: 0.1em;
+            opacity: 0.78;
         }
 
         .wrapper:not(.sidebar_minimize) .sidebar-darkmode-wrap {
@@ -1676,12 +1692,18 @@
 
         .sidebar_minimize .sidebar .nav .nav-item > a > i,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a > i {
-            width: 24px ;
-            min-width: 24px ;
+            width: 42px ;
+            min-width: 42px ;
+            height: 42px ;
             margin: 0 auto ;
             text-align: center ;
-            font-size: 1rem ;
+            font-size: 1.05rem ;
             color: #6b7280 ;
+            display: inline-flex ;
+            align-items: center ;
+            justify-content: center ;
+            background: transparent ;
+            border-radius: 0 ;
         }
 
         /* Suppress hover/focus visual changes that move or recolor things;
@@ -1702,12 +1724,16 @@
         .sidebar_minimize .sidebar .sidebar-wrapper .nav-item > a:focus > i {
             color: var(--ease-sidebar-icon-purple) ;
             transform: none ;
+            background: #ffd24d ;
+            border-radius: 0 ;
         }
 
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item > a:hover > i,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item > a:focus > i {
             color: var(--ease-sidebar-icon-purple) ;
             transform: none ;
+            background: #ffd24d ;
+            border-radius: 0 ;
         }
 
         /* Keep minimized sidebar from expanding on container hover. */
@@ -1738,8 +1764,7 @@
 
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a .badge,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a span,
-        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a .caret,
-        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a p {
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a .caret {
             display: none ;
         }
 
@@ -1756,14 +1781,14 @@
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item.active > a > i,
         .sidebar_minimize .sidebar .nav .nav-item > a[aria-expanded="true"] > i,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"] > i {
-            width: 40px ;
-            min-width: 40px ;
-            height: 40px ;
+            width: 42px ;
+            min-width: 42px ;
+            height: 42px ;
             display: inline-flex ;
             align-items: center ;
             justify-content: center ;
             background: #ffd24d ;
-            color: #2b2200 ;
+            color: var(--ease-sidebar-icon-purple) ;
             border-radius: 0 ;
             font-size: 1.05rem ;
         }
@@ -1777,6 +1802,29 @@
         .sidebar_minimize .sidebar .nav .nav-item > a[aria-expanded="true"]:focus > i,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"]:hover > i,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"]:focus > i {
+            color: var(--ease-sidebar-icon-purple) ;
+        }
+
+        /* Final lock for minimized icon colors:
+           - selected/current icon stays purple at all times
+           - non-selected icons stay neutral unless their own item is hovered */
+        .wrapper.sidebar_minimize .sidebar .nav .nav-item > a > i,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a > i {
+            color: #6b7280 ;
+        }
+
+        .wrapper.sidebar_minimize .sidebar .nav .nav-item.active > a > i,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item.active > a > i,
+        .wrapper.sidebar_minimize .sidebar .nav .nav-item > a[aria-expanded="true"] > i,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"] > i,
+        .wrapper.sidebar_minimize .sidebar .nav .nav-item.active:hover > a > i,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item.active:hover > a > i,
+        .wrapper.sidebar_minimize .sidebar .nav .nav-item > a[aria-expanded="true"]:hover > i,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"]:hover > i,
+        .wrapper.sidebar_minimize .sidebar:hover .nav .nav-item.active > a > i,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .nav .nav-item.active > a > i,
+        .wrapper.sidebar_minimize .sidebar:hover .nav .nav-item > a[aria-expanded="true"] > i,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .nav .nav-item > a[aria-expanded="true"] > i {
             color: var(--ease-sidebar-icon-purple) ;
         }
 
@@ -1820,6 +1868,21 @@
             pointer-events: none ;
             transition: none ;     /* instant: no flash on minimize */
             display: block ;
+        }
+
+        /* Keep tooltip-chip behavior restricted to minimized sidebar states. */
+        .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-item > a > p {
+            position: static ;
+            left: auto ;
+            top: auto ;
+            transform: none ;
+            visibility: visible ;
+            opacity: 1 ;
+            background: transparent ;
+            box-shadow: none ;
+            pointer-events: auto ;
+            white-space: normal ;
+            z-index: auto ;
         }
 
         .sidebar_minimize .sidebar .nav .nav-item:hover > a > p,
