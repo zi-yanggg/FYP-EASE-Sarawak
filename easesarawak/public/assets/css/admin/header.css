@@ -100,46 +100,46 @@
 
         /* Color sets */
         .bg-a {
-            background-color: #5B532C !important;
+            background-color: #5B532C ;
         }
 
         .bg-b {
-            background-color: #47421f !important;
+            background-color: #47421f ;
         }
 
         .bg-c {
-            background-color: #51cf66 !important;
+            background-color: #51cf66 ;
         }
 
         .bg-d {
-            background-color: #845ef7 !important;
+            background-color: #845ef7 ;
         }
 
         .bg-e {
-            background-color: #ffa94d !important;
+            background-color: #ffa94d ;
         }
 
         .icon-visitor {
-            background-color: #f2be00 !important;
-            color: #111 !important;     /* dark glyph on gold â€” best contrast */
+            background-color: #f2be00 ;
+            color: #111 ;     /* dark glyph on gold â€” best contrast */
             border-radius: 10px;
         }
 
         .icon-admin {
-            background-color: #900707ff !important;
-            color: #fff !important;
+            background-color: #900707ff ;
+            color: #fff ;
             border-radius: 10px;
         }
 
         .icon-sales {
-            background-color: #84994F !important;
-            color: #fff !important;
+            background-color: #84994F ;
+            color: #fff ;
             border-radius: 10px;
         }
 
         .icon-order {
-            background-color: #A18D6D !important;
-            color: #fff !important;
+            background-color: #A18D6D ;
+            color: #fff ;
             border-radius: 10px;
         }
 
@@ -187,33 +187,33 @@
         body.dark-mode .sidebar,
         body.dark-mode .main-header,
         body.dark-mode .main-panel {
-            background-color: #242526 !important;
-            color: #e4e6eb !important;
+            background-color: #242526 ;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .table,
         body.dark-mode .table th,
         body.dark-mode .table td {
-            background-color: #242526 !important;
-            color: #e4e6eb !important;
-            border-color: #3a3b3c !important;
+            background-color: #242526 ;
+            color: #e4e6eb ;
+            border-color: #3a3b3c ;
         }
 
         body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > * {
-            background-color: #2d2e2f !important;
-            color: #e4e6eb !important;
+            background-color: #2d2e2f ;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .table-hover > tbody > tr:hover > * {
-            background-color: #3a3b3c !important;
-            color: #fff !important;
+            background-color: #3a3b3c ;
+            color: #fff ;
         }
 
         body.dark-mode .table-light th,
         body.dark-mode .table-light td,
         body.dark-mode thead.table-light th {
-            background-color: #1e1f20 !important;
-            color: #e4e6eb !important;
+            background-color: #1e1f20 ;
+            color: #e4e6eb ;
         }
 
         body.dark-mode,
@@ -225,11 +225,11 @@
         body.dark-mode a:not(.btn),
         body.dark-mode .card-title,
         body.dark-mode .card-body {
-            color: #e4e6eb !important;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .text-muted {
-            color: #adb5bd !important;
+            color: #adb5bd ;
         }
 
         /* ============================================================
@@ -239,109 +239,109 @@
            ============================================================ */
         .sidebar-darkmode-toggle .form-check-input,
         .sidebar .sidebar-darkmode-toggle .form-check-input {
-            width: 2.4em !important;
-            height: 1.35em !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background-color: #9ca3af !important;       /* darker gray track (light mode, off) */
-            border: 1px solid #D4A700 !important;
-            box-shadow: none !important;
+            width: 2.4em ;
+            height: 1.35em ;
+            margin: 0 ;
+            padding: 0 ;
+            background-color: #9ca3af ;       /* darker gray track (light mode, off) */
+            border: 1px solid #D4A700 ;
+            box-shadow: none ;
             cursor: pointer;
             transition: background-color .25s ease, border-color .25s ease, box-shadow .25s ease;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") ;
         }
 
         .sidebar-darkmode-toggle .form-check-input:hover,
         .sidebar .sidebar-darkmode-toggle .form-check-input:hover {
-            background-color: #6b7280 !important;
-            border-color: #D4A700 !important;
-            box-shadow: 0 0 0 .2rem rgba(212, 167, 0, 0.3) !important;
+            background-color: #6b7280 ;
+            border-color: #D4A700 ;
+            box-shadow: 0 0 0 .2rem rgba(212, 167, 0, 0.3) ;
         }
 
         .sidebar-darkmode-toggle .form-check-input:focus,
         .sidebar .sidebar-darkmode-toggle .form-check-input:focus {
-            border-color: #D4A700 !important;
-            box-shadow: 0 0 0 .2rem rgba(242, 190, 0, 0.28) !important;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") !important;
+            border-color: #D4A700 ;
+            box-shadow: 0 0 0 .2rem rgba(242, 190, 0, 0.28) ;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") ;
         }
 
         .sidebar-darkmode-toggle .form-check-input:checked,
         .sidebar .sidebar-darkmode-toggle .form-check-input:checked {
-            background-color: #f2be00 !important;       /* gold track (on) */
-            border-color: #D4A700 !important;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") !important;
+            background-color: #f2be00 ;       /* gold track (on) */
+            border-color: #D4A700 ;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") ;
         }
 
         .sidebar-darkmode-toggle .form-check-input:checked:hover,
         .sidebar .sidebar-darkmode-toggle .form-check-input:checked:hover {
-            background-color: #d4a700 !important;
-            border-color: #D4A700 !important;
+            background-color: #d4a700 ;
+            border-color: #D4A700 ;
         }
 
         .sidebar-darkmode-toggle .form-check-input:checked:focus,
         .sidebar .sidebar-darkmode-toggle .form-check-input:checked:focus {
-            background-color: #f2be00 !important;
-            border-color: #D4A700 !important;
-            box-shadow: 0 0 0 .2rem rgba(242, 190, 0, 0.4) !important;
+            background-color: #f2be00 ;
+            border-color: #D4A700 ;
+            box-shadow: 0 0 0 .2rem rgba(242, 190, 0, 0.4) ;
         }
 
         /* Dark mode body â€” maintain the same gold-on-gold paradigm */
         body.dark-mode .sidebar-darkmode-toggle .form-check-input {
-            background-color: #4b5563 !important;
-            border-color: #D4A700 !important;
+            background-color: #4b5563 ;
+            border-color: #D4A700 ;
         }
 
         body.dark-mode .sidebar-darkmode-toggle .form-check-input:hover {
-            background-color: #6b7280 !important;
-            border-color: #D4A700 !important;
-            box-shadow: none !important;
+            background-color: #6b7280 ;
+            border-color: #D4A700 ;
+            box-shadow: none ;
         }
 
         body.dark-mode .sidebar-darkmode-toggle .form-check-input:checked {
-            background-color: #f2be00 !important;
-            border-color: #D4A700 !important;
+            background-color: #f2be00 ;
+            border-color: #D4A700 ;
         }
 
         body.dark-mode .sidebar-darkmode-toggle .form-check-input:focus {
-            border-color: #D4A700 !important;
-            box-shadow: 0 0 0 .2rem rgba(242, 190, 0, 0.32) !important;
+            border-color: #D4A700 ;
+            box-shadow: 0 0 0 .2rem rgba(242, 190, 0, 0.32) ;
         }
 
         .nav-pills.nav-secondary .nav-link.active,
         .nav-pills.nav-secondary .nav-link.active:hover,
         .nav-pills.nav-secondary .nav-link.active:focus {
-            background-color: #f2be00 !important;
-            color: #000 !important;
-            border: none !important;
-            box-shadow: none !important;
+            background-color: #f2be00 ;
+            color: #000 ;
+            border: none ;
+            box-shadow: none ;
         }
 
         .btn-secondary {
-            background-color: #f2be00 !important;
-            border-color: #f2be00 !important;
-            color: #000 !important;
+            background-color: #f2be00 ;
+            border-color: #f2be00 ;
+            color: #000 ;
         }
 
         .btn-secondary:hover {
-            background-color: #e6ac00 !important;
-            border-color: #e6ac00 !important;
-            color: #000 !important;
+            background-color: #e6ac00 ;
+            border-color: #e6ac00 ;
+            color: #000 ;
         }
 
         /* Revenue-page themed dropdown menus */
         .navbar .dropdown-menu,
         .main-header .dropdown-menu {
-            background: #ffffff !important;
-            border: 2px solid #000 !important;
-            box-shadow: 0 10px 30px rgba(47, 42, 18, 0.12) !important;
-            border-radius: 0 !important;
+            background: #ffffff ;
+            border: 2px solid #000 ;
+            box-shadow: 0 10px 30px rgba(47, 42, 18, 0.12) ;
+            border-radius: 0 ;
             overflow: hidden;
         }
 
         .main-header .quick-actions,
         .main-header .dropdown-menu.quick-actions {
-            border: 2px solid #000 !important;
-            border-radius: 0 !important;
+            border: 2px solid #000 ;
+            border-radius: 0 ;
             overflow: hidden;
         }
 
@@ -351,25 +351,25 @@
         }
 
         .main-header .quick-actions .quick-actions-header {
-            background: #f2be00 !important;
-            color: #1a1a1a !important;
-            border-bottom: 1px solid rgba(26, 26, 26, 0.12) !important;
+            background: #f2be00 ;
+            color: #1a1a1a ;
+            border-bottom: 1px solid rgba(26, 26, 26, 0.12) ;
         }
 
         .main-header .quick-actions .quick-actions-item {
-            color: #1a1a1a !important;
+            color: #1a1a1a ;
             border-radius: 10px;
             transition: background-color .18s ease, color .18s ease;
         }
 
         .main-header .quick-actions .quick-actions-item:hover {
-            background: #fdf3c6 !important;
-            color: #1a1a1a !important;
+            background: #fdf3c6 ;
+            color: #1a1a1a ;
         }
 
         .main-header .quick-actions .quick-actions-item .avatar-item {
-            background: #1a1a1a !important;
-            color: #f2be00 !important;
+            background: #1a1a1a ;
+            color: #f2be00 ;
         }
 
         /* Top navbar typography consistency */
@@ -378,7 +378,7 @@
         .main-header .navbar * ,
         .main-header .topbar-nav,
         .main-header .topbar-nav * {
-            font-family: 'Oxanium', sans-serif !important;
+            font-family: 'Oxanium', sans-serif ;
         }
 
         /* Keep icon fonts intact (do not override with Oxanium) */
@@ -388,23 +388,23 @@
         .main-header i.fab,
         .main-header [class^="fa-"],
         .main-header [class*=" fa-"] {
-            font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+            font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" ;
         }
 
         .main-header [class^="gg-"],
         .main-header [class*=" gg-"] {
-            font-family: initial !important;
+            font-family: initial ;
         }
 
         .main-header .bi {
-            font-family: "bootstrap-icons" !important;
+            font-family: "bootstrap-icons" ;
         }
 
         .navbar .dropdown-menu .dropdown-title,
         .main-header .dropdown-menu .dropdown-title {
-            background: #f2be00 !important;
-            color: #1a1a1a !important;
-            border-bottom: 1px solid rgba(26, 26, 26, 0.12) !important;
+            background: #f2be00 ;
+            color: #1a1a1a ;
+            border-bottom: 1px solid rgba(26, 26, 26, 0.12) ;
             font-weight: 700;
         }
 
@@ -412,7 +412,7 @@
         .main-header .dropdown-menu .dropdown-item,
         .navbar .dropdown-menu a,
         .main-header .dropdown-menu a {
-            color: #2f2a12 !important;
+            color: #2f2a12 ;
         }
 
         .navbar .dropdown-menu .dropdown-item:hover,
@@ -421,35 +421,126 @@
         .main-header .dropdown-menu .dropdown-item:focus,
         .navbar .dropdown-menu a:hover,
         .main-header .dropdown-menu a:hover {
-            background: #fdf3c6 !important;
-            color: #1a1a1a !important;
+            background: #fdf3c6 ;
+            color: #1a1a1a ;
         }
 
         .navbar .dropdown-menu .dropdown-divider,
         .main-header .dropdown-menu .dropdown-divider {
-            border-top-color: rgba(26, 26, 26, 0.12) !important;
+            border-top-color: rgba(26, 26, 26, 0.12) ;
         }
 
         .navbar .dropdown-menu .see-all,
         .main-header .dropdown-menu .see-all {
-            color: #1a1a1a !important;
+            color: #1a1a1a ;
             font-weight: 700;
         }
 
         .navbar .dropdown-menu .see-all:hover,
         .main-header .dropdown-menu .see-all:hover {
-            background: #fdf3c6 !important;
-            color: #1a1a1a !important;
+            background: #fdf3c6 ;
+            color: #1a1a1a ;
         }
 
         #markAllMessagesRead:hover,
         #markAllMessagesRead:focus,
         #clearAllNotifications:hover,
         #clearAllNotifications:focus {
-            background: transparent !important;
-            color: inherit !important;
-            text-decoration: none !important;
-            box-shadow: none !important;
+            background: transparent ;
+            color: inherit ;
+            text-decoration: none ;
+            box-shadow: none ;
+        }
+
+        /* Dark mode dropdown typography */
+        body.dark-mode .navbar .dropdown-menu .dropdown-item,
+        body.dark-mode .main-header .dropdown-menu .dropdown-item,
+        body.dark-mode .navbar .dropdown-menu a,
+        body.dark-mode .main-header .dropdown-menu a,
+        body.dark-mode .main-header .quick-actions .quick-actions-item,
+        body.dark-mode .navbar .dropdown-menu .see-all,
+        body.dark-mode .main-header .dropdown-menu .see-all {
+            color: #f3f4f6 ;
+        }
+
+        body.dark-mode .navbar .dropdown-menu,
+        body.dark-mode .main-header .dropdown-menu,
+        body.dark-mode .main-header .quick-actions,
+        body.dark-mode .main-header .dropdown-menu.quick-actions,
+        body.dark-mode .navbar .ease-user-dropdown,
+        body.dark-mode .main-header .dropdown-menu.ease-user-dropdown {
+            background: #111827 ;
+            border-color: #D4A700 ;
+        }
+
+        body.dark-mode .navbar .dropdown-menu .dropdown-item:hover,
+        body.dark-mode .navbar .dropdown-menu .dropdown-item:focus,
+        body.dark-mode .main-header .dropdown-menu .dropdown-item:hover,
+        body.dark-mode .main-header .dropdown-menu .dropdown-item:focus,
+        body.dark-mode .navbar .dropdown-menu a:hover,
+        body.dark-mode .main-header .dropdown-menu a:hover,
+        body.dark-mode .main-header .quick-actions .quick-actions-item:hover,
+        body.dark-mode .navbar .dropdown-menu .see-all:hover,
+        body.dark-mode .main-header .dropdown-menu .see-all:hover {
+            background: #1f2937 ;
+            color: #ffffff ;
+        }
+
+        body.dark-mode .messages-notif-box .notif-center .messages-empty,
+        body.dark-mode .notif-box .notif-center .messages-empty {
+            color: #cbd5e1 ;
+        }
+
+        body.dark-mode .navbar .dropdown-menu .dropdown-divider,
+        body.dark-mode .main-header .dropdown-menu .dropdown-divider {
+            border-top-color: rgba(212, 167, 0, 0.45) ;
+        }
+
+        body.dark-mode .main-header .quick-actions .quick-actions-item .avatar-item {
+            background: #0b1220 ;
+            color: #f2be00 ;
+        }
+
+        /* Keep text dark on yellow containers in every theme/state. */
+        .navbar .dropdown-menu .dropdown-title,
+        .main-header .dropdown-menu .dropdown-title,
+        .main-header .quick-actions .quick-actions-header,
+        .main-header .quick-actions .quick-actions-header .title,
+        .main-header .quick-actions .quick-actions-header .subtitle,
+        .main-header .quick-actions .quick-actions-header .op-7,
+        .ease-user-dropdown .ease-user-header,
+        .ease-user-dropdown .ease-user-email,
+        body.dark-mode .navbar .dropdown-menu .dropdown-title,
+        body.dark-mode .main-header .dropdown-menu .dropdown-title,
+        body.dark-mode .main-header .quick-actions .quick-actions-header,
+        body.dark-mode .main-header .quick-actions .quick-actions-header .title,
+        body.dark-mode .main-header .quick-actions .quick-actions-header .subtitle,
+        body.dark-mode .main-header .quick-actions .quick-actions-header .op-7,
+        body.dark-mode .ease-user-dropdown .ease-user-header,
+        body.dark-mode .ease-user-dropdown .ease-user-email {
+            color: #1A1A1A ;
+        }
+
+        .main-header .quick-actions .quick-actions-header .subtitle {
+            font-weight: 700 ;
+        }
+
+        .main-header .quick-actions .quick-actions-header .title.mb-1 {
+            font-weight: 700 ;
+        }
+
+        /* Keep dropdown title + remove actions in original black across themes. */
+        body.dark-mode .navbar .dropdown-menu .dropdown-title,
+        body.dark-mode .main-header .dropdown-menu .dropdown-title,
+        #markAllMessagesRead,
+        #clearAllNotifications,
+        body.dark-mode #markAllMessagesRead,
+        body.dark-mode #clearAllNotifications,
+        body.dark-mode #markAllMessagesRead:hover,
+        body.dark-mode #markAllMessagesRead:focus,
+        body.dark-mode #clearAllNotifications:hover,
+        body.dark-mode #clearAllNotifications:focus {
+            color: #1a1a1a ;
         }
 
         /* ============================================================
@@ -462,24 +553,24 @@
            (white bg, black border, no radius); just size + spacing here. */
         .navbar .ease-user-dropdown,
         .main-header .dropdown-menu.ease-user-dropdown {
-            min-width: 280px !important;
-            width: 280px !important;
-            padding: 0 !important;
-            overflow: hidden !important;
+            min-width: 280px ;
+            width: 280px ;
+            padding: 0 ;
+            overflow: hidden ;
         }
 
         /* Gold-band header â€” same gold + dark-text recipe as the other
            `.dropdown-title` headers; just lays out the avatar + meta. */
         .ease-user-dropdown .ease-user-header {
-            display: flex !important;
+            display: flex ;
             align-items: center;
             gap: 14px;
-            padding: 14px 16px !important;
-            background: #f2be00 !important;
-            color: #1a1a1a !important;
-            border-bottom: 1px solid rgba(26, 26, 26, 0.12) !important;
-            font-family: 'Oxanium', sans-serif !important;
-            text-align: left !important;
+            padding: 14px 16px ;
+            background: #f2be00 ;
+            color: #1a1a1a ;
+            border-bottom: 1px solid rgba(26, 26, 26, 0.12) ;
+            font-family: 'Oxanium', sans-serif ;
+            text-align: left ;
         }
 
         .ease-user-dropdown .ease-user-avatar {
@@ -506,10 +597,10 @@
         }
 
         .ease-user-dropdown .ease-user-name {
-            font-family: 'Oxanium', sans-serif !important;
+            font-family: 'Oxanium', sans-serif ;
             font-size: .98rem;
             font-weight: 800;
-            color: #1a1a1a !important;
+            color: #1a1a1a ;
             margin: 0 0 2px;
             line-height: 1.2;
             letter-spacing: -0.01em;
@@ -520,7 +611,7 @@
 
         .ease-user-dropdown .ease-user-email {
             font-size: .76rem;
-            color: rgba(26, 26, 26, 0.7) !important;
+            color: rgba(26, 26, 26, 0.7) ;
             margin: 0 0 6px;
             line-height: 1.3;
             white-space: nowrap;
@@ -545,14 +636,14 @@
         /* Items â€” inherit the existing dropdown-item theme (dark text,
            light gold hover); just lay out icon + label. */
         .ease-user-dropdown .ease-user-item {
-            display: flex !important;
+            display: flex ;
             align-items: center;
             gap: 12px;
-            padding: 9px 16px !important;
-            font-family: 'Oxanium', sans-serif !important;
-            font-size: .86rem !important;
-            font-weight: 600 !important;
-            line-height: 1.2 !important;
+            padding: 9px 16px ;
+            font-family: 'Oxanium', sans-serif ;
+            font-size: .86rem ;
+            font-weight: 600 ;
+            line-height: 1.2 ;
         }
 
         .ease-user-dropdown .ease-user-item i {
@@ -572,7 +663,7 @@
         /* Logout â€” subtle red accent so it reads differently from the
            neutral nav items, while still respecting the dropdown theme. */
         .ease-user-dropdown .ease-user-logout {
-            color: #b91c1c !important;
+            color: #b91c1c ;
         }
 
         .ease-user-dropdown .ease-user-logout i {
@@ -581,13 +672,13 @@
 
         .ease-user-dropdown .ease-user-logout:hover,
         .ease-user-dropdown .ease-user-logout:focus {
-            background: #fde2e2 !important;
-            color: #991b1b !important;
+            background: #fde2e2 ;
+            color: #991b1b ;
         }
 
         .ease-user-dropdown .ease-user-logout:hover i,
         .ease-user-dropdown .ease-user-logout:focus i {
-            color: #991b1b !important;
+            color: #991b1b ;
         }
 
         /* Profile-pic toggle â€” keep avatar clean on hover/open */
@@ -608,12 +699,12 @@
            ============================================================ */
         .topbar-nav .nav-item.dropdown {
             position: relative;
-            overflow: visible !important;
+            overflow: visible ;
         }
 
         .topbar-nav [data-tooltip] {
             position: relative;
-            overflow: visible !important;
+            overflow: visible ;
         }
 
         .topbar-nav .ease-topbar-tooltip-chip {
@@ -659,13 +750,13 @@
         }
 
         .topbar-nav [data-tooltip][aria-expanded="true"] .ease-topbar-tooltip-chip {
-            opacity: 0 !important;
-            visibility: hidden !important;
+            opacity: 0 ;
+            visibility: hidden ;
         }
 
         /* Force yellow tooltip text in dark mode for custom topbar chips. */
         body.dark-mode .topbar-nav .ease-topbar-tooltip-chip {
-            color: #f2be00 !important;
+            color: #f2be00 ;
         }
 
         .messages-notif-box .notif-center .messages-empty {
@@ -686,14 +777,14 @@
         .topbar-nav .nav-link i,
         .topbar-nav .topbar-toggler i,
         .topbar-nav .dropdown-toggle i {
-            transition: color .18s ease, text-shadow .18s ease, transform .18s ease !important;
+            transition: color .18s ease, text-shadow .18s ease, transform .18s ease ;
         }
 
         .topbar-nav .nav-link,
         .topbar-nav .topbar-toggler,
         .topbar-nav .dropdown-toggle {
             border-radius: 10px;
-            transition: background-color .18s ease !important;
+            transition: background-color .18s ease ;
         }
 
         .topbar-nav .nav-link:hover i,
@@ -702,9 +793,9 @@
         .topbar-nav .topbar-toggler:focus i,
         .topbar-nav .dropdown-toggle:hover i,
         .topbar-nav .dropdown-toggle:focus i {
-            color: var(--ease-sidebar-icon-purple) !important;
-            text-shadow: none !important;
-            transform: none !important;
+            color: var(--ease-sidebar-icon-purple) ;
+            text-shadow: none ;
+            transform: none ;
         }
 
         .topbar-nav .nav-link:hover,
@@ -713,7 +804,7 @@
         .topbar-nav .topbar-toggler:focus,
         .topbar-nav .dropdown-toggle:hover,
         .topbar-nav .dropdown-toggle:focus {
-            background: #ffd24d !important;
+            background: #ffd24d ;
         }
 
         /* Profile toggle text should switch to black on hover/focus. */
@@ -723,7 +814,7 @@
         .topbar-nav .ease-profile-toggle:focus .profile-username .op-7,
         .topbar-nav .ease-profile-toggle:hover .profile-username .fw-bold,
         .topbar-nav .ease-profile-toggle:focus .profile-username .fw-bold {
-            color: #000 !important;
+            color: #000 ;
         }
 
         .sidebar .nav,
@@ -731,20 +822,20 @@
         .sidebar .nav .sub-item,
         .sidebar .logo-header,
         .sidebar .logo-header .logo {
-            font-family: 'Oxanium', sans-serif !important;
+            font-family: 'Oxanium', sans-serif ;
         }
 
         .sidebar .nav p {
-            font-size: 0.86rem !important;
-            line-height: 1.2 !important;
+            font-size: 0.86rem ;
+            line-height: 1.2 ;
         }
 
         .sidebar .nav .nav-item a i {
-            font-size: 0.92rem !important;
+            font-size: 0.92rem ;
         }
 
         .sidebar .nav .nav-item > a {
-            border-radius: 0 !important;
+            border-radius: 0 ;
             transition: background-color .2s ease, color .2s ease;
             min-height: 48px;
             display: flex;
@@ -753,23 +844,23 @@
 
         .sidebar .nav .nav-item > a:hover,
         .sidebar .nav .nav-item > a:focus {
-            background: #ffd24d !important;
-            color: #2b2200 !important;
-            border-radius: 0 !important;
+            background: #ffd24d ;
+            color: #2b2200 ;
+            border-radius: 0 ;
         }
 
         .sidebar .nav .nav-item.active > a,
         .sidebar .nav .nav-item > a[aria-expanded="true"] {
-            background: #ffd24d !important;
-            color: #2b2200 !important;
+            background: #ffd24d ;
+            color: #2b2200 ;
             font-weight: 700;
-            border-radius: 0 !important;
+            border-radius: 0 ;
         }
 
         .sidebar .nav .nav-item.active > a i,
         .sidebar .nav .nav-item > a:hover i,
         .sidebar .nav .nav-item > a:focus i {
-            color: inherit !important;
+            color: inherit ;
         }
 
         .sidebar .nav.nav-secondary .nav-item > a:hover p,
@@ -778,24 +869,24 @@
         .sidebar .nav.nav-secondary .nav-item > a:focus i,
         .sidebar .nav.nav-secondary .nav-item > a:hover .caret,
         .sidebar .nav.nav-secondary .nav-item > a:focus .caret {
-            color: #2b2200 !important;
+            color: #2b2200 ;
         }
 
         .sidebar .nav.nav-secondary .nav-item > a:hover::before,
         .sidebar .nav.nav-secondary .nav-item > a:focus::before,
         .sidebar .nav.nav-secondary .nav-item.active > a::before,
         .sidebar .nav.nav-secondary .nav-item > a[aria-expanded="true"]::before {
-            content: none !important;
-            display: none !important;
-            background: transparent !important;
+            content: none ;
+            display: none ;
+            background: transparent ;
         }
 
         .sidebar .sidebar-content {
             min-height: calc(100vh - 96px);
-            display: flex !important;
-            flex-direction: column !important;
-            height: 100% !important;
-            flex: 1 1 auto !important;
+            display: flex ;
+            flex-direction: column ;
+            height: 100% ;
+            flex: 1 1 auto ;
             padding-bottom: 0;
             overflow: hidden;
         }
@@ -803,10 +894,10 @@
         .sidebar .sidebar-wrapper,
         .sidebar .sidebar-wrapper.scrollbar,
         .sidebar .sidebar-wrapper.scrollbar-inner {
-            overflow: hidden !important;
-            height: calc(100vh - 96px) !important;
-            display: flex !important;
-            flex-direction: column !important;
+            overflow: hidden ;
+            height: calc(100vh - 96px) ;
+            display: flex ;
+            flex-direction: column ;
         }
 
         /* The kaiadmin scrollbar plugin wraps content in `.scroll-content`;
@@ -814,20 +905,20 @@
            still works and pins the toggle to the bottom. */
         .sidebar .sidebar-wrapper > .scroll-content,
         .sidebar .scroll-content {
-            display: flex !important;
-            flex-direction: column !important;
-            flex: 1 1 auto !important;
-            height: 100% !important;
-            min-height: 100% !important;
-            width: 100% !important;
-            overflow: hidden !important;
+            display: flex ;
+            flex-direction: column ;
+            flex: 1 1 auto ;
+            height: 100% ;
+            min-height: 100% ;
+            width: 100% ;
+            overflow: hidden ;
         }
 
         .sidebar .scroll-element,
         .sidebar .scroll-element_outer,
         .sidebar .scroll-element_track,
         .sidebar .scroll-element_bar {
-            display: none !important;
+            display: none ;
         }
 
         .sidebar .nav.nav-secondary {
@@ -853,14 +944,14 @@
         }
 
         .sidebar .nav .nav-section .text-section {
-            font-family: 'Oxanium', sans-serif !important;
+            font-family: 'Oxanium', sans-serif ;
             font-size: .72rem;
             letter-spacing: .12em;
             text-transform: uppercase;
             font-weight: 800;
             color: #9a8a54;
-            margin: 0 !important;
-            padding: 0 !important;
+            margin: 0 ;
+            padding: 0 ;
             line-height: 1.4;
             display: block;
         }
@@ -893,7 +984,7 @@
         }
 
         .sidebar .nav .nav-item > a > p {
-            margin: 0 !important;
+            margin: 0 ;
             padding-left: 2px;
         }
 
@@ -902,7 +993,7 @@
             border-top: 3px solid rgba(242, 190, 0, 0.45);
             box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.04);
             padding: 12px 4px 10px;
-            font-family: 'Oxanium', sans-serif !important;
+            font-family: 'Oxanium', sans-serif ;
         }
 
         body.dark-mode .sidebar-darkmode-wrap {
@@ -921,21 +1012,22 @@
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar,
         .wrapper.sidebar_minimize .sidebar:hover,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover {
-            border-right: 3px solid #F2BE00 !important;
-            min-height: 100vh !important;
+            border-right: 3px solid #F2BE00 ;
+            min-height: 100vh ;
         }
 
         /* Keep the top line on the actual main-header so it stays a single bar. */
         .main-panel .main-header {
-            border-bottom: 3px solid #F2BE00 !important;
+            border-bottom: 3px solid #F2BE00 ;
             box-sizing: border-box;
+            top: 0 ;
         }
 
         .main-panel .main-header .main-header-logo,
         .main-panel .main-header .main-header-logo .logo-header,
         .main-panel .main-header .navbar-header,
         .main-panel .main-header nav.navbar-header {
-            border-bottom: 0 !important;
+            border-bottom: 0 ;
         }
 
         /* Zero out kaiadmin's `.logo-header` borders entirely. The sidebar's
@@ -945,19 +1037,19 @@
         .wrapper .sidebar .logo-header,
         .wrapper.sidebar_minimize .sidebar .logo-header,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header {
-            border: 0 !important;
+            border: 0 ;
         }
 
         /* Keep any extra bootstrap border utility from stacking another line. */
         .main-panel .main-header nav.navbar.navbar-header.border-bottom {
-            border-bottom: 0 !important;
+            border-bottom: 0 ;
         }
 
         /* Dark mode keeps the gold edges */
         body.dark-mode .wrapper .sidebar,
         body.dark-mode .wrapper .sidebar .logo-header,
         body.dark-mode .main-panel .main-header {
-            border-color: #F2BE00 !important;
+            border-color: #F2BE00 ;
         }
 
         /* ============================================================
@@ -973,19 +1065,19 @@
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header,
         .wrapper.sidebar_minimize .sidebar:hover .logo-header,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header {
-            transform: none !important;
-            transition: none !important;
-            animation: none !important;
-            box-shadow: none !important;
-            background: transparent !important;
+            transform: none ;
+            transition: none ;
+            animation: none ;
+            box-shadow: none ;
+            background: transparent ;
         }
 
         .wrapper .sidebar:hover .logo-header .logo,
         .wrapper .sidebar .logo-header:hover .logo,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .logo,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header .logo {
-            transition: none !important;
-            animation: none !important;
+            transition: none ;
+            animation: none ;
         }
 
         /* Remove visual effects for header control icons. */
@@ -997,9 +1089,9 @@
         .sidebar .logo-header .fa-ellipsis-vertical,
         .main-header-logo .logo-header .fa-grip-lines-vertical,
         .main-header-logo .logo-header .fa-ellipsis-vertical {
-            color: #4a4a4a !important;
-            transition: none !important;
-            transform: none !important;
+            color: #4a4a4a ;
+            transition: none ;
+            transform: none ;
         }
 
         .sidebar .logo-header .topbar-toggler:hover .gg-more-vertical-alt,
@@ -1018,9 +1110,9 @@
         .main-header-logo .logo-header .topbar-toggler:focus .fa-ellipsis-vertical,
         .main-header-logo .logo-header .nav-toggle .btn-toggle:hover .fa-grip-lines-vertical,
         .main-header-logo .logo-header .nav-toggle .btn-toggle:focus .fa-grip-lines-vertical {
-            color: #4a4a4a !important;
-            transition: none !important;
-            transform: none !important;
+            color: #4a4a4a ;
+            transition: none ;
+            transform: none ;
         }
 
         /* Requested: slight enlarge + purple hover for more icon */
@@ -1028,7 +1120,7 @@
         .main-header-logo .logo-header .topbar-toggler.more .gg-more-vertical-alt,
         .sidebar .logo-header .topbar-toggler.more .fa-ellipsis-vertical,
         .main-header-logo .logo-header .topbar-toggler.more .fa-ellipsis-vertical {
-            transition: color .16s ease, transform .16s ease !important;
+            transition: color .16s ease, transform .16s ease ;
         }
 
         .sidebar .logo-header .topbar-toggler.more:hover .gg-more-vertical-alt,
@@ -1039,36 +1131,55 @@
         .sidebar .logo-header .topbar-toggler.more:focus .fa-ellipsis-vertical,
         .main-header-logo .logo-header .topbar-toggler.more:hover .fa-ellipsis-vertical,
         .main-header-logo .logo-header .topbar-toggler.more:focus .fa-ellipsis-vertical {
-            color: var(--ease-sidebar-icon-purple) !important;
-            transform: scale(1.08) !important;
+            color: var(--ease-sidebar-icon-purple) ;
+            transform: scale(1.08) ;
         }
 
         /* Sidebar toggle icon (gg-menu-right / gg-more-vertical-alt): purple hover */
         .sidebar .logo-header .nav-toggle .toggle-sidebar:hover i.gg-menu-right,
         .sidebar .logo-header .nav-toggle .toggle-sidebar:hover i.gg-more-vertical-alt,
         .sidebar .logo-header .nav-toggle .toggle-sidebar:hover i.gg-menu-left {
-            color: var(--ease-sidebar-icon-purple) !important;
-            transform: scale(1.08) !important;
+            color: var(--ease-sidebar-icon-purple) ;
+            transform: scale(1.08) ;
         }
 
-        .sidebar .logo-header .nav-toggle .toggle-sidebar:focus i.gg-menu-right,
-        .sidebar .logo-header .nav-toggle .toggle-sidebar:focus i.gg-more-vertical-alt,
-        .sidebar .logo-header .nav-toggle .toggle-sidebar:focus i.gg-menu-left,
-        .sidebar .logo-header .nav-toggle .toggle-sidebar:active i.gg-menu-right,
-        .sidebar .logo-header .nav-toggle .toggle-sidebar:active i.gg-more-vertical-alt,
-        .sidebar .logo-header .nav-toggle .toggle-sidebar:active i.gg-menu-left,
-        .sidebar .logo-header .nav-toggle .toggle-sidebar.toggled i {
-            color: #4a4a4a !important;
-            transform: none !important;
+        /* When the toggle button is focused/active but NOT being hovered,
+           reset the icon to neutral. The `:not(:hover)` is critical —
+           without it, a click leaves :focus on the button, and on a
+           subsequent hover the :focus rule (later in the cascade) was
+           overriding the :hover purple, making the icon "stop turning
+           purple after hovering other elements". */
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:focus:not(:hover) i.gg-menu-right,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:focus:not(:hover) i.gg-more-vertical-alt,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:focus:not(:hover) i.gg-menu-left,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:active:not(:hover) i.gg-menu-right,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:active:not(:hover) i.gg-more-vertical-alt,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:active:not(:hover) i.gg-menu-left,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar.toggled:not(:hover) i {
+            color: #4a4a4a ;
+            transform: none ;
+        }
+
+        /* Belt-and-braces: re-state the hover-purple AFTER the focus reset
+           above so it wins on equal specificity ties even if browsers fire
+           the events in unusual orders. */
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:hover i.gg-menu-right,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:hover i.gg-more-vertical-alt,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:hover i.gg-menu-left,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:focus:hover i.gg-menu-right,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:focus:hover i.gg-more-vertical-alt,
+        .sidebar .logo-header .nav-toggle .toggle-sidebar:focus:hover i.gg-menu-left {
+            color: var(--ease-sidebar-icon-purple) ;
+            transform: scale(1.08) ;
         }
 
         /* Neutralize button hover scaling/color effects in header controls. */
         .sidebar .logo-header .nav-toggle .btn-toggle,
         .sidebar .logo-header .topbar-toggler {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            transition: none !important;
+            background: transparent ;
+            border: none ;
+            box-shadow: none ;
+            transition: none ;
             border-radius: 8px;
         }
 
@@ -1078,7 +1189,7 @@
             height: 38px;
             min-width: 38px;
             min-height: 38px;
-            padding: 0 !important;
+            padding: 0 ;
             text-align: center;
             line-height: 38px;
         }
@@ -1107,10 +1218,10 @@
         .sidebar .logo-header .nav-toggle .toggle-sidebar:focus::after,
         .main-header-logo .logo-header .nav-toggle .toggle-sidebar:hover::after,
         .main-header-logo .logo-header .nav-toggle .toggle-sidebar:focus::after {
-            content: none !important;
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
+            content: none ;
+            display: none ;
+            opacity: 0 ;
+            visibility: hidden ;
         }
 
         .sidebar .logo-header .topbar-toggler.more,
@@ -1119,18 +1230,18 @@
             height: 38px;
             min-width: 38px;
             min-height: 38px;
-            padding: 0 !important;
+            padding: 0 ;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            line-height: 1 !important;
+            line-height: 1 ;
             text-align: center;
         }
 
         .sidebar .logo-header .nav-toggle .btn-toggle i,
         .sidebar .logo-header .topbar-toggler i {
-            color: #4a4a4a !important;
-            transition: none !important;
+            color: #4a4a4a ;
+            transition: none ;
             font-size: 1.12rem;
             line-height: 1;
         }
@@ -1139,23 +1250,23 @@
         .sidebar .logo-header .nav-toggle .btn-toggle:focus,
         .sidebar .logo-header .topbar-toggler:hover,
         .sidebar .logo-header .topbar-toggler:focus {
-            background: transparent !important;
-            outline: none !important;
+            background: transparent ;
+            outline: none ;
         }
 
         .sidebar .logo-header .nav-toggle .btn-toggle:hover i,
         .sidebar .logo-header .nav-toggle .btn-toggle:focus i,
         .sidebar .logo-header .topbar-toggler:hover i,
         .sidebar .logo-header .topbar-toggler:focus i {
-            color: #4a4a4a !important;
+            color: #4a4a4a ;
         }
 
         .sidebar .logo-header .topbar-toggler.more:hover i,
         .sidebar .logo-header .topbar-toggler.more:focus i,
         .main-header-logo .logo-header .topbar-toggler.more:hover i,
         .main-header-logo .logo-header .topbar-toggler.more:focus i {
-            color: var(--ease-sidebar-icon-purple) !important;
-            transform: scale(1.1) !important;
+            color: var(--ease-sidebar-icon-purple) ;
+            transform: scale(1.1) ;
         }
 
         /* No hover effect on the brand logo image â€” the icon is purely
@@ -1167,21 +1278,21 @@
         .main-header-logo .logo-header .logo .navbar-brand,
         .main-header-logo .logo-header .logo:hover .navbar-brand,
         .main-header-logo .logo-header:hover .logo .navbar-brand {
-            transform: none !important;
-            transition: none !important;
-            filter: none !important;
-            opacity: 1 !important;
-            box-shadow: none !important;
+            transform: none ;
+            transition: none ;
+            filter: none ;
+            opacity: 1 ;
+            box-shadow: none ;
         }
 
         body.dark-mode .sidebar .logo-header .nav-toggle .btn-toggle i,
         body.dark-mode .sidebar .logo-header .topbar-toggler i {
-            color: #e4e6eb !important;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .sidebar .logo-header .nav-toggle .btn-toggle:hover i,
         body.dark-mode .sidebar .logo-header .topbar-toggler:hover i {
-            color: #e4e6eb !important;
+            color: #e4e6eb ;
         }
 
         /* ============================================================
@@ -1201,66 +1312,26 @@
            Note: kaiadmin applies `sidebar_minimize` to `.wrapper`, NOT body.
            ============================================================ */
 
-        /* Sync the transition timing across sidebar + panel + header */
-        .wrapper .sidebar,
-        .wrapper .main-panel,
-        .wrapper .main-header,
-        .wrapper .main-header .navbar-header,
-        .wrapper .main-header nav.navbar-header {
-            transition: width .2s cubic-bezier(0.22, 1, 0.36, 1), left .2s cubic-bezier(0.22, 1, 0.36, 1), transform .2s cubic-bezier(0.22, 1, 0.36, 1) !important;
-            will-change: width, left, transform;
-        }
-
         /* Prevent minimize animation replay during initial restore on navigation. */
         html.ease-restore-minimized .wrapper {
-            visibility: hidden !important;
+            visibility: hidden ;
         }
 
         html.ease-restore-minimized .wrapper .sidebar,
         html.ease-restore-minimized .wrapper .main-panel,
         html.ease-restore-minimized .wrapper .main-header {
-            transition: none !important;
+            transition: none ;
         }
 
         /* NORMAL (sidebar full width = 265px) */
-        .wrapper:not(.sidebar_minimize) .main-header {
-            left: 0 !important;
-            right: 0 !important;
-            width: 100% !important;
-        }
-
-        .wrapper:not(.sidebar_minimize) .main-panel {
-            width: calc(100% - 265px) !important;
-        }
-
-        /* MINIMIZED (sidebar = 85px) â€” also covers the hover-restore variant */
-        .wrapper.sidebar_minimize .main-header,
-        .wrapper.sidebar_minimize.sidebar_minimize_hover .main-header {
-            left: 0 !important;
-            right: 0 !important;
-            width: 100% !important;
-        }
-
-        .wrapper.sidebar_minimize .main-panel,
-        .wrapper.sidebar_minimize.sidebar_minimize_hover .main-panel {
-            width: calc(100% - 85px) !important;
-        }
-
-        /* Belt-and-braces: ensure no leftover transform / margin on the
-           panel or header from kaiadmin's various transition states */
-        .wrapper.sidebar_minimize .main-panel,
-        .wrapper.sidebar_minimize .main-header,
-        .wrapper.sidebar_minimize.sidebar_minimize_hover .main-panel,
-        .wrapper.sidebar_minimize.sidebar_minimize_hover .main-header {
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-            transform: none !important;
-        }
+        
 
         /* ============================================================
            Centered brand in the top navbar â€” visible only when the
            sidebar is minimized; otherwise the sidebar's own brand shows.
            ============================================================ */
+        /* NORMAL (sidebar full width = 265px) */
+
         .ease-minimized-brand {
             display: none;
         }
@@ -1270,7 +1341,7 @@
 
         .wrapper.sidebar_minimize .ease-minimized-brand,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .ease-minimized-brand {
-            display: flex !important;
+            display: flex ;
             align-items: center;
             justify-content: center;
             position: absolute;
@@ -1289,8 +1360,8 @@
             height: 50px;
             width: auto;
             display: block;
-            transition: none !important;
-            transform: none !important;
+            transition: none ;
+            transform: none ;
         }
 
         /* No hover effect on the centered brand image */
@@ -1298,7 +1369,7 @@
         .wrapper.sidebar_minimize.sidebar_minimize_hover .ease-minimized-brand:hover img,
         .wrapper.sidebar_minimize .ease-minimized-brand:focus img,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .ease-minimized-brand:focus img {
-            transform: none !important;
+            transform: none ;
         }
 
         /* Hide the sidebar's own brand image when minimized so it doesn't
@@ -1312,13 +1383,13 @@
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .logo,
         .wrapper.sidebar_minimize .sidebar:hover .logo-header .logo,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header .logo {
-            visibility: hidden !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-            transform: none !important;
-            transition: none !important;
-            position: absolute !important;
-            display: none !important;
+            visibility: hidden ;
+            opacity: 0 ;
+            pointer-events: none ;
+            transform: none ;
+            transition: none ;
+            position: absolute ;
+            display: none ;
         }
 
         /* Lock the .logo-header itself to the 85px column so nothing widens
@@ -1328,15 +1399,15 @@
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header,
         .wrapper.sidebar_minimize .sidebar:hover .logo-header,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header {
-            width: 85px !important;
-            min-width: 85px !important;
-            max-width: 85px !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            text-align: center !important;
-            transform: none !important;
-            transition: none !important;
-            overflow: hidden !important;
+            width: 85px ;
+            min-width: 85px ;
+            max-width: 85px ;
+            padding-left: 0 ;
+            padding-right: 0 ;
+            text-align: center ;
+            transform: none ;
+            transition: none ;
+            overflow: hidden ;
         }
 
         /* Also kill the logo image / brand image animations directly */
@@ -1346,11 +1417,11 @@
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header .logo .navbar-brand,
         .wrapper.sidebar_minimize .sidebar .logo-header .logo img,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .logo img {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            transform: none !important;
-            transition: none !important;
+            display: none ;
+            visibility: hidden ;
+            opacity: 0 ;
+            transform: none ;
+            transition: none ;
         }
 
         .sidebar-darkmode-toggle {
@@ -1373,19 +1444,19 @@
 
         .sidebar-darkmode-toggle .mode-label i {
             font-size: 1rem;
-            color: #111111 !important;
+            color: #111111 ;
         }
 
         .sidebar-darkmode-toggle .mode-label i.bi-sun-fill {
-            color: #f2be00 !important;
+            color: #f2be00 ;
         }
 
         body.dark-mode .sidebar-darkmode-toggle .mode-label {
-            color: #f2be00 !important;
+            color: #f2be00 ;
         }
 
         body.dark-mode .sidebar-darkmode-toggle .mode-label i {
-            color: #f2be00 !important;
+            color: #f2be00 ;
         }
 
         .sidebar-darkmode-toggle .mode-text {
@@ -1393,33 +1464,33 @@
         }
 
         .sidebar_minimize.sidebar_minimize_hover .sidebar {
-            width: 85px !important;
+            width: 85px ;
         }
 
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper {
-            width: 85px !important;
+            width: 85px ;
         }
 
         .sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header {
-            width: 85px !important;
+            width: 85px ;
         }
 
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a p,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a span,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a .caret,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-section .text-section {
-            visibility: hidden !important;
-            opacity: 0 !important;
+            visibility: hidden ;
+            opacity: 0 ;
         }
 
         .sidebar_minimize .sidebar,
         .sidebar_minimize .sidebar:hover,
         .sidebar_minimize.sidebar_minimize_hover .sidebar,
         .sidebar_minimize.sidebar_minimize_hover .sidebar:hover {
-            width: 85px !important;
-            max-width: 85px !important;
-            box-shadow: none !important;
-            transform: none !important;
+            width: 85px ;
+            max-width: 85px ;
+            box-shadow: none ;
+            transform: none ;
         }
 
         .sidebar_minimize .sidebar .sidebar-wrapper,
@@ -1430,29 +1501,29 @@
         .sidebar_minimize .sidebar:hover .logo-header,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header,
         .sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header {
-            width: 85px !important;
-            min-width: 85px !important;
-            max-width: 85px !important;
-            box-shadow: none !important;
-            transform: none !important;
+            width: 85px ;
+            min-width: 85px ;
+            max-width: 85px ;
+            box-shadow: none ;
+            transform: none ;
         }
 
         .wrapper.sidebar_minimize .sidebar .logo-header,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header,
         .wrapper.sidebar_minimize .sidebar:hover .logo-header,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            text-align: center !important;
+            padding-left: 0 ;
+            padding-right: 0 ;
+            text-align: center ;
         }
 
         .wrapper.sidebar_minimize .sidebar .logo-header .nav-toggle,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .nav-toggle,
         .wrapper.sidebar_minimize .sidebar:hover .logo-header .nav-toggle,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header .nav-toggle {
-            left: 50% !important;
-            right: 0 !important;
-            transform: translateX(-50%) !important;
+            left: 50% ;
+            right: 0 ;
+            transform: translateX(-50%) ;
         }
 
         .wrapper.sidebar_minimize .sidebar .logo-header .topbar-toggler.more,
@@ -1460,10 +1531,10 @@
         .wrapper.sidebar_minimize .sidebar:hover .logo-header .topbar-toggler.more,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header .topbar-toggler.more {
             position: absolute;
-            left: 50% !important;
-            right: auto !important;
-            transform: translateX(-50%) !important;
-            margin-left: 0 !important;
+            left: 50% ;
+            right: auto ;
+            transform: translateX(-50%) ;
+            margin-left: 0 ;
         }
 
         .wrapper.sidebar_minimize .sidebar .logo-header .topbar-toggler.more:hover,
@@ -1474,12 +1545,12 @@
         .wrapper.sidebar_minimize .sidebar:hover .logo-header .topbar-toggler.more:focus,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header .topbar-toggler.more:hover,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header .topbar-toggler.more:focus {
-            left: 50% !important;
-            right: auto !important;
-            transform: translateX(-50%) scale(1.08) !important;
-            background: rgba(124, 58, 237, 0.12) !important;
-            border-radius: 8px !important;
-            box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.24) !important;
+            left: 50% ;
+            right: auto ;
+            transform: translateX(-50%) scale(1.08) ;
+            background: rgba(124, 58, 237, 0.12) ;
+            border-radius: 8px ;
+            box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.24) ;
         }
 
         /* ============================================================
@@ -1495,33 +1566,34 @@
         .sidebar_minimize .sidebar .sidebar-content,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-content {
-            overflow: visible !important;
+            overflow: visible ;
         }
 
         /* Center icons in the 85px column; no padding-shift on hover */
         .sidebar_minimize .sidebar .nav .nav-item,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item {
-            position: relative !important;
+            position: relative ;
         }
 
         .sidebar_minimize .sidebar .nav .nav-item > a,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            justify-content: center !important;
-            gap: 0 !important;
-            width: 85px !important;
-            border-radius: 0 !important;
-            transition: none !important;
+            padding-left: 0 ;
+            padding-right: 0 ;
+            justify-content: center ;
+            gap: 0 ;
+            width: 85px ;
+            border-radius: 0 ;
+            transition: none ;
         }
 
         .sidebar_minimize .sidebar .nav .nav-item > a > i,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a > i {
-            width: 24px !important;
-            min-width: 24px !important;
-            margin: 0 auto !important;
-            text-align: center !important;
-            font-size: 1rem !important;
+            width: 24px ;
+            min-width: 24px ;
+            margin: 0 auto ;
+            text-align: center ;
+            font-size: 1rem ;
+            color: #6b7280 ;
         }
 
         /* Suppress hover/focus visual changes that move or recolor things;
@@ -1530,18 +1602,57 @@
         .sidebar_minimize .sidebar .sidebar-wrapper .nav-item > a:focus,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item > a:hover,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item > a:focus {
-            background: transparent !important;
-            color: inherit !important;
-            box-shadow: none !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            transform: none !important;
+            background: transparent ;
+            color: inherit ;
+            box-shadow: none ;
+            padding-left: 0 ;
+            padding-right: 0 ;
+            transform: none ;
         }
 
         .sidebar_minimize .sidebar .sidebar-wrapper .nav-item > a:hover > i,
         .sidebar_minimize .sidebar .sidebar-wrapper .nav-item > a:focus > i {
-            color: inherit !important;
-            transform: none !important;
+            color: var(--ease-sidebar-icon-purple) ;
+            transform: none ;
+        }
+
+        .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item > a:hover > i,
+        .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item > a:focus > i {
+            color: var(--ease-sidebar-icon-purple) ;
+            transform: none ;
+        }
+
+        /* Keep minimized sidebar from expanding on container hover. */
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover {
+            width: 85px ;
+        }
+
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .sidebar-wrapper {
+            width: 85px ;
+        }
+
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header {
+            width: 85px ;
+            padding-left: 0 ;
+            padding-right: 0 ;
+            text-align: center ;
+        }
+
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .logo,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header .logo {
+            opacity: 0 ;
+            transform: translate3d(25px, 0, 0) ;
+            position: absolute ;
+        }
+
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a .badge,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a span,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a .caret,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a p {
+            display: none ;
         }
 
         /* Minimized mode: highlight only around icon (not full row). */
@@ -1549,32 +1660,44 @@
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item.active > a,
         .sidebar_minimize .sidebar .nav .nav-item > a[aria-expanded="true"],
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"] {
-            background: transparent !important;
-            color: inherit !important;
+            background: transparent ;
+            color: inherit ;
         }
 
         .sidebar_minimize .sidebar .nav .nav-item.active > a > i,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item.active > a > i,
         .sidebar_minimize .sidebar .nav .nav-item > a[aria-expanded="true"] > i,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"] > i {
-            width: 40px !important;
-            min-width: 40px !important;
-            height: 40px !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            background: #ffd24d !important;
-            color: #2b2200 !important;
-            border-radius: 0 !important;
-            font-size: 1.05rem !important;
+            width: 40px ;
+            min-width: 40px ;
+            height: 40px ;
+            display: inline-flex ;
+            align-items: center ;
+            justify-content: center ;
+            background: #ffd24d ;
+            color: #2b2200 ;
+            border-radius: 0 ;
+            font-size: 1.05rem ;
+        }
+
+        /* Selected item stays purple when hovered/focused in minimized mode. */
+        .sidebar_minimize .sidebar .nav .nav-item.active > a:hover > i,
+        .sidebar_minimize .sidebar .nav .nav-item.active > a:focus > i,
+        .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item.active > a:hover > i,
+        .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item.active > a:focus > i,
+        .sidebar_minimize .sidebar .nav .nav-item > a[aria-expanded="true"]:hover > i,
+        .sidebar_minimize .sidebar .nav .nav-item > a[aria-expanded="true"]:focus > i,
+        .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"]:hover > i,
+        .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"]:focus > i {
+            color: var(--ease-sidebar-icon-purple) ;
         }
 
         .sidebar_minimize .sidebar .sidebar-wrapper .nav-item > a:hover::before,
         .sidebar_minimize .sidebar .sidebar-wrapper .nav-item > a:focus::before,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item > a:hover::before,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item > a:focus::before {
-            display: none !important;
-            background: transparent !important;
+            display: none ;
+            background: transparent ;
         }
 
         /* Tooltip â€” repurpose the existing <p> label as a floating chip on hover.
@@ -1589,52 +1712,52 @@
            initial enter-minimized switch is instant. */
         .sidebar_minimize .sidebar .nav .nav-item > a > p,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a > p {
-            visibility: hidden !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            left: 88px !important;
-            top: 50% !important;
-            transform: translateY(-50%) translateX(-4px) !important;
-            background: #000 !important;
-            color: #f2be00 !important;
-            padding: 7px 12px !important;
-            border-radius: 4px !important;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28) !important;
-            white-space: nowrap !important;
-            z-index: 9999 !important;
-            font-family: 'Oxanium', sans-serif !important;
-            font-size: .82rem !important;
-            font-weight: 700 !important;
-            line-height: 1 !important;
-            pointer-events: none !important;
-            transition: none !important;     /* instant: no flash on minimize */
-            display: block !important;
+            visibility: hidden ;
+            opacity: 0 ;
+            position: absolute ;
+            left: 88px ;
+            top: 50% ;
+            transform: translateY(-50%) translateX(-4px) ;
+            background: #000 ;
+            color: #f2be00 ;
+            padding: 7px 12px ;
+            border-radius: 4px ;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28) ;
+            white-space: nowrap ;
+            z-index: 9999 ;
+            font-family: 'Oxanium', sans-serif ;
+            font-size: .82rem ;
+            font-weight: 700 ;
+            line-height: 1 ;
+            pointer-events: none ;
+            transition: none ;     /* instant: no flash on minimize */
+            display: block ;
         }
 
         .sidebar_minimize .sidebar .nav .nav-item:hover > a > p,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item:hover > a > p {
-            visibility: visible !important;
-            opacity: 1 !important;
-            transform: translateY(-50%) translateX(0) !important;
-            color: #f2be00 !important;
+            visibility: visible ;
+            opacity: 1 ;
+            transform: translateY(-50%) translateX(0) ;
+            color: #f2be00 ;
             /* Transition only on the hover (visible) state, so the chip fades
                in smoothly when the cursor enters; on cursor-leave it falls
                back to the no-transition default rule above and disappears
                instantly â€” no lingering ghost. */
-            transition: opacity .14s ease, transform .14s ease !important;
+            transition: opacity .14s ease, transform .14s ease ;
         }
 
         .sidebar_minimize .sidebar .nav.nav-secondary .nav-item > a:hover > p,
         .sidebar_minimize .sidebar .nav.nav-secondary .nav-item > a:focus > p,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav.nav-secondary .nav-item > a:hover > p,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav.nav-secondary .nav-item > a:focus > p {
-            color: #f2be00 !important;
+            color: #f2be00 ;
         }
 
         /* Force yellow tooltip text in dark mode for minimized-sidebar chips. */
         body.dark-mode .sidebar_minimize .sidebar .nav .nav-item > a > p,
         body.dark-mode .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a > p {
-            color: #f2be00 !important;
+            color: #f2be00 ;
         }
 
         /* Tooltip arrow */
@@ -1654,14 +1777,14 @@
 
         /* Keep all bootstrap hover tooltips black-only theme */
         .tooltip .tooltip-inner {
-            background: #000 !important;
-            color: #f2be00 !important;
-            border: none !important;
+            background: #000 ;
+            color: #f2be00 ;
+            border: none ;
         }
 
         /* Force yellow tooltip text in dark mode for Bootstrap tooltips. */
         body.dark-mode .tooltip .tooltip-inner {
-            color: #f2be00 !important;
+            color: #f2be00 ;
         }
 
         .bs-tooltip-auto[data-popper-placement^="top"] .tooltip-arrow::before,
@@ -1672,22 +1795,22 @@
         .bs-tooltip-bottom .tooltip-arrow::before,
         .bs-tooltip-auto[data-popper-placement^="left"] .tooltip-arrow::before,
         .bs-tooltip-start .tooltip-arrow::before {
-            border-top-color: #000 !important;
-            border-right-color: #000 !important;
-            border-bottom-color: #000 !important;
-            border-left-color: #000 !important;
+            border-top-color: #000 ;
+            border-right-color: #000 ;
+            border-bottom-color: #000 ;
+            border-left-color: #000 ;
         }
 
         /* Hide section labels entirely while minimized â€” there's no room for them
            and they would otherwise inherit the tooltip styling above. */
         .sidebar_minimize .sidebar .nav .nav-section,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-section {
-            display: none !important;
+            display: none ;
         }
 
         .sidebar_minimize .sidebar-darkmode-wrap,
         .sidebar_minimize.sidebar_minimize_hover .sidebar-darkmode-wrap {
-            padding: 8px 0 8px !important;
+            padding: 8px 0 8px ;
         }
 
         .sidebar_minimize .sidebar-darkmode-toggle,
@@ -1732,11 +1855,11 @@
         .sidebar .logo-header .nav-toggle .btn-toggle.sidenav-toggler i.gg-menu-right,
         .main-header-logo .logo-header .nav-toggle .btn-toggle.toggle-sidebar i.gg-menu-right,
         .main-header-logo .logo-header .nav-toggle .btn-toggle.sidenav-toggler i.gg-menu-right {
-            color: #4a4a4a !important;
+            color: #4a4a4a ;
             transition: color .35s cubic-bezier(.22, 1, .36, 1),
-                        transform .45s cubic-bezier(.22, 1, .36, 1) !important;
-            transform: scale(1) !important;
-            transform-origin: center center !important;
+                        transform .45s cubic-bezier(.22, 1, .36, 1) ;
+            transform: scale(1) ;
+            transform-origin: center center ;
             will-change: transform, color;
         }
 
@@ -1747,8 +1870,8 @@
         .wrapper:not(.sidebar_minimize) .sidebar .logo-header .nav-toggle .btn-toggle:focus i.gg-menu-right,
         .wrapper:not(.sidebar_minimize) .main-header-logo .logo-header .nav-toggle .btn-toggle:hover i.gg-menu-right,
         .wrapper:not(.sidebar_minimize) .main-header-logo .logo-header .nav-toggle .btn-toggle:focus i.gg-menu-right {
-            color: #4a4a4a !important;
-            transform: scale(1) !important;
+            color: #4a4a4a ;
+            transform: scale(1) ;
         }
 
         /* MINIMIZED ONLY (the "Maximize" / expand action) â€” fluid enlarging
@@ -1763,8 +1886,8 @@
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .nav-toggle .btn-toggle:focus i.gg-menu-right,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .main-header-logo .logo-header .nav-toggle .btn-toggle:hover i.gg-menu-right,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .main-header-logo .logo-header .nav-toggle .btn-toggle:focus i.gg-menu-right {
-            color: var(--ease-sidebar-icon-purple, #7c3aed) !important;
-            transform: scale(1.35) !important;
+            color: var(--ease-sidebar-icon-purple, #7c3aed) ;
+            transform: scale(1.35) ;
         }
 
         /* Drive the parent button's color too so the surrounding box also
@@ -1777,28 +1900,28 @@
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .nav-toggle .btn-toggle:focus,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .main-header-logo .logo-header .nav-toggle .btn-toggle:hover,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .main-header-logo .logo-header .nav-toggle .btn-toggle:focus {
-            color: var(--ease-sidebar-icon-purple, #7c3aed) !important;
-            transition: color .35s cubic-bezier(.22, 1, .36, 1) !important;
+            color: var(--ease-sidebar-icon-purple, #7c3aed) ;
+            transition: color .35s cubic-bezier(.22, 1, .36, 1) ;
         }
 
         /* Dark-mode equivalent for gg-menu-right (also minimized only) */
         body.dark-mode .sidebar .logo-header .nav-toggle .btn-toggle i.gg-menu-right,
         body.dark-mode .main-header-logo .logo-header .nav-toggle .btn-toggle i.gg-menu-right {
-            color: #e4e6eb !important;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .wrapper:not(.sidebar_minimize) .sidebar .logo-header .nav-toggle .btn-toggle:hover i.gg-menu-right,
         body.dark-mode .wrapper:not(.sidebar_minimize) .main-header-logo .logo-header .nav-toggle .btn-toggle:hover i.gg-menu-right {
-            color: #e4e6eb !important;
-            transform: scale(1) !important;
+            color: #e4e6eb ;
+            transform: scale(1) ;
         }
 
         body.dark-mode .wrapper.sidebar_minimize .sidebar .logo-header .nav-toggle .btn-toggle:hover i.gg-menu-right,
         body.dark-mode .wrapper.sidebar_minimize .sidebar .logo-header .nav-toggle .btn-toggle:focus i.gg-menu-right,
         body.dark-mode .wrapper.sidebar_minimize .main-header-logo .logo-header .nav-toggle .btn-toggle:hover i.gg-menu-right,
         body.dark-mode .wrapper.sidebar_minimize .main-header-logo .logo-header .nav-toggle .btn-toggle:focus i.gg-menu-right {
-            color: var(--ease-sidebar-icon-purple, #7c3aed) !important;
-            transform: scale(1.35) !important;
+            color: var(--ease-sidebar-icon-purple, #7c3aed) ;
+            transform: scale(1.35) ;
         }
 
         /* gg-more-vertical-alt â€” strip ALL hover/focus effects (no scale, no colour). */
@@ -1816,18 +1939,18 @@
         .sidebar .logo-header .nav-toggle .btn-toggle:focus i.gg-more-vertical-alt,
         .main-header-logo .logo-header .nav-toggle .btn-toggle:hover i.gg-more-vertical-alt,
         .main-header-logo .logo-header .nav-toggle .btn-toggle:focus i.gg-more-vertical-alt {
-            color: #4a4a4a !important;
-            transform: none !important;
-            transition: none !important;
-            text-shadow: none !important;
+            color: #4a4a4a ;
+            transform: none ;
+            transition: none ;
+            text-shadow: none ;
         }
 
         body.dark-mode .sidebar .logo-header i.gg-more-vertical-alt,
         body.dark-mode .main-header-logo .logo-header i.gg-more-vertical-alt,
         body.dark-mode .sidebar .logo-header .topbar-toggler:hover i.gg-more-vertical-alt,
         body.dark-mode .main-header-logo .logo-header .topbar-toggler:hover i.gg-more-vertical-alt {
-            color: #e4e6eb !important;
-            transform: none !important;
+            color: #e4e6eb ;
+            transform: none ;
         }
 
         /* Also kill the parent button's hover scale/background that the
@@ -1838,9 +1961,9 @@
         .main-header-logo .logo-header .topbar-toggler,
         .main-header-logo .logo-header .topbar-toggler:hover,
         .main-header-logo .logo-header .topbar-toggler:focus {
-            background: transparent !important;
-            transform: none !important;
-            box-shadow: none !important;
-            outline: none !important;
+            background: transparent ;
+            transform: none ;
+            box-shadow: none ;
+            outline: none ;
         }
 

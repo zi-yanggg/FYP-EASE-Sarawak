@@ -121,7 +121,7 @@
       border-color: #177dff; }
 
 .demo .btn, .demo .progress {
-  margin-bottom: 15px !important; }
+  margin-bottom: 15px ; }
 .demo .form-check-label, .demo .form-radio-label, .demo .toggle, .demo .btn-group {
   margin-right: 15px; }
 .demo #slider {
@@ -247,7 +247,7 @@ body[data-background-color="dark"] .demo-icon .icon-class {
   font-size: 16px;
   margin-bottom: 22.750px; }
 #modalShowcase .preview-img {
-  width: 100% !important;
+  width: 100% ;
   height: auto;
   object-fit: cover;
   transition: all .3s ease; }
@@ -271,8 +271,8 @@ body[data-background-color="dark"] .demo-icon .icon-class {
     width: 23px;
     height: 23px;
     font-size: 16px;
-    margin-bottom: 0.5rem !important;
-    padding-top: 0.25rem !important; }
+    margin-bottom: 0.5rem ;
+    padding-top: 0.25rem ; }
   #checkOutMoreDemos:hover {
     background: #1e2129;
     color: #fff;
@@ -281,7 +281,7 @@ body[data-background-color="dark"] .demo-icon .icon-class {
 
 @media screen and (max-width: 1200px) {
   #modalShowcase .modal-dialog {
-    padding: 3rem !important; } }
+    padding: 3rem ; } }
 @media screen and (max-width: 550px) {
   .table-typo tr td {
     display: flex;
@@ -291,7 +291,7 @@ body[data-background-color="dark"] .demo-icon .icon-class {
       margin-bottom: 0px; }
 
   #modalShowcase .modal-dialog {
-    padding: 32px !important; }
+    padding: 32px ; }
   #modalShowcase h3 {
     font-size: 16px; }
   #modalShowcase .preview-showcase {
@@ -303,10 +303,10 @@ body[data-background-color="dark"] .demo-icon .icon-class {
     overflow: auto; }
 
   .form-show-notify > .text-right, .form-show-validation > .text-right {
-    text-align: left !important; } }
+    text-align: left ; } }
 @media screen and (max-width: 400px) {
   .custom-template {
-    width: 85% !important;
+    width: 85% ;
     right: -85%; } }
 
 /*# sourceMappingURL=demo.css.map */
