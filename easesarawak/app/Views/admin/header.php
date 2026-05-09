@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 function timeAgo($datetime)
 {
     $time = strtotime($datetime);
@@ -76,6 +76,12 @@ function timeAgo($datetime)
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/plugins.min.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/kaiadmin.min.css') ?>" />
     <style>
+        html,
+        body {
+            margin: 0 ;
+            padding: 0 ;
+        }
+
         #orderModal .card {
             border-radius: 1rem;
         }
@@ -174,46 +180,46 @@ function timeAgo($datetime)
 
         /* Color sets */
         .bg-a {
-            background-color: #5B532C !important;
+            background-color: #5B532C ;
         }
 
         .bg-b {
-            background-color: #47421f !important;
+            background-color: #47421f ;
         }
 
         .bg-c {
-            background-color: #51cf66 !important;
+            background-color: #51cf66 ;
         }
 
         .bg-d {
-            background-color: #845ef7 !important;
+            background-color: #845ef7 ;
         }
 
         .bg-e {
-            background-color: #ffa94d !important;
+            background-color: #ffa94d ;
         }
 
         .icon-visitor {
-            background-color: #f2be00 !important;
-            color: #fff !important;
+            background-color: #f2be00 ;
+            color: #fff ;
             border-radius: 10px;
         }
 
         .icon-admin {
-            background-color: #900707ff !important;
-            color: #fff !important;
+            background-color: #900707ff ;
+            color: #fff ;
             border-radius: 10px;
         }
 
         .icon-sales {
-            background-color: #84994F !important;
-            color: #fff !important;
+            background-color: #84994F ;
+            color: #fff ;
             border-radius: 10px;
         }
 
         .icon-order {
-            background-color: #A18D6D !important;
-            color: #fff !important;
+            background-color: #A18D6D ;
+            color: #fff ;
             border-radius: 10px;
         }
 
@@ -261,33 +267,33 @@ function timeAgo($datetime)
         body.dark-mode .sidebar,
         body.dark-mode .main-header,
         body.dark-mode .main-panel {
-            background-color: #242526 !important;
-            color: #e4e6eb !important;
+            background-color: #242526 ;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .table,
         body.dark-mode .table th,
         body.dark-mode .table td {
-            background-color: #242526 !important;
-            color: #e4e6eb !important;
-            border-color: #3a3b3c !important;
+            background-color: #242526 ;
+            color: #e4e6eb ;
+            border-color: #3a3b3c ;
         }
 
         body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > * {
-            background-color: #2d2e2f !important;
-            color: #e4e6eb !important;
+            background-color: #2d2e2f ;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .table-hover > tbody > tr:hover > * {
-            background-color: #3a3b3c !important;
-            color: #fff !important;
+            background-color: #3a3b3c ;
+            color: #fff ;
         }
 
         body.dark-mode .table-light th,
         body.dark-mode .table-light td,
         body.dark-mode thead.table-light th {
-            background-color: #1e1f20 !important;
-            color: #e4e6eb !important;
+            background-color: #1e1f20 ;
+            color: #e4e6eb ;
         }
 
         body.dark-mode,
@@ -299,11 +305,11 @@ function timeAgo($datetime)
         body.dark-mode a:not(.btn),
         body.dark-mode .card-title,
         body.dark-mode .card-body {
-            color: #e4e6eb !important;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .text-muted {
-            color: #adb5bd !important;
+            color: #adb5bd ;
         }
 
         .form-switch .form-check-input {
@@ -317,22 +323,22 @@ function timeAgo($datetime)
         .nav-pills.nav-secondary .nav-link.active,
         .nav-pills.nav-secondary .nav-link.active:hover,
         .nav-pills.nav-secondary .nav-link.active:focus {
-            background-color: #f2be00 !important;
-            color: #000 !important;
-            border: none !important;
-            box-shadow: none !important;
+            background-color: #f2be00 ;
+            color: #000 ;
+            border: none ;
+            box-shadow: none ;
         }
 
         .btn-secondary {
-            background-color: #f2be00 !important;
-            border-color: #f2be00 !important;
-            color: #000 !important;
+            background-color: #f2be00 ;
+            border-color: #f2be00 ;
+            color: #000 ;
         }
 
         .btn-secondary:hover {
-            background-color: #e6ac00 !important;
-            border-color: #e6ac00 !important;
-            color: #000 !important;
+            background-color: #e6ac00 ;
+            border-color: #e6ac00 ;
+            color: #000 ;
         }
 
         /* ============================================================
@@ -345,15 +351,15 @@ function timeAgo($datetime)
         .navbar-header .ease-user-dropdown,
         .navbar-header .navbar-nav .ease-user-dropdown,
         .main-header .navbar-header .navbar-nav .ease-user-dropdown {
-            min-width: 280px !important;
-            width: 280px !important;
-            max-width: 320px !important;
-            padding: 0 !important;
-            border: none !important;
-            border-radius: 0 !important;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22) !important;
-            overflow: hidden !important;
-            background: #ffffff !important;
+            min-width: 280px ;
+            width: 280px ;
+            max-width: 320px ;
+            padding: 0 ;
+            border: none ;
+            border-radius: 0 ;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22) ;
+            overflow: hidden ;
+            background: #ffffff ;
             font-family: 'Oxanium', 'Public Sans', sans-serif;
         }
 
@@ -361,49 +367,49 @@ function timeAgo($datetime)
            (it's a CSS triangle whose visible color is border-bottom) */
         .navbar-header .ease-user-dropdown:after,
         .navbar-header .navbar-nav .ease-user-dropdown:after {
-            border-bottom-color: #1A1A1A !important;
+            border-bottom-color: #1A1A1A ;
         }
 
         .ease-user-dropdown .dropdown-user-scroll,
         .navbar-header .ease-user-dropdown .dropdown-user-scroll {
-            padding: 0 !important;
-            margin: 0 !important;
-            background: #ffffff !important;
-            max-height: none !important;
+            padding: 0 ;
+            margin: 0 ;
+            background: #ffffff ;
+            max-height: none ;
         }
 
         .ease-user-dropdown li,
         .navbar-header .ease-user-dropdown li {
-            list-style: none !important;
-            margin: 0 !important;
-            padding: 0 !important;
+            list-style: none ;
+            margin: 0 ;
+            padding: 0 ;
         }
 
         /* Dark gold-titled header — matches rpt-card-header */
         .ease-user-dropdown .ease-user-box,
         .navbar-header .ease-user-dropdown .ease-user-box,
         .navbar-header .ease-user-dropdown .user-box.ease-user-box {
-            background: #1A1A1A !important;
-            color: #fff !important;
-            padding: 18px 18px 16px !important;
-            border-bottom: 2px solid #F2BE00 !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 14px !important;
-            margin: 0 !important;
+            background: #1A1A1A ;
+            color: #fff ;
+            padding: 18px 18px 16px ;
+            border-bottom: 2px solid #F2BE00 ;
+            display: flex ;
+            align-items: center ;
+            gap: 14px ;
+            margin: 0 ;
         }
 
         .ease-user-dropdown .ease-user-avatar,
         .navbar-header .ease-user-dropdown .ease-user-avatar {
-            width: 56px !important;
-            height: 56px !important;
+            width: 56px ;
+            height: 56px ;
             flex-shrink: 0;
-            border-radius: 50% !important;
-            border: 2px solid #F2BE00 !important;
+            border-radius: 50% ;
+            border: 2px solid #F2BE00 ;
             overflow: hidden;
             box-shadow: 0 0 0 3px rgba(242, 190, 0, 0.18);
-            background: #1A1A1A !important;
-            padding: 0 !important;
+            background: #1A1A1A ;
+            padding: 0 ;
         }
 
         .ease-user-dropdown .ease-user-avatar .avatar-img {
@@ -415,19 +421,19 @@ function timeAgo($datetime)
 
         .ease-user-dropdown .ease-user-text,
         .navbar-header .ease-user-dropdown .u-text.ease-user-text {
-            flex: 1 1 auto !important;
-            min-width: 0 !important;
-            padding: 0 !important;
+            flex: 1 1 auto ;
+            min-width: 0 ;
+            padding: 0 ;
         }
 
         .ease-user-dropdown .ease-user-name,
         .navbar-header .ease-user-dropdown .u-text h4.ease-user-name {
-            font-family: 'Oxanium', sans-serif !important;
-            font-size: 1rem !important;
-            font-weight: 800 !important;
-            color: #F2BE00 !important;
-            margin: 0 0 2px !important;
-            line-height: 1.2 !important;
+            font-family: 'Oxanium', sans-serif ;
+            font-size: 1rem ;
+            font-weight: 800 ;
+            color: #F2BE00 ;
+            margin: 0 0 2px ;
+            line-height: 1.2 ;
             letter-spacing: -0.01em;
             white-space: nowrap;
             overflow: hidden;
@@ -436,10 +442,10 @@ function timeAgo($datetime)
 
         .ease-user-dropdown .ease-user-email,
         .navbar-header .ease-user-dropdown .u-text p.ease-user-email {
-            font-size: 0.78rem !important;
-            color: #c9c9c9 !important;
-            margin: 0 0 8px !important;
-            line-height: 1.3 !important;
+            font-size: 0.78rem ;
+            color: #c9c9c9 ;
+            margin: 0 0 8px ;
+            line-height: 1.3 ;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -472,25 +478,25 @@ function timeAgo($datetime)
         /* Action items below the header */
         .ease-user-dropdown .ease-user-actions,
         .navbar-header .ease-user-dropdown .ease-user-actions {
-            padding: 6px 0 !important;
-            background: #ffffff !important;
+            padding: 6px 0 ;
+            background: #ffffff ;
         }
 
         .ease-user-dropdown .ease-user-item,
         .navbar-header .ease-user-dropdown .ease-user-item,
         .navbar-header .navbar-nav .ease-user-dropdown .dropdown-item.ease-user-item {
-            display: flex !important;
-            align-items: center !important;
-            gap: 12px !important;
-            padding: 10px 18px !important;
-            font-family: 'Oxanium', sans-serif !important;
-            font-size: 0.86rem !important;
-            font-weight: 600 !important;
-            color: #111827 !important;
-            background: transparent !important;
-            border: none !important;
-            transition: background 0.18s ease, color 0.18s ease, padding-left 0.18s ease !important;
-            white-space: nowrap !important;
+            display: flex ;
+            align-items: center ;
+            gap: 12px ;
+            padding: 10px 18px ;
+            font-family: 'Oxanium', sans-serif ;
+            font-size: 0.86rem ;
+            font-weight: 600 ;
+            color: #111827 ;
+            background: transparent ;
+            border: none ;
+            transition: background 0.18s ease, color 0.18s ease, padding-left 0.18s ease ;
+            white-space: nowrap ;
         }
 
         .ease-user-dropdown .ease-user-item i {
@@ -504,19 +510,19 @@ function timeAgo($datetime)
 
         .ease-user-dropdown .ease-user-item:hover,
         .ease-user-dropdown .ease-user-item:focus {
-            background: rgba(242, 190, 0, 0.12) !important;
-            color: #111827 !important;
-            padding-left: 22px !important;
+            background: rgba(242, 190, 0, 0.12) ;
+            color: #111827 ;
+            padding-left: 22px ;
         }
 
         .ease-user-dropdown .ease-user-item:hover i,
         .ease-user-dropdown .ease-user-item:focus i {
-            color: #d4a700 !important;
+            color: #d4a700 ;
         }
 
         /* Logout — subtle red accent on hover */
         .ease-user-dropdown .ease-user-logout {
-            color: #b91c1c !important;
+            color: #b91c1c ;
         }
 
         .ease-user-dropdown .ease-user-logout i {
@@ -525,13 +531,13 @@ function timeAgo($datetime)
 
         .ease-user-dropdown .ease-user-logout:hover,
         .ease-user-dropdown .ease-user-logout:focus {
-            background: rgba(185, 28, 28, 0.08) !important;
-            color: #991b1b !important;
+            background: rgba(185, 28, 28, 0.08) ;
+            color: #991b1b ;
         }
 
         .ease-user-dropdown .ease-user-logout:hover i,
         .ease-user-dropdown .ease-user-logout:focus i {
-            color: #991b1b !important;
+            color: #991b1b ;
         }
 
         /* Divider between primary actions and logout */
@@ -555,15 +561,15 @@ function timeAgo($datetime)
 
         /* Dark mode — keep contrast inside dropdown body */
         body.dark-mode .ease-user-dropdown {
-            background: #242526 !important;
+            background: #242526 ;
         }
 
         body.dark-mode .ease-user-dropdown .ease-user-actions {
-            background: #242526 !important;
+            background: #242526 ;
         }
 
         body.dark-mode .ease-user-dropdown .ease-user-item {
-            color: #e4e6eb !important;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .ease-user-dropdown .ease-user-item i {

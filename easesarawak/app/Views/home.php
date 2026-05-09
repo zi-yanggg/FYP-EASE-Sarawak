@@ -638,7 +638,7 @@
         /* Active button after click */
         .button-row .pill-title.active {
             background: #e0b100;
-            color: #ffffff !important;
+            color: #ffffff ;
         }
 
         .button-row .pill-title.active .dot {
@@ -648,7 +648,7 @@
         /* Non-active button */
         .button-row .pill-title:not(.active) {
             background: #ffffff;
-            color: #000000 !important;
+            color: #000000 ;
         }
 
         .connect-with-us .connect-right.pill-title.active {
@@ -997,7 +997,7 @@
             }
 
             .left h3 {
-                font-size: 2.3rem !important;
+                font-size: 2.3rem ;
                 margin: 1rem 0;
             }
 

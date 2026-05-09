@@ -11,7 +11,7 @@
     padding: 0.5rem 2rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    padding: 0 4vw !important;
+    padding: 0 4vw ;
     box-sizing: border-box;
 }
 
@@ -156,7 +156,7 @@
 /* Active menu item highlight */
 .navbar a.active,
 .mobile-menu a.active {
-    color: #f2be00 !important;
+    color: #f2be00 ;
     font-weight: bold;
 }
 
@@ -165,7 +165,7 @@
 .mobile-menu a.active {
     background: rgba(242, 190, 0, 0.1);
     border-left: 4px solid #f2be00;
-    padding-left: 12px !important;
+    padding-left: 12px ;
 }
 
 /* Book Now button when active */

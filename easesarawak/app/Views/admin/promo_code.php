@@ -1,10 +1,10 @@
 <?= $this->include('admin/header'); ?>
 
 <style>
-    .dataTables_filter { display: none !important; }
+    .dataTables_filter { display: none ; }
     .dataTables_paginate {
-        display: flex !important;
-        justify-content: left !important;
+        display: flex ;
+        justify-content: left ;
     }
 </style>
 

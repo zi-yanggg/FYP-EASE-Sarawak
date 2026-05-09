@@ -27,10 +27,10 @@
 
         .navbar-nav,
         .navbar .btn {
-            margin-right: 60px !important;
+            margin-right: 60px ;
         }
         .btn-book-now {
-            margin-left: 0px !important;
+            margin-left: 0px ;
         }
         
         @font-face {
@@ -154,26 +154,26 @@
         }
 
         .tab-btn.active {
-            background: #f2be00 !important; 
-            color: #000000 !important; 
-            border-color: #f2be00 !important; 
-            border-bottom: 2px solid white !important; 
+            background: #f2be00 ; 
+            color: #000000 ; 
+            border-color: #f2be00 ; 
+            border-bottom: 2px solid white ; 
         }
 
         .tab-btn.active:hover {
-            background: #e6a800 !important; 
-            border-color: #e6a800 !important;
+            background: #e6a800 ; 
+            border-color: #e6a800 ;
         }
 
         .tab-btn:not(.active) {
-            background: #000000 !important; 
-            color: white !important; 
-            border-color: #000000 !important; 
+            background: #000000 ; 
+            color: white ; 
+            border-color: #000000 ; 
         }
 
         .tab-btn:not(.active):hover {
-            background: #333333 !important; 
-            border-color: #333333 !important;
+            background: #333333 ; 
+            border-color: #333333 ;
         }
 
         /* Full width forms section */
@@ -509,19 +509,19 @@
                 justify-content: center;
             }
             .tab-btn {
-                border-radius: 0 !important; 
-                border-bottom: 2px solid #000000 !important; 
+                border-radius: 0 ; 
+                border-bottom: 2px solid #000000 ; 
                 margin-bottom: 0.5rem;
             }
             .tab-btn.active {
-                background: #f2be00 !important; 
-                border-bottom: 2px solid #f2be00 !important; 
-                color: #000000 !important; 
+                background: #f2be00 ; 
+                border-bottom: 2px solid #f2be00 ; 
+                color: #000000 ; 
             }
             .tab-btn:not(.active) {
-                background: #000000 !important; 
-                color: white !important; 
-                border-bottom: 2px solid #000000 !important; 
+                background: #000000 ; 
+                color: white ; 
+                border-bottom: 2px solid #000000 ; 
             }
             .booking-form {
                 border-radius: 0; 
@@ -612,12 +612,12 @@
 
         @media (max-width: 700px) {
             .custom-content-block {
-                flex-direction: column !important;
+                flex-direction: column ;
                 text-align: center;
             }
             .custom-content-block img {
-                border-radius: 0 !important;
-                width: 100% !important;
+                border-radius: 0 ;
+                width: 100% ;
                 max-width: 350px;
                 margin: 0 auto;
             }
