@@ -757,7 +757,7 @@
                         sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
                         
                         // Show success message
-                        alert('Booking submitted successfully! Order ID: ' + data.order_id);
+                        alert('Booking submitted successfully! Redirecting to payment page...');
                         
                         // Redirect to confirmation page
                         window.location.href = 'payment';
