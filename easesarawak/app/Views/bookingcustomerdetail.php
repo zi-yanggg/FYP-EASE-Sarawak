@@ -16,10 +16,10 @@
     <style>
         .navbar-nav,
         .navbar .btn {
-            margin-right: 60px !important;
+            margin-right: 60px ;
         }
         .btn-book-now {
-            margin-left: 0px !important;
+            margin-left: 0px ;
         }
         
         @font-face {

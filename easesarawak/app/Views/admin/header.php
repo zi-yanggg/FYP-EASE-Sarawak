@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 function timeAgo($datetime)
 {
     $time = strtotime($datetime);
@@ -76,6 +76,12 @@ function timeAgo($datetime)
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/plugins.min.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/kaiadmin.min.css') ?>" />
     <style>
+        html,
+        body {
+            margin: 0 ;
+            padding: 0 ;
+        }
+
         #orderModal .card {
             border-radius: 1rem;
         }
@@ -174,46 +180,46 @@ function timeAgo($datetime)
 
         /* Color sets */
         .bg-a {
-            background-color: #5B532C !important;
+            background-color: #5B532C ;
         }
 
         .bg-b {
-            background-color: #47421f !important;
+            background-color: #47421f ;
         }
 
         .bg-c {
-            background-color: #51cf66 !important;
+            background-color: #51cf66 ;
         }
 
         .bg-d {
-            background-color: #845ef7 !important;
+            background-color: #845ef7 ;
         }
 
         .bg-e {
-            background-color: #ffa94d !important;
+            background-color: #ffa94d ;
         }
 
         .icon-visitor {
-            background-color: #f2be00 !important;
-            color: #fff !important;
+            background-color: #f2be00 ;
+            color: #fff ;
             border-radius: 10px;
         }
 
         .icon-admin {
-            background-color: #900707ff !important;
-            color: #fff !important;
+            background-color: #900707ff ;
+            color: #fff ;
             border-radius: 10px;
         }
 
         .icon-sales {
-            background-color: #84994F !important;
-            color: #fff !important;
+            background-color: #84994F ;
+            color: #fff ;
             border-radius: 10px;
         }
 
         .icon-order {
-            background-color: #A18D6D !important;
-            color: #fff !important;
+            background-color: #A18D6D ;
+            color: #fff ;
             border-radius: 10px;
         }
 
@@ -261,33 +267,33 @@ function timeAgo($datetime)
         body.dark-mode .sidebar,
         body.dark-mode .main-header,
         body.dark-mode .main-panel {
-            background-color: #242526 !important;
-            color: #e4e6eb !important;
+            background-color: #242526 ;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .table,
         body.dark-mode .table th,
         body.dark-mode .table td {
-            background-color: #242526 !important;
-            color: #e4e6eb !important;
-            border-color: #3a3b3c !important;
+            background-color: #242526 ;
+            color: #e4e6eb ;
+            border-color: #3a3b3c ;
         }
 
         body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > * {
-            background-color: #2d2e2f !important;
-            color: #e4e6eb !important;
+            background-color: #2d2e2f ;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .table-hover > tbody > tr:hover > * {
-            background-color: #3a3b3c !important;
-            color: #fff !important;
+            background-color: #3a3b3c ;
+            color: #fff ;
         }
 
         body.dark-mode .table-light th,
         body.dark-mode .table-light td,
         body.dark-mode thead.table-light th {
-            background-color: #1e1f20 !important;
-            color: #e4e6eb !important;
+            background-color: #1e1f20 ;
+            color: #e4e6eb ;
         }
 
         body.dark-mode,
@@ -299,11 +305,11 @@ function timeAgo($datetime)
         body.dark-mode a:not(.btn),
         body.dark-mode .card-title,
         body.dark-mode .card-body {
-            color: #e4e6eb !important;
+            color: #e4e6eb ;
         }
 
         body.dark-mode .text-muted {
-            color: #adb5bd !important;
+            color: #adb5bd ;
         }
 
         .form-switch .form-check-input {
@@ -317,22 +323,261 @@ function timeAgo($datetime)
         .nav-pills.nav-secondary .nav-link.active,
         .nav-pills.nav-secondary .nav-link.active:hover,
         .nav-pills.nav-secondary .nav-link.active:focus {
-            background-color: #f2be00 !important;
-            color: #000 !important;
-            border: none !important;
-            box-shadow: none !important;
+            background-color: #f2be00 ;
+            color: #000 ;
+            border: none ;
+            box-shadow: none ;
         }
 
         .btn-secondary {
-            background-color: #f2be00 !important;
-            border-color: #f2be00 !important;
-            color: #000 !important;
+            background-color: #f2be00 ;
+            border-color: #f2be00 ;
+            color: #000 ;
         }
 
         .btn-secondary:hover {
-            background-color: #e6ac00 !important;
-            border-color: #e6ac00 !important;
-            color: #000 !important;
+            background-color: #e6ac00 ;
+            border-color: #e6ac00 ;
+            color: #000 ;
+        }
+
+        /* ============================================================
+           NAVBAR — Profile Dropdown (Reports/Revenue Theme)
+           Selectors are scoped to .navbar-header / .navbar-nav so they
+           outrank kaiadmin's `.navbar-header .navbar-nav .dropdown-menu`
+           and `.navbar-header .dropdown-menu:after` defaults.
+           ============================================================ */
+        .ease-user-dropdown,
+        .navbar-header .ease-user-dropdown,
+        .navbar-header .navbar-nav .ease-user-dropdown,
+        .main-header .navbar-header .navbar-nav .ease-user-dropdown {
+            min-width: 280px ;
+            width: 280px ;
+            max-width: 320px ;
+            padding: 0 ;
+            border: none ;
+            border-radius: 0 ;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22) ;
+            overflow: hidden ;
+            background: #ffffff ;
+            font-family: 'Oxanium', 'Public Sans', sans-serif;
+        }
+
+        /* Recolor / hide the kaiadmin pointer arrow on top of the dropdown
+           (it's a CSS triangle whose visible color is border-bottom) */
+        .navbar-header .ease-user-dropdown:after,
+        .navbar-header .navbar-nav .ease-user-dropdown:after {
+            border-bottom-color: #1A1A1A ;
+        }
+
+        .ease-user-dropdown .dropdown-user-scroll,
+        .navbar-header .ease-user-dropdown .dropdown-user-scroll {
+            padding: 0 ;
+            margin: 0 ;
+            background: #ffffff ;
+            max-height: none ;
+        }
+
+        .ease-user-dropdown li,
+        .navbar-header .ease-user-dropdown li {
+            list-style: none ;
+            margin: 0 ;
+            padding: 0 ;
+        }
+
+        /* Dark gold-titled header — matches rpt-card-header */
+        .ease-user-dropdown .ease-user-box,
+        .navbar-header .ease-user-dropdown .ease-user-box,
+        .navbar-header .ease-user-dropdown .user-box.ease-user-box {
+            background: #1A1A1A ;
+            color: #fff ;
+            padding: 18px 18px 16px ;
+            border-bottom: 2px solid #F2BE00 ;
+            display: flex ;
+            align-items: center ;
+            gap: 14px ;
+            margin: 0 ;
+        }
+
+        .ease-user-dropdown .ease-user-avatar,
+        .navbar-header .ease-user-dropdown .ease-user-avatar {
+            width: 56px ;
+            height: 56px ;
+            flex-shrink: 0;
+            border-radius: 50% ;
+            border: 2px solid #F2BE00 ;
+            overflow: hidden;
+            box-shadow: 0 0 0 3px rgba(242, 190, 0, 0.18);
+            background: #1A1A1A ;
+            padding: 0 ;
+        }
+
+        .ease-user-dropdown .ease-user-avatar .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .ease-user-dropdown .ease-user-text,
+        .navbar-header .ease-user-dropdown .u-text.ease-user-text {
+            flex: 1 1 auto ;
+            min-width: 0 ;
+            padding: 0 ;
+        }
+
+        .ease-user-dropdown .ease-user-name,
+        .navbar-header .ease-user-dropdown .u-text h4.ease-user-name {
+            font-family: 'Oxanium', sans-serif ;
+            font-size: 1rem ;
+            font-weight: 800 ;
+            color: #F2BE00 ;
+            margin: 0 0 2px ;
+            line-height: 1.2 ;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ease-user-dropdown .ease-user-email,
+        .navbar-header .ease-user-dropdown .u-text p.ease-user-email {
+            font-size: 0.78rem ;
+            color: #c9c9c9 ;
+            margin: 0 0 8px ;
+            line-height: 1.3 ;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Role badge — matches profile page badges */
+        .ease-user-dropdown .ease-role-badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 999px;
+            font-family: 'Oxanium', sans-serif;
+            font-size: 0.66rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            line-height: 1.4;
+        }
+
+        .ease-user-dropdown .ease-role-super {
+            background: #F2BE00;
+            color: #111;
+        }
+
+        .ease-user-dropdown .ease-role-admin {
+            background: rgba(242, 190, 0, 0.15);
+            color: #F2BE00;
+            border: 1px solid rgba(242, 190, 0, 0.35);
+        }
+
+        /* Action items below the header */
+        .ease-user-dropdown .ease-user-actions,
+        .navbar-header .ease-user-dropdown .ease-user-actions {
+            padding: 6px 0 ;
+            background: #ffffff ;
+        }
+
+        .ease-user-dropdown .ease-user-item,
+        .navbar-header .ease-user-dropdown .ease-user-item,
+        .navbar-header .navbar-nav .ease-user-dropdown .dropdown-item.ease-user-item {
+            display: flex ;
+            align-items: center ;
+            gap: 12px ;
+            padding: 10px 18px ;
+            font-family: 'Oxanium', sans-serif ;
+            font-size: 0.86rem ;
+            font-weight: 600 ;
+            color: #111827 ;
+            background: transparent ;
+            border: none ;
+            transition: background 0.18s ease, color 0.18s ease, padding-left 0.18s ease ;
+            white-space: nowrap ;
+        }
+
+        .ease-user-dropdown .ease-user-item i {
+            width: 18px;
+            font-size: 0.9rem;
+            color: #6B7280;
+            flex-shrink: 0;
+            text-align: center;
+            transition: color 0.18s ease;
+        }
+
+        .ease-user-dropdown .ease-user-item:hover,
+        .ease-user-dropdown .ease-user-item:focus {
+            background: rgba(242, 190, 0, 0.12) ;
+            color: #111827 ;
+            padding-left: 22px ;
+        }
+
+        .ease-user-dropdown .ease-user-item:hover i,
+        .ease-user-dropdown .ease-user-item:focus i {
+            color: #d4a700 ;
+        }
+
+        /* Logout — subtle red accent on hover */
+        .ease-user-dropdown .ease-user-logout {
+            color: #b91c1c ;
+        }
+
+        .ease-user-dropdown .ease-user-logout i {
+            color: #b91c1c;
+        }
+
+        .ease-user-dropdown .ease-user-logout:hover,
+        .ease-user-dropdown .ease-user-logout:focus {
+            background: rgba(185, 28, 28, 0.08) ;
+            color: #991b1b ;
+        }
+
+        .ease-user-dropdown .ease-user-logout:hover i,
+        .ease-user-dropdown .ease-user-logout:focus i {
+            color: #991b1b ;
+        }
+
+        /* Divider between primary actions and logout */
+        .ease-user-dropdown .ease-user-divider {
+            height: 1px;
+            background: #F3F4F6;
+            margin: 6px 14px;
+        }
+
+        /* Profile pic toggle — gold ring on hover/active */
+        .ease-profile-toggle .avatar-sm .avatar-img {
+            border: 2px solid transparent;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .ease-profile-toggle:hover .avatar-sm .avatar-img,
+        .ease-profile-toggle[aria-expanded="true"] .avatar-sm .avatar-img {
+            border-color: #F2BE00;
+            box-shadow: 0 0 0 3px rgba(242, 190, 0, 0.2);
+        }
+
+        /* Dark mode — keep contrast inside dropdown body */
+        body.dark-mode .ease-user-dropdown {
+            background: #242526 ;
+        }
+
+        body.dark-mode .ease-user-dropdown .ease-user-actions {
+            background: #242526 ;
+        }
+
+        body.dark-mode .ease-user-dropdown .ease-user-item {
+            color: #e4e6eb ;
+        }
+
+        body.dark-mode .ease-user-dropdown .ease-user-item i {
+            color: #adb5bd;
+        }
+
+        body.dark-mode .ease-user-dropdown .ease-user-divider {
+            background: #3a3b3c;
         }
     </style>
 </head>
@@ -970,7 +1215,7 @@ function timeAgo($datetime)
 
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a
-                                    class="dropdown-toggle profile-pic"
+                                    class="dropdown-toggle profile-pic ease-profile-toggle"
                                     data-bs-toggle="dropdown"
                                     href="#"
                                     aria-expanded="false">
@@ -986,36 +1231,48 @@ function timeAgo($datetime)
                                         <span class="fw-bold"><?= esc($session->get('username')) ?></span>
                                     </span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                    <div class="dropdown-user-scroll scrollbar-outer">
-                                        <li>
-                                            <div class="user-box">
-                                                <div class="avatar-lg">
-                                                    <img
-                                                        src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
-                                                        alt="image profile"
-                                                        class="avatar-img rounded" />
-                                                </div>
-                                                <div class="u-text">
-                                                    <h4><?= esc($session->get('username')) ?></h4>
-                                                    <p class="text-muted"><?= esc($session->get('email')) ?></p>
-                                                    <a
-                                                        href="<?= base_url('/profile') ?>"
-                                                        class="btn btn-xs btn-sm"
-                                                        style="background: #84994F; color: white;">View Profile</a>
-                                                </div>
+                                <ul class="dropdown-menu dropdown-user ease-user-dropdown animated fadeIn">
+                                    <li>
+                                        <div class="user-box ease-user-box">
+                                            <div class="avatar-lg ease-user-avatar">
+                                                <img
+                                                    src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
+                                                    alt="image profile"
+                                                    class="avatar-img rounded-circle" />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="<?= base_url('/profile') ?>">My Profile</a>
-                                            <!-- <a class="dropdown-item" href="#">Inbox</a> -->
-                                            <!-- <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Account Setting</a> -->
-                                            <!-- <div class="dropdown-divider"></div> -->
-                                            <a class="dropdown-item" href="<?= base_url('/logout') ?>">Logout</a>
-                                        </li>
-                                    </div>
+                                            <div class="u-text ease-user-text">
+                                                <h4 class="ease-user-name"><?= esc($session->get('username')) ?></h4>
+                                                <p class="ease-user-email"><?= esc($session->get('email')) ?></p>
+                                                <?php
+                                                    $hdrRole = session()->get('role');
+                                                    $hdrRoleLabel = $hdrRole === '1' ? 'Super Admin' : 'Admin';
+                                                    $hdrBadgeClass = $hdrRole === '1' ? 'ease-role-super' : 'ease-role-admin';
+                                                ?>
+                                                <span class="ease-role-badge <?= $hdrBadgeClass ?>"><?= esc($hdrRoleLabel) ?></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="ease-user-actions">
+                                            <a class="dropdown-item ease-user-item" href="<?= base_url('/profile') ?>">
+                                                <i class="fas fa-user"></i>
+                                                <span>My Profile</span>
+                                            </a>
+                                            <a class="dropdown-item ease-user-item" href="<?= base_url('/edit_profile/' . (int) $session->get('user_id')) ?>">
+                                                <i class="fas fa-user-edit"></i>
+                                                <span>Edit Profile</span>
+                                            </a>
+                                            <a class="dropdown-item ease-user-item" href="<?= base_url('/change_password') ?>">
+                                                <i class="fas fa-key"></i>
+                                                <span>Change Password</span>
+                                            </a>
+                                            <div class="ease-user-divider"></div>
+                                            <a class="dropdown-item ease-user-item ease-user-logout" href="<?= base_url('/logout') ?>">
+                                                <i class="fas fa-sign-out-alt"></i>
+                                                <span>Logout</span>
+                                            </a>
+                                        </div>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
