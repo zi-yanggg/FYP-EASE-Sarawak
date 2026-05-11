@@ -70,36 +70,17 @@ class Home extends BaseController
     public function bookingdetail(): string
     {
         $serviceModel = new \App\Models\ServiceManagementModel();
-
-        $deliveryService = $serviceModel->where('service_type', 'delivery')->first() ?? [];
-        $storageService = $serviceModel->where('service_type', 'storage')->first() ?? [];
-
-        $deliveryPrice = (int)($deliveryService['base_price'] ?? 24);
-        $storagePrice = (int)($storageService['base_price'] ?? 18);
-        $deliveryExtraRate = (int)($deliveryService['extra_rate'] ?? 6);
-        $storageExtraRate = (int)($storageService['extra_rate'] ?? 6);
-
+        $deliveryPrice = $serviceModel->where('service_type', 'delivery')->first()['base_price'] ?? 24;
+        $storagePrice = $serviceModel->where('service_type', 'storage')->first()['base_price'] ?? 18;
         return view('bookingdetail', [
             'deliveryPrice' => $deliveryPrice,
             'storagePrice' => $storagePrice,
-            'deliveryExtraRate' => $deliveryExtraRate,
-            'storageExtraRate' => $storageExtraRate,
         ]);
     }
 
     public function bookingcustomerdetail(): string
     {
-        $serviceModel = new \App\Models\ServiceManagementModel();
-
-        $deliveryService = $serviceModel->where('service_type', 'delivery')->first() ?? [];
-        $storageService = $serviceModel->where('service_type', 'storage')->first() ?? [];
-
-        return view('bookingcustomerdetail', [
-            'deliveryPrice' => (int)($deliveryService['base_price'] ?? 24),
-            'storagePrice' => (int)($storageService['base_price'] ?? 18),
-            'deliveryExtraRate' => (int)($deliveryService['extra_rate'] ?? 6),
-            'storageExtraRate' => (int)($storageService['extra_rate'] ?? 6),
-        ]);
+        return view('bookingcustomerdetail');
     }
 
     public function booking_confirmation(): string
@@ -116,14 +97,8 @@ class Home extends BaseController
         // from POST get email
         $email = $this->request->getPost('email');
 
-        $serviceModel = new \App\Models\ServiceManagementModel();
-        $deliveryService = $serviceModel->where('service_type', 'delivery')->first() ?? [];
-        $storageService = $serviceModel->where('service_type', 'storage')->first() ?? [];
-
         return view('payment', [
-            'receiptEmail' => $email, // 传给 view
-            'deliveryExtraRate' => (int)($deliveryService['extra_rate'] ?? 6),
-            'storageExtraRate' => (int)($storageService['extra_rate'] ?? 6),
+            'receiptEmail' => $email,   // 传给 view
         ]);
     }
 

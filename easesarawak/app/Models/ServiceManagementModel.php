@@ -7,5 +7,5 @@ class ServiceManagementModel extends Model
 {
     protected $table      = 'service_management';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['service_type', 'base_price', 'extra_rate'];
+    protected $allowedFields = ['service_type', 'base_price'];
 }
