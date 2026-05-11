@@ -66,6 +66,10 @@
         <div class="alert alert-success text-center"><?= session()->getFlashdata('success') ?></div>
     <?php endif; ?>
 
+    <?php if (session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger text-center"><?= session()->getFlashdata('error') ?></div>
+    <?php endif; ?>
+
     <div class="card shadow-sm" style="margin: 10px;">
         <div class="card-body">
             <table class="table table-hover align-middle">
@@ -82,7 +86,7 @@
                         <td>
                             <form method="post" action="<?= base_url('/admin/service_management/update/'.$service['id']) ?>" style="display:inline;">
                                 <?= csrf_field() ?>
-                                <input type="number" step="1" name="base_price" value="<?= esc($service['base_price']) ?>" class="form-control d-inline-block" style="width: 100px;">
+                                <input type="number" step="1" min="1" name="base_price" value="<?= esc($service['base_price']) ?>" class="form-control d-inline-block" style="width: 100px;">
                                 <button type="submit" class="btn btn-primary btn-sm ms-2">Save</button>
                             </form>
                         </td>

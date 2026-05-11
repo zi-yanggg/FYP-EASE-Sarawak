@@ -61,7 +61,7 @@ function isActive($path)
     <a href="<?= base_url('/#why-choose-ease') ?>">Why us</a>
     <a href="<?= base_url('/about') ?>" class="<?= isActive('/about') ? 'active' : '' ?>">About Us</a>
     <a href="<?= base_url('/#contact') ?>">Contact Us</a>
-    <a href="<?= base_url('/booking') ?>" class="<?= isActive('/booking') ? 'active' : '' ?>">Book Now</a>
+    <a href="<?= base_url('/booking') ?>" class="btn <?= isActive('/booking') ? 'active' : '' ?>">Book Now</a>
 </div>
 </div>
 <script>

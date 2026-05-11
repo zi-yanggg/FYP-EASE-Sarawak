@@ -1061,9 +1061,14 @@ class Admin extends BaseController
 
     public function update_service_price($id)
     {
-        $model = new \App\Models\ServiceManagementModel();
         $base_price = $this->request->getPost('base_price');
-        $model->update($id, ['base_price' => $base_price]);
+
+        if (!is_numeric($base_price) || (int)$base_price < 1) {
+            return redirect()->to('/admin/service_management')->with('error', 'Base price must be greater than zero.');
+        }
+
+        $model = new \App\Models\ServiceManagementModel();
+        $model->update($id, ['base_price' => (int)$base_price]);
         return redirect()->to('/admin/service_management')->with('success', 'Base price updated!');
     }
 
