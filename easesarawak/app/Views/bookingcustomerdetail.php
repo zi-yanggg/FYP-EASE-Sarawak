@@ -557,6 +557,11 @@
             JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
         ) ?>;
 
+        const DELIVERY_BASE_PRICE = <?= json_encode($deliveryPrice ?? 24) ?>;
+        const STORAGE_BASE_PRICE = <?= json_encode($storagePrice ?? 18) ?>;
+        const DELIVERY_EXTRA_RATE = <?= json_encode($deliveryExtraRate ?? 6) ?>;
+        const STORAGE_EXTRA_RATE = <?= json_encode($storageExtraRate ?? 6) ?>;
+        
         function t(text) {
             return EASE_TRANSLATIONS[text] || text;
         }
@@ -807,33 +812,44 @@
         function updatePricing() {
             const pricingDiv = document.getElementById('pricing-content');
             const bookingData = JSON.parse(sessionStorage.getItem('bookingData'));
+
             if (!bookingData) {
                 pricingDiv.innerHTML = '<div class="no-data">No booking data found.</div>';
                 return;
             }
 
-            // Get values from bookingData
             const currentQuantity = parseInt(bookingData.quantity) || 1;
             const insuranceSelected = bookingData.insuranceSelected === true
                 || bookingData.insuranceSelected === 'true'
                 || bookingData.insuranceSelected === 1
                 || bookingData.insuranceSelected === '1'
                 || bookingData.insuranceSelected === 'on';
-            const basePrice = parseFloat(bookingData.basePrice) || (bookingData.service === 'delivery' ? 24 : 18);
+
+            const basePrice = parseFloat(bookingData.basePrice)
+                || (bookingData.service === 'delivery' ? Number(DELIVERY_BASE_PRICE) : Number(STORAGE_BASE_PRICE));
+
+            const storedExtraRate = parseFloat(bookingData.extraRate);
+            const defaultExtraRate = bookingData.service === 'delivery'
+                ? Number(DELIVERY_EXTRA_RATE)
+                : Number(STORAGE_EXTRA_RATE);
+
+            const extraRate = (!isNaN(storedExtraRate) && storedExtraRate > 0)
+                ? storedExtraRate
+                : defaultExtraRate;
+
             const promoDiscount = parseFloat(bookingData.promoDiscount) || 0;
             const promoType = bookingData.promoType || 'amount';
             const appliedPromoCode = bookingData.promoCode || '';
+
             const start = new Date(bookingData.dropoffDate + ' ' + bookingData.dropoffTime);
             const end = new Date(bookingData.pickupDate + ' ' + bookingData.pickupTime);
             const diffHours = Math.ceil((end - start) / (1000 * 60 * 60));
-            let html = '';
 
-            let insuranceCharge = insuranceSelected ? (3 * currentQuantity) : 0;
+            let html = '';
+            const insuranceCharge = insuranceSelected ? (3 * currentQuantity) : 0;
 
             if (bookingData.service === 'delivery') {
-                // In Town Delivery
                 const baseHours = 24;
-                const extraRate = 6;
                 const exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
                 const baseStoragePrice = basePrice * currentQuantity;
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
@@ -853,14 +869,14 @@
                         <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess</span>
+                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess (RM ${extraRate}/12h)</span>
                     </div>
                     <div class="price-row">
                         <span class="price-value">${currentQuantity} Standard Luggage</span>
                         <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
                     </div>
                 `;
-
+                
                 if (insuranceSelected) {
                     html += `
                         <div class="price-row">
@@ -873,7 +889,6 @@
                     `;
                 }
 
-                // Discount
                 let discountAmount = 0;
                 if (appliedPromoCode && promoDiscount > 0) {
                     if (promoType === 'amount') {
@@ -881,6 +896,7 @@
                     } else {
                         discountAmount = (baseStoragePrice + extraStoragePrice) * promoDiscount / 100;
                     }
+
                     html += `
                         <div class="price-row">
                             <span class="price-label">${t('Discount')} (${appliedPromoCode}):</span>
@@ -897,9 +913,7 @@
                     </div>
                 `;
             } else {
-                // Luggage Storage
                 const baseHours = 12;
-                const extraRate = 6;
                 const exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
                 const baseStoragePrice = basePrice * currentQuantity;
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
@@ -910,11 +924,11 @@
                         <span class="price-label">${t('First 12 Hours')}</span>
                     </div>
                     <div class="price-row">
-                    <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
-                    <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
+                        <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
+                        <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-label">${t('Subsequent 12 Hours x')} ${t('exceededTimes')} Excess</span>
+                        <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} ${t('Excess')} (RM ${extraRate}/12h)</span>
                     </div>
                     <div class="price-row">
                         <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
@@ -934,7 +948,6 @@
                     `;
                 }
 
-                // Discount
                 let discountAmount = 0;
                 if (appliedPromoCode && promoDiscount > 0) {
                     if (promoType === 'amount') {
@@ -942,6 +955,7 @@
                     } else {
                         discountAmount = (baseStoragePrice + extraStoragePrice) * promoDiscount / 100;
                     }
+
                     html += `
                         <div class="price-row">
                             <span class="price-label">${t('Discount')} (${appliedPromoCode}):</span>

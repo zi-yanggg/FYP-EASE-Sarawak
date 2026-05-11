@@ -1061,10 +1061,38 @@ class Admin extends BaseController
 
     public function update_service_price($id)
     {
+        $basePriceInput = $this->request->getPost('base_price');
+        $extraRateInput = $this->request->getPost('extra_rate');
+
+        if (
+            !is_numeric($basePriceInput) ||
+            (int)$basePriceInput != (float)$basePriceInput ||
+            (int)$basePriceInput < 1
+        ) {
+            return redirect()->to('/admin/service_management')
+                ->with('error', 'Base price must be an integer greater than 0.');
+        }
+
+        if (
+            !is_numeric($extraRateInput) ||
+            (int)$extraRateInput != (float)$extraRateInput ||
+            (int)$extraRateInput < 1
+        ) {
+            return redirect()->to('/admin/service_management')
+                ->with('error', 'Extra rate must be an integer greater than 0.');
+        }
+
+        $basePrice = (int)$basePriceInput;
+        $extraRate = (int)$extraRateInput;
+
         $model = new \App\Models\ServiceManagementModel();
-        $base_price = $this->request->getPost('base_price');
-        $model->update($id, ['base_price' => $base_price]);
-        return redirect()->to('/admin/service_management')->with('success', 'Base price updated!');
+        $model->update($id, [
+            'base_price' => $basePrice,
+            'extra_rate' => $extraRate,
+        ]);
+
+        return redirect()->to('/admin/service_management')
+            ->with('success', 'Service prices updated!');
     }
 
     public function transaction_history()
