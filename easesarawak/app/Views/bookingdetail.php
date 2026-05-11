@@ -609,6 +609,8 @@ $easeCatalog = ease_translation_catalog();
         let insuranceSelected = false;
         const DELIVERY_BASE_PRICE = <?= json_encode($deliveryPrice) ?>;
         const STORAGE_BASE_PRICE = <?= json_encode($storagePrice) ?>;
+        const DELIVERY_EXTRA_RATE = <?= json_encode($deliveryExtraRate ?? 6) ?>;
+        const STORAGE_EXTRA_RATE = <?= json_encode($storageExtraRate ?? 6) ?>;
 
         document.addEventListener('DOMContentLoaded', function() {
             const bookingData = JSON.parse(sessionStorage.getItem('bookingData'));
@@ -898,6 +900,16 @@ $easeCatalog = ease_translation_catalog();
             }
         }
 
+        function getEffectiveExtraRate(bookingData) {
+            const storedExtraRate = Number(bookingData.extraRate || 0);
+            const defaultExtraRate = getExtraRateByService(bookingData.service);
+            return storedExtraRate > 0 ? storedExtraRate : defaultExtraRate;
+        }
+
+        function getExtraRateByService(service) {
+        return service === 'delivery' ? Number(DELIVERY_EXTRA_RATE) : Number(STORAGE_EXTRA_RATE);
+        }
+
         function updatePricing() {
             const pricingDiv = document.getElementById('pricing-content');
             const bookingData = JSON.parse(sessionStorage.getItem('bookingData'));
@@ -917,7 +929,7 @@ $easeCatalog = ease_translation_catalog();
             if (bookingData.service === 'delivery') {
                 // In Town Delivery
                 const baseHours = 24;
-                const extraRate = 6;
+                const extraRate = getEffectiveExtraRate(bookingData);
                 const exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
                 const baseStoragePrice = basePrice * currentQuantity;
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
@@ -937,7 +949,7 @@ $easeCatalog = ease_translation_catalog();
                         <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} Excess</span>
+                        <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} ${t('Excess')} (RM ${extraRate}/12h)</span>
                         
                     </div>
                     <div class="price-row">
@@ -984,7 +996,7 @@ $easeCatalog = ease_translation_catalog();
             } else {
                 // Luggage Storage
                 const baseHours = 12;
-                const extraRate = 6;
+                const extraRate = getEffectiveExtraRate(bookingData);
                 const exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
                 const baseStoragePrice = basePrice * currentQuantity;
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
@@ -999,7 +1011,7 @@ $easeCatalog = ease_translation_catalog();
                     <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} ${t('Excess')}</span>
+                        <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} ${t('Excess')} (RM ${extraRate}/12h)</span>
                         
                     </div>
                     <div class="price-row">
@@ -1207,6 +1219,7 @@ $easeCatalog = ease_translation_catalog();
                 bookingData.promoDiscount = toNumber(promoDiscount);
                 bookingData.promoType = promoType;
                 bookingData.basePrice = basePrice;
+                bookingData.extraRate = getEffectiveExtraRate(bookingData);
                 bookingData.totalPrice = calculateTotal();
                 bookingData.insuranceSelected = insuranceSelected;
                 bookingData.insuranceAmount = insuranceSelected ? (3 * currentQuantity) : 0;
@@ -1229,11 +1242,10 @@ $easeCatalog = ease_translation_catalog();
             let baseHours, extraRate;
             if (bookingData.service === 'delivery') {
                 baseHours = 24;
-                extraRate = 6;
             } else {
                 baseHours = 12;
-                extraRate = 6;
             }
+            extraRate = getEffectiveExtraRate(bookingData);
             const exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
             extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
