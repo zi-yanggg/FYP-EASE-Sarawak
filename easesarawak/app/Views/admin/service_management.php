@@ -116,7 +116,8 @@
                         <td>
                             <form id="<?= esc($formId) ?>" method="post" action="<?= base_url('/admin/service_management/update/' . $service['id']) ?>" style="display:inline;">
                                 <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                <input type="number" step="1" min="1" name="base_price" value="<?= esc($service['base_price']) ?>" class="form-control d-inline-block" style="width: 100px;">
+                                <button type="submit" class="btn btn-primary btn-sm ms-2">Save</button>
                             </form>
                         </td>
                     </tr>
