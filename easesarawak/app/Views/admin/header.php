@@ -27,6 +27,10 @@ function timeAgo($datetime)
     <base href="<?= base_url('/') ?>">
 
     <!-- Fonts and icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <script src="<?= base_url('assets/js/admin/plugin/webfont/webfont.min.js') ?>"></script>
     <link
@@ -52,29 +56,101 @@ function timeAgo($datetime)
         });
     </script> -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        const toggle = document.getElementById('darkModeToggle');
-        const body = document.body;
-        // Set initial state
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            body.classList.add('dark-mode');
-            toggle.checked = true;
-        }
-        toggle.addEventListener('change', function() {
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
+        (function() {
+            try {
+                if (localStorage.getItem('easeSidebarMinimized') === '1') {
+                    document.documentElement.classList.add('ease-restore-minimized');
+                }
+            } catch (e) {
+                // Ignore storage-access issues and fall back to default layout.
             }
+        })();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('darkModeToggle');
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            const body = document.body;
+
+            if (!toggle) return;
+
+            const syncModeIcon = () => {
+                if (!darkModeIcon) return;
+                const isDark = body.classList.contains('dark-mode');
+                darkModeIcon.className = isDark ? 'bi bi-moon-stars-fill' : 'bi bi-sun-fill';
+            };
+
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                body.classList.add('dark-mode');
+                toggle.checked = true;
+            }
+            syncModeIcon();
+
+            toggle.addEventListener('change', function() {
+                body.classList.toggle('dark-mode');
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+                syncModeIcon();
+            });
         });
-    });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.querySelector('.wrapper');
+            if (!wrapper) return;
+
+            const sidebarStateKey = 'easeSidebarMinimized';
+            const savedSidebarState = localStorage.getItem(sidebarStateKey);
+
+            if (savedSidebarState === '1') {
+                wrapper.classList.add('sidebar_minimize');
+                wrapper.classList.remove('sidebar_minimize_hover');
+            } else if (savedSidebarState === '0') {
+                wrapper.classList.remove('sidebar_minimize');
+                wrapper.classList.remove('sidebar_minimize_hover');
+            }
+
+            requestAnimationFrame(function() {
+                document.documentElement.classList.remove('ease-restore-minimized');
+            });
+
+            const persistSidebarState = () => {
+                localStorage.setItem(
+                    sidebarStateKey,
+                    wrapper.classList.contains('sidebar_minimize') ? '1' : '0'
+                );
+            };
+
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.toggle-sidebar, .sidenav-toggler')) return;
+
+                // Kaiadmin toggles class in its own handler, so persist after it runs.
+                setTimeout(persistSidebarState, 0);
+                setTimeout(persistSidebarState, 220);
+            });
+
+            const sidebarObserver = new MutationObserver(function(mutations) {
+                for (const mutation of mutations) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        persistSidebarState();
+                    }
+                }
+            });
+            sidebarObserver.observe(wrapper, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        });
     </script>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/bootstrap.min.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/plugins.min.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/kaiadmin.min.css') ?>" />
+    <link rel="stylesheet" href="<?= base_url('assets/css/admin/header.css') ?>" />
     <style>
         html,
         body {
@@ -597,129 +673,115 @@ function timeAgo($datetime)
                             height="65" />
                     </a>
                     <div class="nav-toggle">
-                        <button class="btn btn-toggle toggle-sidebar">
+                        <button class="btn btn-toggle toggle-sidebar" data-tooltip="Toggle sidebar">
                             <i class="gg-menu-right"></i>
                         </button>
                         <button class="btn btn-toggle sidenav-toggler">
-                            <i class="gg-menu-left"></i>
+                            <i class="gg-menu-right"></i>
                         </button>
                     </div>
                     <button class="topbar-toggler more">
-                        <i class="gg-more-vertical-alt"></i>
+                        <i class="fas fa-ellipsis-vertical"></i>
                     </button>
                 </div>
                 <!-- End Logo Header -->
             </div>
             <div class="sidebar-wrapper scrollbar scrollbar-inner">
                 <div class="sidebar-content">
+                    <?php
+                        $currentPath = trim(uri_string(), '/');
+                        $isSidebarActive = static function (array $routes) use ($currentPath): bool {
+                            foreach ($routes as $route) {
+                                $route = trim((string) $route, '/');
+                                if ($route === $currentPath) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        };
+                    ?>
                     <ul class="nav nav-secondary">
-                        <li class="nav-item">
+                        <li class="nav-section">
+                            <h4 class="text-section">Overview</h4>
+                        </li>
+                        <li class="nav-item<?= $isSidebarActive(['admin']) ? ' active' : '' ?>">
                             <a href="<?= base_url('/admin'); ?>">
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
                         <li class="nav-section">
-                            <span class="sidebar-mini-icon">
-                                <i class="fa fa-ellipsis-h"></i>
-                            </span>
-                            <h4 class="text-section">Tabs</h4>
+                            <h4 class="text-section">Orders</h4>
                         </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#base">
+                        <li class="nav-item<?= $isSidebarActive(['order']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/order'); ?>">
                                 <i class="fas fa-layer-group"></i>
-                                <p>Orders</p>
-                                <span class="caret"></span>
+                                <p>Order Management</p>
                             </a>
-                            <div class="collapse" id="base">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="<?= base_url('/order'); ?>">
-                                            <span class="sub-item">Order Management</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="<?= base_url('/admin/calendar'); ?>">
-                                            <span class="sub-item">Booking Calendar</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#sidebarLayouts">
+                        <li class="nav-item<?= $isSidebarActive(['admin/calendar']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/admin/calendar'); ?>">
+                                <i class="fas fa-calendar-alt"></i>
+                                <p>Booking Calendar</p>
+                            </a>
+                        </li>
+                        <li class="nav-section">
+                            <h4 class="text-section">Users</h4>
+                        </li>
+                        <li class="nav-item<?= $isSidebarActive(['user']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/user'); ?>">
                                 <i class="fas fa-th-list"></i>
-                                <p>Users</p>
-                                <span class="caret"></span>
+                                <p>User Management</p>
                             </a>
-                            <div class="collapse" id="sidebarLayouts">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="<?= base_url('/user'); ?>">
-                                            <span class="sub-item">User Management</span>
-                                        </a>
-                                    </li>
-                                    <?php if (session()->get('role') === '1'): ?>
-                                        <li>
-                                            <a href="<?= base_url('/create_user'); ?>">
-                                                <span class="sub-item">Add User</span>
-                                            </a>
-                                        </li>
-                                    <?php endif; ?>
-                                </ul>
-                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#forms">
+                        <?php if (session()->get('role') === '1'): ?>
+                            <li class="nav-item<?= $isSidebarActive(['create_user']) ? ' active' : '' ?>">
+                                <a href="<?= base_url('/create_user'); ?>">
+                                    <i class="fas fa-user-plus"></i>
+                                    <p>Add User</p>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <li class="nav-section">
+                            <h4 class="text-section">Reports</h4>
+                        </li>
+                        <li class="nav-item<?= $isSidebarActive(['report']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/report'); ?>">
                                 <i class="fas fa-pen-square"></i>
-                                <p>Reports</p>
-                                <span class="caret"></span>
+                                <p>Revenue</p>
                             </a>
-                            <div class="collapse" id="forms">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="<?= base_url('/report'); ?>">
-                                            <span class="sub-item">Revenue</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="<?= base_url('/transaction_history'); ?>">
-                                            <span class="sub-item">Transaction History</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                        </li>
+                        <li class="nav-item<?= $isSidebarActive(['transaction_history']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/transaction_history'); ?>">
+                                <i class="fas fa-file-invoice"></i>
+                                <p>Transaction History</p>
+                            </a>
                         </li>
 
                         <?php if (session()->get('role') === '1'): ?>
-                            <li class="nav-item">
-                                <a data-bs-toggle="collapse" href="#management">
+                            <li class="nav-section">
+                                <h4 class="text-section">Management</h4>
+                            </li>
+                            <li class="nav-item<?= $isSidebarActive(['admin/service_management']) ? ' active' : '' ?>">
+                                <a href="<?= base_url('/admin/service_management'); ?>">
                                     <i class="fas fa-table"></i>
-                                    <p>Management</p>
-                                    <span class="caret"></span>
+                                    <p>Service Management</p>
                                 </a>
-                                <div class="collapse" id="management">
-                                    <ul class="nav nav-collapse">
-                                        <li>
-                                            <a href="<?= base_url('/admin/service_management'); ?>">
-                                                <span class="sub-item">Service Management</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="<?= base_url('/admin/promo_code'); ?>">
-                                                <span class="sub-item">Promo Code</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="<?= base_url('/admin/contact'); ?>">
-                                                <span class="sub-item">Contact</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                            </li>
+                            <li class="nav-item<?= $isSidebarActive(['admin/promo_code']) ? ' active' : '' ?>">
+                                <a href="<?= base_url('/admin/promo_code'); ?>">
+                                    <i class="fas fa-tag"></i>
+                                    <p>Promo Code</p>
+                                </a>
+                            </li>
+                            <li class="nav-item<?= $isSidebarActive(['admin/contact']) ? ' active' : '' ?>">
+                                <a href="<?= base_url('/admin/contact'); ?>">
+                                    <i class="fas fa-envelope"></i>
+                                    <p>Contact</p>
+                                </a>
                             </li>
 
-                            <li class="nav-item">
+                            <li class="nav-item<?= $isSidebarActive(['admin/refund_request']) ? ' active' : '' ?>">
                                 <a href="<?= base_url('/admin/refund_request'); ?>">
                                     <i class="fas fa-file-invoice-dollar"></i>
                                     <p>Refund Request</p>
@@ -856,6 +918,15 @@ function timeAgo($datetime)
                             </div>
                         </li> -->
                     </ul>
+                    <div class="sidebar-darkmode-wrap">
+                        <div class="form-check form-switch sidebar-darkmode-toggle">
+                            <label class="form-check-label mode-label" for="darkModeToggle">
+                                <i id="darkModeIcon" class="bi bi-sun-fill"></i>
+                                <span class="mode-text">Theme</span>
+                            </label>
+                            <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -874,19 +945,26 @@ function timeAgo($datetime)
                                 height="60" />
                         </a>
                         <div class="nav-toggle">
-                            <button class="btn btn-toggle toggle-sidebar">
+                            <button class="btn btn-toggle toggle-sidebar" data-tooltip="Toggle sidebar">
                                 <i class="gg-menu-right"></i>
                             </button>
                             <button class="btn btn-toggle sidenav-toggler">
-                                <i class="gg-menu-left"></i>
+                                <i class="gg-menu-right"></i>
                             </button>
                         </div>
                         <button class="topbar-toggler more">
-                            <i class="gg-more-vertical-alt"></i>
+                            <i class="fas fa-ellipsis-vertical"></i>
                         </button>
                     </div>
                     <!-- End Logo Header -->
                 </div>
+
+                <!-- Centered brand â€” only shown when sidebar is minimized -->
+                <a href="<?= base_url('/admin'); ?>" class="ease-minimized-brand" aria-label="EASE Sarawak Home">
+                    <img
+                        src="<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>"
+                        alt="EASE Sarawak" />
+                </a>
                 <!-- Navbar Header -->
                 <nav
                     class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
@@ -910,13 +988,15 @@ function timeAgo($datetime)
                             <li
                                 class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
                                 <a
-                                    class="nav-link dropdown-toggle"
+                                    class="nav-link dropdown-toggle ease-topbar-trigger"
                                     data-bs-toggle="dropdown"
                                     href="#"
                                     role="button"
                                     aria-expanded="false"
-                                    aria-haspopup="true">
+                                    aria-haspopup="true"
+                                    data-tooltip="Search">
                                     <i class="fa fa-search"></i>
+                                    <span class="ease-topbar-tooltip-chip">Search</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-search animated fadeIn">
                                     <form class="navbar-left navbar-form nav-search">
@@ -929,24 +1009,18 @@ function timeAgo($datetime)
                                     </form>
                                 </ul>
                             </li>
-                            <li class="nav-item">
-                            <div class="form-check form-switch mt-2">
-                                <input class="form-check-input" type="checkbox" id="darkModeToggle">
-                                <label class="form-check-label" for="darkModeToggle" style="cursor:pointer;">
-                                <i class="bi bi-moon"></i>
-                                </label>
-                            </div>
-                            </li>
                             <li class="nav-item topbar-icon dropdown hidden-caret">
                                 <a
-                                    class="nav-link dropdown-toggle"
+                                    class="nav-link dropdown-toggle ease-topbar-trigger"
                                     href="#"
                                     id="messageDropdown"
                                     role="button"
                                     data-bs-toggle="dropdown"
                                     aria-haspopup="true"
-                                    aria-expanded="false">
+                                    aria-expanded="false"
+                                    data-tooltip="Messages<?= ((int)$newMessageCount > 0) ? ' (' . (int)$newMessageCount . ' new)' : '' ?>">
                                     <i class="fa fa-envelope"></i>
+                                    <span class="ease-topbar-tooltip-chip">Messages<?= ((int)$newMessageCount > 0) ? ' (' . (int)$newMessageCount . ' new)' : '' ?></span>
                                     <?php if ($newMessageCount > 0): ?>
                                         <span class="notification"><?php echo $newMessageCount; ?></span>
                                     <?php endif; ?>
@@ -987,7 +1061,7 @@ function timeAgo($datetime)
                                                         </a>
                                                     <?php endforeach; ?>
                                                 <?php else: ?>
-                                                    <p>No messages yet.</p>
+                                                    <p class="messages-empty">No messages yet.</p>
                                                 <?php endif; ?>
                                                 <!-- <a href="#">
                                                     <div class="notif-img">
@@ -1060,6 +1134,14 @@ function timeAgo($datetime)
                                                 if (countBadge) {
                                                     countBadge.remove();
                                                 }
+                                                const messageTrigger = document.getElementById('messageDropdown');
+                                                if (messageTrigger) {
+                                                    messageTrigger.setAttribute('data-tooltip', 'Messages');
+                                                    const messageTooltipChip = messageTrigger.querySelector('.ease-topbar-tooltip-chip');
+                                                    if (messageTooltipChip) {
+                                                        messageTooltipChip.textContent = 'Messages';
+                                                    }
+                                                }
                                             }
                                         });
                                     });
@@ -1067,88 +1149,134 @@ function timeAgo($datetime)
                             </script>
                             <li class="nav-item topbar-icon dropdown hidden-caret">
                                 <a
-                                    class="nav-link dropdown-toggle"
+                                    class="nav-link dropdown-toggle ease-topbar-trigger"
                                     href="#"
                                     id="notifDropdown"
                                     role="button"
                                     data-bs-toggle="dropdown"
                                     aria-haspopup="true"
-                                    aria-expanded="false">
+                                    aria-expanded="false"
+                                    data-tooltip="Notifications<?= ((int)$newMessageCount > 0) ? ' (' . (int)$newMessageCount . ' new)' : '' ?>">
                                     <i class="fa fa-bell"></i>
-                                    <span class="notification">4</span>
+                                    <span class="ease-topbar-tooltip-chip">Notifications<?= ((int)$newMessageCount > 0) ? ' (' . (int)$newMessageCount . ' new)' : '' ?></span>
+                                    <?php if ($newMessageCount > 0): ?>
+                                        <span class="notification"><?= (int)$newMessageCount ?></span>
+                                    <?php endif; ?>
                                 </a>
                                 <ul
                                     class="dropdown-menu notif-box animated fadeIn"
                                     aria-labelledby="notifDropdown">
                                     <li>
-                                        <div class="dropdown-title">
-                                            You have 4 new notification
+                                        <div class="dropdown-title d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <?= (int)$newMessageCount > 0
+                                                    ? 'You have ' . (int)$newMessageCount . ' new notification' . ((int)$newMessageCount === 1 ? '' : 's')
+                                                    : 'Notifications' ?>
+                                            </span>
+                                            <a href="#" id="clearAllNotifications" class="small">Remove notifications</a>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="notif-scroll scrollbar-outer">
                                             <div class="notif-center">
-                                                <a href="#">
-                                                    <div class="notif-icon notif-primary">
-                                                        <i class="fa fa-user-plus"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block"> New user registered </span>
-                                                        <span class="time">5 minutes ago</span>
-                                                    </div>
-                                                </a>
-                                                <a href="#">
-                                                    <div class="notif-icon notif-success">
-                                                        <i class="fa fa-comment"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block">
-                                                            Rahmad commented on Admin
-                                                        </span>
-                                                        <span class="time">12 minutes ago</span>
-                                                    </div>
-                                                </a>
-                                                <a href="#">
-                                                    <div class="notif-img">
-                                                        <img
-                                                            src="<?= base_url('assets/img/profile2.jpg') ?>"
-                                                            alt="Img Profile" />
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block">
-                                                            Reza send messages to you
-                                                        </span>
-                                                        <span class="time">12 minutes ago</span>
-                                                    </div>
-                                                </a>
-                                                <a href="#">
-                                                    <div class="notif-icon notif-danger">
-                                                        <i class="fa fa-heart"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block"> Farrah liked Admin </span>
-                                                        <span class="time">17 minutes ago</span>
-                                                    </div>
-                                                </a>
+                                                <?php if (!empty($headerMessages)): ?>
+                                                    <?php foreach ($headerMessages as $msg): ?>
+                                                        <?php
+                                                        $notifText = strtolower(trim((string)($msg['msg'] ?? '')));
+                                                        $status = strtolower(trim((string)($msg['status'] ?? '')));
+                                                        $notifIcon = 'fa-bell';
+                                                        $notifTone = 'notif-primary';
+
+                                                        if ($status === 'new' || $status === '' || str_contains($notifText, 'new')) {
+                                                            $notifIcon = 'fa-envelope';
+                                                            $notifTone = 'notif-warning';
+                                                        } elseif (str_contains($notifText, 'refund')) {
+                                                            $notifIcon = 'fa-file-invoice-dollar';
+                                                            $notifTone = 'notif-danger';
+                                                        } elseif (str_contains($notifText, 'payment') || str_contains($notifText, 'transaction')) {
+                                                            $notifIcon = 'fa-credit-card';
+                                                            $notifTone = 'notif-success';
+                                                        } elseif (str_contains($notifText, 'booking') || str_contains($notifText, 'order')) {
+                                                            $notifIcon = 'fa-calendar-check';
+                                                            $notifTone = 'notif-info';
+                                                        } elseif (str_contains($notifText, 'contact') || str_contains($notifText, 'message')) {
+                                                            $notifIcon = 'fa-comment-dots';
+                                                            $notifTone = 'notif-primary';
+                                                        }
+                                                        ?>
+                                                        <a href="<?= base_url('admin/contact?message_id=' . (int)$msg['msg_id']) ?>">
+                                                            <div class="notif-icon <?= esc($notifTone) ?>">
+                                                                <i class="fa <?= esc($notifIcon) ?>"></i>
+                                                            </div>
+                                                            <div class="notif-content">
+                                                                <span class="block"><?= esc($msg['msg'] ?: 'You have a new notification') ?></span>
+                                                                <span class="time"><?= timeAgo($msg['created_date']) ?></span>
+                                                            </div>
+                                                        </a>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <p class="messages-empty">No notifications yet.</p>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
-                                        <a class="see-all" href="javascript:void(0);">See all notifications<i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </li>
                                 </ul>
                             </li>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const clearNotifLink = document.getElementById('clearAllNotifications');
+                                    if (!clearNotifLink) return;
+
+                                    clearNotifLink.addEventListener('click', function(event) {
+                                        event.preventDefault();
+
+                                        fetch('<?= base_url('admin/markAllMessagesRead') ?>', {
+                                            method: 'POST',
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest'
+                                            }
+                                        })
+                                        .then(response => response.json())
+                                        .then((data) => {
+                                            if (!data.success) return;
+
+                                            const notifMenu = document.querySelector('#notifDropdown')
+                                                ?.closest('.nav-item')
+                                                ?.querySelector('.notif-box .notif-center');
+                                            if (notifMenu) {
+                                                notifMenu.innerHTML = '<p class="messages-empty">No notifications yet.</p>';
+                                            }
+
+                                            const notifCountBadge = document.querySelector('#notifDropdown .notification');
+                                            if (notifCountBadge) notifCountBadge.remove();
+
+                                            const notifTitle = document.querySelector('.notif-box .dropdown-title span');
+                                            if (notifTitle) notifTitle.textContent = 'Notifications';
+
+                                            const notifTrigger = document.getElementById('notifDropdown');
+                                            if (notifTrigger) {
+                                                notifTrigger.setAttribute('data-tooltip', 'Notifications');
+                                                const notifTooltipChip = notifTrigger.querySelector('.ease-topbar-tooltip-chip');
+                                                if (notifTooltipChip) {
+                                                    notifTooltipChip.textContent = 'Notifications';
+                                                }
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
                             <li class="nav-item topbar-icon dropdown hidden-caret">
                                 <a
-                                    class="nav-link"
+                                    class="nav-link ease-topbar-trigger"
                                     data-bs-toggle="dropdown"
                                     href="#"
-                                    aria-expanded="false">
+                                    aria-expanded="false"
+                                    data-tooltip="Quick Actions">
                                     <i class="fas fa-layer-group"></i>
+                                    <span class="ease-topbar-tooltip-chip">Quick Actions</span>
                                 </a>
                                 <div class="dropdown-menu quick-actions animated fadeIn">
-                                    <div class="quick-actions-header" style="background: #A72703; color: #fff;">
+                                    <div class="quick-actions-header">
                                         <span class="title mb-1">Quick Actions</span>
                                         <span class="subtitle op-7">Shortcuts</span>
                                     </div>
@@ -1156,7 +1284,7 @@ function timeAgo($datetime)
                                         <div class="quick-actions-items">
                                             <div class="row m-0">
                                                 <a class="col-6 col-md-4 p-0" href="<?= base_url('/admin/calendar'); ?>">
-                                                    <div class="quick-actions-item" style="color: #000;">
+                                                    <div class="quick-actions-item">
                                                         <div class="avatar-item bg-danger rounded-circle">
                                                             <i class="far fa-calendar-alt"></i>
                                                         </div>
@@ -1164,47 +1292,47 @@ function timeAgo($datetime)
                                                     </div>
                                                 </a>
                                                 <a class="col-6 col-md-4 p-0" href="<?= base_url('/') ?>">
-                                                    <div class="quick-actions-item" style="color: #000;">
+                                                    <div class="quick-actions-item">
                                                         <div
                                                             class="avatar-item bg-warning rounded-circle">
                                                             <i class="fas fa-map"></i>
                                                         </div>
-                                                        <span class="text">Booking Page</span>
+                                                        <span class="text">Main Website</span>
                                                     </div>
                                                 </a>
                                                 <a class="col-6 col-md-4 p-0" href="<?= base_url('/report') ?>">
-                                                    <div class="quick-actions-item" style="color: #000;">
+                                                    <div class="quick-actions-item">
                                                         <div class="avatar-item bg-info rounded-circle">
                                                             <i class="fas fa-file-excel"></i>
                                                         </div>
                                                         <span class="text">Reports</span>
                                                     </div>
                                                 </a>
-                                                <a class="col-6 col-md-4 p-0" href="#">
-                                                    <div class="quick-actions-item" style="color: #000;">
+                                                <a class="col-6 col-md-4 p-0" href="<?= base_url('/admin/contact'); ?>">
+                                                    <div class="quick-actions-item">
                                                         <div
                                                             class="avatar-item bg-success rounded-circle">
                                                             <i class="fas fa-envelope"></i>
                                                         </div>
-                                                        <span class="text">Emails</span>
+                                                        <span class="text">Contact</span>
                                                     </div>
                                                 </a>
-                                                <a class="col-6 col-md-4 p-0" href="#">
-                                                    <div class="quick-actions-item" style="color: #000;">
+                                                <a class="col-6 col-md-4 p-0" href="<?= base_url('/transaction_history'); ?>">
+                                                    <div class="quick-actions-item">
                                                         <div
                                                             class="avatar-item bg-primary rounded-circle">
                                                             <i class="fas fa-file-invoice-dollar"></i>
                                                         </div>
-                                                        <span class="text">Invoice</span>
+                                                        <span class="text">Transaction History</span>
                                                     </div>
                                                 </a>
-                                                <a class="col-6 col-md-4 p-0" href="#">
-                                                    <div class="quick-actions-item" style="color: #000;">
+                                                <a class="col-6 col-md-4 p-0" href="<?= base_url('/user'); ?>">
+                                                    <div class="quick-actions-item">
                                                         <div
                                                             class="avatar-item bg-secondary rounded-circle">
-                                                            <i class="fas fa-credit-card"></i>
+                                                            <i class="fas fa-user"></i>
                                                         </div>
-                                                        <span class="text">Payments</span>
+                                                        <span class="text">User</span>
                                                     </div>
                                                 </a>
                                             </div>
@@ -1213,19 +1341,21 @@ function timeAgo($datetime)
                                 </div>
                             </li>
 
+                            <?php $session = session(); ?>
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a
                                     class="dropdown-toggle profile-pic ease-profile-toggle"
                                     data-bs-toggle="dropdown"
                                     href="#"
-                                    aria-expanded="false">
+                                    aria-expanded="false"
+                                    data-tooltip="My Account">
+                                    <span class="ease-topbar-tooltip-chip">My Account</span>
                                     <div class="avatar-sm">
                                         <img
                                             src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
                                             alt="..."
                                             class="avatar-img rounded-circle" />
                                     </div>
-                                    <?php $session = session(); ?>
                                     <span class="profile-username">
                                         <span class="op-7">Hi,</span>
                                         <span class="fw-bold"><?= esc($session->get('username')) ?></span>
