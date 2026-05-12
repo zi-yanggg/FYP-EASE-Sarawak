@@ -90,6 +90,44 @@ $easeCatalog = ease_translation_catalog();
         position: relative;
         z-index: 0;
       }
+        .booking-summary-section {
+          margin-bottom: 1.5em;
+          padding-bottom: 1.5em;
+          border-bottom: 2px solid #f2be00;
+        }
+
+        .booking-summary-section:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
+
+        .booking-summary-heading {
+          color: #f2be00;
+          font-weight: bold;
+          font-size: 1.15em;
+          margin-bottom: 0.5em;
+          letter-spacing: 0.5px;
+        }
+
+        .booking-summary-label {
+          color: #888;
+          font-size: 0.98em;
+          margin-bottom: 0.2em;
+        }
+
+        .booking-summary-value {
+          font-weight: bold;
+          font-size: 1.08em;
+          margin-bottom: 0.7em;
+        }
+
+        .booking-summary-total {
+          color: #f2be00;
+          font-size: 1.2em;
+          font-weight: bold;
+          margin-top: 0.5em;
+        }
 
       @media (max-width: 768px) {
         .booking-progress {
@@ -281,14 +319,31 @@ $easeCatalog = ease_translation_catalog();
             serviceLabel = bookingData.service;
         }
 
+        var insuranceSelected = bookingData.insuranceSelected === true
+          || bookingData.insuranceSelected === 'true'
+          || bookingData.insuranceSelected === 1
+          || bookingData.insuranceSelected === '1'
+          || bookingData.insuranceSelected === 'on';
+        var promoDiscount = Number(bookingData.promoDiscount || 0);
+        var promoType = bookingData.promoType || 'amount';
+        var appliedPromoCode = bookingData.promoCode || '';
+
+        // baseprice + exceedtimes =====
+        var quantity  = Number(bookingData.quantity || 1);
+        var basePrice = Number(bookingData.basePrice || 0);
+        var insuranceCharge = insuranceSelected ? (3 * quantity) : 0;
+
         html += '<div class="summary-item">' +
                     '<span>' + serviceLabel + '</span>' +
                     '<span></span>' +
                 '</div>';
 
-        // baseprice + exceedtimes =====
-        var quantity  = Number(bookingData.quantity || 1);
-        var basePrice = Number(bookingData.basePrice || 0);
+        if (insuranceSelected) {
+          html += '<div class="booking-summary-section">' +
+                      '<div class="booking-summary-label">Insurance</div>' +
+                      '<div class="booking-summary-value">RM ' + insuranceCharge.toFixed(2) + '</div>' +
+                  '</div>';
+        }
 
         // baseprice：first 24 hours（delivery）or first 12 hours（storage）
         var baseStoragePrice = basePrice * quantity;
@@ -321,36 +376,50 @@ $easeCatalog = ease_translation_catalog();
         }
 
         // =====order summary base storage price =====
-        if (baseStoragePrice > 0) {
-            html += '<div class="summary-item">' +
-                        '<span>' + quantity + '' +t('Standard Luggage') + '</span>' +
-                        '<span>RM ' + baseStoragePrice.toFixed(2) + '</span>' +
-                    '</div>';
+          if (baseStoragePrice > 0) {
+            html += '<div class="booking-summary-section">' +
+                  '<div class="booking-summary-label">' + quantity + '' + t('Standard Luggage') + '</div>' +
+                  '<div class="booking-summary-value">RM ' + baseStoragePrice.toFixed(2) + '</div>' +
+                '</div>';
         }
 
         // ===== order summary “Subsequent 12 Hours x 3 Excess”  =====
         if (extraStoragePrice > 0 && exceededTimes > 0) {
-            html += '<div class="summary-item">' +
-                        '<span>' + t('Subsequent 12 Hours x') + exceededTimes + ' ' + t('Excess') + ' (RM ' + extraRate + '/12h)</span>' +
-                        '<span></span>' +
-                    '</div>';
+            html += '<div class="booking-summary-section">' +
+                  '<div class="booking-summary-label">' + t('Subsequent 12 Hours x') + exceededTimes + ' ' + t('Excess') + ' (RM ' + extraRate + '/12h)</div>' +
+                  '<div class="booking-summary-value"></div>' +
+                '</div>';
 
             // order summary total price
-            html += '<div class="summary-item">' +
-                        '<span>' + quantity + '' +t('Standard Luggage') + '</span>' +
-                        '<span>RM ' + extraStoragePrice.toFixed(2) + '</span>' +
-                    '</div>';
+            html += '<div class="booking-summary-section">' +
+                  '<div class="booking-summary-label">' + quantity + '' + t('Standard Luggage') + '</div>' +
+                  '<div class="booking-summary-value">RM ' + extraStoragePrice.toFixed(2) + '</div>' +
+                '</div>';
         }
+
+              var discountAmount = 0;
+              if (appliedPromoCode && promoDiscount > 0) {
+                if (promoType === 'amount') {
+                  discountAmount = promoDiscount;
+                } else {
+                  discountAmount = (baseStoragePrice + extraStoragePrice + insuranceCharge) * promoDiscount / 100;
+                }
+
+                html += '<div class="booking-summary-section">' +
+                      '<div class="booking-summary-label">' + t('Discount') + ' (' + appliedPromoCode + ')</div>' +
+                      '<div class="booking-summary-total">-RM ' + discountAmount.toFixed(2) + '</div>' +
+                    '</div>';
+              }
 
         // ===== total price calculation =====
         var finalTotal = (bookingData.totalPrice !== undefined)
             ? Number(bookingData.totalPrice)
-            : (baseStoragePrice + extraStoragePrice);
+                : (baseStoragePrice + extraStoragePrice + insuranceCharge - discountAmount);
 
-        html += '<div class="summary-total">' +
-                    '<span>' + t('Total') + '</span>' +
-                    '<span>RM ' + finalTotal.toFixed(2) + '</span>' +
-                '</div>';
+          html += '<div class="booking-summary-section">' +
+                '<div class="booking-summary-label">' + t('Total') + '</div>' +
+                '<div class="booking-summary-total">RM ' + finalTotal.toFixed(2) + '</div>' +
+              '</div>';
 
     } catch (e) {
         console.error('Order Summary error:', e);
@@ -380,7 +449,7 @@ $easeCatalog = ease_translation_catalog();
     <script>
     // Order Summary Total 
     function getOrderTotalFromSummary() {
-        var totalEl = document.querySelector('.summary-total span:last-child');
+      var totalEl = document.querySelector('.booking-summary-total');
         if (!totalEl) {
             alert('Order total not found.');
             throw new Error("Order total not found.");
