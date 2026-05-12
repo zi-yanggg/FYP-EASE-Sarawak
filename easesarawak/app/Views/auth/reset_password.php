@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password | EASE Sarawak</title>
-    <link rel="icon" type="image/png" href="<?= base_url('assets/images/cropped-Ease_PNG_File-09.png') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/admin/bootstrap.min.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/admin/kaiadmin.min.css') ?>">
+    <link rel="icon" type="image/png" href="<?= public_asset('images/cropped-Ease_PNG_File-09.png') ?>">
+    <link rel="stylesheet" href="<?= public_asset('css/admin/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= public_asset('css/admin/kaiadmin.min.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
             /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
-            background: url("<?= base_url('assets/images/ease_forgot_pwd_background_image.png') ?>") no-repeat center center;
+            background: url("<?= public_asset('images/ease_forgot_pwd_background_image.png') ?>") no-repeat center center;
             background-size: cover;
         }
 
@@ -37,7 +37,7 @@
                 <div class="card card-round">
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <img src="<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>" alt="Logo" class="logo-img" style="min-height: 100px;">
+                            <img src="<?= public_asset('images/Ease_PNG_File-01-1.png') ?>" alt="Logo" class="logo-img" style="min-height: 100px;">
                             <h2 class="fw-bold mt-3">Reset Password</h2>
                         </div>
 
