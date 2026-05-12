@@ -396,6 +396,8 @@ function timeAgo($datetime)
         .form-switch .form-check-input:checked {
             background-color: #5B532C;
             border-color: #5B532C;
+        }
+
         .nav-pills.nav-secondary .nav-link.active,
         .nav-pills.nav-secondary .nav-link.active:hover,
         .nav-pills.nav-secondary .nav-link.active:focus {
@@ -686,7 +688,7 @@ function timeAgo($datetime)
                 </div>
                 <!-- End Logo Header -->
             </div>
-            <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-wrapper">
                 <div class="sidebar-content">
                     <?php
                         $currentPath = trim(uri_string(), '/');
@@ -918,15 +920,15 @@ function timeAgo($datetime)
                             </div>
                         </li> -->
                     </ul>
-                    <div class="sidebar-darkmode-wrap">
-                        <div class="form-check form-switch sidebar-darkmode-toggle">
-                            <label class="form-check-label mode-label" for="darkModeToggle">
-                                <i id="darkModeIcon" class="bi bi-sun-fill"></i>
-                                <span class="mode-text">Theme</span>
-                            </label>
-                            <input class="form-check-input" type="checkbox" id="darkModeToggle">
-                        </div>
-                    </div>
+                </div>
+            </div>
+            <div class="sidebar-darkmode-wrap">
+                <div class="form-check form-switch sidebar-darkmode-toggle">
+                    <label class="form-check-label mode-label" for="darkModeToggle">
+                        <i id="darkModeIcon" class="bi bi-sun-fill"></i>
+                        <span class="mode-text">Theme</span>
+                    </label>
+                    <input class="form-check-input" type="checkbox" id="darkModeToggle">
                 </div>
             </div>
         </div>

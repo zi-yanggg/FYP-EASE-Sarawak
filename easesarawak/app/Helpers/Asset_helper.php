@@ -4,36 +4,35 @@ declare(strict_types=1);
 
 if (! function_exists('public_asset')) {
     /**
-     * URL to a file under public/assets/ (works with any app base URL or subfolder).
+     * URL for a static file under public/assets (relative to the site index).
      *
-     * @param string $relativePath Path inside assets, e.g. "images/logo.png" or "css/site.css".
+     * @param string $path Path after assets/, e.g. "css/navbar_style.css" or "images/logo.png"
      */
-    function public_asset(string $relativePath): string
+    function public_asset(string $path): string
     {
-        $relativePath = ltrim(str_replace('\\', '/', $relativePath), '/');
-        if ($relativePath === '') {
-            return base_url('assets/');
+        $path = ltrim(str_replace('\\', '/', $path), '/');
+
+        if ($path === '') {
+            return rtrim(base_url(), '/') . '/';
         }
 
-        $segments = explode('/', $relativePath);
+        if (str_starts_with($path, 'assets/')) {
+            return base_url($path);
+        }
 
-        return base_url('assets/' . implode('/', array_map('rawurlencode', $segments)));
+        return base_url('assets/' . $path);
     }
 }
 
 if (! function_exists('public_assets_dir')) {
     /**
-     * Base URL for a folder under public/assets/, with trailing slash (for string concatenation in JS/CSS).
+     * Base URL for a folder under public/assets, with trailing slash (for JS concatenation).
      */
-    function public_assets_dir(string $relativeDirectory): string
+    function public_assets_dir(string $subdir = ''): string
     {
-        $relativeDirectory = trim(str_replace('\\', '/', $relativeDirectory), '/');
-        if ($relativeDirectory === '') {
-            return rtrim(base_url('assets/'), '/') . '/';
-        }
+        $subdir = trim(str_replace('\\', '/', $subdir), '/');
+        $url = $subdir === '' ? base_url('assets') : base_url('assets/' . $subdir);
 
-        $segments = explode('/', $relativeDirectory);
-
-        return rtrim(base_url('assets/' . implode('/', array_map('rawurlencode', $segments))), '/') . '/';
+        return rtrim($url, '/') . '/';
     }
 }

@@ -927,39 +927,92 @@
             background: transparent ;
         }
 
-        .sidebar .sidebar-content {
-            min-height: calc(100vh - 96px);
-            display: flex ;
-            flex-direction: column ;
-            height: 100% ;
-            flex: 1 1 auto ;
-            padding-bottom: 0;
-            overflow: hidden;
+        /* ================================================================
+           Sidebar — viewport-height column anchored to body.
+           Flex layout: logo (fixed) + scrollable nav + theme strip (fixed).
+           `.sidebar-wrapper` uses overflow-y: auto so at normal zoom there
+           is no scrollbar; when zoom or short viewport shrinks the middle,
+           only the nav + section titles scroll. Theme toggle stays at the
+           bottom of the rail.
+           ================================================================ */
+
+        /* Sidebar stays in the DOM under .wrapper, but its containing block
+           is body (not .wrapper) so tall pages / transforms on .wrapper do
+           not offset the rail. */
+        body {
+            position: relative ;
+            min-height: 100vh ;
         }
 
-        .sidebar .sidebar-wrapper,
-        .sidebar .sidebar-wrapper.scrollbar,
-        .sidebar .sidebar-wrapper.scrollbar-inner {
-            overflow: hidden ;
-            height: calc(100vh - 96px) ;
+        /* Anchor the sidebar to the body: .wrapper must not create a
+           positioning context, or absolute top/left would track .wrapper. */
+        /* Beat Kaiadmin `.sidebar,.sidebar[data-background-color=white]{position:fixed;top:0;bottom:0;…}` */
+        .wrapper .sidebar,
+        .wrapper .sidebar:hover,
+        .wrapper.sidebar_minimize .sidebar,
+        .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar {
+            position: absolute ;
+            top: 0 ;
+            left: 0 ;
+            bottom: auto ;
+            right: auto ;
             display: flex ;
             flex-direction: column ;
+            box-sizing: border-box ;
+            height: 100vh ;
+            max-height: 100vh ;
+            min-height: 100vh ;
+            z-index: 1002 ;
         }
 
-        /* The kaiadmin scrollbar plugin wraps content in `.scroll-content`;
-           force it to flex-column so margin-top:auto on .sidebar-darkmode-wrap
-           still works and pins the toggle to the bottom. */
-        .sidebar .sidebar-wrapper > .scroll-content,
-        .sidebar .scroll-content {
+        .wrapper .sidebar .sidebar-logo {
+            flex-shrink: 0 ;
+        }
+
+        /* Keep the layout shell full-height; position static so .sidebar's
+           absolute coordinates are relative to body. */
+        .wrapper {
+            min-height: 100vh ;
+            position: static ;
+        }
+
+        /* Scrollport: override Kaiadmin `max-height:calc(100vh - 75px)` + `min-height:100%`
+           on `.sidebar[data-background-color=white] .sidebar-wrapper` (theme lives outside wrapper). */
+        .wrapper .sidebar .sidebar-wrapper,
+        .wrapper .sidebar .sidebar-wrapper.scrollbar,
+        .wrapper .sidebar .sidebar-wrapper.scrollbar-inner {
+            position: relative ;
+            flex: 1 1 auto ;
+            min-height: 0 ;
+            max-height: none ;
+            display: flex ;
+            flex-direction: column ;
+            overflow-x: hidden ;
+            overflow-y: auto ;
+            overscroll-behavior: contain ;
+        }
+
+        .wrapper .sidebar .sidebar-wrapper > .scroll-content,
+        .wrapper .sidebar .scroll-content {
             display: flex ;
             flex-direction: column ;
             flex: 1 1 auto ;
-            height: 100% ;
-            min-height: 100% ;
+            min-height: 0 ;
+            max-height: none ;
             width: 100% ;
-            overflow: hidden ;
+            overflow: visible ;
         }
 
+        .wrapper .sidebar .sidebar-wrapper .sidebar-content {
+            flex: 0 0 auto ;
+            display: flex ;
+            flex-direction: column ;
+            min-height: 0 ;
+            padding-bottom: 0 ;
+            overflow: visible ;
+        }
+
+        /* Hide the kaiadmin plugin's scrollbar chrome — we use native overflow. */
         .sidebar .scroll-element,
         .sidebar .scroll-element_outer,
         .sidebar .scroll-element_track,
@@ -1093,11 +1146,15 @@
         }
 
         .sidebar-darkmode-wrap {
-            margin-top: auto;
+            flex-shrink: 0 ;
+            align-self: stretch ;
+            width: 100% ;
+            margin-top: 0 ;
             border-top: 3px solid rgba(242, 190, 0, 0.45);
             box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.04);
             padding: 12px 4px 10px;
             font-family: 'Oxanium', sans-serif ;
+            background-color: inherit ;
         }
 
         body.dark-mode .sidebar-darkmode-wrap {
@@ -1109,7 +1166,7 @@
            Both lines run unbroken along the FULL length of their edges.
            ============================================================ */
 
-        /* Sidebar right border â€” full viewport height, every state */
+        /* Sidebar right border — full viewport height, every state */
         .wrapper .sidebar,
         .wrapper .sidebar:hover,
         .wrapper.sidebar_minimize .sidebar,
@@ -1118,6 +1175,7 @@
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover {
             border-right: 3px solid #F2BE00 ;
             min-height: 100vh ;
+            max-height: 100vh ;
         }
 
         /* Keep the top line on the actual main-header so it stays a single bar. */
@@ -1661,16 +1719,27 @@
            Minimized Sidebar â€” No layout shift on hover, only a tooltip
            ============================================================ */
 
-        /* Allow tooltip to render outside the sidebar bounds */
+        /* Tooltips may extend outside the narrow rail; keep the shell visible.
+           Nav scrolling stays on `.sidebar-wrapper` (overflow-y: auto). */
         .sidebar_minimize .sidebar,
         .sidebar_minimize .sidebar:hover,
         .sidebar_minimize.sidebar_minimize_hover .sidebar,
-        .sidebar_minimize.sidebar_minimize_hover .sidebar:hover,
-        .sidebar_minimize .sidebar .sidebar-wrapper,
+        .sidebar_minimize.sidebar_minimize_hover .sidebar:hover {
+            overflow: visible ;
+        }
+
         .sidebar_minimize .sidebar .sidebar-content,
-        .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper,
         .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-content {
             overflow: visible ;
+        }
+
+        .sidebar_minimize .sidebar .sidebar-wrapper,
+        .sidebar_minimize .sidebar:hover .sidebar-wrapper,
+        .sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper,
+        .sidebar_minimize.sidebar_minimize_hover .sidebar:hover .sidebar-wrapper {
+            overflow-x: hidden ;
+            overflow-y: auto ;
+            max-height: none ;
         }
 
         /* Center icons in the 85px column; no padding-shift on hover */
