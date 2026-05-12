@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refund Form #<?= esc($refundId) ?></title>
 
-    <link rel="icon" type="image/png" href="<?= base_url('assets/images/cropped-Ease_PNG_File-09.png') ?>">
+    <link rel="icon" type="image/png" href="<?= public_asset('images/cropped-Ease_PNG_File-09.png') ?>">
 
     <style>
         html, body {

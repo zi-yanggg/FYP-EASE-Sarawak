@@ -1,7 +1,7 @@
 <?= $this->include('admin/header'); ?>
 
-<link rel="stylesheet" href="<?= base_url('assets/css/admin/report.css') ?>">
-<link rel="stylesheet" href="<?= base_url('assets/css/admin/profile.css') ?>">
+<link rel="stylesheet" href="<?= public_asset('css/admin/report.css') ?>">
+<link rel="stylesheet" href="<?= public_asset('css/admin/profile.css') ?>">
 
 <div class="rpt-page container-fluid py-3">
 
@@ -45,7 +45,7 @@
 
                     <div class="prof-avatar-wrap mb-3">
                         <img
-                            src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
+                            src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : public_asset('images/user.png')) ?>"
                             alt="Profile Picture"
                             id="profilePreview"
                             class="prof-avatar">

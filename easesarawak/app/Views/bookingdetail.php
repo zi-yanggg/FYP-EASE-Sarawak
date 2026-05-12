@@ -11,10 +11,10 @@ $easeCatalog = ease_translation_catalog();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Details - EASE SARAWAK</title>
-    <link rel="icon" type="image/png" href="assets/images/cropped-Ease_PNG_File-09.png">
+    <link rel="icon" type="image/png" href="<?= public_asset('images/cropped-Ease_PNG_File-09.png') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/footer_style.css">
-    <link rel="stylesheet" href="assets/css/navbar_style.css">
+    <link rel="stylesheet" href="<?= public_asset('css/footer_style.css') ?>">
+    <link rel="stylesheet" href="<?= public_asset('css/navbar_style.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOEej3q--uJLfUydFQ1T2vlr3HJC35atQ"></script>
 
@@ -29,7 +29,7 @@ $easeCatalog = ease_translation_catalog();
         
         @font-face {
             font-family: 'EurostarRegular';
-            src: url('assets/Eurostar Regular.ttf') format('truetype');
+            src: url('<?= public_asset('Eurostar Regular.ttf') ?>') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -551,7 +551,7 @@ $easeCatalog = ease_translation_catalog();
 
             <!-- Right Content - Image -->
             <div class="right-content">
-                <img src="<?= base_url('assets/images/bookingpage.png') ?>" alt="Booking Service" class="booking-image">
+                <img src="<?= public_asset('images/bookingpage.png') ?>" alt="Booking Service" class="booking-image">
             </div>
         </div>
 
@@ -674,7 +674,7 @@ $easeCatalog = ease_translation_catalog();
                         <div class="detail-label">
                             <div style="display: flex; flex-direction: column; align-items: center;">
                                 <strong style="font-size: 1.2rem; margin-bottom: 8px;">${t('Send From')}</strong>
-                                <img src="assets/images/send-from.png" alt="Send From" style="width: 120px; height: 120px; margin-bottom: 12px;">
+                                <img src="<?= public_asset('images/send-from.png') ?>" alt="Send From" style="width: 120px; height: 120px; margin-bottom: 12px;">
                             </div>
                         </div>
                         <div class="detail-value">
@@ -694,7 +694,7 @@ $easeCatalog = ease_translation_catalog();
                         <div class="detail-label">
                             <div style="display: flex; flex-direction: column; align-items: center;">
                                 <strong style="font-size: 1.2rem; margin-bottom: 8px;">${t('Deliver To')}</strong>
-                                <img src="assets/images/deliver-to.png" alt="Deliver To" style="width: 120px; height: 120px; margin-bottom: 12px;">
+                                <img src="<?= public_asset('images/deliver-to.png') ?>" alt="Deliver To" style="width: 120px; height: 120px; margin-bottom: 12px;">
                             </div>
                         </div>
                         <div class="detail-value">
@@ -726,7 +726,7 @@ $easeCatalog = ease_translation_catalog();
                         <h3><i class="bi bi-box"></i> ${t('Luggage Quantity & Promo')}</h3>
                         
                         <div class="detail-row">
-                            <img src="assets/images/luggage-quantity.png" alt="Luggage Quantity" style="width: 120px; height: 120px; margin-right: 24px; vertical-align: middle;">
+                            <img src="<?= public_asset('images/luggage-quantity.png') ?>" alt="Luggage Quantity" style="width: 120px; height: 120px; margin-right: 24px; vertical-align: middle;">
                             <div class="detail-label" style="flex: 2; flex-direction: column; align-items: flex-start; display: flex;">
                                 <div style="font-weight:bold; font-size:1.1rem;">${t('Max Weight and Dimension')}</div>
                                 <div style="font-weight:normal; font-size:1rem; margin-top:4px;">
@@ -797,7 +797,7 @@ $easeCatalog = ease_translation_catalog();
                             <div class="detail-label">
                                 <div style="display: flex; flex-direction: column; align-items: center;">
                                     <strong style="font-size: 1.2rem; margin-bottom: 8px;">${t('Storage Drop-off')}</strong>
-                                    <img src="assets/images/send-from.png" alt="Drop-off" style="width: 120px; height: 120px; margin-bottom: 12px;">
+                                    <img src="<?= public_asset('images/send-from.png') ?>" alt="Drop-off" style="width: 120px; height: 120px; margin-bottom: 12px;">
                                 </div>
                             </div>
                             <div class="detail-value">
@@ -816,7 +816,7 @@ $easeCatalog = ease_translation_catalog();
                             <div class="detail-label">
                                 <div style="display: flex; flex-direction: column; align-items: center;">
                                     <strong style="font-size: 1.2rem; margin-bottom: 8px;">${t('Storage Pick-up')}</strong>
-                                    <img src="assets/images/deliver-to.png" alt="Pick-up" style="width: 120px; height: 120px; margin-bottom: 12px;">
+                                    <img src="<?= public_asset('images/deliver-to.png') ?>" alt="Pick-up" style="width: 120px; height: 120px; margin-bottom: 12px;">
                                 </div>
                             </div>
                             <div class="detail-value">
@@ -838,7 +838,7 @@ $easeCatalog = ease_translation_catalog();
                     <div class="detail-section">
                         <h3><i class="bi bi-tag"></i>${t('Promo Code')}</h3>
                         <div class="detail-row">
-                            <img src="assets/images/luggage-quantity.png" alt="Luggage Quantity" style="width: 120px; height: 120px; margin-right: 24px; vertical-align: middle;">
+                            <img src="<?= public_asset('images/luggage-quantity.png') ?>" alt="Luggage Quantity" style="width: 120px; height: 120px; margin-right: 24px; vertical-align: middle;">
                             <div class="detail-label" style="flex: 2; flex-direction: column; align-items: flex-start; display: flex;">
                                 <div style="font-weight:bold; font-size:1.1rem;">${t('Max Weight and Dimension')}</div>
                                 <div style="font-weight:normal; font-size:1rem; margin-top:4px;">

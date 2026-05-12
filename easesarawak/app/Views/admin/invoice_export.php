@@ -285,7 +285,7 @@
     <!-- ── Invoice Header ── -->
     <div class="inv-header">
         <div class="brand">
-            <img src="<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>" alt="EASE Sarawak">
+            <img src="<?= public_asset('images/Ease_PNG_File-01-1.png') ?>" alt="EASE Sarawak">
             <p>Luggage Storage &amp; Delivery Service<br>Sarawak, Malaysia</p>
         </div>
         <div class="inv-title">

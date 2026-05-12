@@ -19,7 +19,7 @@ function isActive($path)
 <nav class="navbar">
     <div class="logo">
         <a href="<?= base_url('/'); ?>">
-            <img src="assets/images/Ease_PNG_File-01.png" alt="EASE SARAWAK Logo">
+            <img src="<?= public_asset('images/Ease_PNG_File-01.png') ?>" alt="EASE SARAWAK Logo">
         </a>
     </div>
 

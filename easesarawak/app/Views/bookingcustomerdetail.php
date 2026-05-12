@@ -6,10 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Details - EASE SARAWAK</title>
-    <link rel="icon" type="image/png" href="assets/images/cropped-Ease_PNG_File-09.png">
+    <link rel="icon" type="image/png" href="<?= public_asset('images/cropped-Ease_PNG_File-09.png') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/footer_style.css">
-    <link rel="stylesheet" href="assets/css/navbar_style.css">
+    <link rel="stylesheet" href="<?= public_asset('css/footer_style.css') ?>">
+    <link rel="stylesheet" href="<?= public_asset('css/navbar_style.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
@@ -24,7 +24,7 @@
         
         @font-face {
             font-family: 'EurostarRegular';
-            src: url('assets/Eurostar Regular.ttf') format('truetype');
+            src: url('<?= public_asset('Eurostar Regular.ttf') ?>') format('truetype');
             font-weight: normal;
             font-style: normal;
         }

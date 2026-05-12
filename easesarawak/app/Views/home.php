@@ -5,23 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EASE SARAWAK | Kuching Luggage Storage & Delivery</title>
-    <link rel="icon" type="image/png" href="assets/images/cropped-Ease_PNG_File-09.png">
+    <link rel="icon" type="image/png" href="<?= public_asset('images/cropped-Ease_PNG_File-09.png') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/footer_style.css">
-    <link rel="stylesheet" href="assets/css/navbar_style.css">
+    <link rel="stylesheet" href="<?= public_asset('css/footer_style.css') ?>">
+    <link rel="stylesheet" href="<?= public_asset('css/navbar_style.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
     <style>
         @font-face {
             font-family: 'BebasKai';
-            src: url('assets/BebasKai.ttf') format('truetype');
+            src: url('<?= public_asset('BebasKai.ttf') ?>') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'EurostarRegular';
-            src: url('assets/Eurostar Regular.ttf') format('truetype');
+            src: url('<?= public_asset('Eurostar Regular.ttf') ?>') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -79,12 +79,12 @@
         }
 
         .hero::before {
-            background-image: url("assets/images/close-up-tourist-with-suitcase_11zon.webp");
+            background-image: url("<?= public_asset('images/close-up-tourist-with-suitcase_11zon.webp') ?>");
             animation-delay: 0s;
         }
 
         .hero::after {
-            background-image: url("assets/images/close-up-traveler-with-luggage_11zon.webp");
+            background-image: url("<?= public_asset('images/close-up-traveler-with-luggage_11zon.webp') ?>");
             animation-delay: 10s;
             /* Half of total duration */
         }
@@ -217,7 +217,7 @@
         /* OUR SERVICES Section */
         .services {
             padding: 4rem 2rem;
-            background: url('assets/images/service-v1-pattern.jpg') no-repeat center center/cover;
+            background: url('<?= public_asset('images/service-v1-pattern.jpg') ?>') no-repeat center center/cover;
             text-align: center;
         }
 
@@ -375,7 +375,7 @@
 
         /* Single step card */
         .step-card {
-            background: url('assets/images/bg-003-6.png') no-repeat center center/cover;
+            background: url('<?= public_asset('images/bg-003-6.png') ?>') no-repeat center center/cover;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             width: 250px;
@@ -431,7 +431,7 @@
         .why-choose-ease {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
                 /* black filter */
-                url('assets/images/valet-holding-baggage-side-view_23-2149901449-1 (1).webp') center/cover no-repeat;
+                url('<?= public_asset('images/valet-holding-baggage-side-view_23-2149901449-1 (1).webp') ?>') center/cover no-repeat;
             padding: 60px 20px;
             color: #fff;
         }
@@ -976,7 +976,7 @@
             .why-choose-ease {
                 padding: 4rem 1rem 5rem;
                 background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.65)),
-                    url('assets/images/valet-holding-baggage-side-view_23-2149901449-1 (1).webp') center/cover no-repeat;
+                    url('<?= public_asset('images/valet-holding-baggage-side-view_23-2149901449-1 (1).webp') ?>') center/cover no-repeat;
             }
 
             .why-choose-ease .content {
@@ -1181,7 +1181,7 @@
         </div>
         <div class="intro-right">
             <video width="100%" height="100%" autoplay muted loop playsinline controls>
-                <source src="assets/images/EASE-v2-Sub-Ease.mp4" type="video/mp4">
+                <source src="<?= public_asset('images/EASE-v2-Sub-Ease.mp4') ?>" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
@@ -1206,7 +1206,7 @@
             <!-- Card 1 - Basic (Luggage Storage) -->
             <div class="card">
                 <div class="card-image">
-                    <img src="assets/images/case-1.png" alt="Basic Service">
+                    <img src="<?= public_asset('images/case-1.png') ?>" alt="Basic Service">
                 </div>
                 <h4>Basic</h4>
                 <p class="price">Starts from <strong>RM<?= esc($prices['storage']) ?></strong></p>
@@ -1220,7 +1220,7 @@
             <!-- Card 2 - Standard (In Town Delivery) -->
             <div class="card">
                 <div class="card-image">
-                    <img src="assets/images/baggage.png" alt="Standard Service">
+                    <img src="<?= public_asset('images/baggage.png') ?>" alt="Standard Service">
                 </div>
                 <h4>Standard</h4>
                 <p class="price">Starts from <strong>RM<?= esc($prices['delivery']) ?></strong></p>
@@ -1234,7 +1234,7 @@
             <!-- Card 3 - On-demand -->
             <div class="card">
                 <div class="card-image">
-                    <img src="assets/images/suitcase .png" alt="On-demand Service">
+                    <img src="<?= public_asset('images/suitcase .png') ?>" alt="On-demand Service">
                 </div>
                 <h4>On-demand</h4>
                 <p class="price">Starts from <strong>RM30</strong></p>

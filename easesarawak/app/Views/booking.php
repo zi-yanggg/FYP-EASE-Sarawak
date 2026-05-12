@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking - EASE SARAWAK</title>
-    <link rel="icon" type="image/png" href="assets/images/cropped-Ease_PNG_File-09.png">
+    <link rel="icon" type="image/png" href="<?= public_asset('images/cropped-Ease_PNG_File-09.png') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/footer_style.css">
-    <link rel="stylesheet" href="assets/css/navbar_style.css">
+    <link rel="stylesheet" href="<?= public_asset('css/footer_style.css') ?>">
+    <link rel="stylesheet" href="<?= public_asset('css/navbar_style.css') ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
@@ -34,7 +34,7 @@
         
         @font-face {
             font-family: 'EurostarRegular';
-            src: url('assets/Eurostar Regular.ttf') format('truetype');
+            src: url('<?= public_asset('Eurostar Regular.ttf') ?>') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -739,7 +739,7 @@
 
             <!-- Right Content - Image -->
             <div class="right-content">
-                <img src="<?= base_url('assets/images/bookingpage.png') ?>" alt="Booking Service" class="booking-image">
+                <img src="<?= public_asset('images/bookingpage.png') ?>" alt="Booking Service" class="booking-image">
             </div>
         </div>
 
@@ -757,7 +757,7 @@
                 <div class="service-description-section">
                     <div class="service-description-content">
                         <div class="service-logo">
-                            <img src="<?= base_url('assets/images/booking-container.png') ?>" alt="Service Logo" class="service-logo-img">
+                            <img src="<?= public_asset('images/booking-container.png') ?>" alt="Service Logo" class="service-logo-img">
                         </div>
                         <div class="service-text">
                             <p class="service-description-text">Explore Sarawak's beauty and culture without the hassle of managing luggage. Our easy-to-use luggage storage and delivery service ensures handsfree travel in Kuching.</p>
@@ -889,7 +889,7 @@
                 <div class="service-description-section">
                     <div class="service-description-content">
                         <div class="service-logo">
-                            <img src="<?= base_url('assets/images/booking-container.png') ?>" alt="Service Logo" class="service-logo-img">
+                            <img src="<?= public_asset('images/booking-container.png') ?>" alt="Service Logo" class="service-logo-img">
                         </div>
                         <div class="service-text">
                             <p class="service-description-text">Flexible storage service lets you store bags for hours or days—travel freely without the weight!</p>

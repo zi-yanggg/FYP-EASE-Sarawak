@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EASE SARAWAK | In Town Delivery</title>
-    <link rel="icon" type="image/png" href="assets/images/cropped-Ease_PNG_File-09.png">
+    <link rel="icon" type="image/png" href="<?= public_asset('images/cropped-Ease_PNG_File-09.png') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/footer_style.css">
-    <link rel="stylesheet" href="assets/css/payment_style.css">
+    <link rel="stylesheet" href="<?= public_asset('css/footer_style.css') ?>">
+    <link rel="stylesheet" href="<?= public_asset('css/payment_style.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
@@ -19,7 +19,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">
-            <img src="assets/images/Ease_PNG_File-01.png" alt="EASE Logo">
+            <img src="<?= public_asset('images/Ease_PNG_File-01.png') ?>" alt="EASE Logo">
         </div>
         <div class="menu">
             <div class="dropdown">

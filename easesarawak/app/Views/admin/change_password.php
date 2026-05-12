@@ -1,7 +1,7 @@
 <?= $this->include('admin/header'); ?>
 
-<link rel="stylesheet" href="<?= base_url('assets/css/admin/report.css') ?>">
-<link rel="stylesheet" href="<?= base_url('assets/css/admin/profile.css') ?>">
+<link rel="stylesheet" href="<?= public_asset('css/admin/report.css') ?>">
+<link rel="stylesheet" href="<?= public_asset('css/admin/profile.css') ?>">
 
 <div class="rpt-page container-fluid py-3">
 

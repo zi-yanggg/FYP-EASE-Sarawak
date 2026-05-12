@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EASE SARAWAK | About Us</title>
-    <link rel="icon" type="image/png" href="assets/images/cropped-Ease_PNG_File-09.png">
+    <link rel="icon" type="image/png" href="<?= public_asset('images/cropped-Ease_PNG_File-09.png') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/footer_style.css">
-    <link rel="stylesheet" href="assets/css/navbar_style.css">
+    <link rel="stylesheet" href="<?= public_asset('css/footer_style.css') ?>">
+    <link rel="stylesheet" href="<?= public_asset('css/navbar_style.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
         @font-face {
             font-family: 'EurostarRegular';
-            src: url('assets/Eurostar Regular.ttf') format('truetype');
+            src: url('<?= public_asset('Eurostar Regular.ttf') ?>') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -40,7 +40,7 @@
             justify-content: center;
             text-align: center;
             color: white;
-            background-image: url("assets/images/ease-1-2.webp");
+            background-image: url("<?= public_asset('images/ease-1-2.webp') ?>");
             background-size: cover;
             background-position: center;
             margin-top: 90px;
@@ -127,7 +127,7 @@
         .offer-image {
             width: 100%;
             height: 100%;
-            background-image: url('assets/images/side-view-traveler-with-suitcase-1.webp');
+            background-image: url('<?= public_asset('images/side-view-traveler-with-suitcase-1.webp') ?>');
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -158,7 +158,7 @@
         .impact {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
                 /* black filter */
-                url('assets/images/ease-1-1.webp') center/cover no-repeat;
+                url('<?= public_asset('images/ease-1-1.webp') ?>') center/cover no-repeat;
             padding: 60px 20px;
             color: #fff;
         }
@@ -341,7 +341,7 @@
 
             /* This is the crucial part – force the background image on mobile */
             .offer-image {
-                background: url('assets/images/side-view-traveler-with-suitcase-1.webp') center/cover no-repeat ;
+                background: url('<?= public_asset('images/side-view-traveler-with-suitcase-1.webp') ?>') center/cover no-repeat ;
                 width: 100% ;
                 height: 100% ;
                 border-radius: 12px;
@@ -513,28 +513,28 @@
             </p>
             <div class="impact-flex">
                 <div class="impact-item">
-                    <img src="assets/images/customer.png" alt="customer icon">
+                    <img src="<?= public_asset('images/customer.png') ?>" alt="customer icon">
                     <div class="impact-text">
                         <h4>1,250</h4>
                         <p>Customers Served</p>
                     </div>
                 </div>
                 <div class="impact-item">
-                    <img src="assets/images/luggage.png" alt="luggage icon">
+                    <img src="<?= public_asset('images/luggage.png') ?>" alt="luggage icon">
                     <div class="impact-text">
                         <h4>5600</h4>
                         <p>Luggage Stored</p>
                     </div>
                 </div>
                 <div class="impact-item">
-                    <img src="assets/images/distance.png" alt="distance icon">
+                    <img src="<?= public_asset('images/distance.png') ?>" alt="distance icon">
                     <div class="impact-text">
                         <h4>1,250 km</h4>
                         <p>Km Covered</p>
                     </div>
                 </div>
                 <div class="impact-item">
-                    <img src="assets/images/satisfaction.png" alt="satisfaction icon">
+                    <img src="<?= public_asset('images/satisfaction.png') ?>" alt="satisfaction icon">
                     <div class="impact-text">
                         <h4>99%</h4>
                         <p>Customer Satisfaction</p>

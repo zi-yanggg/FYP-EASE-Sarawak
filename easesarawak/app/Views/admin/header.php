@@ -21,7 +21,7 @@ function timeAgo($datetime)
     <meta
         content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
         name="viewport" />
-    <link rel="icon" type="image/png" href="<?= base_url('assets/images/cropped-Ease_PNG_File-09.png') ?>">
+    <link rel="icon" type="image/png" href="<?= public_asset('images/cropped-Ease_PNG_File-09.png') ?>">
 
     <!-- Ensure relative asset paths resolve from the application root -->
     <base href="<?= base_url('/') ?>">
@@ -32,7 +32,7 @@ function timeAgo($datetime)
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <script src="<?= base_url('assets/js/admin/plugin/webfont/webfont.min.js') ?>"></script>
+    <script src="<?= public_asset('js/admin/plugin/webfont/webfont.min.js') ?>"></script>
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -48,7 +48,7 @@ function timeAgo($datetime)
                     "Font Awesome 5 Brands",
                     "simple-line-icons",
                 ],
-                urls: ["assets/css/admin/fonts.min.css"],
+                urls: ["<?= public_asset('css/admin/fonts.min.css') ?>"],
             },
             active: function() {
                 sessionStorage.fonts = true;
@@ -147,10 +147,10 @@ function timeAgo($datetime)
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="<?= base_url('assets/css/admin/bootstrap.min.css') ?>" />
-    <link rel="stylesheet" href="<?= base_url('assets/css/admin/plugins.min.css') ?>" />
-    <link rel="stylesheet" href="<?= base_url('assets/css/admin/kaiadmin.min.css') ?>" />
-    <link rel="stylesheet" href="<?= base_url('assets/css/admin/header.css') ?>" />
+    <link rel="stylesheet" href="<?= public_asset('css/admin/bootstrap.min.css') ?>" />
+    <link rel="stylesheet" href="<?= public_asset('css/admin/plugins.min.css') ?>" />
+    <link rel="stylesheet" href="<?= public_asset('css/admin/kaiadmin.min.css') ?>" />
+    <link rel="stylesheet" href="<?= public_asset('css/admin/header.css') ?>?v=<?= is_file(FCPATH . 'assets/css/admin/header.css') ? (int) filemtime(FCPATH . 'assets/css/admin/header.css') : 1 ?>" />
     <style>
         html,
         body {
@@ -667,7 +667,7 @@ function timeAgo($datetime)
                 <div class="logo-header" data-background-color="white">
                     <a href="<?= base_url('/admin'); ?>" class="logo">
                         <img
-                            src="<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>"
+                            src="<?= public_asset('images/Ease_PNG_File-01-1.png') ?>"
                             alt="navbar brand"
                             class="navbar-brand"
                             height="65" />
@@ -939,7 +939,7 @@ function timeAgo($datetime)
                     <div class="logo-header" data-background-color="white">
                         <a href="index.html" class="logo">
                             <img
-                                src="<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>"
+                                src="<?= public_asset('images/Ease_PNG_File-01-1.png') ?>"
                                 alt="navbar brand"
                                 class="navbar-brand"
                                 height="60" />
@@ -962,7 +962,7 @@ function timeAgo($datetime)
                 <!-- Centered brand â€” only shown when sidebar is minimized -->
                 <a href="<?= base_url('/admin'); ?>" class="ease-minimized-brand" aria-label="EASE Sarawak Home">
                     <img
-                        src="<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>"
+                        src="<?= public_asset('images/Ease_PNG_File-01-1.png') ?>"
                         alt="EASE Sarawak" />
                 </a>
                 <!-- Navbar Header -->
@@ -1043,7 +1043,7 @@ function timeAgo($datetime)
                                                     <?php foreach ($headerMessages as $msg): ?>
                                                         <a href="<?= base_url('admin/contact?message_id=' . $msg['msg_id']) ?>">
                                                             <div class="notif-img">
-                                                                <img src="assets/img/default-user.png" alt="Img Profile" />
+                                                                <img src="<?= public_asset('img/default-user.png') ?>" alt="Img Profile" />
                                                                 <?php
                                                                 $messageStatus = trim((string) ($msg['status'] ?? ''));
                                                                 ?>
@@ -1066,7 +1066,7 @@ function timeAgo($datetime)
                                                 <!-- <a href="#">
                                                     <div class="notif-img">
                                                         <img
-                                                            src="assets/img/chadengle.jpg"
+                                                            src="<?= public_asset('img/chadengle.jpg') ?>"
                                                             alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
@@ -1078,7 +1078,7 @@ function timeAgo($datetime)
                                                 <a href="#">
                                                     <div class="notif-img">
                                                         <img
-                                                            src="assets/img/mlane.jpg"
+                                                            src="<?= public_asset('img/mlane.jpg') ?>"
                                                             alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
@@ -1092,7 +1092,7 @@ function timeAgo($datetime)
                                                 <a href="#">
                                                     <div class="notif-img">
                                                         <img
-                                                            src="assets/img/talha.jpg"
+                                                            src="<?= public_asset('img/talha.jpg') ?>"
                                                             alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
@@ -1352,7 +1352,7 @@ function timeAgo($datetime)
                                     <span class="ease-topbar-tooltip-chip">My Account</span>
                                     <div class="avatar-sm">
                                         <img
-                                            src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
+                                            src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : public_asset('images/user.png')) ?>"
                                             alt="..."
                                             class="avatar-img rounded-circle" />
                                     </div>
@@ -1366,7 +1366,7 @@ function timeAgo($datetime)
                                         <div class="user-box ease-user-box">
                                             <div class="avatar-lg ease-user-avatar">
                                                 <img
-                                                    src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
+                                                    src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : public_asset('images/user.png')) ?>"
                                                     alt="image profile"
                                                     class="avatar-img rounded-circle" />
                                             </div>

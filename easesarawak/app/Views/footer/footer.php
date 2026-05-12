@@ -5,7 +5,7 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
 
 <footer class="footer">
     <div class="footer-logo">
-        <img src="<?= base_url('assets/images/Ease_PNG_File-01.png') ?>" alt="EASE SARAWAK Logo">
+        <img src="<?= public_asset('images/Ease_PNG_File-01.png') ?>" alt="EASE SARAWAK Logo">
     </div>
 
     <hr>
@@ -36,24 +36,24 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
 </footer>
 
 <button id="lang-toggle" onclick="toggleLangMenu()" class="lang-btn" type="button">
-    <img id="selected-flag" src="<?= base_url('assets/images/gb.png') ?>" alt="EN" class="lang-flag">
+    <img id="selected-flag" src="<?= public_asset('images/gb.png') ?>" alt="EN" class="lang-flag">
     <span id="selected-lang">EN</span>
     <span class="lang-caret">^</span>
 </button>
 
 <div id="lang-options" class="lang-options">
     <button onclick="changeLanguage('en')" class="lang-option" type="button">
-        <img src="<?= base_url('assets/images/gb.png') ?>" alt="English" class="lang-flag">
+        <img src="<?= public_asset('images/gb.png') ?>" alt="English" class="lang-flag">
         <span>English</span>
     </button>
 
     <button onclick="changeLanguage('zh')" class="lang-option" type="button">
-        <img src="<?= base_url('assets/images/cn.png') ?>" alt="Chinese" class="lang-flag">
+        <img src="<?= public_asset('images/cn.png') ?>" alt="Chinese" class="lang-flag">
         <span>Chinese (Simplified)</span>
     </button>
 
     <button onclick="changeLanguage('ms')" class="lang-option" type="button">
-        <img src="<?= base_url('assets/images/my.png') ?>" alt="Malay" class="lang-flag">
+        <img src="<?= public_asset('images/my.png') ?>" alt="Malay" class="lang-flag">
         <span>Malay</span>
     </button>
 </div>
@@ -129,7 +129,7 @@ $translationPayload = json_encode(ease_translation_payload(), JSON_UNESCAPED_UNI
     window.EASE_TRANSLATION = <?= $translationPayload ?>;
 
     function getLangMeta(lang) {
-        const base = '<?= base_url('assets/images/') ?>';
+        const base = '<?= public_assets_dir('images') ?>';
 
         if (lang === 'zh') {
             return { label: '中文', flag: base + 'cn.png' };

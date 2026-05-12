@@ -208,7 +208,7 @@
                                                             <td>
                                                                 <div class="flag">
                                                                     <img
-                                                                        src="assets/img/flags/id.png"
+                                                                        src="<?= public_asset('img/flags/id.png') ?>"
                                                                         alt="indonesia" />
                                                                 </div>
                                                             </td>
@@ -220,7 +220,7 @@
                                                             <td>
                                                                 <div class="flag">
                                                                     <img
-                                                                        src="assets/img/flags/us.png"
+                                                                        src="<?= public_asset('img/flags/us.png') ?>"
                                                                         alt="united states" />
                                                                 </div>
                                                             </td>
@@ -232,7 +232,7 @@
                                                             <td>
                                                                 <div class="flag">
                                                                     <img
-                                                                        src="assets/img/flags/au.png"
+                                                                        src="<?= public_asset('img/flags/au.png') ?>"
                                                                         alt="australia" />
                                                                 </div>
                                                             </td>
@@ -244,7 +244,7 @@
                                                             <td>
                                                                 <div class="flag">
                                                                     <img
-                                                                        src="assets/img/flags/ru.png"
+                                                                        src="<?= public_asset('img/flags/ru.png') ?>"
                                                                         alt="russia" />
                                                                 </div>
                                                             </td>
@@ -256,7 +256,7 @@
                                                             <td>
                                                                 <div class="flag">
                                                                     <img
-                                                                        src="assets/img/flags/cn.png"
+                                                                        src="<?= public_asset('img/flags/cn.png') ?>"
                                                                         alt="china" />
                                                                 </div>
                                                             </td>
@@ -268,7 +268,7 @@
                                                             <td>
                                                                 <div class="flag">
                                                                     <img
-                                                                        src="assets/img/flags/br.png"
+                                                                        src="<?= public_asset('img/flags/br.png') ?>"
                                                                         alt="brazil" />
                                                                 </div>
                                                             </td>
