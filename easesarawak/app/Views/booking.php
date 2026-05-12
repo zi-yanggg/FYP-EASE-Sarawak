@@ -45,7 +45,7 @@
             padding: 0;
             background-color: #f5f5f5;
             padding-top: 80px;
-            font-size: 1.15rem;
+            font-size: 1.25rem;
         }
 
         .booking-container {
@@ -66,59 +66,49 @@
             }
         }
 
-        /* Header and tagline section */
-        .header-section {
+        .booking-hero {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1fr) minmax(340px, 1fr);
             gap: 3rem;
-            align-items: start;
-            margin-bottom: 2rem;
+            align-items: center;
+            margin: 2rem 0;
         }
 
-        .left-content {
-            max-width: 600px;
+        .booking-hero-copy {
+            max-width: 620px;
         }
 
-        .right-content {
+        .booking-hero-title {
+            margin: 0 0 1rem 0;
+            font-family: 'EurostarRegular', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.2;
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 0.02em;
+        }
+
+        .booking-hero-text {
+            margin: 0;
+            font-family: 'EurostarRegular', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: #000000;
+            line-height: 1.6;
+            max-width: 56ch;
+        }
+
+        .booking-hero-media {
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding-top: 2rem;
         }
 
-        .booking-image {
-            max-width: 100%;
+        .booking-hero-image {
+            width: 100%;
+            max-width: 520px;
             height: auto;
-            border-radius: 0;
-            box-shadow: none;
-            background: transparent;
+            display: block;
             opacity: 0.95;
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-
-        .booking-tagline {
-            text-align: left;
-            margin-bottom: 2rem;
-        }
-
-        .booking-tagline h1 {
-            font-family: 'EurostarRegular', sans-serif;
-            font-size: 3rem;
-            color: #000000;
-            font-weight: bold;
-            margin-left: 20px;
-            margin-top: 120px;
-            line-height: 1.3;
-        }
-
-        .booking-tagline p {
-            font-family: 'EurostarRegular', sans-serif;
-            font-size: 1.3rem;
-            color: #000000;
-            margin-left: 20px;
-            line-height: 1.6;
-            max-width: 500px;
         }
 
         /* Service tabs - positioned above forms section */
@@ -460,24 +450,14 @@
         }
 
         @media (max-width: 1200px) {
-            .header-section {
+            .booking-hero {
                 grid-template-columns: 1fr;
                 gap: 2rem;
+                text-align: center;
             }
 
-            .left-content {
-                order: 1;
-            }
-            
-            .right-content {
-                order: 2;
-                padding-top: 0;
-                margin-bottom: 2rem;
-            }
-            
-            .booking-image {
-                max-width: 400px;
-                margin-top: 0;
+            .booking-hero-copy {
+                margin: 0 auto;
             }
             
             body {
@@ -493,16 +473,16 @@
             .booking-container {
                 padding: 0.5rem;
             }
-            .booking-tagline {
+
+            .booking-hero {
+                gap: 1.25rem;
                 text-align: center;
             }
-            .booking-tagline h1 {
-                font-size: 1.5rem;
+
+            .booking-hero-copy {
+                margin: 0 auto;
             }
-            .booking-tagline p {
-                font-size: 1rem;
-                max-width: none;
-            }
+
             .service-tabs {
                 flex-direction: column;
                 justify-content: center;
@@ -546,9 +526,8 @@
                 width: 100%;
                 min-width: 0;
             }
-            .booking-image {
-                max-width: 300px;
-                margin-top: 0;
+            .booking-hero-image {
+                max-width: 360px;
             }
             body {
                 padding-top: 90px;
@@ -556,8 +535,8 @@
         }
 
         @media (max-width: 480px) {
-            .booking-image {
-                max-width: 250px;
+            .booking-hero-image {
+                max-width: 300px;
             }
             
             body {
@@ -728,18 +707,14 @@
     <main class="booking-container">
 
         <!-- Header Section -->
-        <div class="header-section">
-            <!-- Left Content -->
-            <div class="left-content">      
-                <div class="booking-tagline">
-                    <h1>TRAVEL SMART WITH EASE</h1>
-                    <p>Whether you need secure storage or prompt delivery, we provide reliable and convenient solutions to ensure your journey is as smooth as possible.</p>
-                </div>
+        <div class="booking-hero">
+            <div class="booking-hero-copy">
+                <h1 class="booking-hero-title">TRAVEL SMART WITH EASE</h1>
+                <p class="booking-hero-text">Whether you need secure storage or prompt delivery, we provide reliable and convenient solutions to ensure your journey is as smooth as possible.</p>
             </div>
 
-            <!-- Right Content - Image -->
-            <div class="right-content">
-                <img src="<?= base_url('assets/images/bookingpage.png') ?>" alt="Booking Service" class="booking-image">
+            <div class="booking-hero-media">
+                <img src="<?= base_url('assets/images/bookingpage.png') ?>" alt="Booking Service" class="booking-hero-image">
             </div>
         </div>
 
@@ -1111,7 +1086,7 @@
             
             const [hours, minutes] = time.split(':').map(Number);
             const timeInMinutes = hours * 60 + minutes;
-            const startTime = 7 * 60; // 7:00 AM
+            const startTime = 8 * 60; // 8:00 AM
             const endTime = 18 * 60; // 6:00 PM
             
             return timeInMinutes >= startTime && timeInMinutes <= endTime;
@@ -1348,15 +1323,15 @@
             if (isPast1800(now)) {
                 // Delivery defaults
                 document.getElementById('dropoff-date').value = tomorrowDate;
-                document.getElementById('dropoff-time').value = '07:00';
+                document.getElementById('dropoff-time').value = '08:00';
                 document.getElementById('pickup-date').value = tomorrowDate;
-                document.getElementById('pickup-time').value = '07:00';
+                document.getElementById('pickup-time').value = '08:00';
 
                 // Storage defaults
                 document.getElementById('storage-dropoff-date').value = tomorrowDate;
-                document.getElementById('storage-dropoff-time').value = '07:00';
+                document.getElementById('storage-dropoff-time').value = '08:00';
                 document.getElementById('storage-pickup-date').value = tomorrowDate;
-                document.getElementById('storage-pickup-time').value = '07:00';
+                document.getElementById('storage-pickup-time').value = '08:00';
                 return;
             }
             
@@ -1371,23 +1346,24 @@
             let deliveryTimeString = deliveryFutureTime.getHours().toString().padStart(2, '0') + ':' + deliveryFutureTime.getMinutes().toString().padStart(2, '0');
             let deliveryDateString = currentDate; // Always start with current date
             
-            // Ensure delivery time is within working hours (7 AM to 7 PM)
-            if (deliveryFutureTime.getHours() < 7) {
-                deliveryTimeString = '07:00';
+            // Ensure delivery time is within working hours (8 AM to 6 PM)
+            if (deliveryFutureTime.getHours() < 8) {
+                deliveryTimeString = '08:00';
                 // Keep current date, just adjust time
             } else if (deliveryFutureTime.getHours() >= 18) {
-                // If it's past 6 PM, set to next day at 7 AM
+                // If it's past 6 PM, set to next day at 8 AM
                 const nextDay = new Date(deliveryFutureTime.getTime() + 24 * 60 * 60 * 1000);
                 deliveryDateString = nextDay.toISOString().split('T')[0];
-                deliveryTimeString = '07:00';
+                deliveryTimeString = '08:00';
             }
             
             // Set delivery dropoff date and time
             document.getElementById('dropoff-date').value = deliveryDateString;
             document.getElementById('dropoff-time').value = deliveryTimeString;
             
-            // Set pickup time (2 hours after dropoff)
-            const pickupTime = new Date(deliveryFutureTime.getTime() + 2 * 60 * 60 * 1000);
+            // Set pickup time exactly 2 hours after the displayed dropoff time
+            const displayedDropoff = new Date(deliveryDateString + 'T' + deliveryTimeString);
+            const pickupTime = new Date(displayedDropoff.getTime() + 2 * 60 * 60 * 1000);
             let pickupTimeString = pickupTime.getHours().toString().padStart(2, '0') + ':' + pickupTime.getMinutes().toString().padStart(2, '0');
             let pickupDateString = deliveryDateString; // Same date as dropoff initially
             
@@ -1395,7 +1371,7 @@
                 // If pickup would be past 6 PM, set to next day
                 const nextDay = new Date(pickupTime.getTime() + 24 * 60 * 60 * 1000);
                 pickupDateString = nextDay.toISOString().split('T')[0];
-                pickupTimeString = '07:00';
+                pickupTimeString = '08:00';
             }
             
             document.getElementById('pickup-date').value = pickupDateString;
@@ -1407,28 +1383,29 @@
             let storageDateString = currentDate; // Always start with current date
             
             // Ensure storage time is within working hours
-            if (storageTime.getHours() < 7) {
-                storageTimeString = '07:00';
+            if (storageTime.getHours() < 8) {
+                storageTimeString = '08:00';
                 // Keep current date, just adjust time
             } else if (storageTime.getHours() >= 18) {
                 const nextDay = new Date(storageTime.getTime() + 24 * 60 * 60 * 1000);
                 storageDateString = nextDay.toISOString().split('T')[0];
-                storageTimeString = '07:00';
+                storageTimeString = '08:00';
             }
             
             // Set storage dropoff date and time
             document.getElementById('storage-dropoff-date').value = storageDateString;
             document.getElementById('storage-dropoff-time').value = storageTimeString;
             
-            // Set storage pickup time (2 hours after dropoff)
-            const storagePickupTime = new Date(storageTime.getTime() + 2 * 60 * 60 * 1000);
+            // Set storage pickup time exactly 2 hours after the displayed dropoff time
+            const displayedStorageDropoff = new Date(storageDateString + 'T' + storageTimeString);
+            const storagePickupTime = new Date(displayedStorageDropoff.getTime() + 2 * 60 * 60 * 1000);
             let storagePickupTimeString = storagePickupTime.getHours().toString().padStart(2, '0') + ':' + storagePickupTime.getMinutes().toString().padStart(2, '0');
             let storagePickupDateString = storageDateString; // Same date as dropoff initially
             
             if (storagePickupTime.getHours() >= 18) {
                 const nextDay = new Date(storagePickupTime.getTime() + 24 * 60 * 60 * 1000);
                 storagePickupDateString = nextDay.toISOString().split('T')[0];
-                storagePickupTimeString = '07:00';
+                storagePickupTimeString = '08:00';
             }
             
             document.getElementById('storage-pickup-date').value = storagePickupDateString;
@@ -1446,7 +1423,7 @@
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 07:00 and 18:00.';
+                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 08:00 and 18:00.';
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isAtLeast2HoursFromNow(selectedDate, selectedTime)) {
@@ -1472,15 +1449,15 @@
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 07:00 and 18:00.';
+                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 08:00 and 18:00.';
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isAtLeast2HoursFromNow(selectedDate, selectedTime)) {
                 updateDeliveryWarningMessage(warningDiv);
                 warningDiv.classList.add('show');
                 return false;
-            } else if (isDateTime1BeforeDateTime2(selectedDate, selectedTime, dropoffDate, dropoffTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Pick-up date and time must be after drop-off date and time.';
+            } else if (!isAtLeast2HoursAfterDropoff(selectedDate, selectedTime, dropoffDate, dropoffTime)) {
+                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Pick-up date and time must be at least 2 hours after drop-off date and time.';
                 warningDiv.classList.add('show');
                 updatePickupMinimum();
                 return false;
@@ -1501,7 +1478,7 @@
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 07:00 and 18:00.';
+                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 08:00 and 18:00.';
                 warningDiv.classList.add('show');
                 return false;
             } else {
@@ -1523,7 +1500,7 @@
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 07:00 and 18:00.';
+                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 08:00 and 18:00.';
                 warningDiv.classList.add('show');
                 return false;
             } else if (isDateTime1BeforeDateTime2(selectedDate, selectedTime, dropoffDate, dropoffTime)) {
@@ -1583,6 +1560,16 @@
             return dateTime1 <= dateTime2;
         }
 
+        function isAtLeast2HoursAfterDropoff(pickupDate, pickupTime, dropoffDate, dropoffTime) {
+            if (!pickupDate || !pickupTime || !dropoffDate || !dropoffTime) return false;
+
+            const pickupDateTime = new Date(pickupDate + 'T' + pickupTime);
+            const dropoffDateTime = new Date(dropoffDate + 'T' + dropoffTime);
+            const minPickupDateTime = new Date(dropoffDateTime.getTime() + 2 * 60 * 60 * 1000);
+
+            return pickupDateTime >= minPickupDateTime;
+        }
+
         function updatePickupMinimum() {
             const dropoffDate = document.getElementById('dropoff-date').value;
             const dropoffTime = document.getElementById('dropoff-time').value;
@@ -1593,18 +1580,18 @@
                 const pickupDate = document.getElementById('pickup-date').value;
                 if (pickupDate === dropoffDate) {
                     const dropoffDateTime = new Date(dropoffDate + 'T' + dropoffTime);
-                    const minPickupTime = new Date(dropoffDateTime.getTime() + 60 * 60 * 1000);
+                    const minPickupTime = new Date(dropoffDateTime.getTime() + 2 * 60 * 60 * 1000);
                     let minTime = minPickupTime.getHours().toString().padStart(2, '0') + ':' + minPickupTime.getMinutes().toString().padStart(2, '0');
                     
                     // Ensure pickup time is within working hours
                     if (minPickupTime.getHours() >= 18) {
-                        minTime = '07:00';
+                        minTime = '08:00';
                         // Set to next day if needed
                         const nextDay = new Date(minPickupTime.getTime() + 24 * 60 * 60 * 1000);
                         document.getElementById('pickup-date').value = nextDay.toISOString().split('T')[0];
                     }
                     
-                    if (document.getElementById('pickup-time').value <= dropoffTime) {
+                    if (!isAtLeast2HoursAfterDropoff(pickupDate, document.getElementById('pickup-time').value, dropoffDate, dropoffTime)) {
                         document.getElementById('pickup-time').value = minTime;
                     }
                 }
@@ -1626,7 +1613,7 @@
                     
                     // Ensure pickup time is within working hours
                     if (minPickupTime.getHours() >= 18) {
-                        minTime = '07:00';
+                        minTime = '08:00';
                         // Set to next day if needed
                         const nextDay = new Date(minPickupTime.getTime() + 24 * 60 * 60 * 1000);
                         document.getElementById('storage-pickup-date').value = nextDay.toISOString().split('T')[0];
