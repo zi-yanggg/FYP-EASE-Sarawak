@@ -508,17 +508,27 @@
         .main-header .quick-actions .quick-actions-header .title,
         .main-header .quick-actions .quick-actions-header .subtitle,
         .main-header .quick-actions .quick-actions-header .op-7,
-        .ease-user-dropdown .ease-user-header,
-        .ease-user-dropdown .ease-user-email,
+        .ease-user-dropdown .ease-user-box .ease-user-name,
         body.dark-mode .navbar .dropdown-menu .dropdown-title,
         body.dark-mode .main-header .dropdown-menu .dropdown-title,
         body.dark-mode .main-header .quick-actions .quick-actions-header,
         body.dark-mode .main-header .quick-actions .quick-actions-header .title,
         body.dark-mode .main-header .quick-actions .quick-actions-header .subtitle,
         body.dark-mode .main-header .quick-actions .quick-actions-header .op-7,
-        body.dark-mode .ease-user-dropdown .ease-user-header,
-        body.dark-mode .ease-user-dropdown .ease-user-email {
+        body.dark-mode .ease-user-dropdown .ease-user-box .ease-user-name {
             color: #1A1A1A ;
+        }
+
+        /* Gold profile header band — same in light + dark (like .dropdown-title). */
+        body.dark-mode .ease-user-dropdown .ease-user-box {
+            background: #f2be00 ;
+            color: #1a1a1a ;
+            border-bottom: 1px solid rgba(26, 26, 26, 0.12) ;
+        }
+
+        .ease-user-dropdown .ease-user-box .ease-user-email,
+        body.dark-mode .ease-user-dropdown .ease-user-box .ease-user-email {
+            color: rgba(26, 26, 26, 0.72) ;
         }
 
         .main-header .quick-actions .quick-actions-header .subtitle {
@@ -559,9 +569,15 @@
             overflow: hidden ;
         }
 
-        /* Gold-band header â€” same gold + dark-text recipe as the other
-           `.dropdown-title` headers; just lays out the avatar + meta. */
-        .ease-user-dropdown .ease-user-header {
+        .ease-user-dropdown > li {
+            list-style: none ;
+            margin: 0 ;
+            padding: 0 ;
+        }
+
+        /* Gold-band header — same as `.dropdown-title` (markup uses `.ease-user-box`). */
+        .ease-user-dropdown .ease-user-box,
+        .ease-user-dropdown .user-box.ease-user-box {
             display: flex ;
             align-items: center;
             gap: 14px;
@@ -571,6 +587,12 @@
             border-bottom: 1px solid rgba(26, 26, 26, 0.12) ;
             font-family: 'Oxanium', sans-serif ;
             text-align: left ;
+            margin: 0 ;
+        }
+
+        .navbar-header .navbar-nav .ease-user-dropdown:after,
+        .navbar-header .ease-user-dropdown:after {
+            border-bottom-color: #f2be00 ;
         }
 
         .ease-user-dropdown .ease-user-avatar {
@@ -591,7 +613,8 @@
             display: block;
         }
 
-        .ease-user-dropdown .ease-user-meta {
+        .ease-user-dropdown .ease-user-text,
+        .ease-user-dropdown .u-text.ease-user-text {
             flex: 1 1 auto;
             min-width: 0;
         }
@@ -631,6 +654,31 @@
             background: #1a1a1a;
             color: #f2be00;
             line-height: 1.4;
+        }
+
+        .ease-user-dropdown .ease-role-badge.ease-role-admin {
+            background: rgba(255, 255, 255, 0.45) ;
+            color: #1a1a1a ;
+            border: 1px solid rgba(26, 26, 26, 0.22) ;
+        }
+
+        .ease-user-dropdown .ease-user-actions {
+            padding: 6px 0 ;
+            background: #ffffff ;
+        }
+
+        body.dark-mode .ease-user-dropdown .ease-user-actions {
+            background: transparent ;
+        }
+
+        .ease-user-dropdown .ease-user-divider {
+            height: 1px ;
+            margin: 6px 14px ;
+            background: rgba(26, 26, 26, 0.1) ;
+        }
+
+        body.dark-mode .ease-user-dropdown .ease-user-divider {
+            background: rgba(212, 167, 0, 0.28) ;
         }
 
         /* Items â€” inherit the existing dropdown-item theme (dark text,
@@ -681,6 +729,15 @@
             color: #991b1b ;
         }
 
+        body.dark-mode .ease-user-dropdown .ease-user-item:not(.ease-user-logout) i {
+            color: #94a3b8 ;
+        }
+
+        body.dark-mode .ease-user-dropdown .ease-user-item:not(.ease-user-logout):hover i,
+        body.dark-mode .ease-user-dropdown .ease-user-item:not(.ease-user-logout):focus i {
+            color: #ffffff ;
+        }
+
         /* Profile-pic toggle â€” keep avatar clean on hover/open */
         .ease-profile-toggle .avatar-sm .avatar-img {
             border: 2px solid transparent;
@@ -689,8 +746,8 @@
 
         .ease-profile-toggle:hover .avatar-sm .avatar-img,
         .ease-profile-toggle[aria-expanded="true"] .avatar-sm .avatar-img {
-            border-color: transparent;
-            box-shadow: none;
+            border-color: #f2be00 ;
+            box-shadow: 0 0 0 3px rgba(242, 190, 0, 0.22) ;
         }
 
         /* ============================================================
@@ -928,30 +985,21 @@
         }
 
         /* ================================================================
-           Sidebar — viewport-height column anchored to body.
-           Flex layout: logo (fixed) + scrollable nav + theme strip (fixed).
-           `.sidebar-wrapper` uses overflow-y: auto so at normal zoom there
-           is no scrollbar; when zoom or short viewport shrinks the middle,
-           only the nav + section titles scroll. Theme toggle stays at the
-           bottom of the rail.
+           Sidebar — viewport-height rail, position:fixed so window scroll
+           only moves the main panel; the sidenav stays put. Internal nav
+           still scrolls inside `.sidebar-wrapper` when zoom/height require it.
            ================================================================ */
 
-        /* Sidebar stays in the DOM under .wrapper, but its containing block
-           is body (not .wrapper) so tall pages / transforms on .wrapper do
-           not offset the rail. */
         body {
-            position: relative ;
             min-height: 100vh ;
         }
 
-        /* Anchor the sidebar to the body: .wrapper must not create a
-           positioning context, or absolute top/left would track .wrapper. */
-        /* Beat Kaiadmin `.sidebar,.sidebar[data-background-color=white]{position:fixed;top:0;bottom:0;…}` */
+        /* Beat Kaiadmin `.sidebar{position:fixed;…}` with our flex + height stack. */
         .wrapper .sidebar,
         .wrapper .sidebar:hover,
         .wrapper.sidebar_minimize .sidebar,
         .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar {
-            position: absolute ;
+            position: fixed ;
             top: 0 ;
             left: 0 ;
             bottom: auto ;
@@ -969,8 +1017,7 @@
             flex-shrink: 0 ;
         }
 
-        /* Keep the layout shell full-height; position static so .sidebar's
-           absolute coordinates are relative to body. */
+        /* Layout shell; static so nothing clips `position: fixed` on the sidebar. */
         .wrapper {
             min-height: 100vh ;
             position: static ;
