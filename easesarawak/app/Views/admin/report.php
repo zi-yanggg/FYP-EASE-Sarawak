@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/report.css') ?>">
 
-<div class="rpt-page container-fluid py-3">
+<div class="rpt-page container-fluid">
 
     <!-- ── Page Header ── -->
     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">

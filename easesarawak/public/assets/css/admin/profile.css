@@ -4,6 +4,25 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oxanium:wght@400;500;600;700;800&display=swap');
 
+/* ── Main page headline (replaces smaller rpt-h3 + breadcrumbs) ── */
+.prof-page-title {
+    font-family: 'Oxanium', sans-serif;
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--text-dark);
+}
+
+/* Main Profile page: title sits closer under the fixed top bar (still clears it). */
+.wrapper .main-panel > .rpt-page.container-fluid.prof-page--tight-head {
+    --ease-rpt-topband: 74px;
+    margin-top: var(--ease-rpt-topband);
+    padding-top: 0.4rem;
+    min-height: calc(100vh - var(--ease-rpt-topband));
+    min-height: calc(100dvh - var(--ease-rpt-topband));
+}
+
 /* ── Profile Avatar Wrapper (for edit overlay) ── */
 .prof-avatar-wrap {
     position: relative;

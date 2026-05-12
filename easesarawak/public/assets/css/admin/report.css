@@ -31,6 +31,44 @@
     line-height: 1.45;
     letter-spacing: -0.01em;
 }
+
+/* Kaiadmin offsets fixed `.main-header` only for `.main-panel > .container`
+   and `.container-full`. Report-style views attach `.rpt-page.container-fluid`
+   as the next sibling of `.main-header`; without this, titles sit under the bar.
+
+   --ease-rpt-topband: space reserved for the fixed header (incl. gold border).
+   padding-top adds space *inside* the cream block so the headline clears the navbar.
+   min-height uses the viewport so short pages still fill the column (no gray gap below).
+
+   `ease-admin-cream-shell` is set on <body> from admin/header.php for profile, edit profile,
+   and change password so #fffdf5 fills the viewport (not only the .rpt-page strip). */
+body.ease-admin-cream-shell {
+    background-color: var(--bg-page);
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+body.ease-admin-cream-shell .wrapper {
+    background-color: var(--bg-page);
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+body.ease-admin-cream-shell .wrapper .main-panel {
+    background-color: var(--bg-page);
+}
+
+.wrapper .main-panel > .rpt-page.container-fluid {
+    --ease-rpt-topband: 78px;
+    margin-top: var(--ease-rpt-topband);
+    padding-top: 1.75rem;
+    padding-bottom: 2rem;
+    min-height: calc(100vh - var(--ease-rpt-topband));
+    min-height: calc(100dvh - var(--ease-rpt-topband));
+    width: 100%;
+    max-width: unset;
+    box-sizing: border-box;
+}
 .rpt-page *:not(i):not(.fa):not(.fas):not(.far):not(.fab):not([class^="fa-"]):not([class*=" fa-"]) {
     font-family: inherit;
 }

@@ -1,0 +1,35 @@
+/* Forgot password + reset password (standalone auth pages) — same cream as admin profile (#fffdf5) */
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@600;700;800&display=swap');
+
+html {
+    min-height: 100%;
+}
+
+body.ease-auth-shell {
+    margin: 0;
+    background-color: #fffdf5;
+    min-height: 100vh;
+    min-height: 100dvh;
+    font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
+}
+
+body.ease-auth-shell .ease-auth-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 1rem;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+
+body.ease-auth-shell .logo-img {
+    height: 60px;
+}
+
+/* Match admin profile page headline weight/size */
+body.ease-auth-shell .ease-auth-page-title {
+    font-family: 'Oxanium', sans-serif;
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: #111827;
+}

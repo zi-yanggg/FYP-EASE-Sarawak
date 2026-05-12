@@ -658,7 +658,13 @@ function timeAgo($datetime)
     </style>
 </head>
 
-<body>
+<?php
+    $easeAdminCreamPath = trim((string) (uri_string() ?: ''), '/');
+    $easeAdminCreamShell = $easeAdminCreamPath === 'profile'
+        || $easeAdminCreamPath === 'change_password'
+        || str_starts_with($easeAdminCreamPath, 'edit_profile');
+?>
+<body<?= $easeAdminCreamShell ? ' class="ease-admin-cream-shell"' : '' ?>>
     <div class="wrapper">
         <!-- Sidebar -->
         <div class="sidebar" data-background-color="white">
@@ -1348,8 +1354,8 @@ function timeAgo($datetime)
                                     data-bs-toggle="dropdown"
                                     href="#"
                                     aria-expanded="false"
-                                    data-tooltip="My Account">
-                                    <span class="ease-topbar-tooltip-chip">My Account</span>
+                                    data-tooltip="Account">
+                                    <span class="ease-topbar-tooltip-chip">Account</span>
                                     <div class="avatar-sm">
                                         <img
                                             src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
@@ -1386,15 +1392,15 @@ function timeAgo($datetime)
                                         <div class="ease-user-actions">
                                             <a class="dropdown-item ease-user-item" href="<?= base_url('/profile') ?>">
                                                 <i class="fas fa-user"></i>
-                                                <span>My Profile</span>
+                                                <span>Profile</span>
                                             </a>
                                             <a class="dropdown-item ease-user-item" href="<?= base_url('/edit_profile/' . (int) $session->get('user_id')) ?>">
                                                 <i class="fas fa-user-edit"></i>
-                                                <span>Edit Profile</span>
+                                                <span>Edit</span>
                                             </a>
                                             <a class="dropdown-item ease-user-item" href="<?= base_url('/change_password') ?>">
                                                 <i class="fas fa-key"></i>
-                                                <span>Change Password</span>
+                                                <span>Password</span>
                                             </a>
                                             <div class="ease-user-divider"></div>
                                             <a class="dropdown-item ease-user-item ease-user-logout" href="<?= base_url('/logout') ?>">

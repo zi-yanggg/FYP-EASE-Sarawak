@@ -3,17 +3,12 @@
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/report.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/profile.css') ?>">
 
-<div class="rpt-page container-fluid py-3">
+<div class="rpt-page container-fluid prof-page--tight-head">
 
     <!-- ── Page Header ── -->
     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
         <div>
-            <h3 class="fw-bold mb-0 rpt-h3">My Profile</h3>
-            <ul class="breadcrumbs mb-0">
-                <li class="nav-home"><a href="<?= base_url('/admin/dashboard') ?>"><i class="fa fa-home"></i></a></li>
-                <li class="separator"><i class="fa fa-angle-right"></i></li>
-                <li class="nav-item">Profile</li>
-            </ul>
+            <h1 class="fw-bold mb-0 prof-page-title">Profile</h1>
         </div>
     </div>
 
@@ -31,7 +26,7 @@
         <div class="col-lg-8 col-md-7 d-flex">
             <div class="rpt-card prof-card w-100">
                 <div class="rpt-card-header">
-                    <span class="rpt-title"><i class="fas fa-user me-2"></i>Profile Overview</span>
+                    <span class="rpt-title"><i class="fas fa-user me-2"></i>Overview</span>
                 </div>
                 <div class="card-body prof-card-body d-flex flex-column">
                     <div class="prof-overview d-flex flex-column flex-sm-row align-items-center align-items-sm-start">
@@ -43,8 +38,8 @@
                                 class="prof-avatar">
                             <a href="<?= base_url('/edit_profile/' . $user['user_id']) ?>"
                                class="prof-avatar-edit"
-                               title="Edit Profile Picture"
-                               aria-label="Edit Profile Picture">
+                               title="Edit picture"
+                               aria-label="Edit picture">
                                 <i class="fas fa-camera"></i>
                             </a>
                         </div>
@@ -89,7 +84,7 @@
                     <div class="prof-actions mt-auto">
                         <hr class="prof-divider">
                         <a href="<?= base_url('/edit_profile/' . $user['user_id']) ?>" class="btn rpt-export-btn">
-                            <i class="fas fa-edit me-1"></i> Edit Profile
+                            <i class="fas fa-edit me-1"></i> Edit
                         </a>
                     </div>
                 </div>
@@ -101,7 +96,7 @@
             <div class="prof-side-stack d-flex flex-column gap-3 w-100">
                 <div class="rpt-card prof-card flex-fill">
                     <div class="rpt-card-header">
-                        <span class="rpt-title"><i class="fas fa-info-circle me-2"></i>Account Information</span>
+                        <span class="rpt-title"><i class="fas fa-info-circle me-2"></i>Account</span>
                     </div>
                     <div class="card-body prof-card-body prof-info-body">
                         <div class="prof-info-row mb-3">
@@ -124,7 +119,7 @@
                         <p class="prof-security-text">Keep your account secure by regularly updating your password.</p>
                         <div class="mt-auto">
                             <a href="<?= base_url('/change_password') ?>" class="btn rpt-export-btn">
-                                <i class="fas fa-key me-1"></i> Change Password
+                                <i class="fas fa-key me-1"></i> Password
                             </a>
                         </div>
                     </div>
