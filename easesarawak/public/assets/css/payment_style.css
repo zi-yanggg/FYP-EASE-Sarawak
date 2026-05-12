@@ -1,13 +1,13 @@
         @font-face {
             font-family: 'BebasKai';
-            src: url('assets/BebasKai.ttf') format('truetype');
+            src: url('../BebasKai.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'EurostarRegular';
-            src: url('assets/Eurostar Regular.ttf') format('truetype');
+            src: url('../Eurostar%20Regular.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
