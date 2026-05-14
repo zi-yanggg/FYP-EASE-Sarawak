@@ -1094,3 +1094,102 @@
   margin: 0 !important;
 }
 
+/* ============================================================
+   Direction A — Pagination
+   CI4 Pager + DataTables paginator
+   ============================================================ */
+
+/* ── CI4 Pager ───────────────────────────────────────────────── */
+.ease-pager-nav { margin: 16px 0 4px; }
+
+.ease-pager {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  align-items: center;
+}
+
+.ease-pager__link {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 34px; height: 34px;
+  padding: 0 10px;
+  background: #fff;
+  color: var(--fg2);
+  border: 1px solid #ECE2B4;
+  border-radius: 8px;
+  font-family: var(--font-admin);
+  font-size: 11px; font-weight: 700;
+  text-decoration: none;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.ease-pager__link:hover {
+  background: var(--gold-pale);
+  border-color: var(--gold);
+  color: var(--ink-1);
+}
+.ease-pager__link--active,
+.ease-pager__item--active .ease-pager__link {
+  background: var(--gold) !important;
+  color: var(--ink-1) !important;
+  border-color: var(--gold) !important;
+  font-weight: 800;
+  pointer-events: none;
+}
+.ease-pager__link i { font-size: 12px; }
+
+/* ── DataTables paginator ────────────────────────────────────── */
+.ease-dir .dataTables_wrapper .dataTables_paginate { margin-top: 12px; }
+
+.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button {
+  display: inline-flex !important; align-items: center; justify-content: center;
+  min-width: 34px; height: 34px;
+  padding: 0 10px !important;
+  margin: 0 2px !important;
+  background: #fff !important;
+  color: var(--fg2) !important;
+  border: 1px solid #ECE2B4 !important;
+  border-radius: 8px !important;
+  font-family: var(--font-admin) !important;
+  font-size: 11px !important; font-weight: 700 !important;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--gold-pale) !important;
+  border-color: var(--gold) !important;
+  color: var(--ink-1) !important;
+}
+.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: var(--gold) !important;
+  color: var(--ink-1) !important;
+  border-color: var(--gold) !important;
+  font-weight: 800 !important;
+}
+.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+  background: #f9f9f9 !important;
+  color: #ccc !important;
+  border-color: #eee !important;
+  cursor: default;
+}
+
+/* ── DataTables info text & length select ────────────────────── */
+.ease-dir .dataTables_wrapper .dataTables_info {
+  font-family: var(--font-admin);
+  font-size: 10.5px; color: var(--fg4);
+  padding-top: 10px;
+}
+.ease-dir .dataTables_wrapper .dataTables_length select,
+.ease-dir .dataTables_wrapper .dataTables_filter input {
+  border: 1px solid #ECE2B4 !important;
+  border-radius: 8px !important;
+  font-family: var(--font-admin) !important;
+  font-size: 11px !important;
+}
+.ease-dir .dataTables_wrapper .dataTables_length select:focus,
+.ease-dir .dataTables_wrapper .dataTables_filter input:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px rgba(242,190,0,.15) !important;
+  outline: none;
+}

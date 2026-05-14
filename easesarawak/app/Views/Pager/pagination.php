@@ -8,40 +8,43 @@ use CodeIgniter\Pager\PagerRenderer;
 $pager->setSurroundCount(2);
 ?>
 
-<nav aria-label="<?= lang('Pager.pageNavigation') ?>">
-    <ul class="pagination">
+<nav aria-label="<?= lang('Pager.pageNavigation') ?>" class="ease-pager-nav">
+    <ul class="ease-pager">
+
         <?php if ($pager->hasPrevious()) : ?>
-            <li class="page-item">
-                <a class="page-link bg-dark text-light border-dark" href="<?= $pager->getFirst() ?>" aria-label="第一页">
-                    <span aria-hidden="true"><i class="bi bi-skip-backward"></i></span>
+            <li class="ease-pager__item">
+                <a class="ease-pager__link" href="<?= $pager->getFirst() ?>" aria-label="First page" title="First">
+                    <i class="bi bi-chevron-double-left"></i>
                 </a>
             </li>
-            <li class="page-item">
-                <a class="page-link bg-dark text-light border-dark" href="<?= $pager->getPrevious() ?>" aria-label="上一页">
-                    <span aria-hidden="true"><i class="bi bi-skip-start"></i></span>
+            <li class="ease-pager__item">
+                <a class="ease-pager__link" href="<?= $pager->getPrevious() ?>" aria-label="Previous page" title="Previous">
+                    <i class="bi bi-chevron-left"></i>
                 </a>
             </li>
         <?php endif ?>
 
         <?php foreach ($pager->links() as $link) : ?>
-            <li class="page-item <?= $link['active'] ? 'active' : '' ?>">
-                <a class="page-link <?= $link['active'] ? 'bg-dark text-white' : 'bg-light text-dark border-dark' ?>" href="<?= $link['uri'] ?>">
+            <li class="ease-pager__item <?= $link['active'] ? 'ease-pager__item--active' : '' ?>">
+                <a class="ease-pager__link <?= $link['active'] ? 'ease-pager__link--active' : '' ?>"
+                   href="<?= $link['uri'] ?>">
                     <?= $link['title'] ?>
                 </a>
             </li>
         <?php endforeach ?>
 
         <?php if ($pager->hasNext()) : ?>
-            <li class="page-item">
-                <a class="page-link bg-dark text-light border-dark" href="<?= $pager->getNext() ?>" aria-label="下一页">
-                    <span aria-hidden="true"><i class="bi bi-skip-end"></i></span>
+            <li class="ease-pager__item">
+                <a class="ease-pager__link" href="<?= $pager->getNext() ?>" aria-label="Next page" title="Next">
+                    <i class="bi bi-chevron-right"></i>
                 </a>
             </li>
-            <li class="page-item">
-                <a class="page-link bg-dark text-light border-dark" href="<?= $pager->getLast() ?>" aria-label="最后一页">
-                    <span aria-hidden="true"><i class="bi bi-skip-forward"></i></span>
+            <li class="ease-pager__item">
+                <a class="ease-pager__link" href="<?= $pager->getLast() ?>" aria-label="Last page" title="Last">
+                    <i class="bi bi-chevron-double-right"></i>
                 </a>
             </li>
         <?php endif ?>
+
     </ul>
 </nav>
