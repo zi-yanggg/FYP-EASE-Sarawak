@@ -86,8 +86,28 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        if (window.jQuery && $.fn.DataTable && document.querySelector('#transactionTable')) {
-        $('#transactionTable').DataTable({ pageLength: 7, responsive: true, order: [[0, 'desc']], info: false });        }
+        if (!window.jQuery || !$.fn.DataTable || !document.querySelector('#transactionTable')) {
+            return;
+        }
+        const $tbody = $('#transactionTable tbody');
+        const $firstRow = $tbody.find('tr').first();
+        if (!$firstRow.length) {
+            return;
+        }
+        const headerCols = $('#transactionTable thead tr th').length;
+        const $cells = $firstRow.children('td');
+        /* TN/18: placeholder rows use one <td colspan="…">; DataTables expects one cell per header column */
+        if ($cells.length === 1 && $cells.first().attr('colspan')) {
+            return;
+        }
+        if ($cells.length !== headerCols) {
+            return;
+        }
+        $('#transactionTable').DataTable({
+            pageLength: 7,
+            order: [[0, 'desc']],
+            info: false
+        });
     });
 })();
 </script>

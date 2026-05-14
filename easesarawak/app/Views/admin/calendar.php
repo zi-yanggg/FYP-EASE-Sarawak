@@ -273,6 +273,7 @@
 
         const rawInitial = <?= json_encode($initial_view ?? 'dayGridMonth', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
         const initialView = viewNameMap[rawInitial] || rawInitial;
+        const initialDate = <?= json_encode($initial_date ?? date('Y-m-d'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
 
         // View name to display text mapping
         const viewNameToText = {
@@ -317,6 +318,7 @@
         const mainCalendar = new FullCalendar.Calendar(mainEl, {
             // v6 plugin bundles are included via index.global — all plugins available
             initialView: initialView,
+            initialDate: initialDate,
 
             headerToolbar: {
                 left: 'prev,next today',
@@ -452,7 +454,7 @@
             miniCalendar.render();
         }
 
-        buildMiniCalendar();
+        buildMiniCalendar(initialDate);
 
         // ── View Filter Dropdown ──────────────────────────────────────────────────
         document.querySelectorAll('.cal-filter-btn').forEach(function(btn) {

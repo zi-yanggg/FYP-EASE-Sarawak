@@ -2,6 +2,17 @@
 
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/report.css') ?>">
 
+<style>
+/* KPI dot indicators for report page */
+.rpt-kpi-card { cursor: pointer; position: relative; }
+.rpt-kpi-dots { display: flex; gap: 5px; margin-top: 8px; }
+.rpt-kpi-dot  {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(0,0,0,.18); transition: background .2s; cursor: pointer; flex-shrink: 0;
+}
+.rpt-kpi-dot.active { background: var(--gold, #F2BE00); }
+</style>
+
 <div class="rpt-page container-fluid py-3">
 
     <!-- ── Page Header ── -->
@@ -1435,15 +1446,41 @@
             window.requestAnimationFrame(() => card.classList.add('kpi-jump'));
         }
 
+        function updateDots(card, idx) {
+            card.querySelectorAll('.rpt-kpi-dot').forEach(function(d, i) {
+                d.classList.toggle('active', i === idx);
+            });
+        }
+
         document.querySelectorAll('.kpi-loop-card').forEach((card) => {
             const key = card.dataset.kpi;
             const list = KPI_CONFIG[key] || [];
             let idx = 0;
             if (list.length) applyKpiState(card, list[0]);
+
+            // Inject dot indicators
+            if (list.length > 1) {
+                const dotsEl = document.createElement('div');
+                dotsEl.className = 'rpt-kpi-dots';
+                for (let i = 0; i < list.length; i++) {
+                    const dot = document.createElement('span');
+                    dot.className = 'rpt-kpi-dot' + (i === 0 ? ' active' : '');
+                    dot.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        idx = i;
+                        applyKpiState(card, list[idx]);
+                        updateDots(card, idx);
+                    });
+                    dotsEl.appendChild(dot);
+                }
+                card.appendChild(dotsEl);
+            }
+
             card.addEventListener('click', () => {
                 if (!list.length) return;
                 idx = (idx + 1) % list.length;
                 applyKpiState(card, list[idx]);
+                updateDots(card, idx);
             });
         });
     })();

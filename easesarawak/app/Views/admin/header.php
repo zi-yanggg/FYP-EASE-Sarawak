@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 function timeAgo($datetime)
 {
     $time = strtotime($datetime);
