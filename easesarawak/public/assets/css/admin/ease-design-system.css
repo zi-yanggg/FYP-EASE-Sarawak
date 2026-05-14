@@ -987,23 +987,3 @@
 .ease-dir .prof-badge-admin { background: var(--gold) !important; color: var(--ink-1) !important; }
 .ease-dir .prof-badge-active { background: var(--done) !important; color: #fff !important; }
 
-/* ── Sidebar section headers — gold text ────────────────────── */
-.ease-dir .sidebar .text-section {
-  color: var(--gold) !important;
-  font-family: var(--font-admin) !important;
-  font-size: 9px !important; letter-spacing: 1.6px !important;
-  font-weight: 800 !important;
-}
-
-/* ── Sidebar active nav item — gold left border ─────────────── */
-.ease-dir .sidebar .nav-item.active > a {
-  border-left: 3px solid var(--gold) !important;
-  background: rgba(242,190,0,.08) !important;
-  color: var(--gold) !important;
-}
-.ease-dir .sidebar .nav-item.active > a i,
-.ease-dir .sidebar .nav-item.active > a p { color: var(--gold) !important; }
-
-/* ── Sidebar nav hover ──────────────────────────────────────── */
-.ease-dir .sidebar .nav-item > a:hover { color: var(--gold) !important; }
-.ease-dir .sidebar .nav-item > a:hover i { color: var(--gold) !important; }
