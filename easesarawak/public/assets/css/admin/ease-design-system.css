@@ -662,31 +662,7 @@
    220px black sidebar · gold border · section labels
    ============================================================ */
 
-/* ── Layout shell ─────────────────────────────────────────── */
-.ease-dir.dirA {
-  display: flex !important;
-  min-height: 100vh;
-  background: var(--paper);
-  overflow: hidden;
-  position: relative;
-}
-
-.ease-dir.dirA .main-header { display: none !important; }
-
-.ease-dir.dirA .main-panel {
-  flex: 1 !important;
-  min-width: 0 !important;
-  margin-left: 0 !important;
-  padding-top: 0 !important;
-  overflow-y: auto !important;
-  background: var(--paper) !important;
-  display: flex;
-  flex-direction: column;
-}
-
-.ease-dir.dirA .page-inner  { margin-top: 0 !important; }
-.ease-dir.dirA .container,
-.ease-dir.dirA .container-fluid { margin-top: 0 !important; }
+/* ── KaiAdmin sidebar layout is used — no flex overrides needed ── */
 
 /* ── 220px black sidebar ──────────────────────────────────── */
 .dirA__sb {
