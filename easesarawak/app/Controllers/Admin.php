@@ -132,20 +132,30 @@ class Admin extends BaseController
             }
         }
 
-        // ── Calendar heatmap (pickup + drop-off dates only) ───────────────
+        // ── Calendar heatmap (orders created + pickups + drop-offs) ──────
+        $orderDateRows = $db->table('`order`')
+            ->select('DATE(created_date) AS order_date, COUNT(order_id) AS order_count')
+            ->where('is_deleted', 0)->groupBy('DATE(created_date)')
+            ->get()->getResultArray();
+
+        $calendarCreated = [];
+        foreach ($orderDateRows as $row) {
+            $calendarCreated[$row['order_date']] = (int)$row['order_count'];
+        }
+
         $allCalDates = array_unique(array_merge(
+            array_keys($calendarCreated),
             array_keys($calendarPickups),
             array_keys($calendarDropoffs)
         ));
         sort($allCalDates);
         $calendarHeatmap = [];
         foreach ($allCalDates as $d) {
-            $pickups  = $calendarPickups[$d]  ?? 0;
-            $dropoffs = $calendarDropoffs[$d] ?? 0;
             $calendarHeatmap[$d] = [
-                'pickups'  => $pickups,
-                'dropoffs' => $dropoffs,
-                'total'    => $pickups + $dropoffs,
+                'created'  => $calendarCreated[$d]  ?? 0,
+                'pickups'  => $calendarPickups[$d]  ?? 0,
+                'dropoffs' => $calendarDropoffs[$d] ?? 0,
+                'total'    => ($calendarCreated[$d] ?? 0) + ($calendarPickups[$d] ?? 0) + ($calendarDropoffs[$d] ?? 0),
             ];
         }
 
@@ -220,25 +230,20 @@ class Admin extends BaseController
             ->where('created_date >=', $monthStart)->countAllResults();
 
         // ── Parse orders for tooltip display data ────────────────────────
-        // Actual JSON keys (from OrderModel::formatOrderDetailsJson):
-        //   Pickup location  → 'Origin Location' / 'Origin Address' (delivery)
-        //                      'Storage Location' (storage)
-        //   Dropoff location → 'Destination Location' / 'Destination Address' (delivery)
         $parseForDisplay = static function (array $orders): array {
             return array_map(static function ($o) {
                 $d = @json_decode($o['order_details_json'] ?? '{}', true);
                 $d = is_array($d) ? $d : [];
                 $pickupRaw  = trim($d['Pickup DateTime']    ?? '');
                 $dropoffRaw = trim($d['Drop-off DateTime'] ?? '');
-                // 'Null' string means the field was not filled in
                 if ($pickupRaw  === 'Null') $pickupRaw  = '';
                 if ($dropoffRaw === 'Null') $dropoffRaw = '';
                 $pickupLoc  = trim($d['Origin Location']      ?? $d['Origin Address']      ?? $d['Storage Location']     ?? '');
                 $dropoffLoc = trim($d['Destination Location'] ?? $d['Destination Address'] ?? '');
                 return $o + [
-                    '_pickup_time'      => $pickupRaw,   // full "YYYY-MM-DD at HH:MM" string
+                    '_pickup_time'      => $pickupRaw,
                     '_pickup_location'  => $pickupLoc,
-                    '_dropoff_time'     => $dropoffRaw,  // full "YYYY-MM-DD at HH:MM" string
+                    '_dropoff_time'     => $dropoffRaw,
                     '_dropoff_location' => $dropoffLoc,
                     '_created_date_fmt' => substr($o['created_date'] ?? '', 0, 10),
                 ];
@@ -248,7 +253,6 @@ class Admin extends BaseController
         $storageOrders          = $parseForDisplay(array_values(array_filter($allActiveOrders, fn($o) => strtolower($o['service_type'] ?? '') === 'storage')));
         $deliveryOrders         = $parseForDisplay(array_values(array_filter($allActiveOrders, fn($o) => strtolower($o['service_type'] ?? '') === 'delivery')));
         $pending_orders_display = $parseForDisplay($pending_orders);
-
         // ── News / activity feed ─────────────────────────────────────────
         $recentActivity = $db->table('activity_log al')
             ->select('al.log_id, al.order_id, al.username, al.action, al.modified_date, o.first_name, o.last_name, o.service_type')

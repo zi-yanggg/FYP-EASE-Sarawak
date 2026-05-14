@@ -806,6 +806,12 @@ document.getElementById('calNext').addEventListener('click', function(){
                 goTo(i);
             });
         });
+    });
+    // Staggered auto-cycle
+    setTimeout(function () {
+        setInterval(function () { cycleKpi(card); }, 5000);
+    }, cardIdx * 1300);
+});
 
         // Card click anywhere: advance to next slide
         card.addEventListener('click', function() {
