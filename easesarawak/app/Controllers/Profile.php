@@ -51,13 +51,20 @@ class Profile extends BaseController
         $file = $this->request->getFile('profile_picture');
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $newName = $file->getRandomName();
-            $file->move('assets/uploads/profiles/', $newName);
+            $uploadDir = FCPATH . 'assets/uploads/profiles/';
+            if (! is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            $file->move($uploadDir, $newName);
             $data['profile_picture'] = 'assets/uploads/profiles/' . $newName;
 
             // Delete old picture — field already stores the full relative path
             $oldUser = $userModel->find($userId);
-            if (!empty($oldUser['profile_picture']) && file_exists($oldUser['profile_picture'])) {
-                unlink($oldUser['profile_picture']);
+            if (! empty($oldUser['profile_picture'])) {
+                $oldPath = FCPATH . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $oldUser['profile_picture']);
+                if (is_file($oldPath)) {
+                    unlink($oldPath);
+                }
             }
         }
 
