@@ -810,7 +810,7 @@ function timeAgo($datetime)
                 <div class="main-header-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="white">
-                        <a href="index.html" class="logo">
+                        <a href="<?= base_url('/admin'); ?>" class="logo">
                             <img
                                 src="<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>"
                                 alt="navbar brand"
