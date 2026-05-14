@@ -1,7 +1,15 @@
 <?= $this->include('admin/header'); ?>
 
 <div class="container mt-5">
-    <h3 class="fw-bold mb-4" style="padding-top: 60px; padding-left: 20px;"><i class="fas fa-user-plus me-2"></i>Create User</h3>
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2" style="padding-top: 60px; padding-left: 20px;">
+        <div>
+            <div class="ease-crumb">EASE Admin &middot; Users &middot; <b>Create User</b></div>
+            <h1 class="ease-page-title">Create User</h1>
+        </div>
+        <a href="<?= base_url('/user') ?>" class="btn rpt-export-btn">
+            <i class="fas fa-arrow-left me-1"></i> Back to Users
+        </a>
+    </div>
 
     <?php if (session()->getFlashdata('success')): ?>
         <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>

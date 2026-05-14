@@ -9,9 +9,11 @@
 
 <div class="container mt-4">
     <div class="page-inner" style="padding-top: 80px;">
-        <div class="d-flex align-items-center mb-4">
-            <h3 class="fw-bold mb-0 me-3">
-                <i class="fas fa-file-invoice-dollar me-2"></i>Refund Request
+        <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+                <div class="ease-crumb">EASE Admin &middot; <b>Refund Requests</b></div>
+                <h1 class="ease-page-title"><i class="fas fa-file-invoice-dollar me-2"></i>Refund Requests</h1>
+            </div>
             </h3>
         </div>
 

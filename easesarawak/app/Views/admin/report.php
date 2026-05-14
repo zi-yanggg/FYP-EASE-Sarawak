@@ -16,14 +16,10 @@
 <div class="rpt-page container-fluid py-3">
 
     <!-- ── Page Header ── -->
-    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+    <div class="ease-page-head d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
         <div>
-            <h3 class="fw-bold mb-0 rpt-h3">Analytics &amp; Reports</h3>
-            <ul class="breadcrumbs mb-0">
-                <li class="nav-home"><a href="<?= base_url('/admin/dashboard') ?>"><i class="fa fa-home"></i></a></li>
-                <li class="separator"><i class="fa fa-angle-right"></i></li>
-                <li class="nav-item">Reports</li>
-            </ul>
+            <div class="ease-crumb">EASE Admin &middot; <b>Analytics &amp; Reports</b></div>
+            <h1 class="ease-page-title">Analytics &amp; Reports</h1>
         </div>
         <!-- Export collapsed into dropdown -->
         <div class="dropdown">

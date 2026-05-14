@@ -6,8 +6,14 @@
 
 <div class="container mt-4">
     <div class="page-inner" style="padding-top: 80px;">
-        <div class="d-flex align-items-center mb-4">
-            <h3 class="fw-bold mb-0 me-3"><i class="fas fa-ticket-alt me-2"></i>Edit Promo Code</h3>
+        <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+                <div class="ease-crumb">EASE Admin &middot; Promo Codes &middot; <b>Edit</b></div>
+                <h1 class="ease-page-title">Edit Promo Code</h1>
+            </div>
+            <a href="<?= base_url('/admin/promo_code') ?>" class="btn rpt-export-btn">
+                <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
         </div>
 
         <?php if (session()->getFlashdata('errors')): ?>

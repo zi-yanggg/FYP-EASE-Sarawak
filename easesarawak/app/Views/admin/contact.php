@@ -5,9 +5,10 @@
         <div class="container-fluid">
 
             <!-- Page Header -->
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="page-title">Contacts Ledger</h2>
+            <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div>
+                    <div class="ease-crumb">EASE Admin &middot; <b>Contact</b></div>
+                    <h1 class="ease-page-title">Contacts Ledger</h1>
                 </div>
             </div>
 

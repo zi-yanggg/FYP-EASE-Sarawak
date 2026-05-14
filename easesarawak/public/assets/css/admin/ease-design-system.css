@@ -987,3 +987,110 @@
 .ease-dir .prof-badge-admin { background: var(--gold) !important; color: var(--ink-1) !important; }
 .ease-dir .prof-badge-active { background: var(--done) !important; color: #fff !important; }
 
+/* ============================================================
+   Direction A — Global Bootstrap Overrides (all admin pages)
+   ============================================================ */
+
+/* ── Page background ─────────────────────────────────────────── */
+.ease-dir .page-inner { background: var(--paper) !important; }
+.ease-dir .container,
+.ease-dir .container-fluid { background: transparent; }
+
+/* ── Bootstrap cards ─────────────────────────────────────────── */
+.ease-dir .card {
+  border-radius: 12px !important;
+  overflow: hidden;
+  border: 1px solid rgba(242,190,0,.2) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05) !important;
+}
+.ease-dir .card-header {
+  background: var(--ink-1) !important;
+  border-bottom: 2px solid var(--gold) !important;
+  border-radius: 0 !important;
+  padding: 11px 16px !important;
+  min-height: unset !important;
+}
+.ease-dir .card-header,
+.ease-dir .card-header h1, .ease-dir .card-header h2,
+.ease-dir .card-header h3, .ease-dir .card-header h4,
+.ease-dir .card-header h5, .ease-dir .card-header h6,
+.ease-dir .card-header p,  .ease-dir .card-header span,
+.ease-dir .card-header label { color: var(--gold) !important; }
+.ease-dir .card-header i   { color: var(--gold) !important; }
+/* keep search inputs and action buttons readable inside card headers */
+.ease-dir .card-header .form-control,
+.ease-dir .card-header input { color: var(--ink-1) !important; background: #fff !important; }
+
+/* ── Tables ──────────────────────────────────────────────────── */
+.ease-dir .table thead th,
+.ease-dir .table thead td,
+.ease-dir thead.table-light th,
+.ease-dir thead.table-light td {
+  background: var(--ink-1) !important;
+  color: var(--gold) !important;
+  border-color: transparent !important;
+  font-family: var(--font-admin) !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  white-space: nowrap;
+}
+.ease-dir .table-striped > tbody > tr:nth-of-type(odd) > * { background-color: rgba(242,190,0,.04) !important; }
+.ease-dir .table > :not(caption) > * > * { border-color: rgba(242,190,0,.1) !important; }
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.ease-dir .btn-primary {
+  background: var(--ink-1) !important; color: var(--gold) !important;
+  border: 1px solid var(--gold) !important; border-radius: 999px !important;
+  font-family: var(--font-admin) !important; font-weight: 700 !important;
+}
+.ease-dir .btn-primary:hover { background: var(--gold) !important; color: var(--ink-1) !important; }
+
+.ease-dir .btn-secondary,
+.ease-dir .btn-outline-secondary {
+  background: transparent !important; color: var(--fg2) !important;
+  border: 1px solid #ccc !important; border-radius: 999px !important;
+  font-family: var(--font-admin) !important; font-weight: 700 !important;
+}
+.ease-dir .btn-secondary:hover,
+.ease-dir .btn-outline-secondary:hover { border-color: var(--gold) !important; color: var(--ink-1) !important; }
+
+.ease-dir .btn-update {
+  background: var(--gold) !important; color: var(--ink-1) !important;
+  border: none !important; border-radius: 999px !important;
+  font-weight: 700 !important;
+}
+.ease-dir .btn-cancel {
+  background: var(--ink-1) !important; color: #fff !important;
+  border: none !important; border-radius: 999px !important;
+  font-weight: 700 !important;
+}
+.ease-dir .btn-danger {
+  background: var(--danger) !important; color: #fff !important;
+  border: none !important; border-radius: 999px !important;
+}
+
+/* ── Form controls ───────────────────────────────────────────── */
+.ease-dir .form-control:focus,
+.ease-dir .form-select:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px rgba(242,190,0,.15) !important;
+}
+.ease-dir .form-label {
+  font-family: var(--font-admin);
+  font-size: 10px; font-weight: 800;
+  letter-spacing: .9px; text-transform: uppercase;
+  color: var(--fg3);
+}
+
+/* ── Page title (shared across all pages) ────────────────────── */
+.ease-dir .ease-page-title {
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.4rem, 2.8vw, 2rem) !important;
+  font-weight: 400 !important;
+  color: var(--ink-1) !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+}
+

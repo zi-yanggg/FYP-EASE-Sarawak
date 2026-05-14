@@ -173,11 +173,12 @@
 
 <div class="container mt-4">
     <div class="page-inner" style="padding-top: 80px;">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div class="ease-page-head d-flex flex-wrap align-items-center justify-content-between gap-3">
             <div>
-                <h3 class="fw-bold mb-1">Booking Calendar</h3>
+                <div class="ease-crumb">EASE Admin &middot; <b>Booking Calendar</b></div>
+                <h1 class="ease-page-title">Booking Calendar</h1>
             </div>
-            <a href="<?= base_url('/order'); ?>" class="btn btn-outline-secondary btn-sm">
+            <a href="<?= base_url('/order'); ?>" class="btn rpt-export-btn">
                 <i class="fas fa-list me-1"></i> Order List
             </a>
         </div>

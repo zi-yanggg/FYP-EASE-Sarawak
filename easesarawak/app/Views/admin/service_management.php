@@ -58,9 +58,11 @@
 </style>
 
 <div class="container mt-5 pt-4">
-    <div class="d-flex align-items-center mb-4" style="padding-top: 70px; padding-left: 20px;">
-        <h3 class="fw-bold mb-0 me-3"><i class="fas fa-cogs me-2"></i>Service Pricing Management</h3>
-        <span class="text-muted">Manage base and extra rates for each service</span>
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2" style="padding-top: 70px; padding-left: 20px;">
+        <div>
+            <div class="ease-crumb">EASE Admin &middot; <b>Service Management</b></div>
+            <h1 class="ease-page-title">Service Pricing Management</h1>
+        </div>
     </div>
 
     <?php if (session()->getFlashdata('success')): ?>

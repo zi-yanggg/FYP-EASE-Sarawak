@@ -9,9 +9,11 @@ $endDate    = $_GET['end_date'] ?? '';
 
 <div class="container mt-4">
     <div class="page-inner" style="padding-top: 80px;">
-        <div class="d-flex align-items-center mb-4">
-            <h3 class="fw-bold mb-0 me-3"><i class="fas fa-shopping-bag me-2"></i>Order Management</h3>
-            <span class="text-muted">View all customer orders</span>
+        <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+                <div class="ease-crumb">EASE Admin &middot; <b>Orders</b></div>
+                <h1 class="ease-page-title"><i class="fas fa-shopping-bag me-2"></i>Order Management</h1>
+            </div>
         </div>
 
         <div class="card shadow-sm border-0 rounded-3">

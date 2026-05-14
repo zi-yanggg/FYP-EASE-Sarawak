@@ -1,9 +1,14 @@
 <?= $this->include('admin/header'); ?>
 
 <div class="container mt-5 pt-4">
-    <div class="d-flex align-items-center mb-4" style="padding-top: 70px; padding-left: 40px;">
-        <h3 class="fw-bold mb-0 me-3"><i class="fas fa-user-edit me-2"></i>Edit User</h3>
-        <span class="text-muted">Update user information</span>
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2" style="padding-top: 70px; padding-left: 40px;">
+        <div>
+            <div class="ease-crumb">EASE Admin &middot; Users &middot; <b>Edit User</b></div>
+            <h1 class="ease-page-title">Edit User</h1>
+        </div>
+        <a href="<?= base_url('/user') ?>" class="btn rpt-export-btn">
+            <i class="fas fa-arrow-left me-1"></i> Back to Users
+        </a>
     </div>
     <!-- Feedback messages -->
     <?php if (session()->getFlashdata('message')): ?>
