@@ -151,6 +151,7 @@ function timeAgo($datetime)
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/plugins.min.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/kaiadmin.min.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/header.css') ?>" />
+    <link rel="stylesheet" href="<?= base_url('assets/css/admin/ease-design-system.css') ?>" />
     <style>
         html,
         body {
@@ -659,277 +660,114 @@ function timeAgo($datetime)
 </head>
 
 <body>
-    <div class="wrapper">
-        <!-- Sidebar -->
-        <div class="sidebar" data-background-color="white">
-            <div class="sidebar-logo">
-                <!-- Logo Header -->
-                <div class="logo-header" data-background-color="white">
-                    <a href="<?= base_url('/admin'); ?>" class="logo">
-                        <img
-                            src="<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>"
-                            alt="navbar brand"
-                            class="navbar-brand"
-                            height="65" />
+    <div class="wrapper ease-dir dirA">
+        <!-- Direction A — 220px Operations Bridge sidebar -->
+        <?php
+            $currentPath = trim(uri_string(), '/');
+            $navActive   = static fn(array $routes): bool =>
+                in_array($currentPath, array_map(static fn($r) => trim((string)$r, '/'), $routes), true);
+            $uname   = session()->get('username') ?? 'Admin';
+            $parts   = explode(' ', trim($uname));
+            $initials = strtoupper(substr($parts[0], 0, 1) . (isset($parts[1]) ? substr($parts[1], 0, 1) : ''));
+            $isSuper  = session()->get('role') === '1';
+        ?>
+        <aside class="dirA__sb">
+            <!-- Brand -->
+            <div class="dirA__brand">
+                <img src="<?= base_url('assets/images/cropped-Ease_PNG_File-09.png') ?>" alt="EASE"
+                     onerror="this.src='<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>'">
+                <div>
+                    <div class="name">EASE</div>
+                    <div class="ops-tag">Admin Portal</div>
+                </div>
+            </div>
+
+            <!-- LIVE section -->
+            <div class="dirA__sec">Live</div>
+            <ul class="dirA__nav">
+                <li>
+                    <a href="<?= base_url('/admin') ?>"
+                       class="<?= $navActive(['admin']) ? 'act' : '' ?>">
+                        <i class="fas fa-th-large"></i> Dashboard
                     </a>
-                    <div class="nav-toggle">
-                        <button class="btn btn-toggle toggle-sidebar" data-tooltip="Toggle sidebar">
-                            <i class="gg-menu-right"></i>
-                        </button>
-                        <button class="btn btn-toggle sidenav-toggler">
-                            <i class="gg-menu-right"></i>
-                        </button>
-                    </div>
-                    <button class="topbar-toggler more">
-                        <i class="fas fa-ellipsis-vertical"></i>
-                    </button>
-                </div>
-                <!-- End Logo Header -->
-            </div>
-            <div class="sidebar-wrapper scrollbar scrollbar-inner">
-                <div class="sidebar-content">
-                    <?php
-                        $currentPath = trim(uri_string(), '/');
-                        $isSidebarActive = static function (array $routes) use ($currentPath): bool {
-                            foreach ($routes as $route) {
-                                $route = trim((string) $route, '/');
-                                if ($route === $currentPath) {
-                                    return true;
-                                }
-                            }
-                            return false;
-                        };
-                    ?>
-                    <ul class="nav nav-secondary">
-                        <li class="nav-section">
-                            <h4 class="text-section">Overview</h4>
-                        </li>
-                        <li class="nav-item<?= $isSidebarActive(['admin']) ? ' active' : '' ?>">
-                            <a href="<?= base_url('/admin'); ?>">
-                                <i class="fas fa-home"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
-                        <li class="nav-section">
-                            <h4 class="text-section">Orders</h4>
-                        </li>
-                        <li class="nav-item<?= $isSidebarActive(['order']) ? ' active' : '' ?>">
-                            <a href="<?= base_url('/order'); ?>">
-                                <i class="fas fa-layer-group"></i>
-                                <p>Order Management</p>
-                            </a>
-                        </li>
-                        <li class="nav-item<?= $isSidebarActive(['admin/calendar']) ? ' active' : '' ?>">
-                            <a href="<?= base_url('/admin/calendar'); ?>">
-                                <i class="fas fa-calendar-alt"></i>
-                                <p>Booking Calendar</p>
-                            </a>
-                        </li>
-                        <li class="nav-section">
-                            <h4 class="text-section">Users</h4>
-                        </li>
-                        <li class="nav-item<?= $isSidebarActive(['user']) ? ' active' : '' ?>">
-                            <a href="<?= base_url('/user'); ?>">
-                                <i class="fas fa-th-list"></i>
-                                <p>User Management</p>
-                            </a>
-                        </li>
-                        <?php if (session()->get('role') === '1'): ?>
-                            <li class="nav-item<?= $isSidebarActive(['create_user']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/create_user'); ?>">
-                                    <i class="fas fa-user-plus"></i>
-                                    <p>Add User</p>
-                                </a>
-                            </li>
+                </li>
+                <li>
+                    <a href="<?= base_url('/order') ?>"
+                       class="<?= $navActive(['order']) ? 'act' : '' ?>">
+                        <i class="fas fa-list"></i> Orders
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('/admin/calendar') ?>"
+                       class="<?= $navActive(['admin/calendar']) ? 'act' : '' ?>">
+                        <i class="far fa-calendar-alt"></i> Calendar
+                    </a>
+                </li>
+            </ul>
+
+            <!-- MANAGE section -->
+            <div class="dirA__div"></div>
+            <div class="dirA__sec">Manage</div>
+            <ul class="dirA__nav">
+                <li>
+                    <a href="<?= base_url('/user') ?>"
+                       class="<?= $navActive(['user', 'create_user']) ? 'act' : '' ?>">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                </li>
+                <?php if ($isSuper): ?>
+                <li>
+                    <a href="<?= base_url('/admin/refund_request') ?>"
+                       class="<?= $navActive(['admin/refund_request']) ? 'act' : '' ?>">
+                        <i class="fas fa-undo-alt"></i> Refund Requests
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('/admin/promo_code') ?>"
+                       class="<?= $navActive(['admin/promo_code']) ? 'act' : '' ?>">
+                        <i class="fas fa-percent"></i> Promo Codes
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('/admin/service_management') ?>"
+                       class="<?= $navActive(['admin/service_management']) ? 'act' : '' ?>">
+                        <i class="fas fa-cog"></i> Services
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('/admin/contact') ?>"
+                       class="<?= $navActive(['admin/contact']) ? 'act' : '' ?>">
+                        <i class="fas fa-envelope"></i> Messages
+                        <?php if (!empty($newMessageCount) && $newMessageCount > 0): ?>
+                            <span class="bub"><?= $newMessageCount ?></span>
                         <?php endif; ?>
-                        <li class="nav-section">
-                            <h4 class="text-section">Reports</h4>
-                        </li>
-                        <li class="nav-item<?= $isSidebarActive(['report']) ? ' active' : '' ?>">
-                            <a href="<?= base_url('/report'); ?>">
-                                <i class="fas fa-pen-square"></i>
-                                <p>Revenue</p>
-                            </a>
-                        </li>
-                        <li class="nav-item<?= $isSidebarActive(['transaction_history']) ? ' active' : '' ?>">
-                            <a href="<?= base_url('/transaction_history'); ?>">
-                                <i class="fas fa-file-invoice"></i>
-                                <p>Transaction History</p>
-                            </a>
-                        </li>
+                    </a>
+                </li>
+                <?php endif; ?>
+            </ul>
 
-                        <?php if (session()->get('role') === '1'): ?>
-                            <li class="nav-section">
-                                <h4 class="text-section">Management</h4>
-                            </li>
-                            <li class="nav-item<?= $isSidebarActive(['admin/service_management']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/admin/service_management'); ?>">
-                                    <i class="fas fa-table"></i>
-                                    <p>Service Management</p>
-                                </a>
-                            </li>
-                            <li class="nav-item<?= $isSidebarActive(['admin/promo_code']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/admin/promo_code'); ?>">
-                                    <i class="fas fa-tag"></i>
-                                    <p>Promo Code</p>
-                                </a>
-                            </li>
-                            <li class="nav-item<?= $isSidebarActive(['admin/contact']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/admin/contact'); ?>">
-                                    <i class="fas fa-envelope"></i>
-                                    <p>Contact</p>
-                                </a>
-                            </li>
+            <!-- REPORTS section -->
+            <div class="dirA__div"></div>
+            <div class="dirA__sec">Reports</div>
+            <ul class="dirA__nav">
+                <li>
+                    <a href="<?= base_url('/report') ?>"
+                       class="<?= $navActive(['report', 'transaction_history']) ? 'act' : '' ?>">
+                        <i class="fas fa-chart-line"></i> Reports
+                    </a>
+                </li>
+            </ul>
 
-                            <li class="nav-item<?= $isSidebarActive(['admin/refund_request']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/admin/refund_request'); ?>">
-                                    <i class="fas fa-file-invoice-dollar"></i>
-                                    <p>Refund Request</p>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-
-                        <!-- <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#tables">
-                                <i class="fas fa-table"></i>
-                                <p>History</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="tables">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="tables/tables.html">
-                                            <span class="sub-item">Basic Table</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="tables/datatables.html">
-                                            <span class="sub-item">Datatables</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li> -->
-                        <!-- <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#maps">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <p>Maps</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="maps">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="maps/googlemaps.html">
-                                            <span class="sub-item">Google Maps</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="maps/jsvectormap.html">
-                                            <span class="sub-item">Jsvectormap</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#charts">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Charts</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="charts">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="charts/charts.html">
-                                            <span class="sub-item">Chart Js</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="charts/sparkline.html">
-                                            <span class="sub-item">Sparkline</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a href="widgets.html">
-                                <i class="fas fa-desktop"></i>
-                                <p>Widgets</p>
-                                <span class="badge badge-success">4</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../../documentation/index.html">
-                                <i class="fas fa-file"></i>
-                                <p>Documentation</p>
-                                <span class="badge badge-secondary">1</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#submenu">
-                                <i class="fas fa-bars"></i>
-                                <p>Menu Levels</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="submenu">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a data-bs-toggle="collapse" href="#subnav1">
-                                            <span class="sub-item">Level 1</span>
-                                            <span class="caret"></span>
-                                        </a>
-                                        <div class="collapse" id="subnav1">
-                                            <ul class="nav nav-collapse subnav">
-                                                <li>
-                                                    <a href="#">
-                                                        <span class="sub-item">Level 2</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <span class="sub-item">Level 2</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a data-bs-toggle="collapse" href="#subnav2">
-                                            <span class="sub-item">Level 1</span>
-                                            <span class="caret"></span>
-                                        </a>
-                                        <div class="collapse" id="subnav2">
-                                            <ul class="nav nav-collapse subnav">
-                                                <li>
-                                                    <a href="#">
-                                                        <span class="sub-item">Level 2</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="sub-item">Level 1</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li> -->
-                    </ul>
-                    <div class="sidebar-darkmode-wrap">
-                        <div class="form-check form-switch sidebar-darkmode-toggle">
-                            <label class="form-check-label mode-label" for="darkModeToggle">
-                                <i id="darkModeIcon" class="bi bi-sun-fill"></i>
-                                <span class="mode-text">Theme</span>
-                            </label>
-                            <input class="form-check-input" type="checkbox" id="darkModeToggle">
-                        </div>
-                    </div>
+            <!-- Footer — user profile -->
+            <a href="<?= base_url('/profile') ?>" class="dirA__sb-foot"
+               title="Go to profile">
+                <div class="av"><?= esc($initials) ?></div>
+                <div class="info">
+                    <div class="uname"><?= esc($uname) ?></div>
+                    <div class="role"><?= $isSuper ? 'Super Admin' : 'Admin' ?></div>
                 </div>
-            </div>
-        </div>
+            </a>
+        </aside>
         <!-- End Sidebar -->
 
         <div class="main-panel">
