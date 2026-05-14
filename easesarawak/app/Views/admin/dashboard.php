@@ -58,9 +58,10 @@ function dshTimeAgo(string $dt): string {
     <!-- ═══════════════════════════════════════════════════════
          GREETING HEADER
     ════════════════════════════════════════════════════════ -->
-    <div class="dsh-one-screen__head d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div class="dsh-one-screen__head ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div>
-            <div class="dsh-greeting-title"><?= esc($greeting) ?>, <?= esc($sessionUser) ?></div>
+            <div class="ease-crumb">EASE Admin &middot; <b>Dashboard</b></div>
+            <div class="dsh-greeting-title"><?= esc($greeting) ?>, <b><?= esc($sessionUser) ?></b></div>
             <div class="dsh-greeting-sub">
                 <i class="fas fa-calendar-alt me-1"></i><?= date('l, d F Y') ?>
                 &nbsp;·&nbsp;

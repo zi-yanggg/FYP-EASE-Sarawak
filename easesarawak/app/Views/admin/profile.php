@@ -6,9 +6,10 @@
 <div class="rpt-page container-fluid prof-page--tight-head">
 
     <!-- ── Page Header ── -->
-    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div>
-            <h1 class="fw-bold mb-0 prof-page-title">Profile</h1>
+            <div class="ease-crumb">EASE Admin &middot; <b>Profile</b></div>
+            <h1 class="mb-0 prof-page-title">My Profile</h1>
         </div>
     </div>
 

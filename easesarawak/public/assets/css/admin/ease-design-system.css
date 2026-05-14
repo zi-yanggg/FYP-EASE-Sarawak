@@ -878,3 +878,132 @@
 }
 .dirA__cmd:hover { border-color: var(--gold); }
 .dirA__cmd i { color: var(--gold); }
+
+/* ============================================================
+   Direction A — Page-level Theme Overrides
+   All scoped under .ease-dir so they only affect admin pages
+   ============================================================ */
+
+/* ── Page background ────────────────────────────────────────── */
+.ease-dir body,
+.ease-dir .main-panel { background: var(--paper) !important; }
+
+/* ── Breadcrumb strip ───────────────────────────────────────── */
+.ease-dir .ease-crumb {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 1.3px; text-transform: uppercase;
+  color: var(--fg4); margin-bottom: 6px;
+  font-family: var(--font-admin);
+}
+.ease-dir .ease-crumb b { color: var(--gold); }
+
+/* ── Page header wrapper ────────────────────────────────────── */
+.ease-dir .ease-page-head {
+  margin-bottom: 20px; padding-bottom: 14px;
+  border-bottom: 1px solid #ECE2B4;
+}
+
+/* ── Page / greeting titles — display font ──────────────────── */
+.ease-dir .prof-page-title,
+.ease-dir .ease-page-title,
+.ease-dir .dsh-greeting-title {
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.5rem, 3vw, 2.2rem) !important;
+  font-weight: 400 !important;
+  color: var(--ink-1) !important;
+  letter-spacing: -0.01em !important;
+}
+.ease-dir .dsh-greeting-title b { font-family: var(--font-display); color: var(--gold); font-weight: 400; }
+
+/* ── KPI value numbers — display font ──────────────────────── */
+.ease-dir .rpt-kpi-value {
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.4rem, 2.5vw, 2rem) !important;
+  font-weight: 400 !important;
+}
+
+/* ── Cards — rounded corners ────────────────────────────────── */
+.ease-dir .rpt-card,
+.ease-dir .rpt-kpi-card {
+  border-radius: 12px !important;
+  overflow: hidden;
+  border: 1px solid rgba(242,190,0,.18) !important;
+}
+.ease-dir .rpt-card-header {
+  border-radius: 0 !important;
+  background: var(--ink-1) !important;
+  border-bottom: 2px solid var(--gold) !important;
+}
+
+/* ── KPI icon — rounded ─────────────────────────────────────── */
+.ease-dir .rpt-kpi-icon { border-radius: 10px !important; }
+
+/* ── Buttons — gold pill ────────────────────────────────────── */
+.ease-dir .rpt-export-btn,
+.ease-dir .btn.rpt-export-btn {
+  background: var(--gold) !important;
+  color: var(--ink-1) !important;
+  border: none !important;
+  border-radius: 999px !important;
+  font-family: var(--font-admin) !important;
+  font-size: 10.5px !important; font-weight: 800 !important;
+  letter-spacing: 1px !important; text-transform: uppercase !important;
+  padding: 8px 18px !important;
+  transition: background .15s, color .15s !important;
+}
+.ease-dir .rpt-export-btn:hover,
+.ease-dir .btn.rpt-export-btn:hover {
+  background: var(--ink-1) !important; color: var(--gold) !important;
+}
+
+/* ── Tab pills ──────────────────────────────────────────────── */
+.ease-dir .dsh-tab-pill {
+  font-family: var(--font-admin) !important;
+  font-size: 10px !important; font-weight: 800 !important;
+  letter-spacing: .8px !important; text-transform: uppercase !important;
+}
+.ease-dir .dsh-tab-pill.active {
+  background: var(--gold) !important;
+  color: var(--ink-1) !important;
+  border-color: var(--gold) !important;
+}
+
+/* ── Profile name ───────────────────────────────────────────── */
+.ease-dir .prof-name {
+  font-family: var(--font-display) !important;
+  font-weight: 400 !important; color: var(--ink-1) !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* ── Profile avatar ─────────────────────────────────────────── */
+.ease-dir .prof-avatar { border-color: var(--gold) !important; }
+.ease-dir .prof-avatar-edit {
+  background: var(--gold) !important; color: var(--ink-1) !important;
+}
+.ease-dir .prof-avatar-edit:hover { background: var(--ink-1) !important; color: var(--gold) !important; }
+
+/* ── Role / status badges ───────────────────────────────────── */
+.ease-dir .prof-badge-super { background: var(--ink-1) !important; color: var(--gold) !important; }
+.ease-dir .prof-badge-admin { background: var(--gold) !important; color: var(--ink-1) !important; }
+.ease-dir .prof-badge-active { background: var(--done) !important; color: #fff !important; }
+
+/* ── Sidebar section headers — gold text ────────────────────── */
+.ease-dir .sidebar .text-section {
+  color: var(--gold) !important;
+  font-family: var(--font-admin) !important;
+  font-size: 9px !important; letter-spacing: 1.6px !important;
+  font-weight: 800 !important;
+}
+
+/* ── Sidebar active nav item — gold left border ─────────────── */
+.ease-dir .sidebar .nav-item.active > a {
+  border-left: 3px solid var(--gold) !important;
+  background: rgba(242,190,0,.08) !important;
+  color: var(--gold) !important;
+}
+.ease-dir .sidebar .nav-item.active > a i,
+.ease-dir .sidebar .nav-item.active > a p { color: var(--gold) !important; }
+
+/* ── Sidebar nav hover ──────────────────────────────────────── */
+.ease-dir .sidebar .nav-item > a:hover { color: var(--gold) !important; }
+.ease-dir .sidebar .nav-item > a:hover i { color: var(--gold) !important; }
