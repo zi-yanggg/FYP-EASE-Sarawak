@@ -18,6 +18,132 @@ $easeCatalog = ease_translation_catalog();
     <link rel="stylesheet" href="assets/css/navbar_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <script src="https://js.stripe.com/v3/"></script>
+
+    <style>
+      .booking-progress {
+        margin: 1rem auto 1.5rem;
+        width: 100%;
+        max-width: 1200px;
+        box-sizing: border-box;
+      }
+
+      .booking-progress-service {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #222;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.8rem;
+        text-align: center;
+      }
+
+      .booking-progress-steps {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 0;
+      }
+
+      .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        color: #777;
+        font-size: 0.95rem;
+        white-space: normal;
+        text-align: center;
+        min-width: 96px;
+      }
+
+      .progress-step-number {
+        width: 2.2rem;
+        height: 2.2rem;
+        border: 2px solid #000;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #fff;
+        background: #000;
+      }
+
+      .progress-step.active {
+        color: #111;
+        font-weight: bold;
+      }
+
+      .progress-step.active .progress-step-number {
+        border-color: #f2be00;
+        background: #f2be00;
+        color: #111;
+      }
+
+      .progress-divider {
+        width: 252px;
+        height: 4px;
+        background: #f2be00;
+        margin-top: 0.9rem;
+        margin-left: -30px;
+        margin-right: -30px;
+        position: relative;
+        z-index: 0;
+      }
+        .booking-summary-section {
+          margin-bottom: 1.5em;
+          padding-bottom: 1.5em;
+          border-bottom: 2px solid #f2be00;
+        }
+
+        .booking-summary-section:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
+
+        .booking-summary-heading {
+          color: #f2be00;
+          font-weight: bold;
+          font-size: 1.15em;
+          margin-bottom: 0.5em;
+          letter-spacing: 0.5px;
+        }
+
+        .booking-summary-label {
+          color: #888;
+          font-size: 0.98em;
+          margin-bottom: 0.2em;
+        }
+
+        .booking-summary-value {
+          font-weight: bold;
+          font-size: 1.08em;
+          margin-bottom: 0.7em;
+        }
+
+        .booking-summary-total {
+          color: #f2be00;
+          font-size: 1.2em;
+          font-weight: bold;
+          margin-top: 0.5em;
+        }
+
+      @media (max-width: 768px) {
+        .booking-progress {
+          margin-bottom: 1rem;
+        }
+
+        .booking-progress-steps {
+          flex-wrap: wrap;
+          row-gap: 0.6rem;
+        }
+
+        .progress-divider {
+          display: none;
+        }
+      }
+    </style>
 </head>
 
 <body>
@@ -30,6 +156,54 @@ $easeCatalog = ease_translation_catalog();
             <p>Whether you need secure storage or prompt delivery, we provide reliable and convenient solutions to ensure your journey is as smooth as possible.</p>
         </div>
     </section>
+
+    <div class="booking-progress" aria-label="Booking progress">
+      <div class="booking-progress-service" id="bookingProgressService">LUGGAGE STORAGE</div>
+      <div class="booking-progress-steps">
+        <div class="progress-step">
+          <span class="progress-step-number">1</span>
+          <span>Booking Details</span>
+        </div>
+        <span class="progress-divider"></span>
+        <div class="progress-step">
+          <span class="progress-step-number">2</span>
+          <span>Information</span>
+        </div>
+        <span class="progress-divider"></span>
+        <div class="progress-step active">
+          <span class="progress-step-number">3</span>
+          <span>Payment</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function() {
+      function updateProgressServiceLabel() {
+        var serviceEl = document.getElementById('bookingProgressService');
+        if (!serviceEl) return;
+
+        var label = 'LUGGAGE STORAGE';
+
+        try {
+          var bookingData = JSON.parse(sessionStorage.getItem('bookingData') || '{}');
+          if (bookingData && bookingData.service === 'delivery') {
+            label = 'IN-TOWN DELIVERY';
+          }
+        } catch (error) {
+          label = 'LUGGAGE STORAGE';
+        }
+
+        serviceEl.textContent = label;
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateProgressServiceLabel);
+      } else {
+        updateProgressServiceLabel();
+      }
+    })();
+    </script>
 
 
         <!-- Payment Section -->
@@ -145,14 +319,31 @@ $easeCatalog = ease_translation_catalog();
             serviceLabel = bookingData.service;
         }
 
+        var insuranceSelected = bookingData.insuranceSelected === true
+          || bookingData.insuranceSelected === 'true'
+          || bookingData.insuranceSelected === 1
+          || bookingData.insuranceSelected === '1'
+          || bookingData.insuranceSelected === 'on';
+        var promoDiscount = Number(bookingData.promoDiscount || 0);
+        var promoType = bookingData.promoType || 'amount';
+        var appliedPromoCode = bookingData.promoCode || '';
+
+        // baseprice + exceedtimes =====
+        var quantity  = Number(bookingData.quantity || 1);
+        var basePrice = Number(bookingData.basePrice || 0);
+        var insuranceCharge = insuranceSelected ? (3 * quantity) : 0;
+
         html += '<div class="summary-item">' +
                     '<span>' + serviceLabel + '</span>' +
                     '<span></span>' +
                 '</div>';
 
-        // baseprice + exceedtimes =====
-        var quantity  = Number(bookingData.quantity || 1);
-        var basePrice = Number(bookingData.basePrice || 0);
+        if (insuranceSelected) {
+          html += '<div class="booking-summary-section">' +
+                      '<div class="booking-summary-label">Insurance</div>' +
+                      '<div class="booking-summary-value">RM ' + insuranceCharge.toFixed(2) + '</div>' +
+                  '</div>';
+        }
 
         // baseprice：first 24 hours（delivery）or first 12 hours（storage）
         var baseStoragePrice = basePrice * quantity;
@@ -185,36 +376,50 @@ $easeCatalog = ease_translation_catalog();
         }
 
         // =====order summary base storage price =====
-        if (baseStoragePrice > 0) {
-            html += '<div class="summary-item">' +
-                        '<span>' + quantity + '' +t('Standard Luggage') + '</span>' +
-                        '<span>RM ' + baseStoragePrice.toFixed(2) + '</span>' +
-                    '</div>';
+          if (baseStoragePrice > 0) {
+            html += '<div class="booking-summary-section">' +
+                  '<div class="booking-summary-label">' + quantity + '' + t('Standard Luggage') + '</div>' +
+                  '<div class="booking-summary-value">RM ' + baseStoragePrice.toFixed(2) + '</div>' +
+                '</div>';
         }
 
         // ===== order summary “Subsequent 12 Hours x 3 Excess”  =====
         if (extraStoragePrice > 0 && exceededTimes > 0) {
-            html += '<div class="summary-item">' +
-                        '<span>' + t('Subsequent 12 Hours x') + exceededTimes + ' ' + t('Excess') + ' (RM ' + extraRate + '/12h)</span>' +
-                        '<span></span>' +
-                    '</div>';
+            html += '<div class="booking-summary-section">' +
+                  '<div class="booking-summary-label">' + t('Subsequent 12 Hours x') + exceededTimes + ' ' + t('Excess') + ' (RM ' + extraRate + '/12h)</div>' +
+                  '<div class="booking-summary-value"></div>' +
+                '</div>';
 
             // order summary total price
-            html += '<div class="summary-item">' +
-                        '<span>' + quantity + '' +t('Standard Luggage') + '</span>' +
-                        '<span>RM ' + extraStoragePrice.toFixed(2) + '</span>' +
-                    '</div>';
+            html += '<div class="booking-summary-section">' +
+                  '<div class="booking-summary-label">' + quantity + '' + t('Standard Luggage') + '</div>' +
+                  '<div class="booking-summary-value">RM ' + extraStoragePrice.toFixed(2) + '</div>' +
+                '</div>';
         }
+
+              var discountAmount = 0;
+              if (appliedPromoCode && promoDiscount > 0) {
+                if (promoType === 'amount') {
+                  discountAmount = promoDiscount;
+                } else {
+                  discountAmount = (baseStoragePrice + extraStoragePrice + insuranceCharge) * promoDiscount / 100;
+                }
+
+                html += '<div class="booking-summary-section">' +
+                      '<div class="booking-summary-label">' + t('Discount') + ' (' + appliedPromoCode + ')</div>' +
+                      '<div class="booking-summary-total">-RM ' + discountAmount.toFixed(2) + '</div>' +
+                    '</div>';
+              }
 
         // ===== total price calculation =====
         var finalTotal = (bookingData.totalPrice !== undefined)
             ? Number(bookingData.totalPrice)
-            : (baseStoragePrice + extraStoragePrice);
+                : (baseStoragePrice + extraStoragePrice + insuranceCharge - discountAmount);
 
-        html += '<div class="summary-total">' +
-                    '<span>' + t('Total') + '</span>' +
-                    '<span>RM ' + finalTotal.toFixed(2) + '</span>' +
-                '</div>';
+          html += '<div class="booking-summary-section">' +
+                '<div class="booking-summary-label">' + t('Total') + '</div>' +
+                '<div class="booking-summary-total">RM ' + finalTotal.toFixed(2) + '</div>' +
+              '</div>';
 
     } catch (e) {
         console.error('Order Summary error:', e);
@@ -244,7 +449,7 @@ $easeCatalog = ease_translation_catalog();
     <script>
     // Order Summary Total 
     function getOrderTotalFromSummary() {
-        var totalEl = document.querySelector('.summary-total span:last-child');
+      var totalEl = document.querySelector('.booking-summary-total');
         if (!totalEl) {
             alert('Order total not found.');
             throw new Error("Order total not found.");
