@@ -2,17 +2,6 @@
 
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/report.css') ?>">
 
-<style>
-/* KPI dot indicators for report page */
-.rpt-kpi-card { cursor: pointer; position: relative; }
-.rpt-kpi-dots { display: flex; gap: 5px; margin-top: 8px; }
-.rpt-kpi-dot  {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(0,0,0,.18); transition: background .2s; cursor: pointer; flex-shrink: 0;
-}
-.rpt-kpi-dot.active { background: var(--gold, #F2BE00); }
-</style>
-
 <div class="rpt-page container-fluid py-3">
 
     <!-- ── Page Header ── -->

@@ -2,25 +2,9 @@
 
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/report.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/dashboard.css') ?>">
-
 <style>
-/* ── Background: body + content area only.
-   DO NOT set .main-panel background — kaiadmin's dark-mode overrides it
-   and the fixed .main-header (navbar) lives inside .main-panel. ── */
-body { background: #fffdf5 !important; }
-.dsh-one-screen { background: #fffdf5 !important; }
-
-/* ── One-screen layout fixes for .page-inner (kaiadmin defaults:
-   padding:24px 0; min-height: varies).
-   margin-top: 69px clears the fixed navbar (.main-header is
-   position:fixed, so normal-flow content starts at y=0 and the
-   first 69 px would otherwise hide beneath the navigation bar). ── */
-.page-inner {
-    min-height: unset !important;
-    margin-top: 69px !important;
-    /* Do NOT force padding:0 here — dashboard.css handles spacing
-       via .dsh-one-screen { padding:10px 20px 8px } */
-}
+.wrapper .main-panel { overflow: hidden; }
+.rpt-page            { height: 100%; }
 </style>
 
 <?php

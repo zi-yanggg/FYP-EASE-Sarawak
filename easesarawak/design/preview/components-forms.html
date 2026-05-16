@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Form controls</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .card { gap: 14px; padding: 24px; background: var(--surface); }
+  .lbl-row { display: flex; flex-direction: column; gap: 6px; }
+  .lbl {
+    font-family: var(--font-admin); font-size: 10px; font-weight: 800;
+    letter-spacing: .9px; color: var(--fg3); text-transform: uppercase;
+  }
+  .input, .select, .textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #CCC;
+    border-radius: 6px;
+    font-family: "EurostarRegular", Arial, sans-serif;
+    font-size: 15px;
+    color: var(--ink-1);
+    background: #fff;
+    outline: none;
+  }
+  .input.focused {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(242,190,0,0.15);
+  }
+  .input.error {
+    border-color: var(--danger);
+  }
+  .input::placeholder { color: var(--fg5); }
+  .help {
+    font-family: var(--font-admin); font-size: 10px; color: var(--fg4);
+  }
+  .help.error { color: var(--danger); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .check {
+    display: flex; align-items: center; gap: 10px;
+    font-family: "Public Sans", sans-serif; font-size: 13px; color: var(--fg2);
+  }
+  .check input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: var(--gold);
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="row">
+    <div class="lbl-row">
+      <span class="lbl">Email address</span>
+      <input class="input" type="text" value="kuching@traveller.com">
+    </div>
+    <div class="lbl-row">
+      <span class="lbl">Phone number</span>
+      <input class="input focused" type="text" value="+60 18 777 3618">
+      <span class="help">Including country code</span>
+    </div>
+  </div>
+
+  <div class="lbl-row">
+    <span class="lbl">Service type</span>
+    <select class="select">
+      <option>Town Delivery</option>
+      <option>Luggage Storage</option>
+      <option>On-demand pickup</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <div class="lbl-row">
+      <span class="lbl">Order ID</span>
+      <input class="input error" type="text" value="ORD-2026-0518-A">
+      <span class="help error">No order found with this ID.</span>
+    </div>
+    <div class="lbl-row">
+      <span class="lbl">Subject</span>
+      <input class="input" type="text" placeholder="Subject">
+    </div>
+  </div>
+
+  <div class="check">
+    <input type="checkbox" id="dec" checked>
+    <label for="dec">I declare that the information I have provided is accurate and complete.</label>
+  </div>
+
+</div>
+</body></html>

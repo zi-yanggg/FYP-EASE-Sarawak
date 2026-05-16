@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Shadows & elevation</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .card { gap: 18px; padding: 28px; background: var(--surface); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .ev {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid var(--gold-line);
+    padding: 16px 14px 14px;
+    display: flex; flex-direction: column; gap: 6px;
+    height: 110px;
+  }
+  .ev.shadow-sm { box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-color: transparent; }
+  .ev.shadow-md { box-shadow: 0 4px 12px rgba(0,0,0,0.12); border-color: transparent; }
+  .ev.shadow-lg { box-shadow: 0 8px 28px rgba(0,0,0,0.08); border-color: transparent; }
+  .ev.shadow-xl { box-shadow: 0 15px 30px rgba(0,0,0,0.4); border-color: transparent; }
+  .ev.shadow-glow { box-shadow: 0 0 15px rgba(242,190,0,0.7); border-color: var(--gold); }
+  .ev.shadow-focus {
+    box-shadow: 0 0 0 3px rgba(242,190,0,0.15);
+    border-color: var(--gold);
+  }
+  .nm { font-family: var(--font-admin); font-size: 11px; font-weight: 800; letter-spacing: .04em; color: var(--ink-1); text-transform: uppercase; }
+  .vl { font-family: var(--font-mono); font-size: 10px; color: var(--fg4); line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="grid">
+    <div class="ev shadow-sm">
+      <div class="nm">sm · navbar</div>
+      <div class="vl">0 2px 5px rgba(0,0,0,.1)</div>
+    </div>
+    <div class="ev shadow-md">
+      <div class="nm">md · service card</div>
+      <div class="vl">0 4px 12px rgba(0,0,0,.12)</div>
+    </div>
+    <div class="ev shadow-lg">
+      <div class="nm">lg · auth card</div>
+      <div class="vl">0 8px 28px rgba(0,0,0,.08)</div>
+    </div>
+    <div class="ev shadow-xl">
+      <div class="nm">xl · button lift</div>
+      <div class="vl">0 15px 30px rgba(0,0,0,.4)</div>
+    </div>
+    <div class="ev shadow-glow">
+      <div class="nm">glow · gold</div>
+      <div class="vl">0 0 15px rgba(242,190,0,.7)</div>
+    </div>
+    <div class="ev shadow-focus">
+      <div class="nm">focus ring</div>
+      <div class="vl">0 0 0 3px rgba(242,190,0,.15)</div>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,236 +1,7 @@
-﻿#orderModal .card {
-            border-radius: 1rem;
-        }
-
-        :root {
+﻿        :root {
             --ease-sidebar-icon-purple: #6861CE;
         }
 
-        #orderModal .card-header {
-            border-bottom: 1px solid #e9ecef;
-            font-size: 1rem;
-        }
-
-        #orderModal p {
-            margin-bottom: 0.4rem;
-        }
-
-        .badge-superadmin {
-            background: #900707ff;
-            color: white;
-            font-size: 1rem;
-            padding: 6px 12px;
-        }
-
-        .badge-admin {
-            background: #5B532C;
-            color: white;
-            font-size: 1rem;
-            padding: 6px 12px;
-        }
-
-        .badge-pending {
-            background-color: #f2be00;
-            color: #000;
-            font-size: 1rem;
-            padding: 6px 12px;
-            font-weight: 600;
-        }
-
-        .badge-progress {
-            background-color: #5B532C;
-            color: #ffffff;
-            font-size: 1rem;
-            padding: 6px 12px;
-            font-weight: 600;
-        }
-
-        .badge-completed {
-            background-color: #ABE7B2;
-            color: #000;
-            font-size: 1rem;
-            padding: 6px 12px;
-            font-weight: 600;
-        }
-
-        .btn-update {
-            background-color: #f2be00;
-            color: #000;
-        }
-
-        .btn-update:hover {
-            background-color: #e6ac00;
-            color: #000;
-        }
-
-        .btn-cancel {
-            background-color: #5B532C;
-            color: #fff;
-        }
-
-        .btn-cancel:hover {
-            background-color: #47421f;
-            color: #fff;
-        }
-
-        .status-indicator {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-
-        .notif-img {
-            position: relative;
-        }
-
-        .avatar-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-weight: bold;
-            color: white;
-        }
-
-        /* Color sets */
-        .bg-a {
-            background-color: #5B532C ;
-        }
-
-        .bg-b {
-            background-color: #47421f ;
-        }
-
-        .bg-c {
-            background-color: #51cf66 ;
-        }
-
-        .bg-d {
-            background-color: #845ef7 ;
-        }
-
-        .bg-e {
-            background-color: #ffa94d ;
-        }
-
-        .icon-visitor {
-            background-color: #f2be00 ;
-            color: #111 ;     /* dark glyph on gold â€” best contrast */
-            border-radius: 10px;
-        }
-
-        .icon-admin {
-            background-color: #900707ff ;
-            color: #fff ;
-            border-radius: 10px;
-        }
-
-        .icon-sales {
-            background-color: #84994F ;
-            color: #fff ;
-            border-radius: 10px;
-        }
-
-        .icon-order {
-            background-color: #A18D6D ;
-            color: #fff ;
-            border-radius: 10px;
-        }
-
-        .btn-pending {
-            background-color: #A72703;
-            color: #fff;
-            font-size: 15px;
-        }
-
-        .btn-pending:hover {
-            background-color: #921f03;
-            color: #fff;
-        }
-
-        .btn-progress {
-            background-color: #5B532C;
-            color: #fff;
-            font-size: 15px;
-        }
-
-        .btn-progress:hover {
-            background-color: #47421f;
-            color: #fff;
-        }
-
-        .btn-completed {
-            background-color: #63A361;
-            color: #fff;
-            font-size: 15px;
-        }
-
-        .btn-completed:hover {
-            background-color: #4d844d;
-            color: #fff;
-        }
-
-        body.dark-mode {
-            background-color: #18191a;
-            color: #e4e6eb;
-        }
-
-        body.dark-mode .card,
-        body.dark-mode .navbar,
-        body.dark-mode .footer,
-        body.dark-mode .sidebar,
-        body.dark-mode .main-header,
-        body.dark-mode .main-panel {
-            background-color: #242526 ;
-            color: #e4e6eb ;
-        }
-
-        body.dark-mode .table,
-        body.dark-mode .table th,
-        body.dark-mode .table td {
-            background-color: #242526 ;
-            color: #e4e6eb ;
-            border-color: #3a3b3c ;
-        }
-
-        body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > * {
-            background-color: #2d2e2f ;
-            color: #e4e6eb ;
-        }
-
-        body.dark-mode .table-hover > tbody > tr:hover > * {
-            background-color: #3a3b3c ;
-            color: #fff ;
-        }
-
-        body.dark-mode .table-light th,
-        body.dark-mode .table-light td,
-        body.dark-mode thead.table-light th {
-            background-color: #1e1f20 ;
-            color: #e4e6eb ;
-        }
-
-        body.dark-mode,
-        body.dark-mode p,
-        body.dark-mode span,
-        body.dark-mode label,
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
-        body.dark-mode h4, body.dark-mode h5, body.dark-mode h6,
-        body.dark-mode a:not(.btn),
-        body.dark-mode .card-title,
-        body.dark-mode .card-body {
-            color: #e4e6eb ;
-        }
-
-        body.dark-mode .text-muted {
-            color: #adb5bd ;
-        }
 
         /* ============================================================
            Dark-Mode Toggle (Sidebar) â€” Professional Gold Theme
@@ -1124,7 +895,6 @@
         .main-panel .main-header {
             border-bottom: 3px solid #F2BE00 ;
             box-sizing: border-box;
-            top: 0 ;
         }
 
         .main-panel .main-header .main-header-logo,
@@ -1427,14 +1197,58 @@
             transition: none ;
         }
 
-        /* NORMAL (sidebar full width = 265px) */
-        
+        /* ============================================================
+           Main panel — page content sits below the top bar only
+           KaiAdmin fixes .main-header inside .main-panel; fixed header
+           is removed from flow so content overlaps the navbar. Flex
+           column keeps the bar in-flow and scrolls siblings beneath.
+           ============================================================ */
+
+        .wrapper .main-panel {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .wrapper .main-panel .main-header {
+            position: relative;
+            top: auto;
+            left: auto;
+            right: auto;
+            width: 100%;
+            flex: 0 0 auto;
+            z-index: 1001;
+        }
+
+        .wrapper .main-panel > :not(.main-header) {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin-top: 0;
+        }
+
+        .wrapper .main-panel .page-inner,
+        .wrapper .main-panel > .container,
+        .wrapper .main-panel > .container-fluid {
+            margin-top: 0;
+        }
+
+        @media screen and (min-width: 992px) {
+            .wrapper:not(.sidebar_minimize) .main-panel {
+                width: calc(100% - 265px);
+            }
+
+            .wrapper.sidebar_minimize .main-panel,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .main-panel {
+                width: calc(100% - 85px);
+            }
+        }
 
         /* ============================================================
            Centered brand in the top navbar â€” visible only when the
            sidebar is minimized; otherwise the sidebar's own brand shows.
            ============================================================ */
-        /* NORMAL (sidebar full width = 265px) */
 
         .ease-minimized-brand {
             display: none;

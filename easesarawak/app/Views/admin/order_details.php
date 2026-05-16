@@ -10,7 +10,7 @@ function pretty_label($key)
 ?>
 
 <div class="container mt-4">
-    <div class="page-inner" style="padding-top: 80px;">
+    <div class="page-inner">
         <div class="ease-page-head d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
                 <div class="ease-crumb">EASE Admin &middot; Orders &middot; <b>#<?= esc($order['order_id']) ?></b></div>

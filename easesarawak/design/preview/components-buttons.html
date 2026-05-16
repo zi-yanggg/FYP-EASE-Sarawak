@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Buttons</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .card { gap: 16px; padding: 24px; }
+  .group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .lbl {
+    font-family: var(--font-admin); font-size: 9.5px; font-weight: 800;
+    letter-spacing: 1.2px; color: var(--fg4); text-transform: uppercase;
+    width: 100%;
+  }
+
+  /* Marketing pill CTA */
+  .btn-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 28px;
+    background: var(--gold); color: #fff;
+    font-family: var(--font-display);
+    font-weight: bold; font-size: 1rem;
+    border-radius: 999px; border: none; cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+  .btn-pill:hover { background: var(--ink-0); }
+  .btn-pill.dark { background: var(--ink-0); color: #fff; }
+
+  /* Marketing square CTA */
+  .btn-square {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px;
+    background: var(--gold); color: #fff;
+    font-family: var(--font-display);
+    font-size: 1rem; font-weight: bold;
+    border-radius: 5px; border: none; cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+  .btn-square:hover { background: var(--ink-0); }
+
+  /* Admin pill */
+  .btn-admin {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 16px;
+    background: var(--gold); color: var(--ink-1);
+    font-family: "EurostarRegular", sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    border-radius: 999px; border: none; cursor: pointer;
+  }
+  .btn-admin.ghost {
+    background: transparent;
+    color: var(--fg2);
+    border: 1px solid var(--gold-line);
+  }
+  .btn-admin.dark {
+    background: var(--ink-1); color: var(--gold);
+    border: 1px solid var(--gold);
+  }
+  .btn-admin.sm { padding: 6px 12px; font-size: 11px; }
+
+  .btn-admin .ic {
+    width: 14px; height: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="lbl">Marketing — pill</div>
+  <div class="group">
+    <button class="btn-pill">BOOK NOW</button>
+    <button class="btn-pill dark">CONTACT US</button>
+  </div>
+
+  <div class="lbl">Marketing — square</div>
+  <div class="group">
+    <button class="btn-square">BOOK NOW</button>
+    <button class="btn-square">SUBMIT FORM</button>
+  </div>
+
+  <div class="lbl">Admin — pill (default / ghost / dark)</div>
+  <div class="group">
+    <button class="btn-admin">+ New Order</button>
+    <button class="btn-admin ghost">Export CSV</button>
+    <button class="btn-admin dark">Approve refund</button>
+    <button class="btn-admin sm">Edit</button>
+  </div>
+
+</div>
+</body></html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EASE Sarawak — Marketing UI kit</title>
+<link rel="icon" type="image/png" href="../../assets/favicon-ease.png">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="marketing.css">
+
+<style>
+  /* Local fonts */
+  @font-face {
+    font-family: "EurostarRegular";
+    src: url("../../fonts/EurostarRegular.ttf") format("truetype");
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "BebasKai";
+    src: url("../../fonts/BebasKai.ttf") format("truetype");
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  /* Demo bar — small dev affordance to jump between screens */
+  .demo-bar {
+    position: fixed; top: 86px; right: 18px; z-index: 95;
+    background: #0A0A0A; color: #fff;
+    border: 1px solid #f2be00;
+    border-radius: 999px;
+    padding: 6px;
+    display: flex; gap: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    font-family: "Oxanium", system-ui, sans-serif;
+    font-size: 11px;
+  }
+  .demo-bar button {
+    border: none; background: transparent; color: rgba(255,255,255,0.7);
+    padding: 6px 12px; border-radius: 999px;
+    text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;
+    cursor: pointer;
+  }
+  .demo-bar button:hover { color: #fff; }
+  .demo-bar button.active { background: #f2be00; color: #0A0A0A; }
+</style>
+
+<!-- Pinned React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+function App() {
+  const [page, setPage] = useState("home");
+  const [booking, setBooking] = useState({
+    service: "delivery",
+    firstName: "Jane", lastName: "Tang",
+    email: "jane@traveller.com", phone: "+60 18 777 3618",
+    from: "Hotel Pullman, Jalan Mathies",
+    to: "Aiman Boutique Hotel",
+    date: "2026-05-22", time: "11:30",
+    bags: "2",
+    promo: "",
+    notes: "",
+  });
+
+  const nav = (p) => {
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  let screen;
+  switch (page) {
+    case "home":         screen = <HomeScreen         onNavigate={nav} />; break;
+    case "about":        screen = <AboutScreen        onNavigate={nav} />; break;
+    case "booking":      screen = <BookingScreen      booking={booking} setBooking={setBooking} onNext={() => nav("payment")} />; break;
+    case "payment":      screen = <PaymentScreen      booking={booking} onComplete={() => nav("confirmation")} onBack={() => nav("booking")} />; break;
+    case "confirmation": screen = <ConfirmationScreen booking={booking} onHome={() => nav("home")} />; break;
+    default: screen = <HomeScreen onNavigate={nav} />;
+  }
+
+  const pages = [
+    { id: "home", label: "Home" },
+    { id: "about", label: "About" },
+    { id: "booking", label: "Booking" },
+    { id: "payment", label: "Payment" },
+    { id: "confirmation", label: "Confirmed" },
+  ];
+
+  return (
+    <>
+      <MkNav activePage={page} onNavigate={nav} />
+      <div className="demo-bar" title="Demo navigation">
+        {pages.map((p) => (
+          <button key={p.id} className={page === p.id ? "active" : ""} onClick={() => nav(p.id)}>
+            {p.label}
+          </button>
+        ))}
+      </div>
+      {/* Push content below fixed navbar */}
+      <main style={{ paddingTop: page === "home" ? 0 : 78 }}>
+        {/* Home's hero is full-viewport; let it sit under the nav.
+            Other pages have their own title band and need padding. */}
+        {page === "home" ? <div style={{ paddingTop: 78 }}>{screen}</div> : screen}
+      </main>
+      <MkFooter onNavigate={nav} />
+      <LangSwitcher />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

@@ -8,60 +8,7 @@
     <link rel="icon" type="image/png" href="<?= base_url('assets/images/cropped-Ease_PNG_File-09.png') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background: url("<?= base_url('assets/images/ease_login_background_image.png') ?>") no-repeat center center;
-            background-size: cover;
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: flex-end;
-            /* moves content to the right */
-            align-items: center;
-        }
-
-        .card-login {
-            width: 100%;
-            max-width: 400px;
-            margin-right: 5%;
-            background-color: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .hero {
-            text-align: center;
-            padding: 2rem 1rem 1rem;
-        }
-
-        .btn-dark {
-            background-color: #343a40;
-            border-color: #343a40;
-        }
-
-        .btn-dark:hover {
-            background-color: #23272b;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                justify-content: center;
-                /* center form on mobile */
-                align-items: center;
-                background: url("<?= base_url('assets/images/bg-small-screen-login.png') ?>") no-repeat center center;
-                background-size: cover;
-            }
-
-            .card-login {
-                margin: 1rem;
-                width: 90%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="<?= base_url('assets/css/admin/login.css') ?>">
 </head>
 
 <body>

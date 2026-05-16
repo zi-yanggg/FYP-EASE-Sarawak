@@ -1,0 +1,8 @@
+/* ============================================================
+   EASE Sarawak — Refund Request Page Styles
+   ============================================================ */
+
+.dataTables_filter { display: none; }
+.refund-status-btn {
+    min-width: 44px;
+}

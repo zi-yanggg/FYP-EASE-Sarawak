@@ -5,17 +5,26 @@
 
 /* ── Global background override for dashboard ── */
 .dsh-bg-override,
-.dsh-bg-override .main-panel { background: #fffdf5 !important; }
+.dsh-bg-override .main-panel { background: #fffdf5; }
+
+/* Body + content area background.
+   .main-panel background is intentionally NOT set here so kaiadmin's
+   dark-mode toggle and the fixed .main-header inside .main-panel can
+   still operate normally. */
+body { background: #fffdf5; }
+.dsh-one-screen { background: #fffdf5; }
+
+/* Override kaiadmin's page-inner min-height default.
+   Actual spacing is handled by .dsh-one-screen { padding: 10px 20px 8px }. */
+.page-inner { min-height: unset; }
 
 /* ════════════════════════════════════════
    ONE-SCREEN LAYOUT
 ════════════════════════════════════════ */
-:root { --dsh-nav-h: 69px; }
-
 .dsh-one-screen {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - var(--dsh-nav-h));
+    height: 100%;
     overflow: hidden;
     padding: 10px 20px 8px;
     box-sizing: border-box;
@@ -24,11 +33,11 @@
 
 /* Override kaiadmin's page-inner defaults when used as one-screen layout */
 .dsh-one-screen.page-inner {
-    min-height: unset !important;
-    padding-top: 10px !important;
-    padding-right: 20px !important;
-    padding-bottom: 8px !important;
-    padding-left: 20px !important;
+    min-height: unset;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 8px;
+    padding-left: 20px;
 }
 
 .dsh-one-screen__head  { flex-shrink: 0; margin-bottom: 8px; }
@@ -129,7 +138,7 @@
 .dsh-kpi-card .rpt-kpi-value { font-size: 1.35rem; margin-bottom: 4px; }
 .dsh-kpi-card .rpt-kpi-label { font-size: 11px; margin-bottom: 2px; }
 .dsh-kpi-card .rpt-kpi-sub   { font-size: 12px; }
-.dsh-kpi-card .rpt-kpi-icon  { width: 36px; height: 36px; font-size: 1rem; }
+.dsh-kpi-card .rpt-kpi-icon  { width: 34px; height: 34px; font-size: 1rem; }
 .dsh-kpi-card .rpt-kpi-top   { margin-bottom: 4px; }
 .dsh-kpi-card .rpt-kpi-foot  { min-height: 18px; }
 
@@ -319,7 +328,7 @@
 
 /* Calendar grid spacing */
 .dsh-cal .cal-grid {
-    gap: 5px !important;
+    gap: 5px;
 }
 
 /* Day cell overrides — circular like revenue calendar */
@@ -484,10 +493,10 @@
 .dsh-table tbody td {
     padding: 5px 8px; vertical-align: middle; border-color: #f3f4f6;
 }
-.dsh-table tbody tr:hover td { background-color: rgba(242,190,0,.13) !important; }
+.dsh-table tbody tr:hover td { background-color: rgba(242,190,0,.13); }
 /* Rows with data attributes get the gold hover + left accent */
 .dsh-table tbody tr[data-pickup-time]:hover td {
-    background-color: #fff8e1 !important;
+    background-color: #fff8e1;
 }
 .dsh-table tbody tr[data-pickup-time]:hover td:first-child {
     box-shadow: inset 3px 0 0 var(--gold, #F2BE00);
@@ -502,8 +511,8 @@
 ════════════════════════════════════════ */
 @media (max-width: 1199px) {
     .dsh-one-screen {
-        height: auto !important;
-        overflow: visible !important;
+        height: auto;
+        overflow: visible;
     }
     .dsh-one-screen__main {
         flex-wrap: wrap;

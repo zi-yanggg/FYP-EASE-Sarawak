@@ -1,15 +1,9 @@
 <?= $this->include('admin/header'); ?>
 
-<style>
-    .dataTables_filter { display: none ; }
-    .dataTables_paginate {
-        display: flex ;
-        justify-content: left ;
-    }
-</style>
+<link rel="stylesheet" href="<?= base_url('assets/css/admin/transaction_history.css') ?>">
 
 <div class="container mt-4">
-    <div class="page-inner" style="padding-top: 80px;">
+    <div class="page-inner">
         <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
             <div>
                 <div class="ease-crumb">EASE Admin &middot; Reports &middot; <b>Transaction History</b></div>

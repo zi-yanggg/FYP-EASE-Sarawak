@@ -1,0 +1,9 @@
+/* ============================================================
+   EASE Sarawak — Transaction History Page Styles
+   ============================================================ */
+
+.dataTables_filter { display: none ; }
+.dataTables_paginate {
+    display: flex ;
+    justify-content: left ;
+}

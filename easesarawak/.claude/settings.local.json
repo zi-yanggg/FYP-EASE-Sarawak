@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(php -r \"echo password_hash\\(''123'', PASSWORD_DEFAULT\\);\")"
+      "Bash(php -r \"echo password_hash\\(''123'', PASSWORD_DEFAULT\\);\")",
+      "Bash(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\\\\app\\\\Views\\\\admin\" -Filter \"*.php\" -Recurse)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(Remove-Item \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\\\\public\\\\assets\\\\css\\\\admin\\\\header.css\" -Confirm:$false)",
+      "Bash(.main-header)",
+      "Bash(powershell -Command ' *)",
+      "Bash(Remove-Item \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\\\\public\\\\assets\\\\css\\\\admin\\\\ease-design-system.css\")",
+      "PowerShell(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" -Recurse -Directory | Where-Object { $_.Name -match '\\(design|ui|mockup|assets|sketch|figma|xd|prototype\\)' } | Select-Object FullName)"
     ]
   }
 }

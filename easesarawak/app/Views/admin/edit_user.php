@@ -1,7 +1,7 @@
 <?= $this->include('admin/header'); ?>
 
-<div class="container mt-5 pt-4">
-    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2" style="padding-top: 70px; padding-left: 40px;">
+<div class="container">
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2" style="padding-left: 40px;">
         <div>
             <div class="ease-crumb">EASE Admin &middot; Users &middot; <b>Edit User</b></div>
             <h1 class="ease-page-title">Edit User</h1>
