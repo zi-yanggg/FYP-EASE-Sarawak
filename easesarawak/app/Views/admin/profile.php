@@ -14,9 +14,16 @@
     </div>
 
     <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-            <?= session()->getFlashdata('success') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div id="profToast" class="prof-toast" role="status" aria-live="polite">
+            <div class="prof-toast__icon"><i class="fas fa-check-circle"></i></div>
+            <div class="prof-toast__body">
+                <div class="prof-toast__title">Success</div>
+                <div class="prof-toast__msg"><?= esc(session()->getFlashdata('success')) ?></div>
+            </div>
+            <button type="button" class="prof-toast__close" onclick="profDismissToast()" title="Dismiss">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="prof-toast__bar"></div>
         </div>
     <?php endif; ?>
 
@@ -131,5 +138,18 @@
     </div>
 
 </div>
+
+<script>
+(function() {
+    var toast = document.getElementById('profToast');
+    if (!toast) return;
+    var timer = setTimeout(profDismissToast, 4500);
+    window.profDismissToast = function() {
+        clearTimeout(timer);
+        toast.classList.add('prof-toast--out');
+        setTimeout(function() { toast.remove(); }, 380);
+    };
+})();
+</script>
 
 <?= $this->include('admin/footer'); ?>
