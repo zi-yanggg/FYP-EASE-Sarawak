@@ -132,29 +132,20 @@ class Admin extends BaseController
             }
         }
 
-        // ── Calendar heatmap (orders created + pickups + drop-offs) ──────
-        $orderDateRows = $db->table('`order`')
-            ->select('DATE(created_date) AS order_date, COUNT(order_id) AS order_count')
-            ->where('is_deleted', 0)->groupBy('DATE(created_date)')
-            ->get()->getResultArray();
-
-        $calendarCreated = [];
-        foreach ($orderDateRows as $row) {
-            $calendarCreated[$row['order_date']] = (int)$row['order_count'];
-        }
-
+        // ── Calendar heatmap (pickup + drop-off dates only) ───────────────
         $allCalDates = array_unique(array_merge(
-            array_keys($calendarCreated),
             array_keys($calendarPickups),
             array_keys($calendarDropoffs)
         ));
+        sort($allCalDates);
         $calendarHeatmap = [];
         foreach ($allCalDates as $d) {
+            $pickups  = $calendarPickups[$d]  ?? 0;
+            $dropoffs = $calendarDropoffs[$d] ?? 0;
             $calendarHeatmap[$d] = [
-                'created'  => $calendarCreated[$d]  ?? 0,
-                'pickups'  => $calendarPickups[$d]  ?? 0,
-                'dropoffs' => $calendarDropoffs[$d] ?? 0,
-                'total'    => ($calendarCreated[$d] ?? 0) + ($calendarPickups[$d] ?? 0) + ($calendarDropoffs[$d] ?? 0),
+                'pickups'  => $pickups,
+                'dropoffs' => $dropoffs,
+                'total'    => $pickups + $dropoffs,
             ];
         }
 
@@ -200,24 +191,27 @@ class Admin extends BaseController
             }
         }
 
-        // ── Calendar order data for JS day-click detail ─────────────────
+        // ── Calendar order data for JS day list (pickup / drop-off only) ─
         $calendarOrders = array_map(static function ($o) {
             $d = @json_decode($o['order_details_json'] ?? '{}', true);
-            $pickupRaw  = is_array($d) ? trim($d['Pickup DateTime']    ?? '') : '';
-            $dropoffRaw = is_array($d) ? trim($d['Drop-off DateTime'] ?? '') : '';
+            $d = is_array($d) ? $d : [];
+            $pickupRaw  = trim($d['Pickup DateTime']    ?? '');
+            $dropoffRaw = trim($d['Drop-off DateTime'] ?? '');
+            if ($pickupRaw === 'Null')  $pickupRaw  = '';
+            if ($dropoffRaw === 'Null') $dropoffRaw = '';
             $atP = strpos($pickupRaw,  'at ');
             $atD = strpos($dropoffRaw, 'at ');
+            $from = trim($d['Origin Location'] ?? $d['Origin Address'] ?? $d['Storage Location'] ?? '');
+            $to   = trim($d['Destination Location'] ?? $d['Destination Address'] ?? '');
             return [
-                'id'       => $o['order_id'],
-                'name'     => trim(($o['first_name'] ?? '') . ' ' . ($o['last_name'] ?? '')),
-                'service'  => $o['service_type'],
-                'status'   => (int)($o['status'] ?? 0),
-                'amount'   => (float)($o['amount'] ?? 0),
-                'created'  => substr($o['created_date'] ?? '', 0, 10),
-                'pickup'   => ($pickupRaw && $pickupRaw !== 'Null')  ? substr($pickupRaw,  0, 10) : null,
-                'dropoff'  => ($dropoffRaw && $dropoffRaw !== 'Null') ? substr($dropoffRaw, 0, 10) : null,
-                'pickup_t' => $atP !== false ? trim(substr($pickupRaw,  $atP + 3)) : null,
-                'dropoff_t'=> $atD !== false ? trim(substr($dropoffRaw, $atD + 3)) : null,
+                'id'        => (int)$o['order_id'],
+                'name'      => trim(($o['first_name'] ?? '') . ' ' . ($o['last_name'] ?? '')),
+                'pickup'    => $pickupRaw  ? substr($pickupRaw,  0, 10) : null,
+                'dropoff'   => $dropoffRaw ? substr($dropoffRaw, 0, 10) : null,
+                'pickup_t'  => $atP !== false ? trim(substr($pickupRaw,  $atP + 3)) : null,
+                'dropoff_t' => $atD !== false ? trim(substr($dropoffRaw, $atD + 3)) : null,
+                'from'      => $from ?: '—',
+                'to'        => $to   ?: '—',
             ];
         }, $allActiveOrders);
 

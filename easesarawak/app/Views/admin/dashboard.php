@@ -6,12 +6,68 @@
 <?php
 $hour        = (int)date('G');
 $greeting    = $hour < 12 ? 'Good morning' : ($hour < 18 ? 'Good afternoon' : 'Good evening');
-$sessionUser = session()->get('username') ?? 'Admin';
+$sessionUser   = session()->get('username') ?? 'Admin';
+$dshQueueLimit = 7;
 
 function dshSvcPill(string $type): string {
-    $l   = strtolower($type);
-    $cls = $l === 'storage' ? 'dsh-svc-pill--storage' : 'dsh-svc-pill--delivery';
-    return '<span class="dsh-svc-pill '.$cls.'">'.htmlspecialchars(ucfirst($l)).'</span>';
+    $l         = strtolower($type);
+    $isStorage = $l === 'storage';
+    $cls       = $isStorage ? 'dsh-svc-pill--storage' : 'dsh-svc-pill--delivery';
+    $icon      = $isStorage ? 'fa-warehouse' : 'fa-truck';
+    $label     = htmlspecialchars($isStorage ? 'Storage' : 'Delivery');
+    return '<span class="dsh-svc-pill ' . $cls . '">'
+        . '<span class="dsh-svc-pill__ico" aria-hidden="true"><i class="fas ' . $icon . '"></i></span>'
+        . $label
+        . '</span>';
+}
+function dshCountActive(array $orders): int {
+    return count(array_filter($orders, static fn($o) => (int)($o['status'] ?? 0) < 2));
+}
+function dshAvColor(int $orderId): string {
+    $palette = ['#5B532C', '#B8860B', '#0A0A0A', '#1A6CB0', '#2BA869', '#6A4FBB'];
+    return $palette[$orderId % count($palette)];
+}
+function dshRenderQueueRow(array $ord, string $timeLabel): void {
+    $r      = dshParseRoute($ord);
+    $oid    = (int)$ord['order_id'];
+    $status = (int)$ord['status'];
+    $url    = ease_route('order_details', $oid);
+    $name   = trim(($ord['first_name'] ?? '') . ' ' . ($ord['last_name'] ?? ''));
+    $avBg   = dshAvColor($oid);
+    $avFg   = ($avBg === '#0A0A0A') ? '#F2BE00' : '#fff';
+    ?>
+    <a class="dsh-qrow <?= dshStatusRowCls($status) ?>" href="<?= esc($url, 'attr') ?>">
+        <div class="dsh-qrow__cell dsh-qrow__time">
+            <span class="dsh-qrow__hm"><?= esc($r['time']) ?></span>
+            <small class="dsh-qrow__type"><?= esc($timeLabel) ?></small>
+        </div>
+        <div class="dsh-qrow__cell dsh-qrow__who">
+            <div class="dsh-av" style="background:<?= esc($avBg) ?>;color:<?= esc($avFg) ?>"><?= dshInitials($name) ?></div>
+            <div class="dsh-qrow__who-text">
+                <div class="dsh-qrow__nm"><?= esc($ord['first_name']) ?> <?= esc($ord['last_name']) ?></div>
+                <div class="dsh-qrow__sub">#<?= esc($oid) ?> &middot; <?= dshSvcPill($ord['service_type'] ?? '') ?></div>
+            </div>
+        </div>
+        <div class="dsh-qrow__cell dsh-qrow__route-col">
+            <span class="dsh-qrow__rtlbl"><?= esc($r['leg1_label']) ?></span>
+            <span class="dsh-qrow__rtval"><?= esc($r['leg1_value']) ?></span>
+            <?php if (!empty($r['leg1_meta'])): ?>
+                <span class="dsh-qrow__rtmeta"><?= esc($r['leg1_meta']) ?></span>
+            <?php endif; ?>
+        </div>
+        <div class="dsh-qrow__cell dsh-qrow__route-col <?= !empty($r['is_storage']) ? 'dsh-qrow__route-col--store' : 'dsh-qrow__route-col--to' ?>">
+            <span class="dsh-qrow__rtlbl"><?= esc($r['leg2_label']) ?></span>
+            <span class="dsh-qrow__rtval"><?= esc($r['leg2_value']) ?></span>
+            <?php if (!empty($r['leg2_meta'])): ?>
+                <span class="dsh-qrow__rtmeta"><?= esc($r['leg2_meta']) ?></span>
+            <?php endif; ?>
+        </div>
+        <div class="dsh-qrow__cell dsh-qrow__total">RM <?= number_format((float)$ord['amount'], 2) ?></div>
+        <div class="dsh-qrow__cell dsh-qrow__status" onclick="event.preventDefault(); event.stopPropagation()">
+            <?= dshStatusBadge($status, $oid) ?>
+        </div>
+    </a>
+    <?php
 }
 function dshStatusBadge(int $s, int $orderId): string {
     $map = [
@@ -39,19 +95,108 @@ function dshInitials(string $name): string {
 function dshStatusRowCls(int $s): string {
     return ['dsh-qrow--pending', 'dsh-qrow--progress', 'dsh-qrow--done'][$s] ?? 'dsh-qrow--pending';
 }
+function dshExtractQueueTime(string $raw): string {
+    $raw = trim($raw);
+    if ($raw === '' || strcasecmp($raw, 'Null') === 0) {
+        return '';
+    }
+    $atPos = stripos($raw, ' at ');
+    if ($atPos !== false) {
+        return trim(substr($raw, $atPos + 4));
+    }
+    if (preg_match('/^\d{1,2}:\d{2}/', $raw)) {
+        return $raw;
+    }
+    return '';
+}
+
+function dshQueueTimeForOrder(array $ord, bool $usePickup): string {
+    $d     = @json_decode($ord['order_details_json'] ?? '{}', true);
+    $d     = is_array($d) ? $d : [];
+    $field = $usePickup ? 'Pickup DateTime' : 'Drop-off DateTime';
+    $time  = dshExtractQueueTime(trim($d[$field] ?? ''));
+    if ($time !== '') {
+        return $time;
+    }
+    $fallback = $usePickup ? ($ord['_pickup_time'] ?? '') : ($ord['_dropoff_time'] ?? '');
+    $time     = dshExtractQueueTime((string) $fallback);
+    if ($time !== '') {
+        return $time;
+    }
+    $legacy = $usePickup
+        ? trim($d['pickupTime'] ?? '')
+        : trim($d['dropoffTime'] ?? '');
+    return dshExtractQueueTime($legacy) ?: (preg_match('/^\d{1,2}:\d{2}/', $legacy) ? $legacy : '');
+}
+
+function dshCleanDetailValue(string $v): string {
+    $v = trim($v);
+    return ($v === '' || strcasecmp($v, 'Null') === 0) ? '' : $v;
+}
+
+function dshFormatQueueDateTime(string $raw): string {
+    $raw = dshCleanDetailValue($raw);
+    if ($raw === '') {
+        return '';
+    }
+    $atPos = stripos($raw, ' at ');
+    if ($atPos !== false) {
+        $datePart = trim(substr($raw, 0, $atPos));
+        $timePart = trim(substr($raw, $atPos + 4));
+        $ts       = strtotime($datePart);
+        if ($ts !== false) {
+            return date('d M Y', $ts) . ($timePart !== '' ? ', ' . $timePart : '');
+        }
+    }
+    $ts = strtotime($raw);
+    return $ts !== false ? date('d M Y, H:i', $ts) : $raw;
+}
+
 function dshParseRoute(array $ord): array {
-    $d    = @json_decode($ord['order_details_json'] ?? '{}', true);
-    $d    = is_array($d) ? $d : [];
-    $from = trim($d['origin'] ?? ($d['originAddress'] ?? ''));
-    $to   = trim($d['destination'] ?? ($d['destinationAddress'] ?? ''));
-    $svc  = strtolower($ord['service_type'] ?? '');
-    $time = $svc === 'storage'
-        ? trim($d['pickupTime'] ?? ($ord['_pickup_time'] ?? '—'))
-        : trim($d['dropoffTime'] ?? ($ord['_dropoff_time'] ?? '—'));
+    $d   = @json_decode($ord['order_details_json'] ?? '{}', true);
+    $d   = is_array($d) ? $d : [];
+    $svc = strtolower($ord['service_type'] ?? '');
+
+    if ($svc === 'storage') {
+        $storageLoc = dshCleanDetailValue($d['Storage Location'] ?? '')
+            ?: dshCleanDetailValue($ord['_pickup_location'] ?? '');
+        $originLoc = dshCleanDetailValue($d['Origin Location'] ?? $d['Origin Address'] ?? '');
+        $dropoffRaw = dshCleanDetailValue($d['Drop-off DateTime'] ?? $ord['_dropoff_time'] ?? '');
+        $pickupRaw  = dshCleanDetailValue($d['Pickup DateTime'] ?? $ord['_pickup_time'] ?? '');
+        $dropoffFmt = dshFormatQueueDateTime($dropoffRaw);
+        $pickupFmt  = dshFormatQueueDateTime($pickupRaw);
+        $duration   = ($dropoffFmt && $pickupFmt)
+            ? $dropoffFmt . ' → ' . $pickupFmt
+            : ($dropoffFmt ?: $pickupFmt);
+
+        return [
+            'is_storage'  => true,
+            'time'        => dshQueueTimeForOrder($ord, true) ?: '—',
+            'leg1_label'  => 'From',
+            'leg1_value'  => $originLoc ?: $storageLoc ?: '—',
+            'leg1_meta'   => $dropoffFmt !== '' ? 'Drop-off · ' . $dropoffFmt : '',
+            'leg2_label'  => 'Store',
+            'leg2_value'  => $storageLoc ?: '—',
+            'leg2_meta'   => $duration !== '' ? $duration : '',
+            'leg2_class'  => 'dsh-qrow__leg--store',
+        ];
+    }
+
+    $from = dshCleanDetailValue($d['origin'] ?? $d['originAddress'] ?? '')
+        ?: dshCleanDetailValue($ord['_pickup_location'] ?? '');
+    $to   = dshCleanDetailValue($d['destination'] ?? $d['destinationAddress'] ?? '')
+        ?: dshCleanDetailValue($ord['_dropoff_location'] ?? '');
+
     return [
-        'from' => $from ?: ($ord['_pickup_location']  ?? '—'),
-        'to'   => $to   ?: ($ord['_dropoff_location'] ?? '—'),
-        'time' => $time ?: '—',
+        'is_storage'  => false,
+        'time'        => dshQueueTimeForOrder($ord, false) ?: '—',
+        'leg1_label'  => 'From',
+        'leg1_value'  => $from ?: '—',
+        'leg1_meta'   => '',
+        'leg2_label'  => 'To',
+        'leg2_value'  => $to ?: '—',
+        'leg2_meta'   => '',
+        'leg2_class'  => 'dsh-qrow__leg--to',
     ];
 }
 ?>
@@ -216,7 +361,7 @@ function dshParseRoute(array $ord): array {
     <div class="dsh-shead">
         <span class="dsh-shead__ttl">Today's operations</span>
         <span class="dsh-shead__rule"></span>
-        <a href="<?= base_url('/order') ?>" class="dsh-shead__meta">View all orders →</a>
+        <a href="<?= ease_route('order') ?>" class="dsh-shead__meta">View all orders →</a>
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
@@ -225,36 +370,38 @@ function dshParseRoute(array $ord): array {
     <div class="dsh-ops-grid">
 
         <!-- ── Queue card ──────────────────────────────────── -->
-        <div class="dsh-card">
+        <div class="dsh-card dsh-card--queue">
             <div class="dsh-card__head">
-                <span class="dsh-card__pill"><span class="dsh-card__dot"></span>Live queue</span>
+                <span class="dsh-card__pill" id="opsQueuePill"><span class="dsh-card__dot"></span><span id="opsQueuePillText">Pending orders</span></span>
                 <div class="dsh-tabs" id="opsTabStrip">
-                    <button class="dsh-tab act" data-tab="pending">
+                    <button type="button" class="dsh-tab act" data-tab="pending" data-pill="Pending orders" data-active="<?= dshCountActive(!empty($pending_orders_display) ? $pending_orders_display : ($pendingFallbackOrders ?? [])) ?>">
                         Pending<?php if ($pendingCount): ?>&nbsp;<span class="dsh-tab__num"><?= $pendingCount ?></span><?php endif; ?>
                     </button>
-                    <button class="dsh-tab" data-tab="storage">
+                    <button type="button" class="dsh-tab" data-tab="storage" data-pill="Storage orders" data-active="<?= dshCountActive($storageOrders ?? []) ?>">
                         Storage<?php if (!empty($storageOrders)): ?>&nbsp;<span class="dsh-tab__num"><?= count($storageOrders) ?></span><?php endif; ?>
                     </button>
-                    <button class="dsh-tab" data-tab="delivery">
+                    <button type="button" class="dsh-tab" data-tab="delivery" data-pill="Delivery orders" data-active="<?= dshCountActive($deliveryOrders ?? []) ?>">
                         Delivery<?php if (!empty($deliveryOrders)): ?>&nbsp;<span class="dsh-tab__num"><?= count($deliveryOrders) ?></span><?php endif; ?>
                     </button>
                 </div>
-                <span class="dsh-queue-active">TODAY &middot; <?= $pendingCount + $inProgressCount ?> ACTIVE</span>
+                <span class="dsh-queue-active" id="opsQueueMeta">TODAY &middot; <?= dshCountActive(!empty($pending_orders_display) ? $pending_orders_display : ($pendingFallbackOrders ?? [])) ?> ACTIVE</span>
             </div>
 
-            <div class="dsh-card__scroll">
+            <div class="dsh-card__scroll dsh-card__scroll--queue">
 
                 <!-- Column header -->
                 <div class="dsh-queue-head">
                     <div>Time</div>
                     <div>Customer</div>
-                    <div>Route</div>
+                    <div>From</div>
+                    <div id="opsRouteCol2">To</div>
                     <div>Total</div>
                     <div>Status</div>
                 </div>
 
+                <div class="dsh-queue-body">
                 <!-- Pending -->
-                <div class="dsh-tab-pane active" id="tab-pending">
+                <div class="dsh-tab-pane dsh-tab-pane--queue active" id="tab-pending">
                     <?php $displayOrders = !empty($pending_orders_display) ? $pending_orders_display : ($pendingFallbackOrders ?? []); ?>
                     <?php if (!empty($pendingFallbackDate)): ?>
                         <div class="dsh-fallback-notice">
@@ -262,52 +409,19 @@ function dshParseRoute(array $ord): array {
                         </div>
                     <?php endif; ?>
                     <?php if (!empty($displayOrders)): ?>
-                        <div class="dsh-queue">
-                            <?php foreach (array_slice($displayOrders, 0, 10) as $ord): $r = dshParseRoute($ord); ?>
-                                <div class="dsh-qrow <?= dshStatusRowCls((int)$ord['status']) ?>"
-                                    onclick="window.location='<?= base_url('/admin/order_details/'.esc($ord['order_id'])) ?>'"
-                                    data-pickup-time="<?= esc($r['time']) ?>"
-                                    data-pickup-loc="<?= esc($r['from']) ?>"
-                                    data-dropoff-time="<?= esc($r['time']) ?>"
-                                    data-dropoff-loc="<?= esc($r['to']) ?>"
-                                    onmouseenter="dshShowTip(event,this)" onmouseleave="dshHideTip()" onmousemove="dshMoveTip(event)">
-                                    <div class="dsh-qrow__time">
-                                        <span class="dsh-qrow__hm"><?= esc($r['time']) ?></span>
-                                        <small class="dsh-qrow__type"><?= strtolower($ord['service_type']) === 'storage' ? 'Pickup' : 'Drop-off' ?></small>
-                                    </div>
-                                    <div class="dsh-qrow__who">
-                                        <div class="dsh-av"><?= dshInitials(trim($ord['first_name'].' '.$ord['last_name'])) ?></div>
-                                        <div>
-                                            <div class="dsh-qrow__nm"><?= esc($ord['first_name']) ?> <?= esc($ord['last_name']) ?></div>
-                                            <div class="dsh-qrow__sub">#<?= esc($ord['order_id']) ?> &middot; <?= dshSvcPill($ord['service_type']) ?></div>
-                                        </div>
-                                    </div>
-                                    <div class="dsh-qrow__route">
-                                        <div class="dsh-qrow__rtleg">
-                                            <span class="dsh-qrow__rtdot dsh-qrow__rtdot--from"></span>
-                                            <div>
-                                                <div class="dsh-qrow__rtlbl">FROM</div>
-                                                <div class="dsh-qrow__rtval"><?= esc($r['from']) ?></div>
-                                            </div>
-                                        </div>
-                                        <div class="dsh-qrow__rtleg">
-                                            <span class="dsh-qrow__rtdot dsh-qrow__rtdot--to"></span>
-                                            <div>
-                                                <div class="dsh-qrow__rtlbl">TO</div>
-                                                <div class="dsh-qrow__rtval"><?= esc($r['to']) ?></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="dsh-qrow__total">RM <?= number_format((float)$ord['amount'], 2) ?></div>
-                                    <div class="dsh-qrow__status" onclick="event.stopPropagation()">
-                                        <?= dshStatusBadge((int)$ord['status'], (int)$ord['order_id']) ?>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                        <div class="dsh-queue-pane-inner" style="--dsh-queue-rows: <?= min(count($displayOrders), $dshQueueLimit) ?>">
+                            <div class="dsh-queue">
+                            <?php foreach (array_slice($displayOrders, 0, $dshQueueLimit) as $ord):
+                                $timeLabel = strtolower($ord['service_type'] ?? '') === 'storage' ? 'Pickup' : 'Drop-off';
+                                dshRenderQueueRow($ord, $timeLabel);
+                            endforeach; ?>
+                            </div>
                         </div>
-                        <?php if (count($displayOrders) > 10): ?>
-                            <div class="dsh-more-link"><a href="<?= base_url('/order?status=0') ?>">+ <?= count($displayOrders) - 10 ?> more — View all pending</a></div>
-                        <?php endif; ?>
+                        <div class="dsh-more-link dsh-more-link--foot">
+                            <a href="<?= ease_route('order') ?>">
+                                <?php if (count($displayOrders) > $dshQueueLimit): ?>+ <?= count($displayOrders) - $dshQueueLimit ?> more &mdash; <?php endif; ?>View all orders
+                            </a>
+                        </div>
                     <?php else: ?>
                         <div class="dsh-empty">
                             <i class="fas fa-check-circle" style="color:#1E8E3E;opacity:1;"></i>
@@ -317,131 +431,66 @@ function dshParseRoute(array $ord): array {
                 </div>
 
                 <!-- Storage -->
-                <div class="dsh-tab-pane" id="tab-storage">
+                <div class="dsh-tab-pane dsh-tab-pane--queue" id="tab-storage">
                     <?php if (!empty($storageOrders)): ?>
-                        <div class="dsh-queue">
-                            <?php foreach (array_slice($storageOrders, 0, 10) as $ord): $r = dshParseRoute($ord); ?>
-                                <div class="dsh-qrow <?= dshStatusRowCls((int)$ord['status']) ?>"
-                                    onclick="window.location='<?= base_url('/admin/order_details/'.esc($ord['order_id'])) ?>'"
-                                    data-pickup-time="<?= esc($r['time']) ?>"
-                                    data-pickup-loc="<?= esc($r['from']) ?>"
-                                    data-dropoff-time="<?= esc($r['time']) ?>"
-                                    data-dropoff-loc="<?= esc($r['to']) ?>"
-                                    onmouseenter="dshShowTip(event,this)" onmouseleave="dshHideTip()" onmousemove="dshMoveTip(event)">
-                                    <div class="dsh-qrow__time">
-                                        <span class="dsh-qrow__hm"><?= esc($r['time']) ?></span>
-                                        <small class="dsh-qrow__type">Pickup</small>
-                                    </div>
-                                    <div class="dsh-qrow__who">
-                                        <div class="dsh-av"><?= dshInitials(trim($ord['first_name'].' '.$ord['last_name'])) ?></div>
-                                        <div>
-                                            <div class="dsh-qrow__nm"><?= esc($ord['first_name']) ?> <?= esc($ord['last_name']) ?></div>
-                                            <div class="dsh-qrow__sub">#<?= esc($ord['order_id']) ?> &middot; <?= dshSvcPill($ord['service_type']) ?></div>
-                                        </div>
-                                    </div>
-                                    <div class="dsh-qrow__route">
-                                        <div class="dsh-qrow__rtleg">
-                                            <span class="dsh-qrow__rtdot dsh-qrow__rtdot--from"></span>
-                                            <div>
-                                                <div class="dsh-qrow__rtlbl">FROM</div>
-                                                <div class="dsh-qrow__rtval"><?= esc($r['from']) ?></div>
-                                            </div>
-                                        </div>
-                                        <div class="dsh-qrow__rtleg">
-                                            <span class="dsh-qrow__rtdot dsh-qrow__rtdot--to"></span>
-                                            <div>
-                                                <div class="dsh-qrow__rtlbl">TO</div>
-                                                <div class="dsh-qrow__rtval"><?= esc($r['to']) ?></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="dsh-qrow__total">RM <?= number_format((float)$ord['amount'], 2) ?></div>
-                                    <div class="dsh-qrow__status" onclick="event.stopPropagation()">
-                                        <?= dshStatusBadge((int)$ord['status'], (int)$ord['order_id']) ?>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                        <div class="dsh-queue-pane-inner" style="--dsh-queue-rows: <?= min(count($storageOrders), $dshQueueLimit) ?>">
+                            <div class="dsh-queue">
+                                <?php foreach (array_slice($storageOrders, 0, $dshQueueLimit) as $ord):
+                                    $timeLabel = 'Pickup';
+                                    dshRenderQueueRow($ord, $timeLabel);
+                                endforeach; ?>
+                            </div>
                         </div>
-                        <?php if (count($storageOrders) > 10): ?>
-                            <div class="dsh-more-link"><a href="<?= base_url('/order?service_type=storage') ?>">+ <?= count($storageOrders) - 10 ?> more</a></div>
-                        <?php endif; ?>
+                        <div class="dsh-more-link dsh-more-link--foot">
+                            <a href="<?= ease_route('order') ?>">
+                                <?php if (count($storageOrders) > $dshQueueLimit): ?>+ <?= count($storageOrders) - $dshQueueLimit ?> more &mdash; <?php endif; ?>View all orders
+                            </a>
+                        </div>
                     <?php else: ?>
                         <div class="dsh-empty"><i class="fas fa-warehouse"></i><p>No active storage orders.</p></div>
                     <?php endif; ?>
                 </div>
 
                 <!-- Delivery -->
-                <div class="dsh-tab-pane" id="tab-delivery">
+                <div class="dsh-tab-pane dsh-tab-pane--queue" id="tab-delivery">
                     <?php if (!empty($deliveryOrders)): ?>
-                        <div class="dsh-queue">
-                            <?php foreach (array_slice($deliveryOrders, 0, 10) as $ord): $r = dshParseRoute($ord); ?>
-                                <div class="dsh-qrow <?= dshStatusRowCls((int)$ord['status']) ?>"
-                                    onclick="window.location='<?= base_url('/admin/order_details/'.esc($ord['order_id'])) ?>'"
-                                    data-pickup-time="<?= esc($r['time']) ?>"
-                                    data-pickup-loc="<?= esc($r['from']) ?>"
-                                    data-dropoff-time="<?= esc($r['time']) ?>"
-                                    data-dropoff-loc="<?= esc($r['to']) ?>"
-                                    onmouseenter="dshShowTip(event,this)" onmouseleave="dshHideTip()" onmousemove="dshMoveTip(event)">
-                                    <div class="dsh-qrow__time">
-                                        <span class="dsh-qrow__hm"><?= esc($r['time']) ?></span>
-                                        <small class="dsh-qrow__type">Drop-off</small>
-                                    </div>
-                                    <div class="dsh-qrow__who">
-                                        <div class="dsh-av"><?= dshInitials(trim($ord['first_name'].' '.$ord['last_name'])) ?></div>
-                                        <div>
-                                            <div class="dsh-qrow__nm"><?= esc($ord['first_name']) ?> <?= esc($ord['last_name']) ?></div>
-                                            <div class="dsh-qrow__sub">#<?= esc($ord['order_id']) ?> &middot; <?= dshSvcPill($ord['service_type']) ?></div>
-                                        </div>
-                                    </div>
-                                    <div class="dsh-qrow__route">
-                                        <div class="dsh-qrow__rtleg">
-                                            <span class="dsh-qrow__rtdot dsh-qrow__rtdot--from"></span>
-                                            <div>
-                                                <div class="dsh-qrow__rtlbl">FROM</div>
-                                                <div class="dsh-qrow__rtval"><?= esc($r['from']) ?></div>
-                                            </div>
-                                        </div>
-                                        <div class="dsh-qrow__rtleg">
-                                            <span class="dsh-qrow__rtdot dsh-qrow__rtdot--to"></span>
-                                            <div>
-                                                <div class="dsh-qrow__rtlbl">TO</div>
-                                                <div class="dsh-qrow__rtval"><?= esc($r['to']) ?></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="dsh-qrow__total">RM <?= number_format((float)$ord['amount'], 2) ?></div>
-                                    <div class="dsh-qrow__status" onclick="event.stopPropagation()">
-                                        <?= dshStatusBadge((int)$ord['status'], (int)$ord['order_id']) ?>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                        <div class="dsh-queue-pane-inner" style="--dsh-queue-rows: <?= min(count($deliveryOrders), $dshQueueLimit) ?>">
+                            <div class="dsh-queue">
+                                <?php foreach (array_slice($deliveryOrders, 0, $dshQueueLimit) as $ord):
+                                    $timeLabel = 'Drop-off';
+                                    dshRenderQueueRow($ord, $timeLabel);
+                                endforeach; ?>
+                            </div>
                         </div>
-                        <?php if (count($deliveryOrders) > 10): ?>
-                            <div class="dsh-more-link"><a href="<?= base_url('/order?service_type=delivery') ?>">+ <?= count($deliveryOrders) - 10 ?> more</a></div>
-                        <?php endif; ?>
+                        <div class="dsh-more-link dsh-more-link--foot">
+                            <a href="<?= ease_route('order') ?>">
+                                <?php if (count($deliveryOrders) > $dshQueueLimit): ?>+ <?= count($deliveryOrders) - $dshQueueLimit ?> more &mdash; <?php endif; ?>View all orders
+                            </a>
+                        </div>
                     <?php else: ?>
                         <div class="dsh-empty"><i class="fas fa-truck"></i><p>No active delivery orders.</p></div>
                     <?php endif; ?>
                 </div>
+                </div><!-- /dsh-queue-body -->
 
             </div><!-- /dsh-card__scroll -->
         </div><!-- /queue card -->
 
         <!-- ── Calendar card ────────────────────────────────── -->
-        <div class="dsh-card">
+        <div class="dsh-card dsh-card--calendar">
             <div class="dsh-card__head">
-                <span class="dsh-card__pill"><span class="dsh-card__dot" style="background:#ECE2B4;"></span>Order Calendar</span>
+                <span class="dsh-card__pill"><span class="dsh-card__dot" style="background:#ECE2B4;"></span>Order calendar</span>
                 <div class="d-flex align-items-center gap-1 ms-auto">
-                    <button class="dsh-cal-nav-btn" id="calPrev"><i class="fas fa-chevron-left"></i></button>
-                    <span id="calMonthLabel" class="dsh-card__meta" style="margin-left:0;"></span>
-                    <button class="dsh-cal-nav-btn" id="calNext"><i class="fas fa-chevron-right"></i></button>
+                    <button type="button" class="dsh-cal-nav-btn" id="calPrev" aria-label="Previous month"><i class="fas fa-chevron-left"></i></button>
+                    <span id="calMonthLabel" class="dsh-card__meta dsh-cal-month-label"></span>
+                    <button type="button" class="dsh-cal-nav-btn" id="calNext" aria-label="Next month"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
-            <div style="padding: 12px 14px 10px;">
-                <div id="calendarGrid" class="dsh-cal mb-2"></div>
-                <div class="dsh-cal-legend justify-content-end mb-2">
+            <div class="dsh-cal-wrap">
+                <div id="calendarGrid" class="dsh-cal"></div>
+                <div class="dsh-cal-legend">
                     <span class="dsh-cal-legend-swatch" style="background:#EEF2F7;"></span>None
-                    <span class="dsh-cal-legend-swatch" style="background:#FFE9A6;"></span>1–2
+                    <span class="dsh-cal-legend-swatch" style="background:#FFE9A6;"></span>1–2 due
                     <span class="dsh-cal-legend-swatch" style="background:#FFD95E;"></span>3–5
                     <span class="dsh-cal-legend-swatch" style="background:#F2BE00;"></span>6–10
                     <span class="dsh-cal-legend-swatch" style="background:#D7A300;"></span>11+
@@ -449,16 +498,8 @@ function dshParseRoute(array $ord): array {
                 <div id="calDetailPanel" class="dsh-cal-detail">
                     <div class="dsh-cal-detail-title">
                         <span id="calDetailDate"></span>
-                        <button onclick="document.getElementById('calDetailPanel').classList.remove('visible')"
-                            style="border:none;background:rgba(0,0,0,.08);border-radius:50%;width:20px;height:20px;
-                            display:flex;align-items:center;justify-content:center;font-size:.62rem;cursor:pointer;flex-shrink:0;">
-                            <i class="fas fa-times"></i>
-                        </button>
                     </div>
                     <div id="calDetailBody"></div>
-                    <a id="calDetailLink" href="#" class="rpt-export-btn d-inline-block mt-2" style="font-size:.68rem;padding:4px 11px;">
-                        <i class="fas fa-list me-1"></i>View Orders for this Day
-                    </a>
                 </div>
             </div>
         </div><!-- /calendar card -->
@@ -471,7 +512,7 @@ function dshParseRoute(array $ord): array {
     <div class="dsh-shead">
         <span class="dsh-shead__ttl">Recent activity</span>
         <span class="dsh-shead__rule"></span>
-        <span class="dsh-shead__meta">Last 30 events</span>
+        <span class="dsh-shead__meta">Latest 6</span>
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
@@ -491,7 +532,7 @@ function dshParseRoute(array $ord): array {
                     'ico_cls' => 'dsh-activity-icon--message',
                     'title'   => $unreadMessages.' unread message'.($unreadMessages !== 1 ? 's' : ''),
                     'desc'    => 'Customer enquiries awaiting reply',
-                    'link'    => base_url('/admin/contact'),
+                    'link'    => ease_route('contact'),
                 ];
             }
             if ($pendingRefunds > 0) {
@@ -501,7 +542,7 @@ function dshParseRoute(array $ord): array {
                     'ico_cls' => 'dsh-activity-icon--message',
                     'title'   => $pendingRefunds.' pending refund'.($pendingRefunds !== 1 ? 's' : ''),
                     'desc'    => 'Awaiting admin action',
-                    'link'    => base_url('/admin/refund_request'),
+                    'link'    => ease_route('refund'),
                 ];
             }
             foreach ($recentActivity as $log) {
@@ -512,7 +553,7 @@ function dshParseRoute(array $ord): array {
                     'ico_cls' => 'dsh-activity-icon--activity',
                     'title'   => esc($log['action']),
                     'desc'    => 'by '.esc($log['username']).($oName ? ' · '.esc($oName) : ''),
-                    'link'    => base_url('/order'),
+                    'link'    => ease_route('order'),
                 ];
             }
             foreach ($recentOrders as $ord) {
@@ -522,7 +563,7 @@ function dshParseRoute(array $ord): array {
                     'ico_cls' => 'dsh-activity-icon--order',
                     'title'   => 'New '.strtoupper(esc($ord['service_type'])).' order placed',
                     'desc'    => esc($ord['first_name']).' '.esc($ord['last_name']).' · RM '.number_format((float)$ord['amount'],2),
-                    'link'    => base_url('/order'),
+                    'link'    => ease_route('order'),
                 ];
             }
             foreach ($recentMessages as $msg) {
@@ -532,11 +573,11 @@ function dshParseRoute(array $ord): array {
                     'ico_cls' => 'dsh-activity-icon--message',
                     'title'   => 'Message: '.esc($msg['subject'] ?? '(no subject)'),
                     'desc'    => 'From '.esc($msg['email'] ?? '—'),
-                    'link'    => base_url('/admin/contact'),
+                    'link'    => ease_route('contact'),
                 ];
             }
             usort($feedItems, static fn($a,$b) => strtotime($b['time']) - strtotime($a['time']));
-            $feedItems = array_slice($feedItems, 0, 30);
+            $feedItems = array_slice($feedItems, 0, 6);
             ?>
             <?php if (!empty($feedItems)): ?>
                 <div id="dshFeedList">
@@ -551,11 +592,6 @@ function dshParseRoute(array $ord): array {
                     </a>
                 <?php endforeach; ?>
                 </div>
-                <div id="dshFeedNav" class="dsh-feed-nav">
-                    <button id="dshFeedPrev" class="dsh-feed-nav-btn"><i class="fas fa-chevron-left me-1"></i>Prev</button>
-                    <span id="dshFeedInfo" class="dsh-feed-nav-info"></span>
-                    <button id="dshFeedNext" class="dsh-feed-nav-btn">Next<i class="fas fa-chevron-right ms-1"></i></button>
-                </div>
             <?php else: ?>
                 <div class="text-center py-3" style="color:#9CA3AF;font-size:.76rem;font-family:'Oxanium',sans-serif;">No recent activity</div>
             <?php endif; ?>
@@ -564,13 +600,15 @@ function dshParseRoute(array $ord): array {
 
 </div><!-- /dsh-page -->
 
-<div id="dshRowTooltip"></div>
-
 <script>
-var CHANGE_STATUS_BASE = '<?= base_url('/change_status/') ?>';
-var ORDER_BASE         = '<?= base_url('/order') ?>';
-var heatData           = <?= json_encode($calendarHeatmap,  JSON_THROW_ON_ERROR) ?>;
-var calOrders          = <?= json_encode($calendarOrders,   JSON_THROW_ON_ERROR) ?>;
+var DSH_ROUTES = <?= json_encode([
+    'changeStatus' => ease_route('change_status') . '/',
+    'orderDetails' => ease_route('order_details') . '/',
+], JSON_THROW_ON_ERROR) ?>;
+var CHANGE_STATUS_BASE = DSH_ROUTES.changeStatus;
+var ORDER_DETAIL_BASE  = DSH_ROUTES.orderDetails;
+var heatData             = <?= json_encode($calendarHeatmap,  JSON_THROW_ON_ERROR) ?>;
+var calOrders            = <?= json_encode($calendarOrders,   JSON_THROW_ON_ERROR) ?>;
 
 // ── Live clock ──────────────────────────────────────────────────────────
 (function () {
@@ -592,6 +630,15 @@ function switchTab(tabId) {
     document.querySelectorAll('.dsh-tab-pane').forEach(function(p) { p.classList.remove('active'); });
     var t = document.getElementById('tab-' + tabId);
     if (t) t.classList.add('active');
+    var btn = document.querySelector('#opsTabStrip .dsh-tab[data-tab="' + tabId + '"]');
+    if (btn) {
+        var pill = document.getElementById('opsQueuePillText');
+        var meta = document.getElementById('opsQueueMeta');
+        if (pill) pill.textContent = btn.dataset.pill || tabId;
+        if (meta) meta.textContent = 'TODAY · ' + (btn.dataset.active || '0') + ' ACTIVE';
+    }
+    var routeCol2 = document.getElementById('opsRouteCol2');
+    if (routeCol2) routeCol2.textContent = tabId === 'storage' ? 'Store' : 'To';
 }
 document.querySelectorAll('#opsTabStrip .dsh-tab').forEach(function(pill) {
     pill.addEventListener('click', function() { switchTab(this.dataset.tab); });
@@ -637,10 +684,11 @@ function cycleStatus(el) {
 }
 
 // ── Calendar ────────────────────────────────────────────────────────────
-var calYear  = <?= (int)date('Y') ?>;
-var calMonth = <?= (int)date('m') ?>;
-var MONTHS   = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-var DAYS     = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+var calYear     = <?= (int)date('Y') ?>;
+var calMonth    = <?= (int)date('m') ?>;
+var calTodayStr = '<?= date('Y-m-d') ?>';
+var MONTHS      = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var DAYS        = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 
 function heatClass(t) {
     if (!t)     return '';
@@ -649,76 +697,87 @@ function heatClass(t) {
     if (t <= 10)return 'cal-has-data cal-has-data-l3';
     return 'cal-has-data cal-has-data-l4';
 }
+function calDayTip(info) {
+    if (!info.total) return 'No pickups or drop-offs scheduled';
+    var parts = [];
+    if (info.pickups)  parts.push(info.pickups + ' pickup' + (info.pickups !== 1 ? 's' : ''));
+    if (info.dropoffs) parts.push(info.dropoffs + ' drop-off' + (info.dropoffs !== 1 ? 's' : ''));
+    return parts.join(', ');
+}
 function renderCal(year, month) {
-    document.getElementById('calMonthLabel').textContent = MONTHS[month-1]+' '+year;
-    var first = new Date(year, month-1, 1).getDay();
+    document.getElementById('calMonthLabel').textContent = MONTHS[month - 1] + ' ' + year;
+    var first = new Date(year, month - 1, 1).getDay();
     var days  = new Date(year, month, 0).getDate();
-    var today = new Date().toISOString().slice(0,10);
+    var today = new Date().toISOString().slice(0, 10);
     var html  = '<div class="cal-grid">';
-    DAYS.forEach(function(d){ html += '<div class="dsh-cal-dow">'+d+'</div>'; });
+    DAYS.forEach(function(d) { html += '<div class="dsh-cal-dow">' + d + '</div>'; });
     for (var i = 0; i < first; i++) html += '<div class="cal-day cal-blank"></div>';
     for (var day = 1; day <= days; day++) {
-        var ds   = year+'-'+String(month).padStart(2,'0')+'-'+String(day).padStart(2,'0');
-        var info = heatData[ds] || {created:0,pickups:0,dropoffs:0,total:0};
+        var ds   = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+        var info = heatData[ds] || { pickups: 0, dropoffs: 0, total: 0 };
         var hc   = heatClass(info.total);
-        var cls  = 'cal-day cal-clickable'+(ds===today?' cal-today':'')+(hc?' '+hc:'');
-        var tip  = info.total===0?'No activity':info.total+' activities — '+info.created+' new, '+info.pickups+' pickups, '+info.dropoffs+' drop-offs';
-        html += '<div class="'+cls+'" title="'+ds+': '+tip+'" onclick="showCalDetail(\''+ds+'\')">'+day+'</div>';
+        var cls  = 'cal-day cal-clickable' + (ds === today ? ' cal-today' : '') + (hc ? ' ' + hc : '');
+        var tip  = calDayTip(info);
+        html += '<div class="' + cls + '" title="' + ds + ': ' + tip + '" onclick="showCalDetail(\'' + ds + '\')">' + day + '</div>';
     }
     html += '</div>';
     document.getElementById('calendarGrid').innerHTML = html;
+    if (year === <?= (int)date('Y') ?> && month === <?= (int)date('m') ?>) {
+        showCalDetail(calTodayStr);
+    } else {
+        showCalDetailHint();
+    }
+}
+function showCalDetailHint() {
+    document.getElementById('calDetailDate').textContent = 'Select a date';
+    document.getElementById('calDetailBody').innerHTML =
+        '<p class="dsh-cal-detail-hint">Click a day to see orders due for pickup or drop-off.</p>';
 }
 function showCalDetail(ds) {
-    var info  = heatData[ds] || {created:0,pickups:0,dropoffs:0,total:0};
-    var panel = document.getElementById('calDetailPanel');
     var parts = ds.split('-');
-    var dto   = new Date(+parts[0], +parts[1]-1, +parts[2]);
-    document.getElementById('calDetailDate').textContent = dto.toLocaleDateString('en-MY',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    var dto   = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+    document.getElementById('calDetailDate').textContent = dto.toLocaleDateString('en-MY', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+
     var html  = '';
-    if (info.total) {
-        html += '<div class="dsh-cal-detail-row" style="font-size:.7rem;margin-bottom:6px;">';
-        if (info.created)  html += '<span style="margin-right:10px;"><strong>'+info.created+'</strong> new</span>';
-        if (info.pickups)  html += '<span style="margin-right:10px;"><strong>'+info.pickups+'</strong> pickups</span>';
-        if (info.dropoffs) html += '<span><strong>'+info.dropoffs+'</strong> drop-offs</span>';
-        html += '</div>';
-    }
-    var matched = calOrders.filter(function(o){ return o.created===ds||o.pickup===ds||o.dropoff===ds; });
-    if (matched.length > 0) {
-        matched.slice(0,6).forEach(function(o){
-            var svcCls = o.service&&o.service.toLowerCase()==='storage'?'dsh-svc-pill--storage':'dsh-svc-pill--delivery';
-            var stMap  = {0:'dsh-status--pending',1:'dsh-status--progress',2:'dsh-status--completed'};
-            var stLbl  = ['Pending','In Progress','Completed'];
-            html += '<div class="dsh-cal-order-card">'
-                  + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">'
-                  + '<strong style="font-size:.74rem;">#'+o.id+' — '+o.name+'</strong>'
-                  + '<span class="dsh-svc-pill '+svcCls+'">'+o.service+'</span></div>';
-            if (o.pickup)  html += '<div style="font-size:.68rem;color:#6B7280;"><i class="fas fa-truck me-1" style="color:#F2BE00;"></i>Pickup: '+o.pickup+(o.pickup_t?' at '+o.pickup_t:'')+'</div>';
-            if (o.dropoff) html += '<div style="font-size:.68rem;color:#6B7280;"><i class="fas fa-box-open me-1" style="color:#F2BE00;"></i>Drop-off: '+o.dropoff+(o.dropoff_t?' at '+o.dropoff_t:'')+'</div>';
-            html += '<div style="margin-top:3px;"><span class="dsh-status-badge '+stMap[o.status]+'" style="pointer-events:none;cursor:default;">'+stLbl[o.status]+'</span>'
-                  + '<span style="font-size:.68rem;color:#6B7280;margin-left:8px;">RM '+o.amount.toFixed(2)+'</span></div></div>';
+    var items = [];
+    calOrders.forEach(function(o) {
+        if (o.pickup === ds) {
+            items.push({
+                id: o.id, name: o.name, kind: 'Pickup',
+                time: o.pickup_t || '—', from: o.from, to: o.to
+            });
+        }
+        if (o.dropoff === ds) {
+            items.push({
+                id: o.id, name: o.name, kind: 'Drop-off',
+                time: o.dropoff_t || '—', from: o.from, to: o.to
+            });
+        }
+    });
+
+    if (items.length === 0) {
+        html = '<p class="dsh-cal-detail-hint">No pickups or drop-offs scheduled this day.</p>';
+    } else {
+        items.forEach(function(item) {
+            html += '<a class="dsh-cal-order-link" href="' + ORDER_DETAIL_BASE + item.id + '">'
+                + '<span class="dsh-cal-order-link__head"><strong>#' + item.id + '</strong> ' + item.name + '</span>'
+                + '<span class="dsh-cal-order-link__meta">' + item.kind + ' · ' + item.time + '</span>'
+                + '<span class="dsh-cal-order-link__route">' + item.from + ' → ' + item.to + '</span>'
+                + '</a>';
         });
-        if (matched.length > 6) html += '<div style="font-size:.68rem;color:#9CA3AF;margin-top:4px;">+ '+(matched.length-6)+' more</div>';
-    } else if (!info.total) {
-        html = '<div style="font-size:.74rem;color:#9CA3AF;">No activity on this date.</div>';
     }
     document.getElementById('calDetailBody').innerHTML = html;
-    document.getElementById('calDetailLink').href = ORDER_BASE+'?start_date='+ds+'&end_date='+ds;
-    panel.classList.add('visible');
-    document.querySelectorAll('#calendarGrid .cal-selected').forEach(function(e){ e.classList.remove('cal-selected'); });
-    document.querySelectorAll('#calendarGrid .cal-day.cal-clickable').forEach(function(e){
-        if (e.title && e.title.startsWith(ds)) e.classList.add('cal-selected');
-    });
 }
 renderCal(calYear, calMonth);
 document.getElementById('calPrev').addEventListener('click', function(){
     calMonth--; if (calMonth<1){ calMonth=12; calYear--; }
     renderCal(calYear, calMonth);
-    document.getElementById('calDetailPanel').classList.remove('visible');
 });
 document.getElementById('calNext').addEventListener('click', function(){
     calMonth++; if (calMonth>12){ calMonth=1; calYear++; }
     renderCal(calYear, calMonth);
-    document.getElementById('calDetailPanel').classList.remove('visible');
 });
 
 // ── KPI cycling ─────────────────────────────────────────────────────────
@@ -752,49 +811,6 @@ document.getElementById('calNext').addEventListener('click', function(){
     });
 })();
 
-// ── Activity feed pagination ─────────────────────────────────────────────
-(function() {
-    var items    = Array.from(document.querySelectorAll('#dshFeedList .dsh-activity-item'));
-    var perPage  = 10;
-    var page     = 0;
-    var total    = Math.ceil(items.length / perPage);
-    var prevBtn  = document.getElementById('dshFeedPrev');
-    var nextBtn  = document.getElementById('dshFeedNext');
-    var infoEl   = document.getElementById('dshFeedInfo');
-    var nav      = document.getElementById('dshFeedNav');
-
-    function render() {
-        var start = page * perPage;
-        items.forEach(function(el, i) {
-            el.style.display = (i >= start && i < start + perPage) ? '' : 'none';
-        });
-        if (prevBtn) prevBtn.disabled = page === 0;
-        if (nextBtn) nextBtn.disabled = page >= total - 1;
-        if (infoEl)  infoEl.textContent = (page + 1) + ' / ' + total;
-    }
-    if (items.length <= perPage && nav) nav.style.display = 'none';
-    if (prevBtn) prevBtn.addEventListener('click', function() { if (page > 0) { page--; render(); } });
-    if (nextBtn) nextBtn.addEventListener('click', function() { if (page < total - 1) { page++; render(); } });
-    render();
-})();
-
-// ── Row tooltip ─────────────────────────────────────────────────────────
-var _dshTip = document.getElementById('dshRowTooltip');
-function dshShowTip(e, row) {
-    var pt = row.dataset.pickupTime  || '—';
-    var pl = row.dataset.pickupLoc   || '—';
-    var dt = row.dataset.dropoffTime || '—';
-    var dl = row.dataset.dropoffLoc  || '—';
-    _dshTip.innerHTML =
-        '<div class="dsh-tt-row"><i class="fas fa-truck"></i><span class="dsh-tt-label">Pickup</span><span class="dsh-tt-val">'+pt+'</span></div>'
-      + '<div class="dsh-tt-row"><i class="fas fa-map-marker-alt"></i><span class="dsh-tt-label">Location</span><span class="dsh-tt-val">'+pl+'</span></div>'
-      + '<div style="margin-top:5px;" class="dsh-tt-row"><i class="fas fa-box-open"></i><span class="dsh-tt-label">Drop-off</span><span class="dsh-tt-val">'+dt+'</span></div>'
-      + '<div class="dsh-tt-row"><i class="fas fa-map-marker-alt"></i><span class="dsh-tt-label">Location</span><span class="dsh-tt-val">'+dl+'</span></div>';
-    _dshTip.style.display = 'block';
-    dshMoveTip(e);
-}
-function dshMoveTip(e) { _dshTip.style.left=(e.clientX+14)+'px'; _dshTip.style.top=(e.clientY+14)+'px'; }
-function dshHideTip()  { _dshTip.style.display='none'; }
 </script>
 
 <?= $this->include('admin/footer'); ?>
