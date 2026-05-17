@@ -100,8 +100,8 @@
                                 class="form-control rpt-input"
                                 value="<?= esc(old('username', $user['username'])) ?>"
                                 required>
-                            <?php if (isset($validation) && $validation->hasError('username')): ?>
-                                <small class="text-danger d-block mt-1"><?= $validation->getError('username') ?></small>
+                            <?php if (!empty($errors['username'])): ?>
+                                <small class="text-danger d-block mt-1"><?= esc($errors['username']) ?></small>
                             <?php endif; ?>
                         </div>
 
@@ -117,8 +117,8 @@
                                 class="form-control rpt-input"
                                 value="<?= esc(old('email', $user['email'])) ?>"
                                 required>
-                            <?php if (isset($validation) && $validation->hasError('email')): ?>
-                                <small class="text-danger d-block mt-1"><?= $validation->getError('email') ?></small>
+                            <?php if (!empty($errors['email'])): ?>
+                                <small class="text-danger d-block mt-1"><?= esc($errors['email']) ?></small>
                             <?php endif; ?>
                         </div>
 

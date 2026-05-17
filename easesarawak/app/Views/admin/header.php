@@ -730,14 +730,14 @@ function timeAgo($datetime)
                                 </a>
                                 <ul class="dropdown-menu dropdown-user ease-user-dropdown animated fadeIn">
                                     <li>
-                                        <div class="user-box ease-user-box">
-                                            <div class="avatar-lg ease-user-avatar">
+                                        <div class="ease-user-header">
+                                            <div class="ease-user-avatar">
                                                 <img
                                                     src="<?= esc($user['profile_picture'] ? base_url($user['profile_picture']) : base_url('assets/images/user.png')) ?>"
                                                     alt="image profile"
                                                     class="avatar-img rounded-circle" />
                                             </div>
-                                            <div class="u-text ease-user-text">
+                                            <div class="ease-user-meta">
                                                 <h4 class="ease-user-name"><?= esc($session->get('username')) ?></h4>
                                                 <p class="ease-user-email"><?= esc($session->get('email')) ?></p>
                                                 <?php
@@ -763,7 +763,7 @@ function timeAgo($datetime)
                                                 <i class="fas fa-key"></i>
                                                 <span>Change Password</span>
                                             </a>
-                                            <div class="ease-user-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <a class="dropdown-item ease-user-item ease-user-logout" href="<?= base_url('/logout') ?>">
                                                 <i class="fas fa-sign-out-alt"></i>
                                                 <span>Logout</span>

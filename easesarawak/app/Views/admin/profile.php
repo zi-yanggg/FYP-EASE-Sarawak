@@ -13,19 +13,6 @@
         </div>
     </div>
 
-    <?php if (session()->getFlashdata('success')): ?>
-        <div id="profToast" class="prof-toast" role="status" aria-live="polite">
-            <div class="prof-toast__icon"><i class="fas fa-check-circle"></i></div>
-            <div class="prof-toast__body">
-                <div class="prof-toast__title">Success</div>
-                <div class="prof-toast__msg"><?= esc(session()->getFlashdata('success')) ?></div>
-            </div>
-            <button type="button" class="prof-toast__close" onclick="profDismissToast()" title="Dismiss">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="prof-toast__bar"></div>
-        </div>
-    <?php endif; ?>
 
     <!-- ── Main Layout ── -->
     <div class="row g-3 align-items-stretch">
@@ -107,7 +94,7 @@
                         <span class="rpt-title"><i class="fas fa-info-circle me-2"></i>Account</span>
                     </div>
                     <div class="card-body prof-card-body prof-info-body">
-                        <div class="prof-info-row mb-3">
+                        <div class="prof-info-row mb-2">
                             <span class="prof-info-label">Member Since</span>
                             <span class="prof-info-value"><?= date('d M Y', strtotime($user['created_date'])) ?></span>
                         </div>
@@ -138,18 +125,5 @@
     </div>
 
 </div>
-
-<script>
-(function() {
-    var toast = document.getElementById('profToast');
-    if (!toast) return;
-    var timer = setTimeout(profDismissToast, 4500);
-    window.profDismissToast = function() {
-        clearTimeout(timer);
-        toast.classList.add('prof-toast--out');
-        setTimeout(function() { toast.remove(); }, 380);
-    };
-})();
-</script>
 
 <?= $this->include('admin/footer'); ?>

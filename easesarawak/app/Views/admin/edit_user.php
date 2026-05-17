@@ -1,7 +1,9 @@
 <?= $this->include('admin/header'); ?>
 
-<div class="container">
-    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2" style="padding-left: 40px;">
+<link rel="stylesheet" href="<?= base_url('assets/css/admin/user.css') ?>">
+
+<div class="ord-page">
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div>
             <div class="ease-crumb">EASE Admin &middot; Users &middot; <b>Edit User</b></div>
             <h1 class="ease-page-title">Edit User</h1>
@@ -10,39 +12,61 @@
             <i class="fas fa-arrow-left me-1"></i> Back to Users
         </a>
     </div>
-    <!-- Feedback messages -->
+
     <?php if (session()->getFlashdata('message')): ?>
-        <div class="alert alert-info text-center"><?= session()->getFlashdata('message') ?></div>
-    <?php endif; ?>
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger text-center"><?= session()->getFlashdata('error') ?></div>
-    <?php endif; ?>
-
-    <div class="card shadow-sm" style="margin: 20px;">
-        <div class="card-body">
-            <form action="<?= base_url('/update_user/' . $user['user_id']); ?>" method="post">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" name="username" id="username" class="form-control" value="<?= esc(old('username', $user['username'])) ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" id="email" class="form-control" value="<?= esc(old('email', $user['email'])) ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="role" class="form-label">Role</label>
-                    <select name="role" id="role" class="form-select" required>
-                        <option value="0" <?= $user['role'] == 0 ? 'selected' : '' ?>>Admin</option>
-                        <option value="1" <?= $user['role'] == 1 ? 'selected' : '' ?>>Superadmin</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-update"><i class="fa fa-save me-1"></i>Update</button>
-                <a href="<?= base_url('/user') ?>" class="btn btn-cancel ms-2">Cancel</a>
-            </form>
+        <div class="usr-flash usr-flash--info">
+            <i class="fas fa-check-circle"></i>
+            <?= session()->getFlashdata('message') ?>
         </div>
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('error')): ?>
+        <div class="usr-flash usr-flash--error">
+            <i class="fas fa-exclamation-circle"></i>
+            <?= session()->getFlashdata('error') ?>
+        </div>
+    <?php endif; ?>
+
+    <?php $errors = session()->getFlashdata('errors'); ?>
+    <?php if (!empty($errors)): ?>
+        <div class="usr-flash usr-flash--error">
+            <i class="fas fa-exclamation-circle"></i>
+            <ul class="mb-0 ps-3">
+                <?php foreach ($errors as $e): ?>
+                    <li><?= esc($e) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+
+    <div class="usr-card">
+        <form action="<?= base_url('/update_user/' . $user['user_id']) ?>" method="post" style="padding: 28px 24px;">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Username</label>
+                <input type="text" name="username" class="form-control"
+                       value="<?= esc(old('username', $user['username'])) ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Email</label>
+                <input type="email" name="email" class="form-control"
+                       value="<?= esc(old('email', $user['email'])) ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Role</label>
+                <select name="role" class="form-select" required>
+                    <option value="0" <?= (old('role', $user['role'])) == 0 ? 'selected' : '' ?>>Admin</option>
+                    <option value="1" <?= (old('role', $user['role'])) == 1 ? 'selected' : '' ?>>Superadmin</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn" style="background:#F2BE00;color:#0A0A0A;font-weight:700;">
+                <i class="fas fa-save me-1"></i> Update User
+            </button>
+            <a href="<?= base_url('/user') ?>" class="btn btn-dark ms-2" style="color:#fff;">Cancel</a>
+        </form>
     </div>
 </div>
 

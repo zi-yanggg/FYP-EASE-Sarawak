@@ -131,7 +131,16 @@
 .prof-divider {
     border: none;
     border-top: 1px solid var(--border-soft);
-    margin: 12px 0;
+    margin: 6px 0;
+}
+
+/* ── Match card border + header to Order Management style ── */
+.prof-page--tight-head .rpt-card {
+    border: 2px solid #ECE2B4;
+}
+
+.prof-page--tight-head .rpt-card-header {
+    background: #0A0A0A;
 }
 
 /* ── Override card-body padding inside rpt-card ── */
@@ -164,8 +173,7 @@
 }
 
 .prof-side-stack > .rpt-card {
-    flex: 1 1 0;
-    min-height: 0;
+    flex: 1 1 auto;
 }
 
 /* ── Profile Overview block: align avatar + details ── */

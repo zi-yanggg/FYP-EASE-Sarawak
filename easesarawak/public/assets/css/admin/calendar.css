@@ -1,170 +1,457 @@
 /* ============================================================
-   EASE Sarawak — Booking Calendar Page Styles
+   EASE Sarawak — Booking Calendar
+   Design tokens from admin.css / colors_and_type.css
    ============================================================ */
 
-.admin-booking-cal-wrap .fc .fc-toolbar-title {
-    font-size: 1.25rem;
-    font-weight: 600;
+/* ── Page title — "Booking Calendar" with gold accent ──────── */
+.ease-dir .ease-page-title b {
+    font-family: var(--font-display);
+    color: var(--gold);
+    font-weight: 400;
 }
 
+/* ── Page meta info line ────────────────────────────────────── */
+.cal-page-meta {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    font-family: var(--font-admin);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--fg4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+.cal-page-meta i {
+    color: var(--gold);
+    margin-right: 5px;
+}
+
+/* ── Card wrapper ────────────────────────────────────────────── */
+.cal-card {
+    background: #fff;
+    border: 1px solid var(--gold-line);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+/* ── Card Head ───────────────────────────────────────────────── */
+.cal-card-head {
+    background: var(--ink-1);
+    border-bottom: 2px solid var(--gold);
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.cal-head-left {
+    flex: 0 0 auto;
+}
+
+.cal-head-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+/* Pill badge — "Schedule" */
+.cal-head-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(242, 190, 0, 0.38);
+    background: rgba(242, 190, 0, 0.06);
+    font-family: var(--font-admin);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.cal-head-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+}
+
+/* ── View Chips ──────────────────────────────────────────────── */
+.cal-view-pills {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.cal-pill-btn {
+    border: 1.5px solid rgba(242, 190, 0, 0.45);
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(242, 190, 0, 0.7);
+    font-family: var(--font-admin);
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    line-height: 1.5;
+}
+
+.cal-pill-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(242, 190, 0, 0.08);
+}
+
+.cal-pill-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink-1);
+}
+
+/* ── Legend Pills ────────────────────────────────────────────── */
+.cal-legend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cal-legend-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-family: var(--font-admin);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.cal-legend-pill::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.8;
+    flex-shrink: 0;
+}
+
+.cal-legend-pill--pending  { background: var(--pending);  color: var(--ink-1); }
+.cal-legend-pill--progress { background: var(--progress); color: #fff; }
+.cal-legend-pill--done     { background: var(--done);     color: #fff; }
+
+/* ── Card Body ───────────────────────────────────────────────── */
+.cal-body {
+    background: var(--paper);
+    padding: 20px;
+}
+
+/* ── Legend pills: Delivery / Storage ───────────────────────── */
+.cal-legend-pill--delivery { background: #F2BE00; color: var(--ink-1); }
+.cal-legend-pill--storage  { background: #1A6CB0; color: #fff; }
+
+/* ── Heatmap on main calendar cells ─────────────────────────── */
+.admin-booking-cal-wrap .fc .fc-daygrid-day.cal-heat-1 { background-color: rgba(242, 190, 0, 0.12) !important; }
+.admin-booking-cal-wrap .fc .fc-daygrid-day.cal-heat-2 { background-color: rgba(242, 190, 0, 0.30) !important; }
+.admin-booking-cal-wrap .fc .fc-daygrid-day.cal-heat-3 { background-color: rgba(242, 190, 0, 0.52) !important; }
+.admin-booking-cal-wrap .fc .fc-daygrid-day.cal-heat-4 { background-color: rgba(242, 190, 0, 0.78) !important; }
+
+/* Keep day-top flex so count badge sits beside the day number */
+.admin-booking-cal-wrap .fc .fc-daygrid-day-top {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 4px 0;
+}
+
+/* Count badge */
+.cal-day-count {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 9.5px;
+    font-weight: 800;
+    color: rgba(10, 10, 10, 0.5);
+    line-height: 1;
+    padding: 1px 4px;
+    border-radius: 4px;
+    background: rgba(10, 10, 10, 0.06);
+}
+
+/* Bar chart at cell bottom */
+.cal-cell-bars {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    pointer-events: none;
+}
+
+.cal-cell-bar {
+    height: 3px;
+    border-radius: 2px;
+    min-width: 4px;
+}
+
+.cal-cell-bar--delivery { background: #F2BE00; }
+.cal-cell-bar--storage  { background: #1A6CB0; }
+
+/* Ensure day cells have relative positioning for bar placement */
+.admin-booking-cal-wrap .fc .fc-daygrid-day { position: relative; }
+
+/* ── Heatmap legend ──────────────────────────────────────────── */
+.cal-heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.cal-hm-label { color: var(--fg4); margin-right: 4px; }
+
+.cal-hm-swatch {
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: rgba(10, 10, 10, 0.65);
+    border: 1px solid rgba(236, 226, 180, 0.6);
+}
+
+.cal-hm-none { background: #fff; }
+.cal-hm-1    { background: rgba(242, 190, 0, 0.12); }
+.cal-hm-2    { background: rgba(242, 190, 0, 0.30); }
+.cal-hm-3    { background: rgba(242, 190, 0, 0.52); }
+.cal-hm-4    { background: rgba(242, 190, 0, 0.78); }
+
+/* ── Mini Calendar Card ──────────────────────────────────────── */
+#mini-calendar {
+    width: 100%;
+    border: 1px solid var(--gold-line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* Mini cal toolbar — dark ink bar */
+#mini-calendar .fc-toolbar {
+    background: var(--ink-1);
+    padding: 9px 12px;
+    margin-bottom: 0;
+}
+
+#mini-calendar .fc-toolbar-title {
+    color: var(--gold);
+    font-family: var(--font-admin);
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+/* Mini cal nav buttons */
+#mini-calendar .fc-button {
+    background:   transparent   !important;
+    border:       1px solid rgba(242, 190, 0, 0.5) !important;
+    color:        var(--gold)   !important;
+    padding:      2px 8px       !important;
+    font-size:    0.8rem        !important;
+    border-radius: 6px          !important;
+    transition:   background 0.14s, color 0.14s;
+}
+
+#mini-calendar .fc-button:hover {
+    background:   var(--gold)   !important;
+    border-color: var(--gold)   !important;
+    color:        var(--ink-1)  !important;
+}
+
+#mini-calendar .fc-button:focus {
+    box-shadow: 0 0 0 2px rgba(242, 190, 0, 0.3) !important;
+}
+
+/* Mini cal day cells */
+#mini-calendar .fc-daygrid-day {
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.12s ease;
+}
+
+#mini-calendar .fc-daygrid-day:hover {
+    background-color: var(--gold-tint);
+}
+
+/* Heatmap levels */
+#mini-calendar .fc-daygrid-day.cal-heat-1 { background-color: rgba(242, 190, 0, 0.15) !important; }
+#mini-calendar .fc-daygrid-day.cal-heat-2 { background-color: rgba(242, 190, 0, 0.38) !important; }
+#mini-calendar .fc-daygrid-day.cal-heat-3 { background-color: rgba(242, 190, 0, 0.65) !important; }
+
+/* Today — gold outline */
+#mini-calendar .fc-day-today {
+    background-color: rgba(242, 190, 0, 0.12) !important;
+    outline: 2px solid var(--gold);
+    outline-offset: -2px;
+}
+
+/* Hide event bars on mini cal — heatmap only */
+#mini-calendar .fc-daygrid-event {
+    display: none !important;
+}
+
+/* ── Main Calendar — FullCalendar Theme ──────────────────────── */
+
+/* Toolbar title */
+.admin-booking-cal-wrap .fc .fc-toolbar-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--ink-1);
+    letter-spacing: -0.01em;
+}
+
+/* Toolbar nav buttons (prev / next / today) */
 .admin-booking-cal-wrap .fc-button-primary {
-    background-color: #1572e8;
-    border-color: #1572e8;
+    background:    transparent;
+    border:        1.5px solid var(--gold-line);
+    color:         var(--fg2);
+    border-radius: 8px;
+    font-family:   var(--font-admin);
+    font-size:     0.8rem;
+    font-weight:   700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding:       5px 12px;
+    transition:    background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.admin-booking-cal-wrap .fc-button-primary:hover {
+    background:    var(--gold);
+    border-color:  var(--gold);
+    color:         var(--ink-1);
 }
 
 .admin-booking-cal-wrap .fc-button-primary:not(:disabled):active,
 .admin-booking-cal-wrap .fc-button-primary:not(:disabled).fc-button-active {
-    background-color: #1266d0;
-    border-color: #1266d0;
+    background:    var(--ink-1);
+    border-color:  var(--gold);
+    color:         var(--gold);
 }
 
-/* Layout */
-.calendar-container {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+.admin-booking-cal-wrap .fc-button-primary:focus {
+    box-shadow: 0 0 0 2px rgba(242, 190, 0, 0.35);
 }
 
-.mini-cal-column {
-    flex: 0 0 300px;
-}
-
-.main-cal-column {
-    flex: 1;
-    min-width: 0;
-}
-
-/* Mini Calendar */
-#mini-calendar {
-    width: 100%;
-    max-width: 280px;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-}
-
-#mini-calendar .fc-toolbar {
-    padding: 8px 12px;
-}
-
-#mini-calendar .fc-toolbar-title {
-    font-size: 1rem ;
-    font-weight: 600;
-}
-
-#mini-calendar .fc-button {
-    padding: 3px 7px ;
-    font-size: 0.85rem ;
-}
-
-#mini-calendar .fc-daygrid-day {
+/* Day cells */
+.admin-booking-cal-wrap .fc .fc-daygrid-day {
     cursor: pointer;
-    font-size: 0.85rem;
+    transition: background-color 0.12s ease;
 }
 
-#mini-calendar .fc-daygrid-day:hover {
-    background-color: #f8f9fa;
+.admin-booking-cal-wrap .fc .fc-daygrid-day:hover {
+    background-color: var(--gold-tint) !important;
 }
 
-#mini-calendar .fc-day-today {
-    background-color: #e3f2fd ;
+.admin-booking-cal-wrap .fc .fc-day-today {
+    background-color: rgba(242, 190, 0, 0.08) !important;
 }
 
-/* Hide event dots on mini calendar to keep it clean */
-#mini-calendar .fc-daygrid-event {
-    display: none ;
-}
-
-/* Show a small dot indicator instead */
-#mini-calendar .fc-daygrid-day.has-events .fc-daygrid-day-number::after {
-    content: '';
-    display: inline-block;
-    width: 5px;
-    height: 5px;
-    background: #1572e8;
-    border-radius: 50%;
-    margin-left: 3px;
-    vertical-align: middle;
-}
-
-/* Main Calendar - Hover & Today */
-.fc .fc-daygrid-day {
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-.fc .fc-daygrid-day:hover {
-    background-color: #f0f8ff ;
-}
-
-.fc .fc-day-today {
-    background-color: #fff3cd ;
-}
-
-.fc .fc-daygrid-day-number {
+.admin-booking-cal-wrap .fc .fc-daygrid-day-number {
     padding: 6px 8px;
-    font-size: 0.95rem;
+    font-family: var(--font-admin);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--fg2);
 }
 
-.cal-filter-btn.active {
-    background-color: #9a9da0 ;
-    color: #fff ;
-    border-color: #9a9da0 ;
+.admin-booking-cal-wrap .fc .fc-day-today .fc-daygrid-day-number {
+    color: var(--gold-dark);
 }
 
-/* Dropdown styles */
-.admin-booking-cal-wrap .dropdown-toggle {
-    min-width: 90px;
-    text-align: left;
-    border: 1px solid #000;
-    border-radius: 20px;
+/* Column header (Mon / Tue …) */
+.admin-booking-cal-wrap .fc .fc-col-header-cell {
+    background: var(--ink-1);
+    border-color: var(--ink-1);
 }
 
-.admin-booking-cal-wrap .dropdown-toggle::after {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+.admin-booking-cal-wrap .fc .fc-col-header-cell-cushion {
+    font-family:    var(--font-admin);
+    font-size:      0.72rem;
+    font-weight:    800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color:          var(--gold);
+    padding:        8px 6px;
+    text-decoration: none;
 }
 
-.admin-booking-cal-wrap .dropdown-menu {
-    min-width: 100px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Table borders */
+.admin-booking-cal-wrap .fc .fc-scrollgrid {
+    border-color: var(--gold-line);
+}
+.admin-booking-cal-wrap .fc td,
+.admin-booking-cal-wrap .fc th {
+    border-color: rgba(236, 226, 180, 0.45);
 }
 
-.admin-booking-cal-wrap .dropdown-item {
-    padding: 8px 14px;
-    font-size: 0.875rem;
+/* Time grid slot lines */
+.admin-booking-cal-wrap .fc .fc-timegrid-slot {
+    border-color: rgba(236, 226, 180, 0.35);
 }
 
-.admin-booking-cal-wrap .dropdown-item:hover,
-.admin-booking-cal-wrap .dropdown-item:focus {
-    background-color: #f0f0f0;
+.admin-booking-cal-wrap .fc .fc-timegrid-slot-label-cushion {
+    font-family: var(--font-mono, monospace);
+    font-size:   0.72rem;
+    color:       var(--fg4);
 }
 
-.admin-booking-cal-wrap .dropdown-item.active {
-    background-color: #9fa2a5;
-    color: #fff;
+/* Event text */
+.admin-booking-cal-wrap .fc-event-time  { color: inherit; }
+.admin-booking-cal-wrap .fc-event-title { color: inherit; }
+
+/* Year multi-month view */
+.admin-booking-cal-wrap .fc-multiMonthYear-view .fc-multimonth-title {
+    font-family: var(--font-admin);
+    font-weight: 800;
+    font-size:   0.9rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-1);
 }
 
-.cal-legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 2px;
-    display: inline-block;
-    vertical-align: middle;
+/* Now indicator */
+.admin-booking-cal-wrap .fc .fc-timegrid-now-indicator-line {
+    border-color: var(--gold);
+}
+.admin-booking-cal-wrap .fc .fc-timegrid-now-indicator-arrow {
+    border-top-color: var(--gold);
+    border-bottom-color: var(--gold);
 }
 
-.fc-event-time {
-    color: black;
+/* ── Event Modal Header ──────────────────────────────────────── */
+.cal-modal-head {
+    background: var(--ink-1);
+    border-bottom: 2px solid var(--gold);
 }
 
-.fc-event-title {
-    color: black;
-}
-
-/* Year view tweaks */
-.fc-multiMonthYear-view .fc-multimonth-title {
-    font-weight: 600;
-    font-size: 0.95rem;
+.cal-modal-head .modal-title {
+    color: var(--gold);
+    font-family: var(--font-admin);
+    font-weight: 700;
+    letter-spacing: 0.03em;
 }
