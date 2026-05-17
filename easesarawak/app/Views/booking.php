@@ -990,6 +990,17 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
+
+    function tr(text) {
+    const current = window.EASE_TRANSLATION?.current || 'en';
+    const map = window.EASE_TRANSLATION?.translations?.[current] || {};
+    return map[text] || text;
+    }
+
+    function showWarning(warningDiv, message) {
+        warningDiv.innerHTML = `<i class="bi bi-exclamation-triangle"></i> ${tr(message)}`;
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         // date inputs (format: YYYY-MM-DD)
         ['dropoff-date','pickup-date','storage-dropoff-date','storage-pickup-date'].forEach(function(id){
@@ -1020,6 +1031,17 @@
 
     <script>
         let currentService = 'delivery';
+
+    function bookingT(text) {
+        if (typeof easeT === 'function') {
+            return easeT(text);
+        }
+        return text;
+    }
+
+    function setWarningMessage(warningDiv, message) {
+        warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> ' + bookingT(message);
+    }
 
         // Location data
         const locationData = {
@@ -1446,7 +1468,7 @@
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 07:00 and 18:00.';
+                setWarningMessage(warningDiv, 'The selected time must be between 07:00 and 19:00.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isAtLeast2HoursFromNow(selectedDate, selectedTime)) {
@@ -1472,7 +1494,7 @@
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 07:00 and 18:00.';
+                setWarningMessage(warningDiv, 'The selected time must be between 07:00 and 19:00.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isAtLeast2HoursFromNow(selectedDate, selectedTime)) {
@@ -1480,7 +1502,7 @@
                 warningDiv.classList.add('show');
                 return false;
             } else if (isDateTime1BeforeDateTime2(selectedDate, selectedTime, dropoffDate, dropoffTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Pick-up date and time must be after drop-off date and time.';
+                setWarningMessage(warningDiv, 'Pick-up date and time must be after drop-off date and time.');
                 warningDiv.classList.add('show');
                 updatePickupMinimum();
                 return false;
@@ -1497,11 +1519,11 @@
             const warningDiv = document.getElementById('storage-dropoff-time-warning');
             
             if (!isDateTimeValid(selectedDate, selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Drop-off date and time cannot be in the past.';
+                setWarningMessage(warningDiv, 'Drop-off date and time cannot be in the past.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 07:00 and 18:00.';
+                showWarning(warningDiv, 'The selected time must be between 07:00 and 19:00.');
                 warningDiv.classList.add('show');
                 return false;
             } else {
@@ -1519,11 +1541,11 @@
             const warningDiv = document.getElementById('storage-pickup-time-warning');
             
             if (!isDateTimeValid(selectedDate, selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Pick-up date and time cannot be in the past.';
+                setWarningMessage(warningDiv, 'Pick-up date and time cannot be in the past.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 07:00 and 18:00.';
+                showWarning(warningDiv, 'The selected time must be between 07:00 and 19:00.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (isDateTime1BeforeDateTime2(selectedDate, selectedTime, dropoffDate, dropoffTime)) {
@@ -1562,7 +1584,7 @@
                 hour12: false
             });
             
-            warningDiv.innerHTML = `<i class="bi bi-exclamation-triangle"></i> Please select a time that is at least 2 hours from current time which is ${currentDateStr} Time: ${currentTimeStr}.`;
+        warningDiv.innerHTML = `<i class="bi bi-exclamation-triangle"></i> ${bookingT('Please select a time that is at least 2 hours from current time which is')} ${currentDateStr} ${bookingT('Time:')} ${currentTimeStr}.`;
         }
 
         function isDateTimeValid(date, time) {
