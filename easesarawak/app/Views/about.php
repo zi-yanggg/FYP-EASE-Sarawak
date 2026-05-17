@@ -341,9 +341,9 @@
 
             /* This is the crucial part – force the background image on mobile */
             .offer-image {
-                background: url('assets/images/side-view-traveler-with-suitcase-1.webp') center/cover no-repeat !important;
-                width: 100% !important;
-                height: 100% !important;
+                background: url('assets/images/side-view-traveler-with-suitcase-1.webp') center/cover no-repeat ;
+                width: 100% ;
+                height: 100% ;
                 border-radius: 12px;
             }
 
@@ -378,7 +378,7 @@
                 /* keep icon + text side by side */
                 align-items: center;
                 padding: 28px 20px;
-                border-right: none !important;
+                border-right: none ;
                 /* remove old vertical line */
                 border-bottom: 2px solid rgba(255, 255, 255, 0.4);
                 /* new horizontal divider */

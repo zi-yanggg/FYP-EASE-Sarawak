@@ -110,6 +110,8 @@ $easeCatalog = ease_translation_catalog();
     <script>
     document.addEventListener('DOMContentLoaded', function () {
     var container = document.getElementById('order-summary-content');
+    const DELIVERY_EXTRA_RATE = <?= json_encode($deliveryExtraRate ?? 6) ?>;
+    const STORAGE_EXTRA_RATE = <?= json_encode($storageExtraRate ?? 6) ?>;
     if (!container) return;
 
     var html = '';
@@ -171,7 +173,11 @@ $easeCatalog = ease_translation_catalog();
 
                 // In Town Delivery：first 24hours；Luggage Storage：first 12 hours
                 var baseHours = (bookingData.service === 'storage') ? 12 : 24;
-                var extraRate = 6; 
+                var storedExtraRate = Number(bookingData.extraRate || 0);
+                var defaultExtraRate = (bookingData.service === 'storage')
+                ? Number(STORAGE_EXTRA_RATE)
+                : Number(DELIVERY_EXTRA_RATE);
+                var extraRate = storedExtraRate > 0 ? storedExtraRate : defaultExtraRate;
 
                 exceededTimes = Math.max(0, Math.ceil((diffHours - baseHours) / 12));
                 extraStoragePrice = Math.max(0, exceededTimes * extraRate * quantity);
@@ -189,7 +195,7 @@ $easeCatalog = ease_translation_catalog();
         // ===== order summary “Subsequent 12 Hours x 3 Excess”  =====
         if (extraStoragePrice > 0 && exceededTimes > 0) {
             html += '<div class="summary-item">' +
-                        '<span>' +t('Subsequent 12 Hours x') + exceededTimes + '' +t('Excess') + '</span>' +
+                        '<span>' + t('Subsequent 12 Hours x') + exceededTimes + ' ' + t('Excess') + ' (RM ' + extraRate + '/12h)</span>' +
                         '<span></span>' +
                     '</div>';
 

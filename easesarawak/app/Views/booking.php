@@ -8,7 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/footer_style.css">
     <link rel="stylesheet" href="assets/css/navbar_style.css">
-    <link rel="stylesheet" href="assets/css/navbar_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
@@ -27,10 +26,10 @@
 
         .navbar-nav,
         .navbar .btn {
-            margin-right: 60px !important;
+            margin-right: 60px ;
         }
         .btn-book-now {
-            margin-left: 0px !important;
+            margin-left: 0px ;
         }
         
         @font-face {
@@ -154,26 +153,26 @@
         }
 
         .tab-btn.active {
-            background: #f2be00 !important; 
-            color: #000000 !important; 
-            border-color: #f2be00 !important; 
-            border-bottom: 2px solid white !important; 
+            background: #f2be00 ; 
+            color: #000000 ; 
+            border-color: #f2be00 ; 
+            border-bottom: 2px solid white ; 
         }
 
         .tab-btn.active:hover {
-            background: #e6a800 !important; 
-            border-color: #e6a800 !important;
+            background: #e6a800 ; 
+            border-color: #e6a800 ;
         }
 
         .tab-btn:not(.active) {
-            background: #000000 !important; 
-            color: white !important; 
-            border-color: #000000 !important; 
+            background: #000000 ; 
+            color: white ; 
+            border-color: #000000 ; 
         }
 
         .tab-btn:not(.active):hover {
-            background: #333333 !important; 
-            border-color: #333333 !important;
+            background: #333333 ; 
+            border-color: #333333 ;
         }
 
         /* Full width forms section */
@@ -509,19 +508,19 @@
                 justify-content: center;
             }
             .tab-btn {
-                border-radius: 0 !important; 
-                border-bottom: 2px solid #000000 !important; 
+                border-radius: 0 ; 
+                border-bottom: 2px solid #000000 ; 
                 margin-bottom: 0.5rem;
             }
             .tab-btn.active {
-                background: #f2be00 !important; 
-                border-bottom: 2px solid #f2be00 !important; 
-                color: #000000 !important; 
+                background: #f2be00 ; 
+                border-bottom: 2px solid #f2be00 ; 
+                color: #000000 ; 
             }
             .tab-btn:not(.active) {
-                background: #000000 !important; 
-                color: white !important; 
-                border-bottom: 2px solid #000000 !important; 
+                background: #000000 ; 
+                color: white ; 
+                border-bottom: 2px solid #000000 ; 
             }
             .booking-form {
                 border-radius: 0; 
@@ -612,12 +611,12 @@
 
         @media (max-width: 700px) {
             .custom-content-block {
-                flex-direction: column !important;
+                flex-direction: column ;
                 text-align: center;
             }
             .custom-content-block img {
-                border-radius: 0 !important;
-                width: 100% !important;
+                border-radius: 0 ;
+                width: 100% ;
                 max-width: 350px;
                 margin: 0 auto;
             }
@@ -1128,14 +1127,14 @@
             console.log('Initialization complete');
         });
 
-        // NEW: Function to check if time is within working hours (7 AM to 7 PM)
+        // NEW: Function to check if time is within working hours (7 AM to 6 PM)
         function isWithinWorkingHours(time) {
             if (!time) return false;
             
             const [hours, minutes] = time.split(':').map(Number);
             const timeInMinutes = hours * 60 + minutes;
             const startTime = 7 * 60; // 7:00 AM
-            const endTime = 19 * 60; // 7:00 PM
+            const endTime = 18 * 60; // 6:00 PM
             
             return timeInMinutes >= startTime && timeInMinutes <= endTime;
         }
@@ -1350,9 +1349,38 @@
             return 'other';
         }
 
+        function formatLocalDate(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function isPast1800(now) {
+            return now.getHours() > 18 || (now.getHours() === 18 && now.getMinutes() > 0);
+        }
+
         function setMinDateTime() {
             const now = new Date();
-            const currentDate = now.toISOString().split('T')[0];
+            const currentDate = formatLocalDate(now);
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowDate = formatLocalDate(tomorrow);
+
+            if (isPast1800(now)) {
+                // Delivery defaults
+                document.getElementById('dropoff-date').value = tomorrowDate;
+                document.getElementById('dropoff-time').value = '07:00';
+                document.getElementById('pickup-date').value = tomorrowDate;
+                document.getElementById('pickup-time').value = '07:00';
+
+                // Storage defaults
+                document.getElementById('storage-dropoff-date').value = tomorrowDate;
+                document.getElementById('storage-dropoff-time').value = '07:00';
+                document.getElementById('storage-pickup-date').value = tomorrowDate;
+                document.getElementById('storage-pickup-time').value = '07:00';
+                return;
+            }
             
             // Set minimum date to today for all date inputs
             document.getElementById('dropoff-date').min = currentDate;
@@ -1369,8 +1397,8 @@
             if (deliveryFutureTime.getHours() < 7) {
                 deliveryTimeString = '07:00';
                 // Keep current date, just adjust time
-            } else if (deliveryFutureTime.getHours() >= 19) {
-                // If it's past 7 PM, set to next day at 7 AM
+            } else if (deliveryFutureTime.getHours() >= 18) {
+                // If it's past 6 PM, set to next day at 7 AM
                 const nextDay = new Date(deliveryFutureTime.getTime() + 24 * 60 * 60 * 1000);
                 deliveryDateString = nextDay.toISOString().split('T')[0];
                 deliveryTimeString = '07:00';
@@ -1385,8 +1413,8 @@
             let pickupTimeString = pickupTime.getHours().toString().padStart(2, '0') + ':' + pickupTime.getMinutes().toString().padStart(2, '0');
             let pickupDateString = deliveryDateString; // Same date as dropoff initially
             
-            if (pickupTime.getHours() >= 19) {
-                // If pickup would be past 7 PM, set to next day
+            if (pickupTime.getHours() >= 18) {
+                // If pickup would be past 6 PM, set to next day
                 const nextDay = new Date(pickupTime.getTime() + 24 * 60 * 60 * 1000);
                 pickupDateString = nextDay.toISOString().split('T')[0];
                 pickupTimeString = '07:00';
@@ -1404,7 +1432,7 @@
             if (storageTime.getHours() < 7) {
                 storageTimeString = '07:00';
                 // Keep current date, just adjust time
-            } else if (storageTime.getHours() >= 19) {
+            } else if (storageTime.getHours() >= 18) {
                 const nextDay = new Date(storageTime.getTime() + 24 * 60 * 60 * 1000);
                 storageDateString = nextDay.toISOString().split('T')[0];
                 storageTimeString = '07:00';
@@ -1419,7 +1447,7 @@
             let storagePickupTimeString = storagePickupTime.getHours().toString().padStart(2, '0') + ':' + storagePickupTime.getMinutes().toString().padStart(2, '0');
             let storagePickupDateString = storageDateString; // Same date as dropoff initially
             
-            if (storagePickupTime.getHours() >= 19) {
+            if (storagePickupTime.getHours() >= 18) {
                 const nextDay = new Date(storagePickupTime.getTime() + 24 * 60 * 60 * 1000);
                 storagePickupDateString = nextDay.toISOString().split('T')[0];
                 storagePickupTimeString = '07:00';
@@ -1591,7 +1619,7 @@
                     let minTime = minPickupTime.getHours().toString().padStart(2, '0') + ':' + minPickupTime.getMinutes().toString().padStart(2, '0');
                     
                     // Ensure pickup time is within working hours
-                    if (minPickupTime.getHours() >= 19) {
+                    if (minPickupTime.getHours() >= 18) {
                         minTime = '07:00';
                         // Set to next day if needed
                         const nextDay = new Date(minPickupTime.getTime() + 24 * 60 * 60 * 1000);
@@ -1619,7 +1647,7 @@
                     let minTime = minPickupTime.getHours().toString().padStart(2, '0') + ':' + minPickupTime.getMinutes().toString().padStart(2, '0');
                     
                     // Ensure pickup time is within working hours
-                    if (minPickupTime.getHours() >= 19) {
+                    if (minPickupTime.getHours() >= 18) {
                         minTime = '07:00';
                         // Set to next day if needed
                         const nextDay = new Date(minPickupTime.getTime() + 24 * 60 * 60 * 1000);

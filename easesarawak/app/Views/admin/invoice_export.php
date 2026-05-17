@@ -53,15 +53,15 @@
         .btn-print {
             background: var(--gold);
             color: var(--brown);
-            border: 2px solid var(--gold-dark) !important;
+            border: 2px solid var(--gold-dark) ;
         }
         .btn-print:hover { background: var(--gold-dark); color: #fff; }
-        .btn-back  { background: #e9ecef; color: #333; border: 2px solid #ccc !important; }
+        .btn-back  { background: #e9ecef; color: #333; border: 2px solid #ccc ; }
         .btn-back:hover  { background: #d5d8db; }
         .btn-csv   {
             background: #fff;
             color: var(--brown);
-            border: 2px solid var(--gold-dark) !important;
+            border: 2px solid var(--gold-dark) ;
         }
         .btn-csv:hover { background: var(--gold-light); }
 
@@ -246,7 +246,7 @@
         /* ── Print overrides ── */
         @media print {
             body { background: #fff; }
-            .toolbar { display: none !important; }
+            .toolbar { display: none ; }
             .page {
                 margin: 0;
                 box-shadow: none;

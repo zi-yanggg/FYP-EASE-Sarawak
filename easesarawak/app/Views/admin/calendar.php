@@ -49,13 +49,13 @@
     }
 
     #mini-calendar .fc-toolbar-title {
-        font-size: 1rem !important;
+        font-size: 1rem ;
         font-weight: 600;
     }
 
     #mini-calendar .fc-button {
-        padding: 3px 7px !important;
-        font-size: 0.85rem !important;
+        padding: 3px 7px ;
+        font-size: 0.85rem ;
     }
 
     #mini-calendar .fc-daygrid-day {
@@ -68,12 +68,12 @@
     }
 
     #mini-calendar .fc-day-today {
-        background-color: #e3f2fd !important;
+        background-color: #e3f2fd ;
     }
 
     /* Hide event dots on mini calendar to keep it clean */
     #mini-calendar .fc-daygrid-event {
-        display: none !important;
+        display: none ;
     }
 
     /* Show a small dot indicator instead */
@@ -95,11 +95,11 @@
     }
 
     .fc .fc-daygrid-day:hover {
-        background-color: #f0f8ff !important;
+        background-color: #f0f8ff ;
     }
 
     .fc .fc-day-today {
-        background-color: #fff3cd !important;
+        background-color: #fff3cd ;
     }
 
     .fc .fc-daygrid-day-number {
@@ -108,9 +108,9 @@
     }
 
     .cal-filter-btn.active {
-        background-color: #9a9da0 !important;
-        color: #fff !important;
-        border-color: #9a9da0 !important;
+        background-color: #9a9da0 ;
+        color: #fff ;
+        border-color: #9a9da0 ;
     }
 
     /* Dropdown styles */

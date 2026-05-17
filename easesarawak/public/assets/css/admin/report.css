@@ -51,7 +51,7 @@
 .rpt-page i.far,
 .rpt-page i.fab,
 .rpt-page i[class*=" fa-"] {
-    font-family: "Font Awesome 5 Free", "Font Awesome 6 Free", "Font Awesome 5 Brands" !important;
+    font-family: "Font Awesome 5 Free", "Font Awesome 6 Free", "Font Awesome 5 Brands" ;
     font-style: normal;
 }
 
@@ -87,12 +87,12 @@
     color: var(--gold);
     line-height: 1.2;
 }
-.rpt-card-header i { color: var(--gold) !important; }
+.rpt-card-header i { color: var(--gold) ; }
 .rpt-card-header .sf-label { color: #F2BE00; }
-.rpt-main-header  { gap: 8px !important; }
+.rpt-main-header  { gap: 8px ; }
 .rpt-control-wrap {
-    row-gap: 8px !important;
-    column-gap: 8px !important;
+    row-gap: 8px ;
+    column-gap: 8px ;
     justify-content: flex-end;
     max-width: 100%;
 }
@@ -151,13 +151,13 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 1.15rem;
     flex-shrink: 0;
-    background: #111 !important;
-    color: var(--gold) !important;
+    background: #111 ;
+    color: var(--gold) ;
 }
 .rpt-kpi-icon--gold,
 .rpt-kpi-icon--brown,
 .rpt-kpi-icon--blue,
-.rpt-kpi-icon--green { background: #111 !important; color: var(--gold) !important; }
+.rpt-kpi-icon--green { background: #111 ; color: var(--gold) ; }
 
 .rpt-kpi-value {
     font-size: clamp(1.15rem, 2.2vw, 1.65rem);
@@ -193,8 +193,8 @@
 .rpt-kpi-card:hover .rpt-kpi-icon--brown,
 .rpt-kpi-card:hover .rpt-kpi-icon--blue,
 .rpt-kpi-card:hover .rpt-kpi-icon--green {
-    background: #F2BE00 !important;
-    color: #ffffff !important;
+    background: #F2BE00 ;
+    color: #ffffff ;
 }
 
 /* ════════════════════════════════════════
@@ -299,36 +299,36 @@
 
 /* Smaller variant for tight headers */
 .rpt-sm-select {
-    font-size: .74rem !important;
-    padding: 5px 24px 5px 10px !important;
-    min-height: 32px !important;
-    min-width: 70px !important;
-    max-width: 115px !important;
+    font-size: .74rem ;
+    padding: 5px 24px 5px 10px ;
+    min-height: 32px ;
+    min-width: 70px ;
+    max-width: 115px ;
 }
 
 /* Date picker */
 .rpt-date-pick {
     appearance: none;
     -webkit-appearance: none;
-    border: none !important;
-    border-radius: var(--radius-pill) !important;
-    background: var(--bg-muted) !important;
+    border: none ;
+    border-radius: var(--radius-pill) ;
+    background: var(--bg-muted) ;
     color: var(--text-mid);
     font-size: var(--rbd-control-font);
     font-weight: 700;
-    padding: var(--rbd-control-pad-y) 14px !important;
+    padding: var(--rbd-control-pad-y) 14px ;
     min-height: var(--rbd-control-height);
     min-width: 140px;
     max-width: 200px;
     cursor: pointer;
     transition: background .2s, box-shadow .2s;
-    box-shadow: none !important;
+    box-shadow: none ;
 }
-.rpt-date-pick:hover { background-color: #e9eaec !important; }
+.rpt-date-pick:hover { background-color: #e9eaec ; }
 .rpt-date-pick:focus {
     outline: none;
-    box-shadow: 0 0 0 3px var(--gold-muted) !important;
-    background: #fff !important;
+    box-shadow: 0 0 0 3px var(--gold-muted) ;
+    background: #fff ;
 }
 
 /* Chart overlays */
@@ -608,7 +608,7 @@
     border: 2px solid #B88900;
     color: #2A2310;
     font-weight: 700;
-    opacity: 1 !important;
+    opacity: 1 ;
 }
 .cal-grid .cal-day.cal-today.cal-has-data,
 .cal-grid .cal-day.cal-selected.cal-has-data {
@@ -727,11 +727,11 @@
 .rpt-export-btn:focus { background: var(--gold-dark); color: #fff; outline: none; }
 
 .rpt-export-dropdown {
-    border-radius: 16px !important;
-    border: none !important;
-    box-shadow: 0 8px 32px rgba(0,0,0,.13) !important;
+    border-radius: 16px ;
+    border: none ;
+    box-shadow: 0 8px 32px rgba(0,0,0,.13) ;
     min-width: 300px;
-    margin-top: 6px !important;
+    margin-top: 6px ;
 }
 
 .export-label {
@@ -764,16 +764,16 @@
 }
 
 .rpt-input {
-    border: 1.5px solid var(--border-soft) !important;
-    border-radius: 10px !important;
-    background: var(--bg-muted) !important;
+    border: 1.5px solid var(--border-soft) ;
+    border-radius: 10px ;
+    background: var(--bg-muted) ;
     font-size: .82rem;
     color: var(--text-dark);
 }
 .rpt-input:focus {
-    border-color: var(--gold) !important;
-    box-shadow: 0 0 0 3px var(--gold-muted) !important;
-    background: #fff !important;
+    border-color: var(--gold) ;
+    box-shadow: 0 0 0 3px var(--gold-muted) ;
+    background: #fff ;
 }
 
 .btn-export-pdf {
@@ -813,7 +813,7 @@
 .btn-export-pdf,
 .btn-export-pdf-inline,
 .btn-export-csv {
-    font-family: 'Oxanium', sans-serif !important;
+    font-family: 'Oxanium', sans-serif ;
 }
 
 /* ════════════════════════════════════════
@@ -870,11 +870,11 @@
 }
 
 @media (max-width: 575px) {
-    .rpt-control-wrap { gap: 4px !important; }
+    .rpt-control-wrap { gap: 4px ; }
     .period-toggle .pt-btn { padding: 6px 10px; font-size: .72rem; min-width: 48px; min-height: 34px; }
     .chart-toggle .ct-btn  { padding: 6px 10px; font-size: .72rem; min-width: 54px; min-height: 34px; }
     .report-select         { font-size: .76rem; padding: 6px 26px 6px 10px; min-height: 34px; min-width: 100px; }
-    .rpt-date-pick         { font-size: .76rem; padding: 6px 10px !important; min-height: 34px; min-width: 110px; }
+    .rpt-date-pick         { font-size: .76rem; padding: 6px 10px ; min-height: 34px; min-width: 110px; }
     .rpt-kpi-value         { font-size: .95rem; }
     .rev-bar-detail        { padding: 8px 10px; gap: 8px; }
     .rev-bar-detail .rbd-revenue { font-size: .88rem; }
@@ -905,12 +905,12 @@
 .rpt-page .btn-export-pdf,
 .rpt-page .btn-export-pdf-inline,
 .rpt-page .btn-export-csv {
-    border-radius: 0 !important;
+    border-radius: 0 ;
 }
 
 @media (max-width: 1200px) {
     .rpt-main-header {
-        align-items: flex-start !important;
+        align-items: flex-start ;
         min-height: auto;
     }
     .rpt-control-wrap {
