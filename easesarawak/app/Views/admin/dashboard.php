@@ -7,7 +7,7 @@
 $hour        = (int)date('G');
 $greeting    = $hour < 12 ? 'Good morning' : ($hour < 18 ? 'Good afternoon' : 'Good evening');
 $sessionUser   = session()->get('username') ?? 'Admin';
-$dshQueueLimit = 7;
+$dshQueueLimit = 6;
 
 function dshSvcPill(string $type): string {
     $l         = strtolower($type);
@@ -45,7 +45,10 @@ function dshRenderQueueRow(array $ord, string $timeLabel): void {
             <div class="dsh-av" style="background:<?= esc($avBg) ?>;color:<?= esc($avFg) ?>"><?= dshInitials($name) ?></div>
             <div class="dsh-qrow__who-text">
                 <div class="dsh-qrow__nm"><?= esc($ord['first_name']) ?> <?= esc($ord['last_name']) ?></div>
-                <div class="dsh-qrow__sub">#<?= esc($oid) ?> &middot; <?= dshSvcPill($ord['service_type'] ?? '') ?></div>
+                <div class="dsh-qrow__meta-row">
+                    <span class="dsh-qrow__oid">#<?= esc($oid) ?></span>
+                    <?= dshSvcPill($ord['service_type'] ?? '') ?>
+                </div>
             </div>
         </div>
         <div class="dsh-qrow__cell dsh-qrow__route-col">

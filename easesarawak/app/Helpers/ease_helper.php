@@ -18,11 +18,14 @@ function ease_path(string $uri = ''): string
 function ease_route(string $name, ...$params): string
 {
     $routes = [
-        'order'         => 'order',
-        'order_details' => 'admin/order_details',
-        'change_status' => 'change_status',
-        'contact'       => 'admin/contact',
-        'refund'        => 'admin/refund_request',
+        'order'               => 'order',
+        'order_details'       => 'admin/order_details',
+        'change_status'       => 'change_status',
+        'order_activity_log'  => 'order_activity_log',
+        'order_get_details'   => 'order/getDetails',
+        'save_note'           => 'save_note',
+        'contact'             => 'admin/contact',
+        'refund'              => 'admin/refund_request',
     ];
 
     if (! isset($routes[$name])) {
