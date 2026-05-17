@@ -1220,11 +1220,11 @@
         /* Topbar: in-flow flex item, overrides kaiadmin position:fixed */
         .wrapper > .main-header {
             flex: 0 0 auto;
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            right: auto !important;
-            width: 100% !important;
+            position: relative;
+            top: auto;
+            left: auto;
+            right: auto;
+            width: 100%;
             z-index: 1001;
         }
 
@@ -1234,9 +1234,9 @@
             min-height: 0;
             overflow-x: hidden;
             overflow-y: auto;
-            float: none !important;
-            width: auto !important;
-            height: auto !important;
+            float: none;
+            width: auto;
+            height: auto;
         }
 
         .wrapper .main-panel .page-inner,

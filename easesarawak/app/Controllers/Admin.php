@@ -1217,25 +1217,41 @@ class Admin extends BaseController
 
     public function save_note()
     {
-        $orderId = $this->request->getPost('order_id');
-        $note = $this->request->getPost('note');
-        $userId = session()->get('user_id');
+        $orderId  = $this->request->getPost('order_id');
+        $note     = trim($this->request->getPost('note') ?? '');
+        $userId   = session()->get('user_id');
 
         $orderModel = new Order_model();
-        $orderModel->update($orderId, ['comment' => $note,
-                'modified_date' => date('Y-m-d H:i:s'),
-                'modified_by' => session()->get('user_id')]);
+        $existing   = $orderModel->find($orderId);
+        $prevNote   = trim($existing['comment'] ?? '');
+
+        $orderModel->update($orderId, [
+            'comment'       => $note,
+            'modified_date' => date('Y-m-d H:i:s'),
+            'modified_by'   => $userId,
+        ]);
+
+        if ($note === '') {
+            $action     = 'Deleted note';
+            $actionType = 'deleted';
+        } elseif ($prevNote === '') {
+            $action     = 'Added note: "' . $note . '"';
+            $actionType = 'added';
+        } else {
+            $action     = 'Edited note: "' . $note . '"';
+            $actionType = 'edited';
+        }
 
         $logModel = new ActivityLogModel();
         $logModel->insert([
-            'order_id' => $orderId,
-            'user_id' => $userId,
-            'username' => session()->get('username'),
-            'action' => 'Changed note to "' . $note . '"',
-            'modified_date' => date('Y-m-d H:i:s')
+            'order_id'      => $orderId,
+            'user_id'       => $userId,
+            'username'      => session()->get('username'),
+            'action'        => $action,
+            'modified_date' => date('Y-m-d H:i:s'),
         ]);
 
-        return $this->response->setJSON(['status' => 'success']);
+        return $this->response->setJSON(['status' => 'success', 'action' => $actionType]);
     }
 
     public function edit($user_id)

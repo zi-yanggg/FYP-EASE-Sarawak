@@ -7,6 +7,7 @@ $status    = $_GET['status'] ?? '';
 $service   = $_GET['service_type'] ?? '';
 $startDate = $_GET['start_date'] ?? '';
 $endDate   = $_GET['end_date'] ?? '';
+$hasActiveFilters = $status !== '' || $service !== '' || $startDate !== '' || $endDate !== '';
 
 function ordSvcPill(string $type): string {
     $l         = strtolower($type);
@@ -98,14 +99,38 @@ function ordParseRoute(array $ord): array {
     $svc = strtolower($ord['service_type'] ?? '');
 
     if ($svc === 'storage') {
-        $storageLoc = ordCleanDetailValue($d['Storage Location'] ?? '')
-            ?: ordCleanDetailValue($ord['_pickup_location'] ?? '');
-        $originLoc = ordCleanDetailValue($d['Origin Location'] ?? $d['Origin Address'] ?? '');
-        $dropoffRaw = ordCleanDetailValue($d['Drop-off DateTime'] ?? $ord['_dropoff_time'] ?? '');
-        $pickupRaw  = ordCleanDetailValue($d['Pickup DateTime'] ?? $ord['_pickup_time'] ?? '');
+        $isCamel = isset($d['storageLocation']);
+        if ($isCamel) {
+            $storageLoc = ordCleanDetailValue($d['storageLocation'] ?? '');
+            $dropoffRaw = (isset($d['dropoffDate']) && isset($d['dropoffTime']))
+                ? $d['dropoffDate'] . ' at ' . $d['dropoffTime'] : '';
+            $pickupRaw  = (isset($d['pickupDate']) && isset($d['pickupTime']))
+                ? $d['pickupDate'] . ' at ' . $d['pickupTime'] : '';
+            $originLoc  = ordCleanDetailValue($d['origin'] ?? $d['originAddress'] ?? '');
+        } else {
+            $storageLoc = ordCleanDetailValue($d['Storage Location'] ?? '')
+                ?: ordCleanDetailValue($ord['_pickup_location'] ?? '');
+            $dropoffRaw = ordCleanDetailValue($d['Drop-off DateTime'] ?? $ord['_dropoff_time'] ?? '');
+            $pickupRaw  = ordCleanDetailValue($d['Pickup DateTime'] ?? $ord['_pickup_time'] ?? '');
+            $originLoc  = ordCleanDetailValue($d['Origin Location'] ?? $d['Origin Address'] ?? '');
+        }
         $dropoffFmt = ordFormatQueueDateTime($dropoffRaw);
         $pickupFmt  = ordFormatQueueDateTime($pickupRaw);
-        $duration   = ($dropoffFmt && $pickupFmt)
+
+        if ($originLoc === '') {
+            return [
+                'is_storage'  => true,
+                'is_self_svc' => true,
+                'leg1_label'  => 'Store',
+                'leg1_value'  => $storageLoc ?: '—',
+                'leg1_meta'   => $dropoffFmt !== '' ? 'Drop-off · ' . $dropoffFmt : '',
+                'leg2_label'  => 'Pickup',
+                'leg2_value'  => $pickupFmt ?: '—',
+                'leg2_meta'   => 'By owner',
+            ];
+        }
+
+        $duration = ($dropoffFmt && $pickupFmt)
             ? $dropoffFmt . ' → ' . $pickupFmt
             : ($dropoffFmt ?: $pickupFmt);
 
@@ -120,10 +145,15 @@ function ordParseRoute(array $ord): array {
         ];
     }
 
-    $from = ordCleanDetailValue($d['origin'] ?? $d['originAddress'] ?? '')
-        ?: ordCleanDetailValue($ord['_pickup_location'] ?? '');
-    $to   = ordCleanDetailValue($d['destination'] ?? $d['destinationAddress'] ?? '')
-        ?: ordCleanDetailValue($ord['_dropoff_location'] ?? '');
+    // Support both camelCase (new) and Title Case (legacy) delivery JSON formats
+    $from = ordCleanDetailValue(
+        $d['origin']           ?? $d['originAddress']      ??
+        $d['Origin Location']  ?? $d['Origin Address']     ?? ''
+    ) ?: ordCleanDetailValue($ord['_pickup_location'] ?? '');
+    $to   = ordCleanDetailValue(
+        $d['destination']          ?? $d['destinationAddress']     ??
+        $d['Destination Location'] ?? $d['Destination Address']    ?? ''
+    ) ?: ordCleanDetailValue($ord['_dropoff_location'] ?? '');
 
     return [
         'is_storage' => false,
@@ -174,22 +204,20 @@ function ordRowClass(int $status): string {
                 <input type="text" placeholder="Search orders…" id="orderSearch" autocomplete="off">
             </div>
 
-            <button class="ord-filter-btn" type="button"
+            <button class="ord-btn-gold<?= $hasActiveFilters ? ' ord-filter-active' : '' ?>" type="button"
                 data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas">
                 <i class="fas fa-sliders-h"></i> Filter
             </button>
 
-            <span class="ord-count"><?= count($orders ?? []) ?> on this page</span>
         </div>
 
         <div class="table-responsive">
             <table class="ord-tbl" id="orderTable">
                 <thead>
                     <tr>
-                        <th>Order ID</th>
+                        <th>ID</th>
                         <th>Service</th>
                         <th>Customer</th>
-                        <th>Contact</th>
                         <th>Route</th>
                         <th>Dropoff Time</th>
                         <th>Order Date</th>
@@ -206,9 +234,9 @@ function ordRowClass(int $status): string {
                             $oid      = (int) $order['order_id'];
                             $status   = (int) ($order['status'] ?? 0);
                             $name     = trim(($order['first_name'] ?? '') . ' ' . ($order['last_name'] ?? ''));
-                            $avBg     = ordAvColor($oid);
-                            $avFg     = ($avBg === '#0A0A0A') ? '#F2BE00' : '#fff';
-                            $routeCol = !empty($route['is_storage']) ? 'ord-route-col--store' : 'ord-route-col--to';
+                            $routeCol = !empty($route['is_storage'])
+                                ? (!empty($route['is_self_svc']) ? 'ord-route-col--store ord-route-col--self' : 'ord-route-col--store')
+                                : 'ord-route-col--to';
                             ?>
                             <tr class="<?= esc(ordRowClass($status)) ?>">
                                 <td>
@@ -217,13 +245,10 @@ function ordRowClass(int $status): string {
                                 <td><?= ordSvcPill($order['service_type'] ?? '') ?></td>
                                 <td>
                                     <div class="ord-customer">
-                                        <span class="ord-av" style="background:<?= esc($avBg) ?>;color:<?= esc($avFg) ?>">
-                                            <?= esc(ordInitials($order['first_name'] ?? '', $order['last_name'] ?? '')) ?>
-                                        </span>
                                         <span class="ord-customer__name"><?= esc($name) ?></span>
+                                        <span class="ord-customer__phone"><?= esc($order['phone'] ?? '—') ?></span>
                                     </div>
                                 </td>
-                                <td><span class="ord-contact"><?= esc($order['phone'] ?? '—') ?></span></td>
                                 <td>
                                     <div class="ord-route-wrap">
                                         <div class="ord-route-col">
@@ -248,9 +273,10 @@ function ordRowClass(int $status): string {
                                 </td>
                                 <td><span class="ord-eta"><?= esc(ordScheduledTime($order)) ?></span></td>
                                 <td>
-                                    <span class="ord-date">
-                                        <?= date('d M Y', strtotime($order['created_date'])) ?>
-                                    </span>
+                                    <div class="ord-date-wrap">
+                                        <span class="ord-date"><?= date('d M Y', strtotime($order['created_date'])) ?></span>
+                                        <span class="ord-time"><?= date('H:i', strtotime($order['created_date'])) ?></span>
+                                    </div>
                                 </td>
                                 <td class="text-end">
                                     <span class="ord-price">RM <?= number_format((float) ($order['amount'] ?? 0), 2) ?></span>
@@ -282,7 +308,7 @@ function ordRowClass(int $status): string {
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="10" class="ord-empty">No orders found.</td>
+                            <td colspan="9" class="ord-empty">No orders found.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -300,23 +326,20 @@ function ordRowClass(int $status): string {
 
 <!-- Modals (moved to document.body on load — see ordMountOverlays) -->
 <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-3">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content ord-modal-content">
             <div class="modal-header ord-modal-head">
-                <h5 class="modal-title fw-semibold" id="orderModalLabel">
+                <h5 class="modal-title" id="orderModalLabel">
                     <i class="fas fa-file-alt me-2"></i>Order Details
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="orderDetailsContent" class="py-3 text-muted">
-                    <i class="fas fa-spinner fa-spin me-2"></i>Loading...
+                <div id="orderDetailsContent">
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-spinner fa-spin me-2"></i>Loading…
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i>Close
-                </button>
             </div>
         </div>
     </div>
@@ -325,24 +348,30 @@ function ordRowClass(int $status): string {
 <!-- ── Add Note Modal ──────────────────────────────────── -->
 <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content ord-modal-content">
             <div class="modal-header ord-modal-head">
-                <h5 class="modal-title" id="noteModalLabel">Add Note</h5>
+                <h5 class="modal-title" id="noteModalLabel">
+                    <i class="fas fa-sticky-note me-2"></i>Add Note
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="noteForm">
                     <input type="hidden" name="order_id" id="noteOrderId">
-                    <div class="form-group">
-                        <label for="orderNote">Note</label>
-                        <textarea class="form-control" id="orderNote" name="note" rows="4"
-                            placeholder="Write your note here…"></textarea>
+                    <div id="existingNoteBlock" class="ord-existing-note" style="display:none">
+                        <div class="ord-note-label">Current Note</div>
+                        <div id="existingNoteText" class="ord-existing-note__text"></div>
                     </div>
+                    <label class="ord-note-label" id="noteFieldLabel" for="orderNote">Note</label>
+                    <textarea class="ord-note-area" id="orderNote" name="note" rows="3"
+                        maxlength="500" placeholder="Write your note here…"></textarea>
+                    <div class="ord-char-counter"><span id="noteCharCount">0</span> / 500</div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" id="saveNoteBtn" class="btn btn-update">Save</button>
+            <div class="modal-footer ord-modal-foot">
+                <button type="button" id="saveNoteBtn" class="ord-btn-gold">
+                    <i class="fas fa-check"></i>Save
+                </button>
             </div>
         </div>
     </div>
@@ -351,18 +380,17 @@ function ordRowClass(int $status): string {
 <!-- ── Activity Log Modal ─────────────────────────────── -->
 <div class="modal fade" id="logModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-3">
+        <div class="modal-content ord-modal-content">
             <div class="modal-header ord-modal-head">
                 <h5 class="modal-title"><i class="fas fa-history me-2"></i>Activity Log</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div id="activityLogContent" class="text-center py-3 text-muted">
-                    <i class="fas fa-spinner fa-spin me-2"></i>Loading logs…
+                <div id="activityLogContent">
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-spinner fa-spin me-2"></i>Loading logs…
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer bg-light">
-                <button class="btn btn-update" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -386,9 +414,9 @@ function ordRowClass(int $status): string {
                 <label class="form-label">Status</label>
                 <select name="status" class="form-select">
                     <option value="">All</option>
-                    <option value="0" <?= ($status === "0" ? "selected" : "") ?>>Pending</option>
-                    <option value="1" <?= ($status === "1" ? "selected" : "") ?>>In Progress</option>
-                    <option value="2" <?= ($status === "2" ? "selected" : "") ?>>Completed</option>
+                    <option value="0" <?= $status === "0" ? "selected" : "" ?>>Pending</option>
+                    <option value="1" <?= $status === "1" ? "selected" : "" ?>>In Progress</option>
+                    <option value="2" <?= $status === "2" ? "selected" : "" ?>>Completed</option>
                 </select>
             </div>
 
@@ -410,11 +438,11 @@ function ordRowClass(int $status): string {
             </div>
 
             <div class="d-grid gap-2">
-                <button class="btn btn-update" type="submit">
-                    <i class="fas fa-check me-1"></i> Apply Filters
+                <button class="ord-btn-gold w-100 justify-content-center" type="submit">
+                    <i class="fas fa-check"></i> Apply Filters
                 </button>
-                <a href="<?= esc(ease_route('order'), 'attr') ?>" class="btn btn-cancel">
-                    <i class="fas fa-undo me-1"></i> Reset
+                <a href="<?= esc(ease_route('order'), 'attr') ?>" class="ord-btn-ghost w-100 justify-content-center" style="text-decoration:none;">
+                    <i class="fas fa-undo"></i> Reset
                 </a>
             </div>
 
@@ -545,12 +573,12 @@ document.querySelectorAll('.viewOrderBtn').forEach(function(btn) {
                 if (data.success) {
                     var o = data.order;
                     var detailsObj = JSON.parse(o.order_details_json);
-                    var tableRows = '';
+                    var detailRows = '';
                     Object.entries(detailsObj).forEach(function(entry) {
                         var key = entry[0];
                         var value = entry[1];
                         var prettyKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, function(s) { return s.toUpperCase(); });
-                        tableRows += '<tr><td class="fw-semibold">' + prettyKey + '</td><td>' + (value || '-') + '</td></tr>';
+                        detailRows += '<div class="ord-kv"><div class="ord-kv__k">' + prettyKey + '</div><div class="ord-kv__v">' + (value || '—') + '</div></div>';
                     });
                     var statusIdx = parseInt(o.status, 10);
                     var statusBadge = '<span class="ord-status-badge ' + ORD_STATUS_CLASSES[statusIdx] + '">'
@@ -558,52 +586,50 @@ document.querySelectorAll('.viewOrderBtn').forEach(function(btn) {
                     var socialMap = { 1: 'WhatsApp', 2: 'WeChat', 3: 'LINE' };
                     var uploadBase = <?= json_encode(ease_path('uploads')) ?>;
                     contentDiv.innerHTML =
-                    '<div class="container-fluid">' +
-                        '<div class="card border-0 shadow-sm mb-3 rounded-3">' +
-                            '<div class="card-header fw-semibold" style="background:#F2BE00;">Customer Information</div>' +
-                            '<div class="card-body"><div class="row g-3">' +
-                                '<div class="col-md-6">' +
-                                    '<p><strong>First Name:</strong> ' + o.first_name + '</p>' +
-                                    '<p><strong>Last Name:</strong> ' + o.last_name + '</p>' +
-                                    '<p><strong>Email:</strong> ' + o.email + '</p>' +
-                                    '<p><strong>Phone:</strong> ' + o.phone + '</p>' +
+                    '<div class="ord-detail-wrap">' +
+                        '<div class="ord-detail-section">' +
+                            '<div class="ord-detail-section__head">Customer Information</div>' +
+                            '<div class="ord-detail-section__body">' +
+                                '<div class="ord-kv-grid">' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">First Name</div><div class="ord-kv__v">' + o.first_name + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Last Name</div><div class="ord-kv__v">' + o.last_name + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Email</div><div class="ord-kv__v">' + o.email + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Phone</div><div class="ord-kv__v">' + o.phone + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">ID Number</div><div class="ord-kv__v">' + o.id_num + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Social</div><div class="ord-kv__v">' + (socialMap[o.social] || 'Unknown') + (o.social_num ? ' · ' + o.social_num : '') + '</div></div>' +
                                 '</div>' +
-                                '<div class="col-md-6">' +
-                                    '<p><strong>ID Number:</strong> ' + o.id_num + '</p>' +
-                                    '<p><strong>Social:</strong> ' + (socialMap[o.social] || 'Unknown') + '</p>' +
-                                    '<p><strong>Social Number:</strong> ' + o.social_num + '</p>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="ord-detail-section">' +
+                            '<div class="ord-detail-section__head">Order Information</div>' +
+                            '<div class="ord-detail-section__body">' +
+                                '<div class="ord-kv-grid">' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Service Type</div><div class="ord-kv__v">' + o.service_type + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Status</div><div class="ord-kv__v">' + statusBadge + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Amount</div><div class="ord-kv__v ord-kv__v--price">RM ' + parseFloat(o.amount).toFixed(2) + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Payment Method</div><div class="ord-kv__v">' + (o.payment_method || '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Special</div><div class="ord-kv__v">' + (o.special || '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Promo Code</div><div class="ord-kv__v">' + (o.promo_code || '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Upload</div><div class="ord-kv__v">' + (o.upload ? '<a href="' + uploadBase + '/' + o.upload + '" target="_blank" class="ord-kv__link">View File</a>' : '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Modified By</div><div class="ord-kv__v">' + (o.modified_by_username || '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Last Modified</div><div class="ord-kv__v">' + (o.modified_date || '—') + '</div></div>' +
                                 '</div>' +
-                            '</div></div></div>' +
-                        '<div class="card border-0 shadow-sm mb-3 rounded-3">' +
-                            '<div class="card-header fw-semibold" style="background:#F2BE00;">Order Information</div>' +
-                            '<div class="card-body"><div class="row g-3">' +
-                                '<div class="col-md-6">' +
-                                    '<p><strong>Service Type:</strong> ' + o.service_type + '</p>' +
-                                    '<p><strong>Special:</strong> ' + o.special + '</p>' +
-                                    '<p><strong>Special Note:</strong> ' + (o.special_note || '-') + '</p>' +
-                                    '<p><strong>Promo Code:</strong> ' + (o.promo_code || '-') + '</p>' +
-                                    '<p><strong>Last Modified:</strong> ' + (o.modified_date || '-') + '</p>' +
-                                '</div>' +
-                                '<div class="col-md-6">' +
-                                    '<p><strong>Status:</strong> ' + statusBadge + '</p>' +
-                                    '<p><strong>Amount:</strong> RM' + o.amount + '</p>' +
-                                    '<p><strong>Payment Method:</strong> ' + o.payment_method + '</p>' +
-                                    '<p><strong>Upload:</strong> ' + (o.upload
-                                        ? '<a href="' + uploadBase + '/' + o.upload + '" target="_blank">View File</a>'
-                                        : 'No file uploaded') + '</p>' +
-                                    '<p><strong>Modified By:</strong> ' + (o.modified_by_username || '-') + '</p>' +
-                                '</div>' +
-                            '</div></div></div>' +
-                        '<div class="card border-0 shadow-sm mb-3 rounded-3">' +
-                            '<div class="card-header fw-semibold" style="background:#F2BE00;">Order Details</div>' +
-                            '<div class="card-body">' +
-                                '<table class="table table-bordered table-sm"><tbody>' + tableRows + '</tbody></table>' +
-                            '</div></div>' +
-                        '<div class="card border-0 shadow-sm rounded-3">' +
-                            '<div class="card-header fw-semibold" style="background:#F2BE00;">Comment</div>' +
-                            '<div class="card-body">' +
-                                '<p class="bg-light p-3 rounded" style="font-size:.9rem;white-space:pre-wrap;">' + (o.comment || '-') + '</p>' +
-                            '</div></div>' +
+                                (o.special_note ? '<div class="ord-kv ord-kv--full" style="margin-top:12px"><div class="ord-kv__k">Special Note</div><div class="ord-kv__v">' + o.special_note + '</div></div>' : '') +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="ord-detail-section">' +
+                            '<div class="ord-detail-section__head">Order Details</div>' +
+                            '<div class="ord-detail-section__body">' +
+                                '<div class="ord-kv-grid">' + detailRows + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        (o.comment ?
+                        '<div class="ord-detail-section">' +
+                            '<div class="ord-detail-section__head">Admin Note</div>' +
+                            '<div class="ord-detail-section__body">' +
+                                '<div class="ord-note-display">' + o.comment + '</div>' +
+                            '</div>' +
+                        '</div>' : '') +
                     '</div>';
                 } else {
                     contentDiv.innerHTML = '<div class="text-danger text-center py-4">' + data.message + '</div>';
@@ -617,23 +643,51 @@ document.querySelectorAll('.viewOrderBtn').forEach(function(btn) {
 
 $(document).ready(function() {
     $('.btn-add-note').on('click', function() {
+        var existingNote = $(this).data('note') || '';
         $('#noteOrderId').val($(this).data('id'));
-        $('#orderNote').val($(this).data('note'));
+        $('#orderNote').val(existingNote);
+        $('#noteCharCount').text(existingNote.length);
+        $('.ord-char-counter').removeClass('ord-char-warn ord-char-limit');
+        if (existingNote.trim() !== '') {
+            $('#existingNoteText').text(existingNote);
+            $('#existingNoteBlock').show();
+            $('#noteFieldLabel').text('Edit Note');
+        } else {
+            $('#existingNoteBlock').hide();
+            $('#noteFieldLabel').text('Note');
+        }
         ordBsModal('noteModal').show();
     });
 
+    $('#orderNote').on('input', function() {
+        var len = $(this).val().length;
+        var $ctr = $('#noteCharCount').text(len).closest('.ord-char-counter');
+        $ctr.toggleClass('ord-char-warn',  len >= 450 && len < 500);
+        $ctr.toggleClass('ord-char-limit', len >= 500);
+    });
+
     $('#saveNoteBtn').on('click', function() {
+        var ordId   = $('#noteOrderId').val();
+        var newNote = $('#orderNote').val().trim();
         $.ajax({
             url: ORD_ROUTES.saveNote,
             type: 'POST',
-            data: { order_id: $('#noteOrderId').val(), note: $('#orderNote').val() },
-            success: function() {
+            data: { order_id: ordId, note: newNote },
+            success: function(data) {
+                $('.btn-add-note[data-id="' + ordId + '"]').data('note', newNote);
                 ordBsModal('noteModal').hide();
+                var titles = { added: 'Note Added!', edited: 'Note Updated!', deleted: 'Note Deleted!' };
+                var texts  = {
+                    added:   'A note has been added to this order.',
+                    edited:  'The note has been updated.',
+                    deleted: 'The note has been removed from this order.'
+                };
+                var act = data.action || 'edited';
                 swal({
-                    title: 'Note Saved!',
-                    text: 'Your note has been successfully saved.',
-                    icon: 'success',
-                    timer: 1500,
+                    title: titles[act] || 'Done!',
+                    text:  texts[act]  || '',
+                    icon:  act === 'deleted' ? 'info' : 'success',
+                    timer: 1800,
                     buttons: false
                 });
             },
