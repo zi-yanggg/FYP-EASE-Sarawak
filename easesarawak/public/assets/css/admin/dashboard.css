@@ -258,20 +258,18 @@ body { background: #fffdf5; }
     max-height: none;
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-height: var(--dsh-ops-body-h);
+    flex: 0 0 auto;
+    min-height: 0;
 }
 .dsh-queue-body {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-height: 0;
+    flex: 0 0 auto;
 }
 .dsh-tab-pane.dsh-tab-pane--queue {
     display: none;
     flex-direction: column;
-    flex: 1;
-    min-height: 0;
+    flex: 0 0 auto;
 }
 .dsh-tab-pane.dsh-tab-pane--queue.active {
     display: flex;
@@ -321,9 +319,9 @@ body { background: #fffdf5; }
 ════════════════════════════════════════ */
 .dsh-ops-grid {
     --dsh-queue-cols: 80px 168px minmax(130px, 1.15fr) minmax(130px, 1.15fr) 88px 136px;
-    /* Queue: header row + 6 rows + footer — calendar body matches this */
+    /* Calendar min body height (queue sizes to its own content) */
     --dsh-queue-max-rows: 6;
-    --dsh-ops-body-h: calc(44px + var(--dsh-queue-max-rows) * 96px + 48px);
+    --dsh-ops-body-h: calc(44px + var(--dsh-queue-max-rows) * 88px + 42px);
     display: grid;
     grid-template-columns: minmax(0, 1.65fr) minmax(300px, 1fr);
     gap: 18px;
@@ -334,7 +332,10 @@ body { background: #fffdf5; }
     margin-bottom: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: auto;
+}
+.dsh-ops-grid > .dsh-card--queue {
+    align-self: start;
 }
 .dsh-card--calendar {
     display: flex;
@@ -633,20 +634,19 @@ a.dsh-qrow {
     max-width: 100%;
 }
 
-/* More link — grows to balance calendar height; table stays compact */
+/* More link — compact footer under queue rows */
 .dsh-more-link {
     text-align: center;
     padding: 0;
     border-top: 1px solid #ECE2B4;
 }
 .dsh-more-link--foot {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 52px;
-    margin-top: 0;
-    padding: 20px 24px;
+    margin: 0;
+    padding: 10px 16px 12px;
     background: linear-gradient(180deg, #FFFDF5 0%, #F8F0D4 100%);
     border-top: 1px solid #ECE2B4;
     z-index: 9;
@@ -655,10 +655,10 @@ a.dsh-qrow {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: min(100%, 320px);
-    width: 100%;
+    min-width: min(100%, 280px);
+    width: auto;
     max-width: 100%;
-    padding: 14px 28px;
+    padding: 10px 20px;
     border-radius: 12px;
     border: 1px solid #ECE2B4;
     background: #fff;
@@ -941,16 +941,21 @@ a.dsh-qrow {
 .dsh-cal-detail {
     display: block;
     flex: 0 0 auto;
-    min-height: 120px;
+    min-height: 60px;
     max-height: 220px;
     background: #fffde7;
     border: 1px solid #ECE2B4;
     border-left: 3px solid #F2BE00;
     border-radius: 10px;
-    padding: 10px 12px;
+    padding: 8px 10px;
     font-size: .74rem;
     font-family: 'Oxanium', sans-serif;
     overflow-y: auto;
+}
+/* Compact when showing hint only (no orders for selected day) */
+.dsh-cal-detail:not(:has(.dsh-cal-order-link)) {
+    max-height: none;
+    padding: 6px 10px 8px;
 }
 .dsh-cal-detail-hint {
     margin: 0;
