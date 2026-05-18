@@ -16,40 +16,45 @@
                     data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                 <i class="fas fa-file-export me-1"></i>Export Report
             </button>
-            <div class="dropdown-menu dropdown-menu-end rpt-export-dropdown p-3" aria-labelledby="exportDropdownBtn">
+            <div class="dropdown-menu dropdown-menu-end rpt-export-dropdown" aria-labelledby="exportDropdownBtn">
+                <div class="rpt-export-dropdown-title">
+                    <i class="fas fa-file-export me-2"></i>Export Report
+                </div>
                 <form id="exportForm" action="<?= base_url('report/export') ?>" method="GET" target="_blank">
-                    <div class="mb-2">
-                        <label class="export-label">Quick Range</label>
-                        <select id="quickRange" class="export-range-select">
-                            <option value="">— Select —</option>
-                            <option value="this-month" selected>This Month</option>
-                            <option value="last-month">Last Month</option>
-                            <option value="last-3">Last 3 Months</option>
-                            <option value="last-6">Last 6 Months</option>
-                            <option value="this-year">This Year</option>
-                        </select>
-                    </div>
-                    <div class="row g-2 mb-3">
-                        <div class="col-6">
-                            <label class="export-label">From</label>
-                            <input type="date" name="start_date" id="exportStart"
-                                   class="form-control rpt-input" value="<?= date('Y-m-01') ?>">
+                    <div class="rpt-export-dropdown-body">
+                        <div class="mb-2">
+                            <label class="export-label">Quick Range</label>
+                            <select id="quickRange" class="export-range-select">
+                                <option value="">— Select —</option>
+                                <option value="this-month" selected>This Month</option>
+                                <option value="last-month">Last Month</option>
+                                <option value="last-3">Last 3 Months</option>
+                                <option value="last-6">Last 6 Months</option>
+                                <option value="this-year">This Year</option>
+                            </select>
                         </div>
-                        <div class="col-6">
-                            <label class="export-label">To</label>
-                            <input type="date" name="end_date" id="exportEnd"
-                                   class="form-control rpt-input" value="<?= date('Y-m-d') ?>">
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="export-label">From</label>
+                                <input type="date" name="start_date" id="exportStart"
+                                       class="form-control rpt-input" value="<?= date('Y-m-01') ?>">
+                            </div>
+                            <div class="col-6">
+                                <label class="export-label">To</label>
+                                <input type="date" name="end_date" id="exportEnd"
+                                       class="form-control rpt-input" value="<?= date('Y-m-d') ?>">
+                            </div>
                         </div>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button type="submit" name="format" value="pdf" id="btnPdf"
-                                class="btn btn-export-pdf flex-fill">
-                            <i class="fas fa-file-pdf me-1"></i>PDF
-                        </button>
-                        <button type="submit" name="format" value="csv" id="btnCsv"
-                                class="btn btn-export-csv flex-fill">
-                            <i class="fas fa-file-csv me-1"></i>CSV
-                        </button>
+                        <div class="d-flex gap-2">
+                            <button type="submit" name="format" value="pdf" id="btnPdf"
+                                    class="btn btn-export-pdf flex-fill">
+                                <i class="fas fa-file-pdf me-1"></i>PDF
+                            </button>
+                            <button type="submit" name="format" value="csv" id="btnCsv"
+                                    class="btn btn-export-csv flex-fill">
+                                <i class="fas fa-file-csv me-1"></i>CSV
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -59,9 +64,9 @@
     <!-- ══════════════════════════════════════
          ROW 1 — KPI Stat Cards
     ══════════════════════════════════════ -->
-    <div class="row g-2 mb-3">
+    <div class="rpt-kpis mb-3">
 
-        <div class="col-6 col-lg-3">
+        <div class="rpt-kpi">
             <div class="rpt-kpi-card kpi-loop-card" data-kpi="revenue" title="Click to switch KPI">
                 <div class="rpt-kpi-top">
                     <div class="rpt-kpi-label" data-kpi-label>Total Revenue</div>
@@ -77,7 +82,7 @@
             </div>
         </div>
 
-        <div class="col-6 col-lg-3">
+        <div class="rpt-kpi">
             <div class="rpt-kpi-card kpi-loop-card" data-kpi="orders" title="Click to switch KPI">
                 <div class="rpt-kpi-top">
                     <div class="rpt-kpi-label" data-kpi-label>Total Orders</div>
@@ -93,7 +98,7 @@
             </div>
         </div>
 
-        <div class="col-6 col-lg-3">
+        <div class="rpt-kpi">
             <div class="rpt-kpi-card kpi-loop-card" data-kpi="aov" title="Click to switch KPI">
                 <div class="rpt-kpi-top">
                     <div class="rpt-kpi-label" data-kpi-label>Average Order Value</div>
@@ -109,7 +114,7 @@
             </div>
         </div>
 
-        <div class="col-6 col-lg-3">
+        <div class="rpt-kpi">
             <div class="rpt-kpi-card kpi-loop-card" data-kpi="customer" title="Click to switch KPI">
                 <div class="rpt-kpi-top">
                     <div class="rpt-kpi-label" data-kpi-label>Unique Customer</div>
@@ -136,12 +141,23 @@
         <div class="col-lg-8">
             <div class="card rpt-card h-100">
                 <!-- Controls header -->
-                <div class="rpt-card-header rpt-main-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="fas fa-chart-line" style="color:var(--gold);"></i>
-                        <span class="rpt-title">Revenue Breakdown</span>
+                <div class="rpt-card-header rpt-main-header">
+                    <!-- Row 1: title + export PDF -->
+                    <div class="rpt-header-row1 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-chart-line" style="color:var(--gold);"></i>
+                            <span class="rpt-title">Revenue Breakdown</span>
+                        </div>
+                        <form id="inlineExportForm" action="<?= base_url('report/export') ?>" method="GET" target="_blank">
+                            <input type="hidden" name="start_date" id="inlineExportStart" value="<?= date('Y-m-01') ?>">
+                            <input type="hidden" name="end_date" id="inlineExportEnd" value="<?= date('Y-m-d') ?>">
+                            <button type="submit" name="format" value="pdf" class="btn btn-export-pdf btn-export-pdf-inline">
+                                <i class="fas fa-file-pdf me-1"></i>Export PDF
+                            </button>
+                        </form>
                     </div>
-                    <div class="rpt-control-wrap d-flex align-items-center gap-2 flex-wrap">
+                    <!-- Row 2: filters always on 2nd row -->
+                    <div class="rpt-control-wrap d-flex align-items-center gap-2">
                         <select id="serviceType" class="report-select">
                             <option value="all">Combined Revenue</option>
                             <option value="split">Storage + Delivery</option>
@@ -233,17 +249,7 @@
                     </button>
                 </div>
 
-                <div id="chartExportPanel" class="chart-export-panel mb-2">
-                    <form id="inlineExportForm" action="<?= base_url('report/export') ?>" method="GET" target="_blank">
-                        <input type="hidden" name="start_date" id="inlineExportStart" value="<?= date('Y-m-01') ?>">
-                        <input type="hidden" name="end_date" id="inlineExportEnd" value="<?= date('Y-m-d') ?>">
-                        <div class="chart-export-grid">
-                            <button type="submit" name="format" value="pdf" class="btn btn-export-pdf btn-export-pdf-inline">
-                                <i class="fas fa-file-pdf me-1"></i>Export PDF
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                <div id="chartExportPanel" style="display:none;"></div>
 
             </div>
         </div><!-- /col-lg-8 -->
@@ -254,7 +260,7 @@
                 <div class="rpt-card-header d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
                         <i class="fas fa-calendar-alt" style="color:var(--gold);"></i>
-                        <span class="rpt-title">Date Navigator</span>
+                        <span class="rpt-title">Date</span>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <span class="sf-label" id="calSelectedLabel">Click a day</span>
@@ -296,22 +302,22 @@
             <div class="card rpt-card">
                 <div class="rpt-stats-strip">
                     <div class="rpt-stat-item">
-                        <div class="sf-label">Highest Period</div>
+                        <div class="sf-label">Best Revenue</div>
                         <div class="sf-val" id="statHigh">—</div>
                     </div>
                     <div class="rpt-stat-divider"></div>
                     <div class="rpt-stat-item">
-                        <div class="sf-label">Lowest Period</div>
+                        <div class="sf-label">Lowest Revenue</div>
                         <div class="sf-val" id="statLow">—</div>
                     </div>
                     <div class="rpt-stat-divider"></div>
                     <div class="rpt-stat-item">
-                        <div class="sf-label">Average</div>
+                        <div class="sf-label">Avg. per Interval</div>
                         <div class="sf-val" id="statAvg">—</div>
                     </div>
                     <div class="rpt-stat-divider"></div>
                     <div class="rpt-stat-item">
-                        <div class="sf-label">Periods</div>
+                        <div class="sf-label">Top Period</div>
                         <div class="sf-val" id="statCount">—</div>
                     </div>
                 </div>
@@ -496,7 +502,7 @@
         document.getElementById('statHigh').textContent  = fmtRM(max) + (labels[maxIdx] ? ' (' + labels[maxIdx] + ')' : '');
         document.getElementById('statLow').textContent   = fmtRM(min) + (labels[minIdx] ? ' (' + labels[minIdx] + ')' : '');
         document.getElementById('statAvg').textContent   = fmtRM(avg);
-        document.getElementById('statCount').textContent = values.length;
+        document.getElementById('statCount').textContent = labels[maxIdx] || '—';
     }
 
     function showRevenueEmpty(show, message = null) {
@@ -589,7 +595,7 @@
             document.getElementById('statHigh').textContent  = fmtRM(safeRevenue) + ' (' + label + ')';
             document.getElementById('statLow').textContent   = fmtRM(safeRevenue) + ' (' + label + ')';
             document.getElementById('statAvg').textContent   = fmtRM(safeRevenue);
-            document.getElementById('statCount').textContent = 1;
+            document.getElementById('statCount').textContent = label || '—';
         }
     }
 

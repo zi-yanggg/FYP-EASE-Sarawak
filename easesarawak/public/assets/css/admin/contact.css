@@ -1,0 +1,346 @@
+/* ── Contacts Ledger ──────────────────────────────────────── */
+.contact-page { padding: 0 24px 40px; }
+
+/* Card */
+.contact-card {
+    background: #fff;
+    border: 2px solid #ECE2B4;
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+.contact-card__bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 2px solid #F2BE00;
+    background: #0A0A0A;
+    flex-wrap: wrap;
+}
+.contact-card__title {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #F2BE00;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+/* ── Filter tabs — match cal-pill-btn (calendar page) ─────── */
+.contact-tabs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 4px;
+}
+/* Scope to .contact-card__bar to beat Bootstrap's <a> colour */
+.contact-card__bar a.contact-tab,
+.contact-card__bar .contact-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    text-decoration: none;
+    border: none;
+    color: #fff;
+    background: transparent;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+    white-space: nowrap;
+    line-height: 1.5;
+}
+.contact-card__bar a.contact-tab:hover,
+.contact-card__bar .contact-tab:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+.contact-card__bar a.contact-tab.active,
+.contact-card__bar .contact-tab.active {
+    background: #F2BE00;
+    color: #0A0A0A;
+}
+
+/* ── Table ─────────────────────────────────────────────────── */
+.contact-tbl {
+    width: 100%;
+    border-collapse: collapse;
+}
+.contact-tbl th.text-center { text-align: center; }
+.contact-tbl th.text-end    { text-align: right; }
+.contact-tbl th {
+    text-align: left;
+    padding: 16px 18px;
+    background: #FBF4D8;
+    color: #0A0A0A;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 2px solid #F2BE00;
+}
+.contact-tbl tbody td {
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 2px solid rgba(242, 190, 0, 0.18);
+    vertical-align: middle;
+}
+.contact-tbl tbody tr:hover td { background: #FFFEF5; }
+.contact-tbl tbody tr:nth-child(odd) td { background-color: rgba(242, 190, 0, .04); }
+.contact-tbl tbody tr.contact-row--new td:first-child { box-shadow: inset 4px 0 0 #F2BE00; }
+.contact-tbl tbody tr.contact-row--read td:first-child { box-shadow: inset 4px 0 0 #1E8E3E; }
+
+/* Email column */
+.contact-email {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0A0A0A;
+}
+
+/* Phone / Contact column */
+.contact-tbl tbody td:nth-child(2) {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6B7280;
+}
+
+/* Subject column */
+.contact-tbl tbody td:nth-child(3) {
+    font-family: 'EurostarRegular', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0A0A0A;
+}
+
+/* Message preview — 2-line clamp */
+.contact-msg-preview {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6B7280;
+    max-width: 280px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    white-space: normal;
+    line-height: 1.5;
+}
+
+/* ── Status pills ──────────────────────────────────────────── */
+.contact-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 10.5px;
+    font-weight: 800;
+    white-space: nowrap;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    border: 1.5px solid transparent;
+}
+.contact-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+.contact-status--new  { background: #2563EB; color: #fff; border-color: #2563EB; }
+.contact-status--read { background: #1E8E3E; color: #fff; border-color: #1E8E3E; }
+
+/* ── Action buttons ────────────────────────────────────────── */
+.contact-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.contact-act-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #ECE2B4;
+    border-radius: 10px;
+    background: #fff;
+    color: #0A0A0A;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+    text-decoration: none;
+}
+.contact-act-btn:hover {
+    background: #0A0A0A;
+    border-color: #0A0A0A;
+    color: #F2BE00;
+}
+.contact-act-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Pagination — global ease-pager styles apply to links ──── */
+.contact-pager {
+    padding: 12px 20px;
+    border-top: 1px solid #ECE2B4;
+    display: flex;
+    justify-content: center;
+}
+
+/* ── Empty state ───────────────────────────────────────────── */
+.contact-empty {
+    text-align: center;
+    padding: 32px 18px;
+    color: #6B7280;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 14px;
+}
+
+/* ── Message Details Modal frame ───────────────────────────── */
+.contact-modal-content {
+    border: 1.5px solid #ECE2B4;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .12);
+}
+.contact-modal-head {
+    background: #0A0A0A;
+    color: #F2BE00;
+    padding: 16px 22px;
+    border-bottom: 2px solid #F2BE00;
+}
+.contact-modal-head .modal-title {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #F2BE00;
+}
+/* Close button: .ease-modal-close defined in components.css */
+
+.contact-modal-foot {
+    background: #FFFDF5;
+    border-top: 1px solid #ECE2B4;
+    padding: 12px 20px;
+}
+
+/* ── Modal section cards — mirrors ord-detail-section ─────── */
+.contact-detail-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 4px 0;
+}
+.contact-detail-section {
+    background: #fff;
+    border: 1px solid #ECE2B4;
+    border-radius: 14px;
+    overflow: hidden;
+}
+.contact-detail-section__head {
+    background: #0A0A0A;
+    color: #F2BE00;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+}
+.contact-detail-section__body {
+    padding: 16px 18px;
+}
+
+/* ── KV grid — 2-column equal (mirrors ord-kv-grid) ───────── */
+.contact-kv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 24px;
+}
+.contact-kv {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.contact-kv--full { grid-column: 1 / -1; }
+.contact-kv__k {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #6B7280;
+}
+.contact-kv__v {
+    font-family: 'EurostarRegular', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0A0A0A;
+    line-height: 1.35;
+}
+
+/* Message body pre block */
+.contact-msg-body {
+    background: #FFFDF5;
+    border: 1.5px solid #ECE2B4;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: 'Public Sans', sans-serif;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    margin: 0;
+    width: 100%;
+}
+
+/* ── Ghost close button ────────────────────────────────────── */
+.contact-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border: 1.5px solid #ECE2B4;
+    border-radius: 999px;
+    background: transparent;
+    color: #0A0A0A;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+}
+.contact-btn-ghost:hover { background: #F5F5F0; border-color: #D4A700; }
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    .contact-page { padding: 0 12px 40px; }
+    .contact-tabs { flex-wrap: wrap; }
+    .contact-msg-preview { max-width: 180px; }
+    .contact-kv-grid { grid-template-columns: 1fr; }
+    .contact-kv--full { grid-column: 1; }
+}

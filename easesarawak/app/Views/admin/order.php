@@ -332,7 +332,9 @@ function ordRowClass(int $status): string {
                 <h5 class="modal-title" id="orderModalLabel">
                     <i class="fas fa-file-alt me-2"></i>Order Details
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="ease-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body">
                 <div id="orderDetailsContent">
@@ -353,7 +355,9 @@ function ordRowClass(int $status): string {
                 <h5 class="modal-title" id="noteModalLabel">
                     <i class="fas fa-sticky-note me-2"></i>Add Note
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="ease-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body">
                 <form id="noteForm">
@@ -383,7 +387,9 @@ function ordRowClass(int $status): string {
         <div class="modal-content ord-modal-content">
             <div class="modal-header ord-modal-head">
                 <h5 class="modal-title"><i class="fas fa-history me-2"></i>Activity Log</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="ease-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body">
                 <div id="activityLogContent">

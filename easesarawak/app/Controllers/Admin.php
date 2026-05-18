@@ -311,7 +311,7 @@ class Admin extends BaseController
     public function contact()
     {
         $messageModel = new MessageModel();
-        $perPage = 15;
+        $perPage = 10;
         $filter = $this->request->getGet('filter');
         $messageId = $this->request->getGet('message_id');
 
@@ -1442,21 +1442,23 @@ class Admin extends BaseController
     public function transaction_history()
     {
         $paymentModel = new PaymentModel();
-        // Fetch all transactions, you can add filters or pagination as needed
-        $transactions = $paymentModel->orderBy('created_at', 'DESC')->findAll();
-        $db = \Config\Database::connect();
+        $search = trim($this->request->getGet('search') ?? '');
 
-        $data = [
-            'transactions' => $transactions
-        ];
-        $refunds = $db->table('refund_form')
-            ->orderBy('created_at', 'DESC')
-            ->get()
-            ->getResultArray();
+        if ($search !== '') {
+            $paymentModel->groupStart()
+                ->like('stripe_payment_id', $search)
+                ->orLike('payment_intent_id', $search)
+                ->orLike('status', $search)
+                ->groupEnd();
+        }
 
-        return $this->render('admin/transaction_history', $data);
-        return $this->render('admin/refund_request', [
-            'refunds' => $refunds
+        $transactions = $paymentModel->orderBy('created_at', 'DESC')->paginate(10, 'group1');
+        $pager = $paymentModel->pager;
+
+        return $this->render('admin/transaction_history', [
+            'transactions' => $transactions,
+            'pager'        => $pager,
+            'search'       => $search,
         ]);
     }
 
@@ -1579,17 +1581,35 @@ class Admin extends BaseController
     
     public function refund_request()
     {
-        $db = \Config\Database::connect();
+        $db      = \Config\Database::connect();
+        $search  = trim($this->request->getGet('search') ?? '');
+        $perPage = 10;
+        $page    = max(1, (int) ($this->request->getGet('page') ?? 1));
+        $offset  = ($page - 1) * $perPage;
 
-        $refunds = $db->table('refund_form rf')
+        $builder = $db->table('refund_form rf')
             ->select('rf.*, u.username AS status_updated_username')
             ->join('user u', 'u.user_id = rf.status_updated_by', 'left')
-            ->orderBy('rf.created_at', 'DESC')
-            ->get()
-            ->getResultArray();
+            ->orderBy('rf.created_at', 'DESC');
+
+        if ($search !== '') {
+            $builder->groupStart()
+                ->like('rf.full_name', $search)
+                ->orLike('rf.email', $search)
+                ->orLike('rf.reason_for_refund', $search)
+                ->groupEnd();
+        }
+
+        $total   = $builder->countAllResults(false);
+        $refunds = $builder->limit($perPage, $offset)->get()->getResultArray();
+
+        $pager = service('pager');
+        $pager->store('group1', $page, $perPage, $total);
 
         return $this->render('admin/refund_request', [
-            'refunds' => $refunds
+            'refunds' => $refunds,
+            'pager'   => $pager,
+            'search'  => $search,
         ]);
     }
 
@@ -1600,7 +1620,7 @@ class Admin extends BaseController
 
         $statusMap = [
             0 => 'In Progress',
-            1 => 'Agreed',
+            1 => 'Approved',
             2 => 'Rejected',
         ];
 

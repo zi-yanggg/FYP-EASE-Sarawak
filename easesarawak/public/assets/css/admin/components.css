@@ -392,6 +392,34 @@
         }
 
 /* ============================================================
+   EASE Shared Modal Close Button
+   Used across all admin modals in place of Bootstrap btn-close.
+   Font Awesome fa-times with explicit gold colour — CSS filter
+   approach is unreliable cross-browser on dark headers.
+   ============================================================ */
+.ease-modal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #F2BE00;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color .15s, background .15s;
+    flex-shrink: 0;
+}
+.ease-modal-close:hover {
+    color: #FFD54A;
+    background: rgba(242, 190, 0, .12);
+}
+
+/* ============================================================
    EASE Design System — tokens · animations · shared components
    Consolidated from ease-design-system.css (Direction D/A
    prototype sidebar code removed; active rules only)
@@ -840,38 +868,154 @@
 }
 
 /* ============================================================
-   Direction A — Pagination
-   CI4 Pager + DataTables paginator
+   Direction A — Pagination (Order Management pattern)
+   CI4 ease-pager + DataTables bootstrap .pagination
    ============================================================ */
 
-/* ── CI4 Pager ───────────────────────────────────────────────── */
+.ease-admin-pager .ease-pager-nav { margin: 0; }
+
+.ease-admin-pager .ease-pager {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: center;
+}
+
+.ease-admin-pager .ease-pager__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: auto;
+  padding: 4px 9px;
+  line-height: 1.2;
+  background: #fff;
+  color: #0A0A0A;
+  border: 1px solid #ECE2B4;
+  border-radius: 4px;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.ease-admin-pager .ease-pager__link:hover {
+  background: #FFFEF5;
+  border-color: #ECE2B4;
+  color: #0A0A0A;
+}
+
+.ease-admin-pager .ease-pager__link--active,
+.ease-admin-pager .ease-pager__item--active .ease-pager__link {
+  background: #0A0A0A;
+  border-color: #0A0A0A;
+  color: #F2BE00;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.ease-admin-pager .ease-pager__link i {
+  font-size: 10px;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+/* DataTables bootstrap4 paginator inside admin tables */
+.ease-admin-pager .dataTables_paginate,
+.ease-dir .ease-admin-pager .dataTables_paginate {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.ease-admin-pager .pagination {
+  margin: 0;
+  gap: 2px;
+}
+
+.ease-admin-pager .page-link {
+  border-color: #ECE2B4;
+  color: #0A0A0A;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 10.5px;
+  padding: 4px 9px;
+  line-height: 1.2;
+  min-height: 0;
+}
+
+.ease-admin-pager .page-item.active .page-link,
+.ease-admin-pager .paginate_button.page-item.active .page-link {
+  background: #0A0A0A !important;
+  border-color: #0A0A0A !important;
+  color: #F2BE00 !important;
+}
+
+.ease-admin-pager .page-link:hover {
+  background: #FFFEF5;
+  color: #0A0A0A;
+}
+
+.ease-admin-pager .page-item.disabled .page-link {
+  background: #f9f9f9;
+  color: #9CA3AF;
+  border-color: #ECE2B4;
+}
+
+.ease-admin-pager .page-link i {
+  font-size: 10px;
+  pointer-events: none;
+  line-height: 1.2;
+}
+
+.ease-admin-pager .paginate_button.page-item {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Legacy global ease-pager (non-table contexts) */
 .ease-pager-nav { margin: 16px 0 4px; }
 
 .ease-pager {
   list-style: none;
-  margin: 0; padding: 0;
-  display: flex; flex-wrap: wrap; gap: 4px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
   align-items: center;
 }
 
 .ease-pager__link {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 34px; height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
   padding: 0 10px;
   background: #fff;
   color: var(--fg2);
   border: 1px solid #ECE2B4;
   border-radius: 8px;
   font-family: var(--font-admin);
-  font-size: 11px; font-weight: 700;
+  font-size: 11px;
+  font-weight: 700;
   text-decoration: none;
   transition: background .15s, color .15s, border-color .15s;
 }
+
 .ease-pager__link:hover {
   background: var(--gold-pale);
   border-color: var(--gold);
   color: var(--ink-1);
 }
+
 .ease-pager__link--active,
 .ease-pager__item--active .ease-pager__link {
   background: var(--gold);
@@ -880,44 +1024,8 @@
   font-weight: 800;
   pointer-events: none;
 }
+
 .ease-pager__link i { font-size: 12px; }
-
-/* ── DataTables paginator ────────────────────────────────────── */
-.ease-dir .dataTables_wrapper .dataTables_paginate { margin-top: 12px; }
-
-.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 34px; height: 34px;
-  padding: 0 10px;
-  margin: 0 2px;
-  background: #fff;
-  color: var(--fg2);
-  border: 1px solid #ECE2B4;
-  border-radius: 8px;
-  font-family: var(--font-admin);
-  font-size: 11px; font-weight: 700;
-  cursor: pointer;
-  transition: background .15s, color .15s, border-color .15s;
-}
-.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  background: var(--gold-pale);
-  border-color: var(--gold);
-  color: var(--ink-1);
-}
-.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-  background: var(--gold);
-  color: var(--ink-1);
-  border-color: var(--gold);
-  font-weight: 800;
-}
-.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
-.ease-dir .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
-  background: #f9f9f9;
-  color: #ccc;
-  border-color: #eee;
-  cursor: default;
-}
 
 /* ── DataTables info text & length select ────────────────────── */
 .ease-dir .dataTables_wrapper .dataTables_info {

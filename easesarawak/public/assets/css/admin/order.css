@@ -86,6 +86,7 @@
 .ord-tbl tbody tr.ord-row--pending td:first-child { box-shadow: inset 4px 0 0 #F2BE00; }
 .ord-tbl tbody tr.ord-row--progress td:first-child { box-shadow: inset 4px 0 0 #2563EB; }
 .ord-tbl tbody tr.ord-row--done td:first-child { box-shadow: inset 4px 0 0 #1E8E3E; }
+.ord-tbl tbody tr.ord-row--rejected td:first-child { box-shadow: inset 4px 0 0 #C04545; }
 .ord-tbl th:nth-child(8),
 .ord-tbl td:nth-child(8) {
     min-width: 118px;
@@ -324,9 +325,13 @@
 }
 .ord-status-badge:hover { filter: brightness(1.08); }
 .ord-status-badge:active { transform: scale(0.97); }
-.ord-status--pending  { background: #F2BE00; color: #0A0A0A; border-color: #F2BE00; }
-.ord-status--progress { background: #2563EB; color: #fff; border-color: #2563EB; }
-.ord-status--done     { background: #1E8E3E; color: #fff; border-color: #1E8E3E; }
+/* Chained with .ord-status-badge (specificity 0,2,0) to beat
+   .ease-dir button { background: transparent; color: inherit; border: none }
+   in components.css (specificity 0,1,1). */
+.ord-status-badge.ord-status--pending  { background: #F2BE00; color: #0A0A0A; border: 1.5px solid #F2BE00; }
+.ord-status-badge.ord-status--progress { background: #2563EB; color: #fff;    border: 1.5px solid #2563EB; }
+.ord-status-badge.ord-status--done     { background: #1E8E3E; color: #fff;    border: 1.5px solid #1E8E3E; }
+.ord-status-badge.ord-status--rejected { background: #C04545; color: #fff;    border: 1.5px solid #C04545; }
 
 /* Action buttons */
 .ord-actions {
@@ -392,9 +397,7 @@
     text-transform: uppercase;
     color: #F2BE00;
 }
-.ord-modal-head .btn-close {
-    filter: brightness(0) saturate(100%) invert(85%) sepia(50%) saturate(500%) hue-rotate(10deg);
-}
+/* .ease-modal-close handles the close button colour — defined in components.css */
 
 /* Modal footer */
 .ord-modal-foot {
