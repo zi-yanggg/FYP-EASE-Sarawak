@@ -3,8 +3,8 @@
 
 /* Card */
 .promo-card {
-    background: #fff;
-    border: 2px solid #ECE2B4;
+    background: var(--surface-card);
+    border: 2px solid var(--border-subtle);
     border-radius: 18px;
     overflow: hidden;
     margin-bottom: 24px;
@@ -103,8 +103,8 @@
 .promo-tbl th {
     text-align: left;
     padding: 16px 18px;
-    background: #FBF4D8;
-    color: #0A0A0A;
+    background: var(--surface-header);
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 11.5px;
     font-weight: 800;
@@ -117,12 +117,12 @@
     padding: 12px 14px;
     font-size: 14px;
     font-family: 'Oxanium', sans-serif;
-    color: #333;
+    color: var(--text-secondary);
     border-bottom: 2px solid rgba(242, 190, 0, 0.18);
     vertical-align: middle;
 }
-.promo-tbl tbody tr:hover td { background: #FFFEF5; }
-.promo-tbl tbody tr:nth-child(odd) td { background-color: rgba(242, 190, 0, .04); }
+.promo-tbl tbody tr:hover td { background: var(--surface-hover); }
+.promo-tbl tbody tr:nth-child(odd) td { background-color: var(--surface-row-odd); }
 
 /* Code badge */
 .promo-code-badge {
@@ -130,9 +130,9 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
     font-weight: 700;
-    color: #0A0A0A;
-    background: #FBF4D8;
-    border: 1px solid #ECE2B4;
+    color: var(--text-primary);
+    background: var(--surface-header);
+    border: 1px solid var(--border-subtle);
     border-radius: 6px;
     padding: 3px 8px;
     letter-spacing: .05em;
@@ -177,10 +177,10 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    border: 1px solid #ECE2B4;
+    border: 1px solid var(--border-subtle);
     border-radius: 10px;
-    background: #fff;
-    color: #0A0A0A;
+    background: var(--surface-card);
+    color: var(--text-primary);
     font-size: 14px;
     cursor: pointer;
     transition: background .15s, border-color .15s, color .15s, box-shadow .15s;
@@ -207,7 +207,7 @@
 .promo-empty {
     text-align: center;
     padding: 32px 18px;
-    color: #6B7280;
+    color: var(--text-muted);
     font-family: 'Oxanium', sans-serif;
     font-size: 14px;
 }
@@ -229,7 +229,7 @@
 .promo-page .dataTables_wrapper .dataTables_paginate {
     margin-top: 0;
     padding: 6px 18px 8px;
-    border-top: 1px solid #ECE2B4;
+    border-top: 1px solid var(--border-subtle);
     display: flex;
     justify-content: center;
 }
@@ -252,8 +252,8 @@
     min-width: 34px;
     height: 34px;
     padding: 0 10px;
-    border-color: #ECE2B4;
-    color: #0A0A0A;
+    border-color: var(--border-subtle);
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 11px;
     font-weight: 700;
@@ -281,8 +281,8 @@
 
 /* ── Form pages (Add / Edit Promo) ───────────────────────── */
 .promo-form-card {
-    background: #fff;
-    border: 2px solid #ECE2B4;
+    background: var(--surface-card);
+    border: 2px solid var(--border-subtle);
     border-radius: 18px;
     overflow: hidden;
     margin-bottom: 24px;
@@ -312,7 +312,7 @@
     font-weight: 800;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: #6B7280;
+    color: var(--text-muted);
     margin-bottom: 8px;
 }
 
@@ -323,10 +323,10 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 13px;
     font-weight: 600;
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 10px;
-    background: #FFFDF5;
-    color: #0A0A0A;
+    background: var(--surface-card-warm);
+    color: var(--text-primary);
     padding: 9px 14px;
     transition: border-color .15s, box-shadow .15s;
     appearance: none;
@@ -347,7 +347,7 @@
 
 /* Flatpickr theming */
 .flatpickr-calendar {
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 14px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, .1);
 }
@@ -357,7 +357,7 @@
     border-color: #0A0A0A;
     color: #F2BE00;
 }
-.flatpickr-day:hover { background: #FFFEF5; }
+.flatpickr-day:hover { background: var(--surface-hover); }
 
 /* Form action row */
 .promo-form-actions {
@@ -373,10 +373,10 @@
     align-items: center;
     gap: 6px;
     padding: 8px 16px;
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 999px;
     background: transparent;
-    color: #0A0A0A;
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 11px;
     font-weight: 700;
@@ -385,7 +385,7 @@
     transition: background .15s, border-color .15s;
     text-decoration: none;
 }
-.promo-btn-back:hover { background: #F5F5F0; border-color: #D4A700; color: #0A0A0A; }
+.promo-btn-back:hover { background: var(--surface-hover); border-color: #D4A700; color: var(--text-primary); }
 
 /* Ghost button (cancel) */
 .promo-btn-ghost {
@@ -393,10 +393,10 @@
     align-items: center;
     gap: 6px;
     padding: 8px 18px;
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 999px;
     background: transparent;
-    color: #0A0A0A;
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 11px;
     font-weight: 700;
@@ -406,7 +406,7 @@
     transition: background .15s, border-color .15s;
     text-decoration: none;
 }
-.promo-btn-ghost:hover { background: #F5F5F0; border-color: #D4A700; color: #0A0A0A; }
+.promo-btn-ghost:hover { background: var(--surface-hover); border-color: #D4A700; color: var(--text-primary); }
 
 /* Gold button (submit) */
 .promo-btn-gold {
@@ -440,7 +440,7 @@
 
 /* ── Edit Promo Modal ─────────────────────────────────────── */
 .promo-modal-content {
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, .12);
@@ -463,8 +463,8 @@
     filter: brightness(0) saturate(100%) invert(85%) sepia(50%) saturate(500%) hue-rotate(10deg);
 }
 .promo-modal-foot {
-    background: #FFFDF5;
-    border-top: 1px solid #ECE2B4;
+    background: var(--surface-card-warm);
+    border-top: 1px solid var(--border-subtle);
     padding: 12px 20px;
 }
 .promo-modal-errors {

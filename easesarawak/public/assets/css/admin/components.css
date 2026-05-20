@@ -1,3 +1,28 @@
+/* ── Surface / text / border design tokens (light mode) ─── */
+:root {
+  --surface-card:      #fff;
+  --surface-card-warm: #FFFDF5;
+  --surface-row-odd:   rgba(242,190,0,.04);
+  --surface-hover:     #FFFEF5;
+  --surface-header:    #FBF4D8;
+  --border-subtle:     #ECE2B4;
+  --text-primary:      #0A0A0A;
+  --text-secondary:    #333333;
+  --text-muted:        #6B7280;
+}
+
+body.dark-mode {
+  --surface-card:      #242526;
+  --surface-card-warm: #1e1f20;
+  --surface-row-odd:   rgba(255,255,255,.03);
+  --surface-hover:     #2d2e2f;
+  --surface-header:    #1e1f20;
+  --border-subtle:     #3a3b3c;
+  --text-primary:      #e4e6eb;
+  --text-secondary:    #c8cace;
+  --text-muted:        #adb5bd;
+}
+
 /* ============================================================
    EASE Global Action Toast
    Loaded globally via components.css
@@ -7,8 +32,8 @@
     bottom: 28px;
     right: 28px;
     width: 340px;
-    background: #fff;
-    border: 1.5px solid #ECE2B4;
+    background: var(--surface-card);
+    border: 1.5px solid var(--border-subtle);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
@@ -96,7 +121,7 @@
     font-family: 'Oxanium', sans-serif;
     font-weight: 700;
     font-size: 14px;
-    color: #0A0A0A;
+    color: var(--text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -106,7 +131,7 @@
 .ease-toast__email {
     font-family: 'Oxanium', monospace;
     font-size: 11.5px;
-    color: #6B7280;
+    color: var(--text-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -130,14 +155,14 @@
 }
 
 .ease-toast__role--admin {
-    background: #FBF4D8;
+    background: var(--surface-header);
     color: #5B4400;
 }
 
 .ease-toast__msg {
     font-family: 'Oxanium', sans-serif;
     font-size: 13px;
-    color: #444;
+    color: var(--text-secondary);
     margin: 0;
     line-height: 1.55;
 }
@@ -532,7 +557,7 @@
   font-family: var(--font-admin); border: none; cursor: pointer;
 }
 .dirD-btn:hover { background: var(--ink-1); color: var(--gold); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.15); }
-.dirD-btn.ghost { background: transparent; border: 1px solid #ECE2B4; color: var(--fg2); }
+.dirD-btn.ghost { background: transparent; border: 1px solid var(--border-subtle); color: var(--fg2); }
 .dirD-btn.ghost:hover { background: var(--ink-1); color: var(--gold); border-color: var(--ink-1); }
 .dirD-btn.sm { padding: 6px 12px; font-size: 10px; }
 
@@ -544,7 +569,7 @@
   font-family: var(--font-admin); border: none; cursor: pointer;
 }
 .ease-btn:hover { background: var(--ink-1); color: var(--gold); }
-.ease-btn.ghost { background: #fff; color: var(--fg2); border: 1px solid #ECE2B4; }
+.ease-btn.ghost { background: var(--surface-card); color: var(--fg2); border: 1px solid var(--border-subtle); }
 .ease-btn.ghost:hover { background: var(--paper); border-color: var(--gold); color: var(--ink-1); }
 
 /* Avatar colour helpers */
@@ -564,7 +589,7 @@
 .ease-drawer {
   position: fixed; top: 0; right: 0; bottom: 0;
   width: min(520px, 90%);
-  background: #fff;
+  background: var(--surface-card);
   display: flex; flex-direction: column;
   transform: translateX(102%);
   transition: transform .28s cubic-bezier(.2,.7,.2,1);
@@ -577,7 +602,7 @@
 .ease-drawer__h {
   padding: 16px 22px 14px;
   display: flex; align-items: center; gap: 12px;
-  border-bottom: 1px solid #ECE2B4;
+  border-bottom: 1px solid var(--border-subtle);
   background: var(--ink-1); color: #fff;
 }
 .ease-drawer__h .id  { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.55); letter-spacing: .04em; }
@@ -586,13 +611,13 @@
 .ease-drawer__h .x:hover { background: var(--gold); color: var(--ink-1); }
 
 .ease-drawer__b { flex: 1; overflow-y: auto; padding: 18px 22px 22px; }
-.ease-drawer__top { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; padding-bottom: 16px; border-bottom: 1px solid #F2EAC4; margin-bottom: 18px; }
+.ease-drawer__top { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle); margin-bottom: 18px; }
 .ease-drawer__kv .k { font-size: 9.5px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: var(--fg4); margin-bottom: 3px; }
 .ease-drawer__kv .v { font-size: 13.5px; font-weight: 700; color: var(--ink-1); }
 .ease-drawer__kv .v a { color: var(--ink-1); }
 .ease-drawer__kv .v a:hover { color: var(--gold); }
 
-.ease-drawer__route { display: flex; gap: 14px; padding: 14px 16px; background: #FBF4D8; border: 1px solid #EAE0B6; border-radius: 10px; margin-bottom: 18px; }
+.ease-drawer__route { display: flex; gap: 14px; padding: 14px 16px; background: var(--surface-header); border: 1px solid var(--border-subtle); border-radius: 10px; margin-bottom: 18px; }
 .ease-drawer__route .ic { width: 36px; height: 36px; background: var(--gold); border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--ink-1); }
 .ease-drawer__route .lab { font-size: 9.5px; font-weight: 800; letter-spacing: 1.2px; color: var(--fg4); text-transform: uppercase; }
 .ease-drawer__route .lo  { font-size: 13px; font-weight: 700; color: var(--ink-1); margin-top: 2px; }
@@ -600,20 +625,20 @@
 
 .ease-drawer__rule { display: flex; align-items: center; gap: 8px; margin: 18px 0 10px; }
 .ease-drawer__rule .lbl  { font-size: 9.5px; font-weight: 800; letter-spacing: 1.4px; color: var(--fg3); text-transform: uppercase; }
-.ease-drawer__rule .line { flex: 1; height: 1px; background: #ECE2B4; }
+.ease-drawer__rule .line { flex: 1; height: 1px; background: var(--border-subtle); }
 
 .ease-drawer__tl { display: flex; flex-direction: column; gap: 14px; padding-left: 4px; }
 .ease-drawer__tl .row { display: flex; gap: 14px; position: relative; }
-.ease-drawer__tl .row::before { content: ""; position: absolute; left: 11px; top: 22px; bottom: -14px; width: 1px; background: #ECE2B4; }
+.ease-drawer__tl .row::before { content: ""; position: absolute; left: 11px; top: 22px; bottom: -14px; width: 1px; background: var(--border-subtle); }
 .ease-drawer__tl .row:last-child::before { display: none; }
 .ease-drawer__tl .bul { width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; background: var(--gold-pale); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold-dark); font-size: 9px; font-weight: 800; z-index: 1; }
 .ease-drawer__tl .row.done .bul   { background: var(--gold); color: var(--ink-1); }
-.ease-drawer__tl .row.muted .bul  { background: #fff; border-color: #ECE2B4; color: var(--fg5); }
+.ease-drawer__tl .row.muted .bul  { background: var(--surface-card); border-color: var(--border-subtle); color: var(--fg5); }
 .ease-drawer__tl .body .t { font-size: 13px; font-weight: 700; color: var(--ink-1); }
 .ease-drawer__tl .row.muted .body .t { color: var(--fg4); }
 .ease-drawer__tl .body .d { font-size: 11px; color: var(--fg4); margin-top: 2px; }
 
-.ease-drawer__f { padding: 12px 22px; border-top: 1px solid #ECE2B4; display: flex; gap: 8px; justify-content: flex-end; background: #FBF4D8; }
+.ease-drawer__f { padding: 12px 22px; border-top: 1px solid var(--border-subtle); display: flex; gap: 8px; justify-content: flex-end; background: var(--surface-header); }
 
 /* ── Command Palette ─────────────────────────────────────── */
 .ease-cmdk-scrim {
@@ -624,17 +649,17 @@
 .ease-cmdk-scrim.open { opacity: 1; pointer-events: auto; }
 
 .ease-cmdk {
-  width: min(560px, 92%); background: #fff;
-  border: 1px solid #ECE2B4; border-radius: 14px;
+  width: min(560px, 92%); background: var(--surface-card);
+  border: 1px solid var(--border-subtle); border-radius: 14px;
   display: flex; flex-direction: column; max-height: 70vh; overflow: hidden;
   box-shadow: 0 24px 60px rgba(0,0,0,.32);
   transform: translateY(-10px) scale(.98); transition: transform .2s; font-size: 13px;
 }
 .ease-cmdk-scrim.open .ease-cmdk { transform: translateY(0) scale(1); }
-.ease-cmdk__s { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid #ECE2B4; }
+.ease-cmdk__s { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border-subtle); }
 .ease-cmdk__s i { color: var(--gold); font-size: 14px; }
 .ease-cmdk__s input { flex: 1; border: none; outline: none; font-size: 14px; background: transparent; color: var(--ink-1); font-family: inherit; }
-.ease-cmdk__s kbd { background: #FBF4D8; border: 1px solid #ECE2B4; padding: 2px 7px; font-size: 10.5px; font-weight: 700; border-radius: 4px; color: var(--fg3); }
+.ease-cmdk__s kbd { background: var(--surface-header); border: 1px solid var(--border-subtle); padding: 2px 7px; font-size: 10.5px; font-weight: 700; border-radius: 4px; color: var(--fg3); }
 .ease-cmdk__l { flex: 1; overflow-y: auto; padding: 6px 0; }
 .ease-cmdk__sec { padding: 8px 18px 4px; font-size: 9px; font-weight: 800; letter-spacing: 1.4px; color: var(--fg4); text-transform: uppercase; }
 .ease-cmdk__it { display: flex; align-items: center; gap: 12px; padding: 9px 18px; cursor: pointer; font-size: 13px; color: var(--fg1); }
@@ -673,7 +698,7 @@
 .ease-dir .ease-page-head {
   margin-top: 24px;
   margin-bottom: 20px; padding-bottom: 14px;
-  border-bottom: 1px solid #ECE2B4;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 /* ── Page / greeting titles — display font ──────────────────── */
@@ -792,7 +817,7 @@
 .ease-dir .card-header i   { color: var(--gold); }
 /* keep search inputs and action buttons readable inside card headers */
 .ease-dir .card-header .form-control,
-.ease-dir .card-header input { color: var(--ink-1); background: #fff; }
+.ease-dir .card-header input { color: var(--ink-1); background: var(--surface-card); }
 
 /* ── Tables ──────────────────────────────────────────────────── */
 .ease-dir .table thead th,
@@ -892,9 +917,9 @@
   height: auto;
   padding: 4px 9px;
   line-height: 1.2;
-  background: #fff;
-  color: #0A0A0A;
-  border: 1px solid #ECE2B4;
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
   border-radius: 4px;
   font-family: 'Oxanium', sans-serif;
   font-size: 10.5px;
@@ -904,9 +929,9 @@
 }
 
 .ease-admin-pager .ease-pager__link:hover {
-  background: #FFFEF5;
-  border-color: #ECE2B4;
-  color: #0A0A0A;
+  background: var(--surface-hover);
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
 }
 
 .ease-admin-pager .ease-pager__link--active,
@@ -939,8 +964,8 @@
 }
 
 .ease-admin-pager .page-link {
-  border-color: #ECE2B4;
-  color: #0A0A0A;
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
   font-family: 'Oxanium', sans-serif;
   font-size: 10.5px;
   padding: 4px 9px;
@@ -956,14 +981,14 @@
 }
 
 .ease-admin-pager .page-link:hover {
-  background: #FFFEF5;
-  color: #0A0A0A;
+  background: var(--surface-hover);
+  color: var(--text-primary);
 }
 
 .ease-admin-pager .page-item.disabled .page-link {
-  background: #f9f9f9;
+  background: var(--surface-card);
   color: #9CA3AF;
-  border-color: #ECE2B4;
+  border-color: var(--border-subtle);
 }
 
 .ease-admin-pager .page-link i {
@@ -999,9 +1024,9 @@
   min-width: 34px;
   height: 34px;
   padding: 0 10px;
-  background: #fff;
+  background: var(--surface-card);
   color: var(--fg2);
-  border: 1px solid #ECE2B4;
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
   font-family: var(--font-admin);
   font-size: 11px;
@@ -1035,7 +1060,7 @@
 }
 .ease-dir .dataTables_wrapper .dataTables_length select,
 .ease-dir .dataTables_wrapper .dataTables_filter input {
-  border: 1px solid #ECE2B4;
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
   font-family: var(--font-admin);
   font-size: 11px;

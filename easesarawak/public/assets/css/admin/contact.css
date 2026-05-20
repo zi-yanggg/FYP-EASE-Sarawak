@@ -3,8 +3,8 @@
 
 /* Card */
 .contact-card {
-    background: #fff;
-    border: 2px solid #ECE2B4;
+    background: var(--surface-card);
+    border: 2px solid var(--border-subtle);
     border-radius: 18px;
     overflow: hidden;
     margin-bottom: 24px;
@@ -78,8 +78,8 @@
 .contact-tbl th {
     text-align: left;
     padding: 16px 18px;
-    background: #FBF4D8;
-    color: #0A0A0A;
+    background: var(--surface-header);
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 11.5px;
     font-weight: 800;
@@ -91,12 +91,12 @@
 .contact-tbl tbody td {
     padding: 12px 14px;
     font-size: 14px;
-    color: #333;
+    color: var(--text-secondary);
     border-bottom: 2px solid rgba(242, 190, 0, 0.18);
     vertical-align: middle;
 }
-.contact-tbl tbody tr:hover td { background: #FFFEF5; }
-.contact-tbl tbody tr:nth-child(odd) td { background-color: rgba(242, 190, 0, .04); }
+.contact-tbl tbody tr:hover td { background: var(--surface-hover); }
+.contact-tbl tbody tr:nth-child(odd) td { background-color: var(--surface-row-odd); }
 .contact-tbl tbody tr.contact-row--new td:first-child { box-shadow: inset 4px 0 0 #F2BE00; }
 .contact-tbl tbody tr.contact-row--read td:first-child { box-shadow: inset 4px 0 0 #1E8E3E; }
 
@@ -105,7 +105,7 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 13px;
     font-weight: 700;
-    color: #0A0A0A;
+    color: var(--text-primary);
 }
 
 /* Phone / Contact column */
@@ -113,7 +113,7 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 12px;
     font-weight: 600;
-    color: #6B7280;
+    color: var(--text-muted);
 }
 
 /* Subject column */
@@ -121,7 +121,7 @@
     font-family: 'EurostarRegular', 'Arial Narrow', Arial, sans-serif;
     font-size: 14px;
     font-weight: 700;
-    color: #0A0A0A;
+    color: var(--text-primary);
 }
 
 /* Message preview — 2-line clamp */
@@ -129,7 +129,7 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 13px;
     font-weight: 500;
-    color: #6B7280;
+    color: var(--text-muted);
     max-width: 280px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -179,10 +179,10 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    border: 1px solid #ECE2B4;
+    border: 1px solid var(--border-subtle);
     border-radius: 10px;
-    background: #fff;
-    color: #0A0A0A;
+    background: var(--surface-card);
+    color: var(--text-primary);
     font-size: 14px;
     cursor: pointer;
     transition: background .15s, border-color .15s, color .15s;
@@ -203,7 +203,7 @@
 /* ── Pagination — global ease-pager styles apply to links ──── */
 .contact-pager {
     padding: 12px 20px;
-    border-top: 1px solid #ECE2B4;
+    border-top: 1px solid var(--border-subtle);
     display: flex;
     justify-content: center;
 }
@@ -212,14 +212,14 @@
 .contact-empty {
     text-align: center;
     padding: 32px 18px;
-    color: #6B7280;
+    color: var(--text-muted);
     font-family: 'Oxanium', sans-serif;
     font-size: 14px;
 }
 
 /* ── Message Details Modal frame ───────────────────────────── */
 .contact-modal-content {
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, .12);
@@ -241,8 +241,8 @@
 /* Close button: .ease-modal-close defined in components.css */
 
 .contact-modal-foot {
-    background: #FFFDF5;
-    border-top: 1px solid #ECE2B4;
+    background: var(--surface-card-warm);
+    border-top: 1px solid var(--border-subtle);
     padding: 12px 20px;
 }
 
@@ -254,8 +254,8 @@
     padding: 4px 0;
 }
 .contact-detail-section {
-    background: #fff;
-    border: 1px solid #ECE2B4;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
     border-radius: 14px;
     overflow: hidden;
 }
@@ -291,25 +291,25 @@
     font-weight: 800;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: #6B7280;
+    color: var(--text-muted);
 }
 .contact-kv__v {
     font-family: 'EurostarRegular', 'Arial Narrow', Arial, sans-serif;
     font-size: 14px;
     font-weight: 700;
-    color: #0A0A0A;
+    color: var(--text-primary);
     line-height: 1.35;
 }
 
 /* Message body pre block */
 .contact-msg-body {
-    background: #FFFDF5;
-    border: 1.5px solid #ECE2B4;
+    background: var(--surface-card-warm);
+    border: 1.5px solid var(--border-subtle);
     border-radius: 10px;
     padding: 12px 16px;
     font-family: 'Public Sans', sans-serif;
     font-size: 13px;
-    color: #333;
+    color: var(--text-secondary);
     line-height: 1.6;
     white-space: pre-wrap;
     margin: 0;
@@ -322,10 +322,10 @@
     align-items: center;
     gap: 6px;
     padding: 8px 18px;
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 999px;
     background: transparent;
-    color: #0A0A0A;
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 11px;
     font-weight: 700;
@@ -334,7 +334,7 @@
     cursor: pointer;
     transition: background .15s, border-color .15s;
 }
-.contact-btn-ghost:hover { background: #F5F5F0; border-color: #D4A700; }
+.contact-btn-ghost:hover { background: var(--surface-hover); border-color: #D4A700; }
 
 /* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 767px) {

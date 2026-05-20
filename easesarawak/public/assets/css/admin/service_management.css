@@ -3,8 +3,8 @@
 
 /* Card */
 .svc-card {
-    background: #fff;
-    border: 2px solid #ECE2B4;
+    background: var(--surface-card);
+    border: 2px solid var(--border-subtle);
     border-radius: 18px;
     overflow: hidden;
     margin-bottom: 24px;
@@ -35,8 +35,8 @@
 .svc-tbl th {
     text-align: left;
     padding: 16px 18px;
-    background: #FBF4D8;
-    color: #0A0A0A;
+    background: var(--surface-header);
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 11.5px;
     font-weight: 800;
@@ -48,19 +48,19 @@
 .svc-tbl tbody td {
     padding: 14px 18px;
     font-size: 14px;
-    color: #333;
+    color: var(--text-secondary);
     border-bottom: 2px solid rgba(242, 190, 0, 0.18);
     vertical-align: middle;
 }
-.svc-tbl tbody tr:hover td { background: #FFFEF5; }
-.svc-tbl tbody tr:nth-child(odd) td { background-color: rgba(242, 190, 0, .04); }
+.svc-tbl tbody tr:hover td { background: var(--surface-hover); }
+.svc-tbl tbody tr:nth-child(odd) td { background-color: var(--surface-row-odd); }
 
 /* Service name */
 .svc-name {
     font-family: 'Oxanium', sans-serif;
     font-size: 14px;
     font-weight: 800;
-    color: #0A0A0A;
+    color: var(--text-primary);
     text-transform: capitalize;
     letter-spacing: .04em;
 }
@@ -70,12 +70,12 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 15px;
     font-weight: 700;
-    color: #0A0A0A;
+    color: var(--text-primary);
 }
 .svc-price__prefix {
     font-size: 11px;
     font-weight: 800;
-    color: #6B7280;
+    color: var(--text-muted);
     margin-right: 2px;
 }
 
@@ -94,10 +94,10 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    border: 1px solid #ECE2B4;
+    border: 1px solid var(--border-subtle);
     border-radius: 10px;
-    background: #fff;
-    color: #0A0A0A;
+    background: var(--surface-card);
+    color: var(--text-primary);
     font-size: 14px;
     cursor: pointer;
     transition: background .15s, border-color .15s, color .15s, box-shadow .15s;
@@ -112,7 +112,7 @@
 
 /* Edit Modal */
 .svc-modal-content {
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, .12);
@@ -133,8 +133,8 @@
 }
 /* .ease-modal-close handles the close button — defined in components.css */
 .svc-modal-foot {
-    background: #FFFDF5;
-    border-top: 1px solid #ECE2B4;
+    background: var(--surface-card-warm);
+    border-top: 1px solid var(--border-subtle);
     padding: 12px 20px;
 }
 
@@ -146,7 +146,7 @@
     font-weight: 800;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: #6B7280;
+    color: var(--text-muted);
     margin-bottom: 8px;
 }
 .svc-field-input {
@@ -154,10 +154,10 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 13px;
     font-weight: 600;
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 10px;
-    background: #FFFDF5;
-    color: #0A0A0A;
+    background: var(--surface-card-warm);
+    color: var(--text-primary);
     padding: 9px 14px;
     transition: border-color .15s, box-shadow .15s;
 }
@@ -168,7 +168,7 @@
 }
 .svc-field-input[readonly] {
     background: rgba(242, 190, 0, .06);
-    color: #6B7280;
+    color: var(--text-muted);
     cursor: default;
 }
 

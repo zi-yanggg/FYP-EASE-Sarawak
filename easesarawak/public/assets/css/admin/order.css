@@ -3,8 +3,8 @@
 
 /* Card */
 .ord-card {
-    background: #fff;
-    border: 2px solid #ECE2B4;
+    background: var(--surface-card);
+    border: 2px solid var(--border-subtle);
     border-radius: 18px;
     overflow: hidden;
     margin-bottom: 24px;
@@ -59,8 +59,8 @@
 .ord-tbl th {
     text-align: left;
     padding: 14px 18px;
-    background: #FBF4D8;
-    color: #0A0A0A;
+    background: var(--surface-header);
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 11.5px;
     font-weight: 800;
@@ -73,7 +73,7 @@
 .ord-tbl tbody td {
     padding: 12px 14px;
     font-size: 14px;
-    color: #333;
+    color: var(--text-secondary);
     border-bottom: 2px solid rgba(242, 190, 0, 0.18);
     vertical-align: middle;
 }
@@ -81,8 +81,8 @@
     padding: 16px 18px;
     border-bottom: 2px solid #F2BE00;
 }
-.ord-tbl tbody tr:hover td { background: #FFFEF5; }
-.ord-tbl tbody tr:nth-child(odd) td { background-color: rgba(242,190,0,.04); }
+.ord-tbl tbody tr:hover td { background: var(--surface-hover); }
+.ord-tbl tbody tr:nth-child(odd) td { background-color: var(--surface-row-odd); }
 .ord-tbl tbody tr.ord-row--pending td:first-child { box-shadow: inset 4px 0 0 #F2BE00; }
 .ord-tbl tbody tr.ord-row--progress td:first-child { box-shadow: inset 4px 0 0 #2563EB; }
 .ord-tbl tbody tr.ord-row--done td:first-child { box-shadow: inset 4px 0 0 #1E8E3E; }
@@ -97,7 +97,7 @@
 .ord-empty {
     text-align: center;
     padding: 32px 18px;
-    color: #6B7280;
+    color: var(--text-muted);
 }
 
 /* ID column */
@@ -113,7 +113,7 @@
 .ord-id {
     font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
-    color: #0A0A0A;
+    color: var(--text-primary);
     font-weight: 700;
 }
 
@@ -121,7 +121,7 @@
 .ord-price {
     font-family: 'EurostarRegular', serif;
     font-size: 16px;
-    color: #0A0A0A;
+    color: var(--text-primary);
 }
 
 /* Customer */
@@ -135,7 +135,7 @@
     font-family: 'EurostarRegular', 'Arial Narrow', Arial, sans-serif;
     font-size: 15px;
     font-weight: 700;
-    color: #0A0A0A;
+    color: var(--text-primary);
     line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
@@ -145,7 +145,7 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 12px;
     font-weight: 600;
-    color: #6B7280;
+    color: var(--text-muted);
     white-space: nowrap;
 }
 
@@ -175,7 +175,7 @@
     font-weight: 700;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: #6B7280;
+    color: var(--text-muted);
     line-height: 1;
 }
 .ord-route-col--to .ord-route-col__lbl,
@@ -186,7 +186,7 @@
     font-family: 'EurostarRegular', 'Arial Narrow', Arial, sans-serif;
     font-size: 14px;
     font-weight: 700;
-    color: #0A0A0A;
+    color: var(--text-primary);
     line-height: 1.25;
     width: 100%;
     white-space: normal;
@@ -202,7 +202,7 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 11px;
     font-weight: 600;
-    color: #6B7280;
+    color: var(--text-muted);
     line-height: 1.35;
     width: 100%;
     white-space: normal;
@@ -232,7 +232,7 @@
     font-family: 'EurostarRegular', 'Arial Narrow', Arial, sans-serif;
     font-size: 14px;
     font-weight: 700;
-    color: #6B7280;
+    color: var(--text-muted);
     white-space: nowrap;
 }
 .ord-time {
@@ -267,9 +267,9 @@
     gap: 9px;
     padding: 5px 14px 5px 5px;
     border-radius: 999px;
-    background: #fff;
-    color: #0A0A0A;
-    border: 1px solid #ECE2B4;
+    background: var(--surface-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     font-family: 'EurostarRegular', 'Arial Narrow', Arial, sans-serif;
     font-size: 11px;
@@ -346,10 +346,10 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    border: 1px solid #ECE2B4;
+    border: 1px solid var(--border-subtle);
     border-radius: 10px;
-    background: #fff;
-    color: #0A0A0A;
+    background: var(--surface-card);
+    color: var(--text-primary);
     font-size: 14px;
     cursor: pointer;
     transition: background .15s, border-color .15s, color .15s, box-shadow .15s;
@@ -376,7 +376,7 @@
 
 /* Modal content frame */
 .ord-modal-content {
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
@@ -401,8 +401,8 @@
 
 /* Modal footer */
 .ord-modal-foot {
-    background: #FFFDF5;
-    border-top: 1px solid #ECE2B4;
+    background: var(--surface-card-warm);
+    border-top: 1px solid var(--border-subtle);
     padding: 12px 20px;
     gap: 8px;
 }
@@ -413,10 +413,10 @@
     align-items: center;
     gap: 6px;
     padding: 8px 18px;
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 999px;
     background: transparent;
-    color: #0A0A0A;
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 11px;
     font-weight: 700;
@@ -425,7 +425,7 @@
     cursor: pointer;
     transition: background .15s, border-color .15s;
 }
-.ord-btn-ghost:hover { background: #F5F5F0; border-color: #D4A700; }
+.ord-btn-ghost:hover { background: var(--surface-hover); border-color: #D4A700; }
 
 /* Gold fill pill button (Save / primary action) */
 .ord-btn-gold {
@@ -468,12 +468,12 @@
 /* Note textarea */
 .ord-note-area {
     width: 100%;
-    background: #FFFDF5;
-    border: 1.5px solid #ECE2B4;
+    background: var(--surface-card-warm);
+    border: 1.5px solid var(--border-subtle);
     border-radius: 10px;
     font-family: 'Oxanium', sans-serif;
     font-size: 13px;
-    color: #0A0A0A;
+    color: var(--text-primary);
     padding: 10px 14px;
     resize: vertical;
     transition: border-color .15s, box-shadow .15s;
@@ -493,7 +493,7 @@
     font-weight: 800;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: #6B7280;
+    color: var(--text-muted);
     margin-bottom: 8px;
 }
 
@@ -508,8 +508,8 @@
     gap: 2px;
 }
 .ord-page .ord-pagination .page-link {
-    border-color: #ECE2B4;
-    color: #0A0A0A;
+    border-color: var(--border-subtle);
+    color: var(--text-primary);
     font-family: 'Oxanium', sans-serif;
     font-size: 10.5px;
     padding: 4px 9px;
@@ -521,7 +521,7 @@
     border-color: #0A0A0A;
     color: #F2BE00;
 }
-.ord-page .ord-pagination .page-link:hover { background: #FFFEF5; color: #0A0A0A; }
+.ord-page .ord-pagination .page-link:hover { background: var(--surface-hover); color: var(--text-primary); }
 
 /* Responsive */
 @media (max-width: 1199px) {
@@ -541,8 +541,8 @@
     padding: 4px 0;
 }
 .ord-detail-section {
-    background: #fff;
-    border: 1px solid #ECE2B4;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
     border-radius: 14px;
     overflow: hidden;
 }
@@ -576,12 +576,12 @@
     font-weight: 800;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: #6B7280;
+    color: var(--text-muted);
 }
 .ord-kv__v {
     font-size: 14px;
     font-weight: 700;
-    color: #0A0A0A;
+    color: var(--text-primary);
     line-height: 1.35;
 }
 .ord-kv__v--price {
@@ -599,19 +599,19 @@
 .ord-note-display {
     font-family: 'Public Sans', sans-serif;
     font-size: 13px;
-    color: #333333;
+    color: var(--text-secondary);
     line-height: 1.6;
     white-space: pre-wrap;
-    background: #FFFDF5;
-    border: 1.5px solid #ECE2B4;
+    background: var(--surface-card-warm);
+    border: 1.5px solid var(--border-subtle);
     border-radius: 10px;
     padding: 12px 16px;
 }
 
 /* ── Existing note block (note modal) ────────────────────── */
 .ord-existing-note {
-    background: #FFFDF5;
-    border: 1.5px solid #ECE2B4;
+    background: var(--surface-card-warm);
+    border: 1.5px solid var(--border-subtle);
     border-radius: 10px;
     padding: 12px 16px;
     margin-bottom: 16px;
@@ -619,7 +619,7 @@
 .ord-existing-note__text {
     font-family: 'Public Sans', sans-serif;
     font-size: 13px;
-    color: #333333;
+    color: var(--text-secondary);
     line-height: 1.6;
     white-space: pre-wrap;
     margin-top: 8px;
@@ -662,7 +662,7 @@
     height: 8px;
     background: #F2BE00;
     border-radius: 50%;
-    border: 2px solid #FFFDF5;
+    border: 2px solid var(--surface-card-warm);
 }
 
 /* ── Offcanvas filter form fields ────────────────────────── */
@@ -672,7 +672,7 @@
     font-weight: 800;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: #6B7280;
+    color: var(--text-muted);
     margin-bottom: 8px;
 }
 .offcanvas-body .form-select,
@@ -680,10 +680,10 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 12px;
     font-weight: 600;
-    border: 1.5px solid #ECE2B4;
+    border: 1.5px solid var(--border-subtle);
     border-radius: 10px;
-    background: #FFFDF5;
-    color: #0A0A0A;
+    background: var(--surface-card-warm);
+    color: var(--text-primary);
     padding: 9px 14px;
     transition: border-color .15s, box-shadow .15s;
 }
@@ -739,7 +739,7 @@
 .ord-log-action {
     font-family: 'Public Sans', sans-serif;
     font-size: 13px;
-    color: #0A0A0A;
+    color: var(--text-primary);
     line-height: 1.35;
 }
 .ord-log-action b { font-weight: 700; }
@@ -747,20 +747,20 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 10px;
     font-weight: 700;
-    color: #6B7280;
+    color: var(--text-muted);
     letter-spacing: .04em;
     margin-top: 4px;
 }
 .ord-log-meta i { color: #F2BE00; margin-right: 4px; }
 .ord-log-note-content {
-    background: #FFFDF5;
-    border: 1.5px solid #ECE2B4;
+    background: var(--surface-card-warm);
+    border: 1.5px solid var(--border-subtle);
     border-radius: 8px;
     padding: 8px 12px;
     margin-top: 6px;
     font-family: 'Public Sans', sans-serif;
     font-size: 12.5px;
-    color: #333;
+    color: var(--text-secondary);
     line-height: 1.55;
     white-space: pre-wrap;
     word-break: break-word;
@@ -782,7 +782,7 @@
 .ord-log-empty {
     text-align: center;
     padding: 32px 18px;
-    color: #6B7280;
+    color: var(--text-muted);
     font-family: 'Oxanium', sans-serif;
     font-size: 12px;
     font-weight: 600;
@@ -844,12 +844,12 @@ a.ord-btn-gold.ord-filter-active:focus {
 button.ord-btn-ghost,
 a.ord-btn-ghost {
     background: transparent;
-    color: #0A0A0A;
-    border: 1.5px solid #ECE2B4;
+    color: var(--text-primary);
+    border: 1.5px solid var(--border-subtle);
 }
 button.ord-btn-ghost:hover,
 a.ord-btn-ghost:hover {
-    background: #F5F5F0;
+    background: var(--surface-hover);
     border-color: #D4A700;
 }
 

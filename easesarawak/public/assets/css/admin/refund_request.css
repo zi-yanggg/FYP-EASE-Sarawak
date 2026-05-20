@@ -1,13 +1,13 @@
 /* Refund Requests — extends Order Management (order.css) */
 
 /* Pagination border-top (ord-pagination padding already set in order.css) */
-.ord-page .ord-pagination { border-top: 1px solid #ECE2B4; }
+.ord-page .ord-pagination { border-top: 1px solid var(--border-subtle); }
 
 .refund-phone {
     font-family: 'Oxanium', sans-serif;
     font-size: 12px;
     font-weight: 600;
-    color: #6B7280;
+    color: var(--text-muted);
     white-space: nowrap;
 }
 
@@ -21,7 +21,7 @@
     font-family: 'Oxanium', sans-serif;
     font-size: 13px;
     font-weight: 500;
-    color: #333;
+    color: var(--text-secondary);
     line-height: 1.45;
 }
 
