@@ -15,10 +15,10 @@
     <style>
         .navbar-nav,
         .navbar .btn {
-            margin-right: 60px !important;
+            margin-right: 60px ;
         }
         .btn-book-now {
-            margin-left: 0px !important;
+            margin-left: 0px ;
         }
         
         @font-face {
@@ -636,7 +636,9 @@
                     <i class="bi bi-clipboard-check"></i> <?= esc(ease_translate('BOOKING SUMMARY')) ?>
                 </h2>
                 <div id="bookingSummary"></div>
-                <h3 class="pricing-header"><i class="bi bi-cash-stack"></i> PRICING</h3>
+                <h3 class="pricing-header">
+                    <i class="bi bi-cash-stack"></i> <?= esc(ease_translate('Pricing')) ?>
+                </h3>
                 <div id="pricing-content"></div>
             </form>
         </div>
@@ -989,24 +991,24 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-row"><span class="price-label">Kuching Luggage Transfer</span></div>
-                    <div class="price-row"><span class="price-label">Selected Transfer Point</span></div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Transfer')}</span></div>
+                    <div class="price-row"><span class="price-label">${t('Selected Transfer Point')}</span></div>
                     <div class="price-row">
-                        <span class="price-label">${currentQuantity} Standard Luggage</span>
+                        <span class="price-label">${currentQuantity} ${t('Standard Luggage')}</span>
                     </div>
-                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
                     <div class="price-row">
-                        <span class="price-label">First 24 Hours</span>
+                        <span class="price-label">${t('First 24 Hours')}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                         <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess (RM ${extraRate}/12h)</span>
+                        <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} ${t('Excess')}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                         <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
                     </div>
                 `;
@@ -1053,7 +1055,7 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
                     <div class="price-row">
                         <span class="price-label">${t('First 12 Hours')}</span>
                     </div>

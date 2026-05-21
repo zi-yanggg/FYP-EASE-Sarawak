@@ -26,10 +26,10 @@
 
         .navbar-nav,
         .navbar .btn {
-            margin-right: 60px !important;
+            margin-right: 60px ;
         }
         .btn-book-now {
-            margin-left: 0px !important;
+            margin-left: 0px ;
         }
         
         @font-face {
@@ -143,26 +143,26 @@
         }
 
         .tab-btn.active {
-            background: #f2be00 !important; 
-            color: #000000 !important; 
-            border-color: #f2be00 !important; 
-            border-bottom: 2px solid white !important; 
+            background: #f2be00 ; 
+            color: #000000 ; 
+            border-color: #f2be00 ; 
+            border-bottom: 2px solid white ; 
         }
 
         .tab-btn.active:hover {
-            background: #e6a800 !important; 
-            border-color: #e6a800 !important;
+            background: #e6a800 ; 
+            border-color: #e6a800 ;
         }
 
         .tab-btn:not(.active) {
-            background: #000000 !important; 
-            color: white !important; 
-            border-color: #000000 !important; 
+            background: #000000 ; 
+            color: white ; 
+            border-color: #000000 ; 
         }
 
         .tab-btn:not(.active):hover {
-            background: #333333 !important; 
-            border-color: #333333 !important;
+            background: #333333 ; 
+            border-color: #333333 ;
         }
 
         /* Full width forms section */
@@ -488,19 +488,19 @@
                 justify-content: center;
             }
             .tab-btn {
-                border-radius: 0 !important; 
-                border-bottom: 2px solid #000000 !important; 
+                border-radius: 0 ; 
+                border-bottom: 2px solid #000000 ; 
                 margin-bottom: 0.5rem;
             }
             .tab-btn.active {
-                background: #f2be00 !important; 
-                border-bottom: 2px solid #f2be00 !important; 
-                color: #000000 !important; 
+                background: #f2be00 ; 
+                border-bottom: 2px solid #f2be00 ; 
+                color: #000000 ; 
             }
             .tab-btn:not(.active) {
-                background: #000000 !important; 
-                color: white !important; 
-                border-bottom: 2px solid #000000 !important; 
+                background: #000000 ; 
+                color: white ; 
+                border-bottom: 2px solid #000000 ; 
             }
             .booking-form {
                 border-radius: 0; 
@@ -590,12 +590,12 @@
 
         @media (max-width: 700px) {
             .custom-content-block {
-                flex-direction: column !important;
+                flex-direction: column ;
                 text-align: center;
             }
             .custom-content-block img {
-                border-radius: 0 !important;
-                width: 100% !important;
+                border-radius: 0 ;
+                width: 100% ;
                 max-width: 350px;
                 margin: 0 auto;
             }
@@ -965,6 +965,17 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
+
+    function tr(text) {
+    const current = window.EASE_TRANSLATION?.current || 'en';
+    const map = window.EASE_TRANSLATION?.translations?.[current] || {};
+    return map[text] || text;
+    }
+
+    function showWarning(warningDiv, message) {
+        warningDiv.innerHTML = `<i class="bi bi-exclamation-triangle"></i> ${tr(message)}`;
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         // date inputs (format: YYYY-MM-DD)
         ['dropoff-date','pickup-date','storage-dropoff-date','storage-pickup-date'].forEach(function(id){
@@ -995,6 +1006,17 @@
 
     <script>
         let currentService = 'delivery';
+
+    function bookingT(text) {
+        if (typeof easeT === 'function') {
+            return easeT(text);
+        }
+        return text;
+    }
+
+    function setWarningMessage(warningDiv, message) {
+        warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> ' + bookingT(message);
+    }
 
         // Location data
         const locationData = {
@@ -1423,7 +1445,7 @@
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 08:00 and 18:00.';
+                setWarningMessage(warningDiv, 'The selected time must be between 07:00 and 19:00.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isAtLeast2HoursFromNow(selectedDate, selectedTime)) {
@@ -1449,15 +1471,15 @@
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 08:00 and 18:00.';
+                setWarningMessage(warningDiv, 'The selected time must be between 07:00 and 19:00.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isAtLeast2HoursFromNow(selectedDate, selectedTime)) {
                 updateDeliveryWarningMessage(warningDiv);
                 warningDiv.classList.add('show');
                 return false;
-            } else if (!isAtLeast2HoursAfterDropoff(selectedDate, selectedTime, dropoffDate, dropoffTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Pick-up date and time must be at least 2 hours after drop-off date and time.';
+            } else if (isDateTime1BeforeDateTime2(selectedDate, selectedTime, dropoffDate, dropoffTime)) {
+                setWarningMessage(warningDiv, 'Pick-up date and time must be after drop-off date and time.');
                 warningDiv.classList.add('show');
                 updatePickupMinimum();
                 return false;
@@ -1474,11 +1496,11 @@
             const warningDiv = document.getElementById('storage-dropoff-time-warning');
             
             if (!isDateTimeValid(selectedDate, selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Drop-off date and time cannot be in the past.';
+                setWarningMessage(warningDiv, 'Drop-off date and time cannot be in the past.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 08:00 and 18:00.';
+                showWarning(warningDiv, 'The selected time must be between 07:00 and 19:00.');
                 warningDiv.classList.add('show');
                 return false;
             } else {
@@ -1496,11 +1518,11 @@
             const warningDiv = document.getElementById('storage-pickup-time-warning');
             
             if (!isDateTimeValid(selectedDate, selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Pick-up date and time cannot be in the past.';
+                setWarningMessage(warningDiv, 'Pick-up date and time cannot be in the past.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (!isWithinWorkingHours(selectedTime)) {
-                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle"></i> The selected time must be between 08:00 and 18:00.';
+                showWarning(warningDiv, 'The selected time must be between 07:00 and 19:00.');
                 warningDiv.classList.add('show');
                 return false;
             } else if (isDateTime1BeforeDateTime2(selectedDate, selectedTime, dropoffDate, dropoffTime)) {
@@ -1539,7 +1561,7 @@
                 hour12: false
             });
             
-            warningDiv.innerHTML = `<i class="bi bi-exclamation-triangle"></i> Please select a time that is at least 2 hours from current time which is ${currentDateStr} Time: ${currentTimeStr}.`;
+        warningDiv.innerHTML = `<i class="bi bi-exclamation-triangle"></i> ${bookingT('Please select a time that is at least 2 hours from current time which is')} ${currentDateStr} ${bookingT('Time:')} ${currentTimeStr}.`;
         }
 
         function isDateTimeValid(date, time) {
