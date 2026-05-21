@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [main, UIUX_BH]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: easesarawak_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP 8.1
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, intl, mysqli, gd, xml, zip
+          coverage: xdebug
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Copy env
+        run: |
+          cp env .env
+          sed -i 's/# CI_ENVIRONMENT = production/CI_ENVIRONMENT = testing/' .env
+          sed -i 's/database.default.database = easesarawak/database.default.database = easesarawak_test/' .env
+          sed -i 's/database.default.password =.*/database.default.password =/' .env
+
+      - name: Run PHPUnit (smoke + unit + integration + security)
+        run: vendor/bin/phpunit --testdox
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: build/logs/html/
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium firefox
+
+      - name: Start PHP server
+        run: |
+          php -S localhost:8080 -t public &
+          sleep 2
+
+      - name: Run Playwright E2E tests
+        run: npx playwright test
+        env:
+          BASE_URL: http://localhost:8080
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+
+  load:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg \
+            --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" \
+            | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update && sudo apt-get install k6
+
+      - name: Start PHP server
+        run: php -S localhost:8080 -t public &
+
+      - name: Run load tests (smoke level)
+        run: k6 run --vus 5 --duration 15s tests/load/booking_flow.js

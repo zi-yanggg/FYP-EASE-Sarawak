@@ -98,16 +98,19 @@ class CardPayment extends BaseController
                 : ($pi->latest_charge->id ?? null);
         }
 
-        // Six fields to be inserted into the payments table
+        // Idempotency: return early if this PaymentIntent was already recorded
+        if ($this->payments->where('payment_intent_id', $pi->id)->first()) {
+            return $this->response->setJSON(['ok' => true]);
+        }
+
         $data = [
-            'stripe_payment_id' => $chargeId,                                    // ch_...
-            'payment_intent_id' => $pi->id,                                      // pi_...
+            'stripe_payment_id' => $chargeId,
+            'payment_intent_id' => $pi->id,
             'amount_cents'      => $pi->amount_received ?? $pi->amount ?? 0,
             'currency'          => $pi->currency ?? 'myr',
             'status'            => $pi->status ?? 'unknown',
         ];
 
-        // Use insert() to explicitly perform "new" operations.
         if (! $this->payments->insert($data)) {
             // If model validation fails or database insertion fails, an error array will be returned here.
             return $this->response
@@ -121,12 +124,10 @@ class CardPayment extends BaseController
         return $this->response->setJSON(['ok' => true]);
 
     } catch (\Throwable $e) {
-        // Write real errors to the log and return them to the front end.
-        log_message('error', 'Stripe store error: {msg}', ['msg' => $e->getMessage()]);
-
-        return $this->response
-            ->setStatusCode(500)
-            ->setJSON(['error' => $e->getMessage()]);
+            log_message('error', 'Stripe store error: {msg}', ['msg' => $e->getMessage()]);
+            return $this->response
+                ->setStatusCode(500)
+                ->setJSON(['error' => 'Unable to record payment. Please contact support.']);
         }
     }
         /** Stripe Webhook  */

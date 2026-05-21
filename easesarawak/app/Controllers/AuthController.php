@@ -30,13 +30,13 @@ class AuthController extends BaseController
             return redirect()->back()->with('error', 'No account found with that email.');
         }
 
-        // Generate token
         $token = bin2hex(random_bytes(32));
-        $expires = date('Y-m-d H:i:s', time() + 3600); // 1 hour
+        $expires = date('Y-m-d H:i:s', time() + 3600);
 
+        // Store only the hash — raw token goes in the email link, never the DB
         $userModel->update($user['user_id'], [
-            'reset_token' => $token,
-            'reset_expires' => $expires
+            'reset_token'   => hash('sha256', $token),
+            'reset_expires' => $expires,
         ]);
 
         // Send email
@@ -60,7 +60,7 @@ class AuthController extends BaseController
     {
         helper(['form', 'url']);
         $userModel = new User_model();
-        $user = $userModel->where('reset_token', $token)
+        $user = $userModel->where('reset_token', hash('sha256', $token))
             ->where('reset_expires >', date('Y-m-d H:i:s'))
             ->first();
 
@@ -75,8 +75,8 @@ class AuthController extends BaseController
     {
         helper(['form', 'url']);
         $rules = [
-            'password' => 'required|min_length[3]',
-            'confirm_password' => 'required|matches[password]'
+            'password'         => 'required|min_length[8]',
+            'confirm_password' => 'required|matches[password]',
         ];
 
         if (!$this->validate($rules)) {
@@ -84,7 +84,7 @@ class AuthController extends BaseController
         }
 
         $userModel = new User_model();
-        $user = $userModel->where('reset_token', $token)
+        $user = $userModel->where('reset_token', hash('sha256', $token))
             ->where('reset_expires >', date('Y-m-d H:i:s'))
             ->first();
 
@@ -93,7 +93,7 @@ class AuthController extends BaseController
         }
 
         $userModel->update($user['user_id'], [
-            'password' => $this->request->getPost('password'),
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'reset_token' => null,
             'reset_expires' => null
         ]);

@@ -129,10 +129,13 @@ class Home extends BaseController
 
     public function saveOrder()
     {
-        // Add CORS headers for debugging
-        $this->response->setHeader('Access-Control-Allow-Origin', '*');
-        $this->response->setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-        $this->response->setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+        $allowedOrigin = rtrim(base_url(), '/');
+        $origin = $this->request->getHeaderLine('Origin');
+        if ($origin === $allowedOrigin) {
+            $this->response->setHeader('Access-Control-Allow-Origin', $origin);
+            $this->response->setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+            $this->response->setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+        }
 
         log_message('info', 'saveOrder method called');
 
@@ -323,15 +326,20 @@ class Home extends BaseController
             } catch (\Throwable $e) {
                 log_message('error', 'Refund submit error: ' . $e->getMessage());
 
+                log_message('error', 'Refund submit exception: ' . $e->getMessage());
                 return redirect()->to(base_url('/#refund-form'))
                     ->with('refund_status', 'error')
-                    ->with('refund_message', 'Submission failed: ' . $e->getMessage())
+                    ->with('refund_message', 'Submission failed. Please try again.')
                     ->with('refund_open', 1);
             }
         }
 
         public function viewRefundPdf($refundId)
         {
+            if (empty(session()->get('access')) || !in_array((string)session()->get('role'), ['0', '1'])) {
+                return redirect()->to(base_url('login'));
+            }
+
             $db = \Config\Database::connect();
 
             $refund = $db->table('refund_form')

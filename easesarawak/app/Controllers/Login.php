@@ -36,8 +36,9 @@ class Login extends BaseController
 
             if ($remember) {
                 $token = bin2hex(random_bytes(32));
+                // Store only the hash — raw token lives in the cookie only
                 $user->update($userData['user_id'], [
-                    'remember_token' => $token
+                    'remember_token' => hash('sha256', $token),
                 ]);
 
                 // Set cookie for 30 days
