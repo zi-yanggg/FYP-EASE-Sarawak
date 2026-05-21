@@ -22,7 +22,19 @@
       "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SHOW COLUMNS FROM \\\\`order\\\\` LIKE 'comment';\")",
       "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SHOW COLUMNS FROM message;\")",
       "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SELECT order_id, service_type, order_details_json FROM \\\\`order\\\\` WHERE order_id IN \\(1, 15, 16, 18\\);\")",
-      "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SELECT order_id, JSON_UNQUOTE\\(JSON_EXTRACT\\(order_details_json, '$.\\\\\"Origin Location\\\\\"'\\)\\) as origin_loc, JSON_UNQUOTE\\(JSON_EXTRACT\\(order_details_json, '$.\\\\\"Destination Location\\\\\"'\\)\\) as dest_loc FROM \\\\`order\\\\` WHERE order_id IN \\(15, 16, 18\\);\")"
+      "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SELECT order_id, JSON_UNQUOTE\\(JSON_EXTRACT\\(order_details_json, '$.\\\\\"Origin Location\\\\\"'\\)\\) as origin_loc, JSON_UNQUOTE\\(JSON_EXTRACT\\(order_details_json, '$.\\\\\"Destination Location\\\\\"'\\)\\) as dest_loc FROM \\\\`order\\\\` WHERE order_id IN \\(15, 16, 18\\);\")",
+      "Bash(git push *)",
+      "Bash(git branch *)",
+      "Bash(git fetch *)",
+      "Bash(git merge *)",
+      "Bash(php -r *)",
+      "Bash(php -l \"e:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/app/Views/admin/dashboard.php\")",
+      "Bash(php -l \"e:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/app/Views/admin/header.php\")",
+      "Bash(git revert *)",
+      "Bash(git reset *)",
+      "Bash(git cherry-pick *)",
+      "Bash(git add *)",
+      "Bash(php -l \"e:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/app/Controllers/Admin.php\")"
     ]
   }
 }
