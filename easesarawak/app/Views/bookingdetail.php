@@ -65,75 +65,135 @@ $easeCatalog = ease_translation_catalog();
             }
         }
 
-        .booking-detail-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            margin-top: 2rem;
-            grid-column: 1 / -1;
+        .booking-hero {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: start;
+            grid-template-columns: minmax(0, 1fr) minmax(340px, 1fr);
+            gap: 2rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 2rem auto;
+            grid-column: 1 / -1;
         }
 
-        .left-content {
+        .booking-hero-copy {
+            max-width: 620px;
+        }
+
+        .booking-hero-title {
+            margin: 0 0 1rem 0;
+            font-family: 'EurostarRegular', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.2;
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 0.02em;
+        }
+
+        .booking-hero-text {
+            margin: 0;
+            font-family: 'EurostarRegular', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: #000000;
+            line-height: 1.6;
+            max-width: 56ch;
+        }
+
+        .booking-hero-media {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .booking-hero-image {
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+            display: block;
+            opacity: 0.95;
+        }
+
+        .booking-progress {
+            grid-column: 1 / -1;
+            margin: 0.5rem auto 1.5rem;
+            width: 100%;
+            max-width: 1200px;
+            box-sizing: border-box;
+        }
+
+        .booking-progress-service {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #222;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        .booking-progress-steps {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .progress-step {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        .right-content {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 2rem;
-        }
-        .booking-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 0;
-            box-shadow: none;
-            background: transparent;
-            opacity: 0.95;
-            margin-top: 0;
-            margin-bottom: 0;
+            align-items: center;
+            gap: 0.35rem;
+            color: #777;
+            font-size: 0.95rem;
+            white-space: normal;
+            text-align: center;
+            min-width: 96px;
         }
 
-        @media (max-width: 900px) {
-            .booking-detail-header {
+        .progress-step-number {
+            width: 2.2rem;
+            height: 2.2rem;
+            border: 2px solid #000;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+            background: #000;
+        }
+
+        .progress-step.active {
+            color: #111;
+            font-weight: bold;
+        }
+
+        .progress-step.active .progress-step-number {
+            border-color: #f2be00;
+            background: #f2be00;
+            color: #111;
+        }
+
+        .progress-divider {
+            width: 252px;
+            height: 4px;
+            background: #f2be00;
+            margin-top: 0.9rem;
+            margin-left: -30px;
+            margin-right: -30px;
+            position: relative;
+            z-index: 0;
+        }
+
+        @media (max-width: 1200px) {
+            .booking-hero {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 2rem;
                 text-align: center;
             }
-            .left-content {
-                order: 1;
-                align-items: center;
-            }
-            .right-content {
-                order: 2;
-                padding-top: 0;
-                margin-bottom: 1rem;
-                justify-content: center;
-            }
-        }
 
-        .booking-tagline h1 {
-            font-family: 'EurostarRegular', sans-serif;
-            font-size: 3rem;
-            color: #000000;
-            font-weight: bold;
-            margin-left: 20px;
-            margin-top: 120px;
-            line-height: 1.3;
-        }
-
-        .booking-tagline p {
-            font-family: 'EurostarRegular', sans-serif;
-            font-size: 1.3rem;
-            color: #000000;
-            margin-left: 20px;
-            line-height: 1.6;
-            max-width: 500px;
+            .booking-hero-copy {
+                margin: 0 auto;
+            }
         }
 
         .left-column {
@@ -499,6 +559,32 @@ $easeCatalog = ease_translation_catalog();
             .booking-detail-container {
                 padding: 1rem;
             }
+
+            .booking-progress {
+                margin-bottom: 1rem;
+            }
+
+            .booking-progress-steps {
+                flex-wrap: wrap;
+                row-gap: 0.6rem;
+            }
+
+            .progress-divider {
+                display: none;
+            }
+
+            .booking-hero {
+                gap: 1.25rem;
+                text-align: center;
+            }
+
+            .booking-hero-copy {
+                margin: 0 auto;
+            }
+
+            .booking-hero-image {
+                max-width: 360px;
+            }
             
             .detail-row {
                 flex-direction: column;
@@ -533,6 +619,12 @@ $easeCatalog = ease_translation_catalog();
                 width: 100%;
             }
         }
+
+        @media (max-width: 480px) {
+            .booking-hero-image {
+                max-width: 300px;
+            }
+        }
     </style>
 </head>
 
@@ -540,18 +632,34 @@ $easeCatalog = ease_translation_catalog();
     <?= $this->include('navbar/navbar') ?>
 
     <main class="booking-detail-container">
-        <div class="booking-detail-header">
-            <!-- Left Content -->
-            <div class="left-content">      
-                <div class="booking-tagline">
-                    <h1>TRAVEL SMART WITH EASE</h1>
-                    <p>Whether you need secure storage or prompt delivery, we provide reliable and convenient solutions to ensure your journey is as smooth as possible.</p>
-                </div>
+        <div class="booking-hero">
+            <div class="booking-hero-copy">
+                <h1 class="booking-hero-title">TRAVEL SMART WITH EASE</h1>
+                <p class="booking-hero-text">Whether you need secure storage or prompt delivery, we provide reliable and convenient solutions to ensure your journey is as smooth as possible.</p>
             </div>
 
-            <!-- Right Content - Image -->
-            <div class="right-content">
-                <img src="<?= base_url('assets/images/bookingpage.png') ?>" alt="Booking Service" class="booking-image">
+            <div class="booking-hero-media">
+                <img src="<?= base_url('assets/images/bookingpage.png') ?>" alt="Booking Service" class="booking-hero-image">
+            </div>
+        </div>
+
+        <div class="booking-progress" aria-label="Booking progress">
+            <div class="booking-progress-service" id="bookingProgressService">LUGGAGE STORAGE</div>
+            <div class="booking-progress-steps">
+                <div class="progress-step active">
+                    <span class="progress-step-number">1</span>
+                    <span>Booking Details</span>
+                </div>
+                <span class="progress-divider"></span>
+                <div class="progress-step">
+                    <span class="progress-step-number">2</span>
+                    <span>Information</span>
+                </div>
+                <span class="progress-divider"></span>
+                <div class="progress-step">
+                    <span class="progress-step-number">3</span>
+                    <span>Payment</span>
+                </div>
             </div>
         </div>
 
@@ -581,6 +689,34 @@ $easeCatalog = ease_translation_catalog();
             </button>
         </div>
     </main>
+
+    <script>
+    (function() {
+        function updateProgressServiceLabel() {
+            var serviceEl = document.getElementById('bookingProgressService');
+            if (!serviceEl) return;
+
+            var label = 'LUGGAGE STORAGE';
+
+            try {
+                var bookingData = JSON.parse(sessionStorage.getItem('bookingData') || '{}');
+                if (bookingData && bookingData.service === 'delivery') {
+                    label = 'IN-TOWN DELIVERY';
+                }
+            } catch (error) {
+                label = 'LUGGAGE STORAGE';
+            }
+
+            serviceEl.textContent = label;
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateProgressServiceLabel);
+        } else {
+            updateProgressServiceLabel();
+        }
+    })();
+    </script>
     
     <?= $this->include('footer/footer') ?>
 
