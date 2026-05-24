@@ -404,6 +404,19 @@
             line-height: 1.4;
         }
 
+        .ease-user-dropdown .ease-user-divider {
+            height: 1px;
+            margin: 8px 0;
+            width: 100%;
+            box-sizing: border-box;
+            background: #e5e7eb;
+            border: 0;
+        }
+
+        body.dark-mode .ease-user-dropdown .ease-user-divider {
+            background: rgba(148, 163, 184, 0.45);
+        }
+
         /* Items â€” inherit the existing dropdown-item theme (dark text,
            light gold hover); just lay out icon + label. */
         .ease-user-dropdown .ease-user-item {

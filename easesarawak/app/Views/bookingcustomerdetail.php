@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="assets/css/footer_style.css">
     <link rel="stylesheet" href="assets/css/navbar_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
     <style>
         .navbar-nav,
@@ -34,16 +33,15 @@
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
+            font-size: 1.25rem;
         }
 
         .customer-detail-container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             margin-top: 2rem;
             padding: 2rem;
             min-height: calc(100vh - 200px);
-            margin-left: 0;
-            padding-left: 70px;
         }
 
         .customer-detail-main {
@@ -53,7 +51,7 @@
             margin: 0 auto;
             margin-top: 2rem;
             padding: 2rem 0;
-            justify-content: flex-start;
+            justify-content: center;
         }
 
         #customerForm {
@@ -167,6 +165,9 @@
             text-align: center;
             margin-bottom: 2rem;
             margin-top: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .customer-detail-header h1 {
@@ -178,6 +179,77 @@
         .customer-detail-header p {
             font-size: 1.1rem;
             color: #666;
+        }
+
+        .booking-progress {
+            margin: 0 auto 1.5rem;
+            width: 100%;
+            max-width: 1200px;
+            box-sizing: border-box;
+        }
+
+        .booking-progress-service {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #222;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        .booking-progress-steps {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+            color: #777;
+            font-size: 0.95rem;
+            white-space: normal;
+            text-align: center;
+            min-width: 96px;
+        }
+
+        .progress-step-number {
+            width: 2.2rem;
+            height: 2.2rem;
+            border: 2px solid #000;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+            background: #000;
+        }
+
+        .progress-step.active {
+            color: #111;
+            font-weight: bold;
+        }
+
+        .progress-step.active .progress-step-number {
+            border-color: #f2be00;
+            background: #f2be00;
+            color: #111;
+        }
+
+        .progress-divider {
+            width: 252px;
+            height: 4px;
+            background: #f2be00;
+            margin-top: 0.9rem;
+            margin-left: -30px;
+            margin-right: -30px;
+            position: relative;
+            z-index: 0;
         }
 
         .section {
@@ -347,6 +419,19 @@
             .customer-detail-container {
                 padding: 1rem;
             }
+
+            .booking-progress {
+                margin-bottom: 1rem;
+            }
+
+            .booking-progress-steps {
+                flex-wrap: wrap;
+                row-gap: 0.6rem;
+            }
+
+            .progress-divider {
+                display: none;
+            }
             
             .form-row {
                 grid-template-columns: 1fr;
@@ -397,6 +482,26 @@
         <div class="customer-detail-header">
             <h1>Customer Details</h1>
             <p>Please provide your contact information</p>
+        </div>
+
+        <div class="booking-progress" aria-label="Booking progress">
+            <div class="booking-progress-service" id="bookingProgressService">LUGGAGE STORAGE</div>
+            <div class="booking-progress-steps">
+                <div class="progress-step">
+                    <span class="progress-step-number">1</span>
+                    <span>Booking Details</span>
+                </div>
+                <span class="progress-divider"></span>
+                <div class="progress-step active">
+                    <span class="progress-step-number">2</span>
+                    <span>Information</span>
+                </div>
+                <span class="progress-divider"></span>
+                <div class="progress-step">
+                    <span class="progress-step-number">3</span>
+                    <span>Payment</span>
+                </div>
+            </div>
         </div>
 
         <div class="customer-detail-main">
@@ -531,7 +636,9 @@
                     <i class="bi bi-clipboard-check"></i> <?= esc(ease_translate('BOOKING SUMMARY')) ?>
                 </h2>
                 <div id="bookingSummary"></div>
-                <h3 class="pricing-header"><i class="bi bi-cash-stack"></i> PRICING</h3>
+                <h3 class="pricing-header">
+                    <i class="bi bi-cash-stack"></i> <?= esc(ease_translate('Pricing')) ?>
+                </h3>
                 <div id="pricing-content"></div>
             </form>
         </div>
@@ -549,6 +656,34 @@
             </button>
         </div>
     </main>
+
+    <script>
+    (function() {
+        function updateProgressServiceLabel() {
+            var serviceEl = document.getElementById('bookingProgressService');
+            if (!serviceEl) return;
+
+            var label = 'LUGGAGE STORAGE';
+
+            try {
+                var bookingData = JSON.parse(sessionStorage.getItem('bookingData') || '{}');
+                if (bookingData && bookingData.service === 'delivery') {
+                    label = 'IN-TOWN DELIVERY';
+                }
+            } catch (error) {
+                label = 'LUGGAGE STORAGE';
+            }
+
+            serviceEl.textContent = label;
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateProgressServiceLabel);
+        } else {
+            updateProgressServiceLabel();
+        }
+    })();
+    </script>
     
     <?= $this->include('footer/footer') ?>
 
@@ -856,24 +991,24 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-row"><span class="price-label">Kuching Luggage Transfer</span></div>
-                    <div class="price-row"><span class="price-label">Selected Transfer Point</span></div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Transfer')}</span></div>
+                    <div class="price-row"><span class="price-label">${t('Selected Transfer Point')}</span></div>
                     <div class="price-row">
-                        <span class="price-label">${currentQuantity} Standard Luggage</span>
+                        <span class="price-label">${currentQuantity} ${t('Standard Luggage')}</span>
                     </div>
-                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
                     <div class="price-row">
-                        <span class="price-label">First 24 Hours</span>
+                        <span class="price-label">${t('First 24 Hours')}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                         <span class="price-value">MYR ${baseStoragePrice.toFixed(2)}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-label">Subsequent 12 Hours x ${exceededTimes} Excess (RM ${extraRate}/12h)</span>
+                        <span class="price-label">${t('Subsequent 12 Hours x')} ${exceededTimes} ${t('Excess')}</span>
                     </div>
                     <div class="price-row">
-                        <span class="price-value">${currentQuantity} Standard Luggage</span>
+                        <span class="price-value">${currentQuantity} ${t('Standard Luggage')}</span>
                         <span class="price-value">MYR ${extraStoragePrice.toFixed(2)}</span>
                     </div>
                 `;
@@ -920,7 +1055,7 @@
                 const extraStoragePrice = extraRate * exceededTimes * currentQuantity;
 
                 html += `
-                    <div class="price-row"><span class="price-label">Kuching Luggage Storage</span></div>
+                    <div class="price-row"><span class="price-label">${t('Kuching Luggage Storage')}</span></div>
                     <div class="price-row">
                         <span class="price-label">${t('First 12 Hours')}</span>
                     </div>
