@@ -34,7 +34,9 @@
       "Bash(git reset *)",
       "Bash(git cherry-pick *)",
       "Bash(git add *)",
-      "Bash(php -l \"e:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/app/Controllers/Admin.php\")"
+      "Bash(php -l \"e:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/app/Controllers/Admin.php\")",
+      "Bash(dir \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" /b)",
+      "Bash(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" -Recurse -Directory)"
     ]
   }
 }
