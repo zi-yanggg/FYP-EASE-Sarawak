@@ -462,7 +462,7 @@ class Admin extends BaseController
 
         // Top 5 customers by total revenue
         $topCustomers = $db->table('`order`')
-            ->select('first_name, email, SUM(amount) AS total_revenue, COUNT(order_id) AS order_count')
+            ->select('ANY_VALUE(first_name) AS first_name, email, SUM(amount) AS total_revenue, COUNT(order_id) AS order_count')
             ->where('is_deleted', 0)
             ->groupBy('email')
             ->orderBy('total_revenue', 'DESC')
