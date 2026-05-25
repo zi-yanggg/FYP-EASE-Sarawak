@@ -50,7 +50,8 @@ CREATE TABLE `order` (
   `modified_date` datetime DEFAULT NULL,
   `insurance_selected` tinyint(1) NOT NULL DEFAULT '0',
   `insurance_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `modified_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `modified_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ;
 
 --

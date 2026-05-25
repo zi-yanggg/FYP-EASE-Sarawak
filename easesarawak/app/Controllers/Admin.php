@@ -1317,7 +1317,7 @@ class Admin extends BaseController
         if (!$user) {
             return redirect()->to(base_url('/user'))->with('error', 'User not found.');
         }
-        return $this->render('admin/edit_user', ['user' => $user]);
+        return $this->render('admin/edit_user', ['target_user' => $user]);
     }
 
     public function update($user_id)
@@ -1421,12 +1421,20 @@ class Admin extends BaseController
 
         if (!is_numeric($base_price) || (int)$base_price < 1) {
             return redirect()->to('/admin/service_management')
-                ->with('error', 'Base price must be greater than zero.');
+                ->with('toast', [
+                    'title'   => 'Invalid Price',
+                    'icon'    => 'fas fa-exclamation-circle',
+                    'message' => 'Base price must be greater than zero.',
+                ]);
         }
 
         if (!is_numeric($extra_rate) || (int)$extra_rate < 1) {
             return redirect()->to('/admin/service_management')
-                ->with('error', 'Extra rate must be greater than zero.');
+                ->with('toast', [
+                    'title'   => 'Invalid Rate',
+                    'icon'    => 'fas fa-exclamation-circle',
+                    'message' => 'Extra rate must be greater than zero.',
+                ]);
         }
 
         $model = new \App\Models\ServiceManagementModel();
@@ -1436,7 +1444,11 @@ class Admin extends BaseController
         ]);
 
         return redirect()->to('/admin/service_management')
-            ->with('success', 'Service pricing updated!');
+            ->with('toast', [
+                'title'   => 'Pricing Updated',
+                'icon'    => 'fas fa-check-circle',
+                'message' => 'Service pricing has been updated successfully.',
+            ]);
     }
 
     public function transaction_history()
