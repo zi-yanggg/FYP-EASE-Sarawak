@@ -389,12 +389,60 @@
     gap: 8px;
     width: fit-content;
 }
-.btn-export-pdf-inline {
+/* Export PDF inline button — element+class specificity beats Bootstrap .btn */
+.btn-export-pdf-inline,
+button.btn-export-pdf-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    background: #F2BE00;
+    color: #0A0A0A;
+    border: 1.5px solid #F2BE00;
+    border-radius: 999px;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    cursor: pointer;
+    transition: box-shadow .15s ease, transform .12s ease, border-color .15s ease;
     min-width: auto;
-    min-height: var(--rbd-control-height);
-    padding: var(--rbd-control-pad-y) 14px;
-    font-size: var(--rbd-control-font);
-    font-weight: 800;
+    min-height: auto;
+    text-decoration: none;
+}
+.btn-export-pdf-inline i,
+button.btn-export-pdf-inline i {
+    color: #0A0A0A;
+}
+.btn-export-pdf-inline:hover,
+.btn-export-pdf-inline:focus,
+button.btn-export-pdf-inline:hover,
+button.btn-export-pdf-inline:focus {
+    background: #F2BE00;
+    border-color: #0A0A0A;
+    color: #0A0A0A;
+    box-shadow: 0 0 0 2px #0A0A0A, 0 4px 12px rgba(10, 10, 10, 0.18);
+    transform: translateY(-1px);
+    outline: none;
+}
+.btn-export-pdf-inline:hover i,
+.btn-export-pdf-inline:focus i,
+button.btn-export-pdf-inline:hover i,
+button.btn-export-pdf-inline:focus i {
+    color: #0A0A0A;
+}
+.btn-export-pdf-inline:active,
+button.btn-export-pdf-inline:active {
+    background: #F2BE00;
+    border-color: #0A0A0A;
+    color: #0A0A0A;
+    transform: translateY(0);
+    box-shadow: 0 0 0 2px #0A0A0A;
+}
+.btn-export-pdf-inline:focus-visible,
+button.btn-export-pdf-inline:focus-visible {
+    outline: none;
 }
 
 /* Stat footer strip (card bottom) */
@@ -556,26 +604,49 @@
     transition: background .18s;
 }
 .cal-nav-btn:hover { background: var(--gold-light); color: var(--brown); }
-.cal-clear-btn {
-    border: none;
+/* Calendar clear button — element+class specificity beats any framework .btn */
+.cal-clear-btn,
+button.cal-clear-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    background: #F2BE00;
+    color: #0A0A0A;
+    border: 1.5px solid #F2BE00;
     border-radius: 999px;
-    background: transparent;
-    color: #fff;
     font-family: 'Oxanium', sans-serif;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: .04em;
     text-transform: uppercase;
-    padding: 4px 12px;
+    letter-spacing: .04em;
     cursor: pointer;
     white-space: nowrap;
     margin: 0;
-    line-height: 1.5;
-    transition: background .15s ease, color .15s ease;
+    transition: box-shadow .15s ease, transform .12s ease, border-color .15s ease;
 }
-.cal-clear-btn:hover {
+.cal-clear-btn:hover,
+.cal-clear-btn:focus,
+button.cal-clear-btn:hover,
+button.cal-clear-btn:focus {
     background: #F2BE00;
+    border-color: #0A0A0A;
     color: #0A0A0A;
+    box-shadow: 0 0 0 2px #0A0A0A, 0 4px 12px rgba(10, 10, 10, 0.18);
+    transform: translateY(-1px);
+    outline: none;
+}
+.cal-clear-btn:active,
+button.cal-clear-btn:active {
+    background: #F2BE00;
+    border-color: #0A0A0A;
+    color: #0A0A0A;
+    transform: translateY(0);
+    box-shadow: 0 0 0 2px #0A0A0A;
+}
+.cal-clear-btn:focus-visible,
+button.cal-clear-btn:focus-visible {
+    outline: none;
 }
 
 /* 7-col day grid */
@@ -964,7 +1035,6 @@
 .rpt-page .export-range-select,
 .rpt-page .rpt-export-btn,
 .rpt-page .btn-export-pdf,
-.rpt-page .btn-export-pdf-inline,
 .rpt-page .btn-export-csv,
 .rpt-page .rpt-export-dropdown {
     border-radius: 0 ;

@@ -464,7 +464,7 @@ class Admin extends BaseController
         $topCustomers = $db->table('`order`')
             ->select('first_name, email, SUM(amount) AS total_revenue, COUNT(order_id) AS order_count')
             ->where('is_deleted', 0)
-            ->groupBy('email')
+            ->groupBy('email, first_name')
             ->orderBy('total_revenue', 'DESC')
             ->limit(5)
             ->get()

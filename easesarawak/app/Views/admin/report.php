@@ -151,7 +151,7 @@
                         <form id="inlineExportForm" action="<?= base_url('report/export') ?>" method="GET" target="_blank">
                             <input type="hidden" name="start_date" id="inlineExportStart" value="<?= date('Y-m-01') ?>">
                             <input type="hidden" name="end_date" id="inlineExportEnd" value="<?= date('Y-m-d') ?>">
-                            <button type="submit" name="format" value="pdf" class="btn btn-export-pdf btn-export-pdf-inline">
+                            <button type="submit" name="format" value="pdf" class="btn btn-export-pdf-inline">
                                 <i class="fas fa-file-pdf me-1"></i>Export PDF
                             </button>
                         </form>
