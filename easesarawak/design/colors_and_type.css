@@ -1,0 +1,430 @@
+/* ============================================================
+   EASE Sarawak — Colors & Type
+   Source: easesarawak/public/assets/css/admin/ease-design-system.css
+   + public marketing site styles (home.php, navbar_style.css)
+   ============================================================ */
+
+/* ── Webfonts ──────────────────────────────────────────────── */
+@font-face {
+  font-family: "EurostarRegular";
+  src: url("fonts/EurostarRegular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "BebasKai";
+  src: url("fonts/BebasKai.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+/* Admin UI font — Oxanium (Google Fonts) */
+@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Public+Sans:wght@300;400;500;600;700&display=swap");
+
+:root {
+  /* ── Brand: gold ramp ─────────────────────────────────── */
+  --gold:      #F2BE00;   /* primary brand gold */
+  --gold-soft: #FFD54A;
+  --gold-dark: #D4A700;
+  --gold-pale: #FFF4CC;
+  --gold-tint: #FBF4D8;
+  --gold-line: #ECE2B4;
+
+  /* ── Ink ramp (admin) ─────────────────────────────────── */
+  --ink-0: #000000;
+  --ink-1: #0A0A0A;
+  --ink-2: #131313;
+  --ink-3: #1E1E1E;
+  --ink-4: #2A2A2A;
+
+  /* ── Surface ──────────────────────────────────────────── */
+  --paper:   #FFFDF5;   /* admin cream */
+  --surface: #FFFFFF;
+  --bg-marketing: #F5F5F5;
+  --bg-marketing-alt: #F8F9FA;
+  --bg-cta-grey: #DBD9D9;
+  --bg-footer: #111111;
+
+  /* ── Foreground text ──────────────────────────────────── */
+  --fg1: #111827;   /* near-black, primary body */
+  --fg2: #333333;
+  --fg3: #555555;
+  --fg4: #6B7280;
+  --fg5: #9CA3AF;
+  --fg-on-dark: #DDDDDD;
+  --fg-muted-on-dark: rgba(247, 242, 220, 0.6);
+
+  /* ── Status / semantic ────────────────────────────────── */
+  --pending:  #F2BE00;
+  --progress: #5B532C;
+  --done:     #1E8E3E;
+  --danger:   #C04545;
+  --urgent:   #FF8B5A;
+  --info:     #1A6CB0;
+  --refund:   rgba(192, 69, 69, 0.12);
+
+  /* ── Avatar / service palette ─────────────────────────── */
+  --av-c0: #5B532C;
+  --av-c1: #1A6CB0;
+  --av-c2: #2BA869;
+  --av-c3: #B8860B;
+  --av-c4: #6A4FBB;
+  --av-c5: #C04545;
+  --av-c6: #2E7D32;
+  --av-c7: #F2BE00;
+
+  /* ── Typography families ──────────────────────────────── */
+  --font-display:   "EurostarRegular", "Arial Narrow", Arial, sans-serif;   /* hero/page titles, KPI numbers, logo wordmark */
+  --font-decorative: "BebasKai", "EurostarRegular", Arial, sans-serif;        /* tall caps accents */
+  --font-admin:     "Oxanium", "Montserrat", sans-serif;                      /* admin chrome, labels, buttons */
+  --font-body:      "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif; /* admin body + auth pages */
+  --font-marketing-body: "EurostarRegular", Arial, sans-serif;                /* marketing site body */
+  --font-mono:      ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* ── Type scale ───────────────────────────────────────── */
+  --fs-eyebrow: 10px;       /* pill titles, crumbs */
+  --fs-meta:    11px;
+  --fs-body:    13px;       /* admin default */
+  --fs-body-lg: 16px;       /* marketing default */
+  --fs-lead:    18px;       /* marketing intro */
+  --fs-h6:      1.05rem;
+  --fs-h5:      1.2rem;
+  --fs-h4:      1.55rem;
+  --fs-h3:      2rem;
+  --fs-h2:      2.4rem;
+  --fs-h1:      3rem;
+  --fs-hero:    4rem;
+
+  --tracking-eyebrow: 1.4px;
+  --tracking-button:  1.3px;
+  --tracking-tight:   -0.02em;
+  --tracking-cosy:    -0.01em;
+
+  /* ── Radii ────────────────────────────────────────────── */
+  --r-xs:   4px;
+  --r-sm:   6px;
+  --r-md:   8px;
+  --r-lg:   12px;
+  --r-xl:   14px;
+  --r-2xl:  18px;
+  --r-pill: 999px;
+
+  /* ── Shadows ──────────────────────────────────────────── */
+  --shadow-sm:  0 2px 5px rgba(0, 0, 0, 0.1);
+  --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg:  0 8px 28px rgba(0, 0, 0, 0.08);
+  --shadow-xl:  0 15px 30px rgba(0, 0, 0, 0.4);
+  --shadow-glow-gold: 0 0 15px rgba(242, 190, 0, 0.7);
+  --shadow-focus: 0 0 0 3px rgba(242, 190, 0, 0.15);
+
+  /* ── Spacing scale ────────────────────────────────────── */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+
+  /* ── Motion ───────────────────────────────────────────── */
+  --ease-out:  cubic-bezier(.2, .7, .2, 1);
+  --t-fast:    0.15s;
+  --t-base:    0.22s;
+  --t-slow:    0.3s;
+}
+
+/* ============================================================
+   Semantic element styles
+   ============================================================ */
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-lg);
+  line-height: 1.6;
+  color: var(--fg1);
+  background: var(--surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Display titles — public-facing hero / section headings ── */
+h1 {
+  font-family: var(--font-marketing-body);
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: var(--tracking-cosy);
+  color: var(--ink-1);
+}
+h2 {
+  font-family: var(--font-marketing-body);
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--ink-1);
+}
+h3 {
+  font-family: var(--font-marketing-body);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--ink-1);
+}
+h4 {
+  font-family: var(--font-marketing-body);
+  font-size: var(--fs-h4);
+  font-weight: 600;
+  color: var(--ink-1);
+}
+h5 {
+  font-family: var(--font-admin);
+  font-size: var(--fs-h5);
+  font-weight: 600;
+  color: var(--ink-1);
+}
+h6 {
+  font-family: var(--font-admin);
+  font-size: var(--fs-h6);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+p {
+  font-size: var(--fs-body-lg);
+  color: var(--fg2);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--ink-1);
+  text-decoration: none;
+  transition: color var(--t-fast);
+}
+a:hover { color: var(--gold); }
+
+code, kbd, samp {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--paper);
+  border: 1px solid var(--gold-line);
+  padding: 1px 6px;
+  border-radius: var(--r-xs);
+  color: var(--fg2);
+}
+
+/* ── Eyebrow / pill title — signature element ────────────── */
+.eyebrow,
+.pill-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  background: #fff;
+  border-radius: var(--r-pill);
+  padding: 10px 25px;
+  font-family: var(--font-marketing-body);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--ink-1);
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
+}
+.pill-title .dot,
+.eyebrow .dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: inline-block;
+}
+
+/* Compact admin pill title */
+.eyebrow--admin {
+  background: var(--gold);
+  color: var(--ink-1);
+  padding: 5px 13px 5px 11px;
+  font-family: var(--font-admin);
+  font-size: var(--fs-eyebrow);
+  font-weight: 800;
+  letter-spacing: var(--tracking-eyebrow);
+  box-shadow: none;
+  gap: 9px;
+}
+.eyebrow--admin .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--ink-1);
+}
+
+/* ── Breadcrumb / crumb ──────────────────────────────────── */
+.crumb {
+  font-family: var(--font-admin);
+  font-size: var(--fs-eyebrow);
+  font-weight: 800;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--fg4);
+  text-transform: uppercase;
+}
+.crumb b { color: var(--gold); }
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn-primary,
+.btn-gold {
+  background: var(--gold);
+  color: #fff;
+  font-weight: bold;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--r-sm);
+  font-size: 1.15rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background var(--t-slow);
+}
+.btn-primary:hover,
+.btn-gold:hover { background: var(--ink-0); color: #fff; }
+
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 34px;
+  background: var(--gold);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.12rem;
+  border-radius: var(--r-pill);
+  border: none;
+  cursor: pointer;
+  transition: all var(--t-slow);
+  min-width: 170px;
+}
+.btn-pill:hover {
+  background: var(--ink-0);
+  color: #fff;
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Admin small gold pill */
+.btn-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  background: var(--gold);
+  color: var(--ink-1);
+  font-family: var(--font-admin);
+  font-size: var(--fs-meta);
+  font-weight: 800;
+  letter-spacing: var(--tracking-button);
+  text-transform: uppercase;
+  border-radius: var(--r-pill);
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-admin:hover {
+  background: var(--ink-1);
+  color: var(--gold);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+.btn-admin.ghost {
+  background: transparent;
+  border: 1px solid var(--gold-line);
+  color: var(--fg2);
+}
+.btn-admin.ghost:hover {
+  background: var(--ink-1);
+  color: var(--gold);
+  border-color: var(--ink-1);
+}
+
+/* ── Cards ───────────────────────────────────────────────── */
+.card-marketing {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem;
+  transition: transform var(--t-slow);
+}
+.card-marketing:hover { transform: translateY(-5px); }
+
+.card-admin {
+  background: #fff;
+  border: 1px solid var(--gold-line);
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+}
+
+/* ── Status pills (admin) ────────────────────────────────── */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  font-family: var(--font-admin);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--r-pill);
+}
+.status-pill::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.8;
+}
+.status-pill.pending  { background: var(--pending);  color: var(--ink-1); }
+.status-pill.progress { background: var(--progress); color: #fff; }
+.status-pill.done     { background: var(--done);     color: #fff; }
+.status-pill.refund   { background: var(--refund);   color: var(--danger); border: 1px solid rgba(192, 69, 69, 0.4); }
+
+/* ── Service-type pills ──────────────────────────────────── */
+.svc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font-family: var(--font-admin);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--r-xs);
+  border: 1px solid;
+}
+.svc-pill.delivery { background: #FFFDF0; border-color: var(--gold);    color: #8A6E00; }
+.svc-pill.storage  { background: #FBF7E3; border-color: var(--progress); color: var(--progress); }
+
+/* ── Form controls ───────────────────────────────────────── */
+input, textarea, select {
+  font-family: inherit;
+  font-size: 16px;
+  padding: 12px 15px;
+  border: 1px solid #CCC;
+  border-radius: var(--r-sm);
+  outline: none;
+  transition: border-color var(--t-slow);
+  background: #fff;
+  color: var(--ink-1);
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-focus);
+}
+
+/* ── HR — gold rule, signature footer line ──────────────── */
+hr.gold {
+  border: none;
+  border-top: 2px solid var(--gold);
+  margin: 20px auto;
+}

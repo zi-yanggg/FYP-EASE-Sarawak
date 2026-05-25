@@ -2,95 +2,105 @@
 
 <?php $promo = $promo ?? null; ?>
 
+<link rel="stylesheet" href="<?= base_url('assets/css/admin/promo_code.css') ?>">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-<div class="container mt-4">
-    <div class="page-inner" style="padding-top: 80px;">
-        <div class="d-flex align-items-center mb-4">
-            <h3 class="fw-bold mb-0 me-3"><i class="fas fa-ticket-alt me-2"></i>Edit Promo Code</h3>
+<div class="promo-page">
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <div class="ease-crumb">EASE Admin &middot; Promo Codes &middot; <b>Edit</b></div>
+            <h1 class="ease-page-title">Edit Promo Code</h1>
         </div>
+        <a href="<?= base_url('/admin/promo_code') ?>" class="promo-btn-back">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
 
-        <?php if (session()->getFlashdata('errors')): ?>
-            <div class="alert alert-danger">
-                <ul class="mb-0">
+    <?php if (session()->getFlashdata('errors')): ?>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
                 <?php foreach (session()->getFlashdata('errors') as $err): ?>
                     <li><?= esc($err) ?></li>
                 <?php endforeach; ?>
-                </ul>
-            </div>
-        <?php endif; ?>
-
-        <div class="card">
-            <div class="card-body">
-                <form action="<?= base_url('/admin/promo_code/update/'.($promo['id'] ?? '')) ?>" method="post">
-                    <?= csrf_field() ?>
-                    <div class="mb-3">
-                        <label class="form-label">Code</label>
-                        <input type="text" name="code" class="form-control" value="<?= esc(old('code', $promo['code'] ?? '')) ?>" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Discount Type</label>
-                        <select name="discount_type" id="discount_type" class="form-control" required>
-                            <option value="percentage" <?= old('discount_type') === 'percentage' ? 'selected' : '' ?>>Percentage (%)</option>
-                            <option value="amount" <?= old('discount_type') === 'amount' ? 'selected' : '' ?>>Amount (RM)</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3" id="percentage_input">
-                        <label class="form-label">Discount (%)</label>
-                        <input type="number" name="discount_percentage" class="form-control" min="0" max="100" value="<?= esc(old('discount_percentage')) ?>">
-                    </div>
-
-                    <div class="mb-3" id="amount_input" style="display:none;">
-                        <label class="form-label">Discount Amount (RM)</label>
-                        <input type="number" step="0.01" name="discount_amount" class="form-control" min="0" value="<?= esc(old('discount_amount')) ?>">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Valid From</label>
-                        <input type="text" id="validation_date" name="validation_date" class="form-control datetimepicker"
-                               value="<?= esc(old('validation_date', isset($promo['validation_date']) ? date('Y-m-d H:i', strtotime($promo['validation_date'])) : '')) ?>" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Expires</label>
-                        <input type="text" id="expired_date" name="expired_date" class="form-control datetimepicker"
-                               value="<?= esc(old('expired_date', isset($promo['expired_date']) ? date('Y-m-d H:i', strtotime($promo['expired_date'])) : '')) ?>" required>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="<?= base_url('/admin/promo_code') ?>" class="btn btn-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
-            </div>
+            </ul>
         </div>
+    <?php endif; ?>
 
+    <div class="promo-form-card">
+        <div class="promo-form-card__head">
+            <h5 class="promo-form-card__head-title">Edit: <?= esc($promo['code'] ?? 'Promo Code') ?></h5>
+        </div>
+        <div class="promo-form-card__body">
+            <form action="<?= base_url('/admin/promo_code/update/' . ($promo['id'] ?? '')) ?>" method="post">
+                <?= csrf_field() ?>
+
+                <div class="mb-4">
+                    <label class="promo-field-label">Code</label>
+                    <input type="text" name="code" class="promo-field-input" value="<?= esc(old('code', $promo['code'] ?? '')) ?>" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="promo-field-label">Discount Type</label>
+                    <select name="discount_type" id="discount_type" class="promo-field-select" required>
+                        <option value="percentage" <?= (old('discount_type', $promo['discount_type'] ?? 'percentage') === 'percentage') ? 'selected' : '' ?>>Percentage (%)</option>
+                        <option value="amount" <?= (old('discount_type', $promo['discount_type'] ?? '') === 'amount') ? 'selected' : '' ?>>Amount (RM)</option>
+                    </select>
+                </div>
+
+                <div class="mb-4" id="percentage_input">
+                    <label class="promo-field-label">Discount (%)</label>
+                    <input type="number" name="discount_percentage" class="promo-field-input" min="0" max="100" placeholder="0 – 100" value="<?= esc(old('discount_percentage', $promo['discount_percentage'] ?? '')) ?>">
+                </div>
+
+                <div class="mb-4" id="amount_input" style="display:none;">
+                    <label class="promo-field-label">Discount Amount (RM)</label>
+                    <input type="number" step="0.01" name="discount_amount" class="promo-field-input" min="0" placeholder="0.00" value="<?= esc(old('discount_amount', $promo['discount_amount'] ?? '')) ?>">
+                </div>
+
+                <div class="mb-4">
+                    <label class="promo-field-label">Valid From</label>
+                    <input type="text" id="validation_date" name="validation_date" class="promo-field-input datetimepicker"
+                           value="<?= esc(old('validation_date', isset($promo['validation_date']) ? date('Y-m-d H:i', strtotime($promo['validation_date'])) : '')) ?>"
+                           placeholder="Select date & time" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="promo-field-label">Expires</label>
+                    <input type="text" id="expired_date" name="expired_date" class="promo-field-input datetimepicker"
+                           value="<?= esc(old('expired_date', isset($promo['expired_date']) ? date('Y-m-d H:i', strtotime($promo['expired_date'])) : '')) ?>"
+                           placeholder="Select date & time" required>
+                </div>
+
+                <div class="promo-form-actions">
+                    <a href="<?= base_url('/admin/promo_code') ?>" class="promo-btn-ghost">Cancel</a>
+                    <button type="submit" class="promo-btn-gold">Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    flatpickr(".datetimepicker", { enableTime: true, dateFormat: "Y-m-d H:i", time_24hr: true, allowInput: true });
+    flatpickr('.datetimepicker', { enableTime: true, dateFormat: 'Y-m-d H:i', time_24hr: true, allowInput: true });
 
-    const typeSelect = document.getElementById('discount_type');
+    const typeSelect   = document.getElementById('discount_type');
     const percentInput = document.getElementById('percentage_input');
-    const amountInput = document.getElementById('amount_input');
+    const amountInput  = document.getElementById('amount_input');
 
     function toggleDiscountInputs() {
         if (typeSelect.value === 'percentage') {
             percentInput.style.display = '';
-            amountInput.style.display = 'none';
+            amountInput.style.display  = 'none';
         } else {
             percentInput.style.display = 'none';
-            amountInput.style.display = '';
+            amountInput.style.display  = '';
         }
     }
 
     typeSelect.addEventListener('change', toggleDiscountInputs);
-    toggleDiscountInputs(); // Set initial state
+    toggleDiscountInputs();
 });
 </script>
 

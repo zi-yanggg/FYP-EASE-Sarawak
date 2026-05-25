@@ -1,0 +1,279 @@
+/* ============================================================
+   EASE Sarawak — Invoice Export Page Styles (print-friendly)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&display=swap');
+
+/* ── Theme ── */
+:root {
+    --gold:       #f2be00;
+    --gold-dark:  #c99d00;
+    --gold-light: #fff9e0;
+    --gold-mid:   #fdf0b0;
+    --ink:        #0A0A0A;
+    --ink-2:      #1a1a1a;
+    --text:       #1a1a1a;
+}
+
+/* ── Base ── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Oxanium', Arial, sans-serif;
+    font-size: 12px;
+    color: var(--text);
+    background: #f0ede4;
+}
+
+/* ── Page wrapper ── */
+.page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    margin: 20px auto;
+    padding: 20mm 18mm 18mm;
+    box-shadow: 0 0 16px rgba(0,0,0,.12);
+}
+
+/* ── Screen-only toolbar ── */
+.toolbar {
+    width: 210mm;
+    margin: 16px auto 0;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    font-family: 'Oxanium', Arial, sans-serif;
+}
+.toolbar button, .toolbar a button {
+    padding: 9px 20px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Oxanium', Arial, sans-serif;
+    letter-spacing: .3px;
+    transition: background .18s, color .18s;
+}
+/* Back → ghost (bordered) */
+.btn-back {
+    background: #fff;
+    color: var(--ink-2);
+    border: 2px solid #0A0A0A;
+}
+.btn-back:hover { background: #f3f4f6; }
+
+/* CSV → ghost (gold bordered) */
+.btn-csv {
+    background: #fff;
+    color: var(--ink-2);
+    border: 2px solid #0A0A0A;
+}
+.btn-csv:hover { background: #fdf3c6; color: var(--ink-2); }
+
+/* Print → gold pill (kit primary) */
+.btn-print {
+    background: var(--gold);
+    color: var(--ink-2);
+    border: 2px solid var(--gold-dark);
+}
+.btn-print:hover { background: var(--gold-dark); color: #fff; }
+
+/* ── Header accent bar ── */
+.inv-header-bar {
+    height: 6px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+    margin-bottom: 0;
+}
+
+/* ── Header ── */
+.inv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 3px solid var(--gold);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+    padding-top: 14px;
+}
+.inv-header .brand img { height: 56px; }
+.inv-header .brand p  { font-size: 11px; color: #666; margin-top: 4px; }
+.inv-header .inv-title { text-align: right; }
+.inv-header .inv-title h1 {
+    font-size: 22px;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 900;
+}
+.inv-header .inv-title .inv-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 12px;
+    margin-top: 4px;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+}
+.inv-header .inv-title p { font-size: 11px; color: #888; margin-top: 4px; }
+
+/* ── Meta strip ── */
+.inv-meta {
+    display: flex;
+    justify-content: space-between;
+    background: var(--gold-light);
+    border: 1.5px solid var(--gold);
+    padding: 10px 16px;
+    margin-bottom: 20px;
+}
+.inv-meta .meta-item label {
+    display: block;
+    font-size: 9.5px;
+    color: var(--ink-2);
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    font-weight: 800;
+}
+.inv-meta .meta-item span {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+/* ── Section heading ── */
+.section-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink);
+    border-left: 4px solid var(--gold);
+    padding: 5px 8px;
+    margin-bottom: 8px;
+    background: var(--gold-light);
+}
+
+/* ── Summary table ── */
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 22px;
+}
+.summary-table th {
+    background: var(--ink);
+    color: var(--gold);
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+.summary-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #ececec;
+    font-size: 12px;
+}
+.summary-table tr:nth-child(even) td { background: var(--gold-light); }
+.summary-table .total-row td {
+    font-weight: 800;
+    background: var(--gold-mid);
+    border-top: 2px solid var(--gold-dark);
+    color: var(--ink);
+}
+
+/* ── Order table ── */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 22px;
+    font-size: 10.5px;
+    table-layout: fixed;
+}
+.order-table th {
+    background: #f0f0f0;
+    color: #222;
+    padding: 8px 8px;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 10px;
+    letter-spacing: .3px;
+    overflow: hidden;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-bottom: 2px solid #ccc;
+}
+.order-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: middle;
+    overflow: hidden;
+    word-break: break-word;
+}
+/* Fixed column widths — total = ~174mm usable on A4 */
+.order-table .col-num      { width: 18px;  }
+.order-table .col-id       { width: 30px;  }
+.order-table .col-date     { width: 28px;  }
+.order-table .col-customer { width: 36px;  }
+.order-table .col-email    { width: 44px;  }
+.order-table .col-service  { width: 24px;  }
+.order-table .col-payment  { width: 28px;  }
+.order-table .col-promo    { width: 30px;  max-width: 30px; word-break: break-all; }
+.order-table .col-status   { width: 26px;  }
+.order-table .col-amount   { width: 30px;  text-align: right; font-weight: 700; }
+
+.order-table tr:nth-child(even) td { background: transparent; }
+.order-table .grand-total td {
+    font-weight: 800;
+    background: #f0f0f0;
+    border-top: 2px solid #aaa;
+    color: #111;
+}
+
+/* ── Status badges ── */
+.badge {
+    display: inline-block;
+    padding: 2px 7px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+.badge-pending   { background: #fff3cd; color: #856404; }
+.badge-progress  { background: #cce5ff; color: #004085; }
+.badge-completed { background: #d4edda; color: #155724; }
+
+/* ── Footer ── */
+.inv-footer {
+    margin-top: 20px;
+    border-top: 2px solid var(--gold);
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #888;
+}
+.inv-footer strong { color: var(--ink); }
+
+/* ── Print overrides ── */
+@media print {
+    body { background: #fff; }
+    .toolbar { display: none ; }
+    .page {
+        margin: 0;
+        box-shadow: none;
+        padding: 12mm 14mm;
+    }
+    .order-table { font-size: 10px; }
+    .inv-header-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .summary-table th, .order-table th,
+    .inv-meta, .section-title,
+    .summary-table tr:nth-child(even) td,
+    .order-table tr:nth-child(even) td,
+    .summary-table .total-row td,
+    .order-table .grand-total td {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

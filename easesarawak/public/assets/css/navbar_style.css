@@ -75,7 +75,7 @@
 }
 
 .navbar .btn:hover {
-    background: #f2be00 !important;
+    background: #f2be00;
 }
 
 /* Desktop menu */
@@ -171,8 +171,8 @@
 /* Book Now button when active */
 .navbar .btn.active,
 .mobile-menu .btn.active {
-    background: #f2be00 !important;
-    color: #fff !important;
+    background: #f2be00;
+    color: #fff;
     box-shadow: 0 0 0 2px #f2be00;
 }
 

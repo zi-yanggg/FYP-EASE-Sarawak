@@ -1,7 +1,42 @@
 {
   "permissions": {
     "allow": [
-      "Bash(php -r \"echo password_hash\\(''123'', PASSWORD_DEFAULT\\);\")"
+      "Bash(php -r \"echo password_hash\\(''123'', PASSWORD_DEFAULT\\);\")",
+      "Bash(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\\\\app\\\\Views\\\\admin\" -Filter \"*.php\" -Recurse)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(Remove-Item \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\\\\public\\\\assets\\\\css\\\\admin\\\\header.css\" -Confirm:$false)",
+      "Bash(.main-header)",
+      "Bash(powershell -Command ' *)",
+      "Bash(Remove-Item \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\\\\public\\\\assets\\\\css\\\\admin\\\\ease-design-system.css\")",
+      "PowerShell(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" -Recurse -Directory | Where-Object { $_.Name -match '\\(design|ui|mockup|assets|sketch|figma|xd|prototype\\)' } | Select-Object FullName)",
+      "Bash(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" -Force)",
+      "Bash(Select-Object Name, FullName, PSIsContainer)",
+      "Bash(Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if \\($_.PSIsContainer\\) {\"Folder\"} else {\"File\"}}} | Format-Table -AutoSize)",
+      "Bash(php -r \"echo PHP_VERSION;\")",
+      "Bash(cd /d \"e:\\\\xampp\")",
+      "Bash(mysql/bin/mysql.exe -u root -e \"DESCRIBE \\\\`order\\\\`;\")",
+      "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root -e \"SHOW COLUMNS FROM \\\\`order\\\\`;\")",
+      "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SHOW COLUMNS FROM \\\\`order\\\\`;\")",
+      "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"ALTER TABLE \\\\`order\\\\` ADD COLUMN \\\\`comment\\\\` TEXT NULL AFTER \\\\`modified_by\\\\`;\")",
+      "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SHOW COLUMNS FROM \\\\`order\\\\` LIKE 'comment';\")",
+      "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SHOW COLUMNS FROM message;\")",
+      "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SELECT order_id, service_type, order_details_json FROM \\\\`order\\\\` WHERE order_id IN \\(1, 15, 16, 18\\);\")",
+      "Bash(\"e:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root easesarawak -e \"SELECT order_id, JSON_UNQUOTE\\(JSON_EXTRACT\\(order_details_json, '$.\\\\\"Origin Location\\\\\"'\\)\\) as origin_loc, JSON_UNQUOTE\\(JSON_EXTRACT\\(order_details_json, '$.\\\\\"Destination Location\\\\\"'\\)\\) as dest_loc FROM \\\\`order\\\\` WHERE order_id IN \\(15, 16, 18\\);\")",
+      "Bash(git push *)",
+      "Bash(git branch *)",
+      "Bash(git fetch *)",
+      "Bash(git merge *)",
+      "Bash(php -r *)",
+      "Bash(php -l \"e:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/app/Views/admin/dashboard.php\")",
+      "Bash(php -l \"e:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/app/Views/admin/header.php\")",
+      "Bash(git revert *)",
+      "Bash(git reset *)",
+      "Bash(git cherry-pick *)",
+      "Bash(git add *)",
+      "Bash(php -l \"e:/xampp/htdocs/New/FYP-EASE-Sarawak/easesarawak/app/Controllers/Admin.php\")",
+      "Bash(dir \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" /b)",
+      "Bash(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" -Recurse -Directory)"
     ]
   }
 }

@@ -33,48 +33,277 @@ class Admin extends BaseController
 
     public function index(): string
     {
-        $order_model = new Order_model();
-        $user_model = new User_model();
+        $user_model        = new User_model();
         $transaction_model = new PaymentModel();
-        $messageModel = new MessageModel();
+        $messageModel      = new MessageModel();
+        $db                = \Config\Database::connect();
 
-        $order = $order_model->where('is_deleted', 0)->countAllResults();
-        $user  = $user_model->where('is_deleted', 0)->countAllResults();
-        $sales = $order_model
-            ->selectSum('amount')
+        $today      = date('Y-m-d');
+        $yesterday  = date('Y-m-d', strtotime('-1 day'));
+        $weekStart  = date('Y-m-d 00:00:00', strtotime('monday this week'));
+        $monthStart = date('Y-m-01 00:00:00');
+
+        // ── Order counts by status ───────────────────────────────────────
+        $totalOrders     = (int)$db->table('`order`')->where('is_deleted', 0)->countAllResults();
+        $pendingCount    = (int)$db->table('`order`')->where('is_deleted', 0)->where('status', 0)->countAllResults();
+        $inProgressCount = (int)$db->table('`order`')->where('is_deleted', 0)->where('status', 1)->countAllResults();
+        $completedCount  = (int)$db->table('`order`')->where('is_deleted', 0)->where('status', 2)->countAllResults();
+        $userCount       = (int)$user_model->where('is_deleted', 0)->countAllResults();
+
+        // ── Revenue metrics ──────────────────────────────────────────────
+        $todayRevenue = (float)($db->table('`order`')->selectSum('amount')
+            ->where('is_deleted', 0)->where('DATE(created_date)', $today)
+            ->get()->getRow()->amount ?? 0);
+        $yesterdayRevenue = (float)($db->table('`order`')->selectSum('amount')
+            ->where('is_deleted', 0)->where('DATE(created_date)', $yesterday)
+            ->get()->getRow()->amount ?? 0);
+        $weekRevenue = (float)($db->table('`order`')->selectSum('amount')
+            ->where('is_deleted', 0)->where('created_date >=', $weekStart)
+            ->get()->getRow()->amount ?? 0);
+        $monthRevenue = (float)($db->table('`order`')->selectSum('amount')
+            ->where('is_deleted', 0)->where('created_date >=', $monthStart)
+            ->get()->getRow()->amount ?? 0);
+        $totalRevenue = (float)($db->table('`order`')->selectSum('amount')
+            ->where('is_deleted', 0)->get()->getRow()->amount ?? 0);
+
+        $todayRevenueDelta = $yesterdayRevenue > 0
+            ? round(($todayRevenue - $yesterdayRevenue) / $yesterdayRevenue * 100, 1) : 0;
+
+        // ── Today's order count ──────────────────────────────────────────
+        $todayOrders     = (int)$db->table('`order`')->where('is_deleted', 0)
+            ->where('DATE(created_date)', $today)->countAllResults();
+        $yesterdayOrders = (int)$db->table('`order`')->where('is_deleted', 0)
+            ->where('DATE(created_date)', $yesterday)->countAllResults();
+        $todayOrdersDelta = $yesterdayOrders > 0
+            ? round(($todayOrders - $yesterdayOrders) / $yesterdayOrders * 100, 1) : 0;
+
+        // ── Active storage holds (not yet completed) ─────────────────────
+        $activeStorageHolds = (int)$db->table('`order`')->where('is_deleted', 0)
+            ->where('service_type', 'storage')->where('status !=', 2)->countAllResults();
+
+        // ── Unread messages ──────────────────────────────────────────────
+        $unreadMessages = (int)$db->table('message')->where('is_deleted', 0)
+            ->where('status', 'new')->countAllResults();
+
+        // ── Pending refunds ──────────────────────────────────────────────
+        $pendingRefunds = 0;
+        try {
+            $pendingRefunds = (int)$db->table('refund_form')->where('status', 'pending')->countAllResults();
+        } catch (\Exception $e) { /* table may not exist in all deployments */ }
+
+        // ── All orders for JSON-based pickup / drop-off date parsing ─────
+        $allActiveOrders = $db->table('`order`')
+            ->select('order_id, first_name, last_name, service_type, status, amount, order_details_json, created_date')
             ->where('is_deleted', 0)
-            ->get()
-            ->getRow()
-            ->amount ?? 0;
-        $totalOrders = $order_model
-            ->where('is_deleted', 0)
-            ->countAllResults();
+            ->get()->getResultArray();
 
-        // Fetch all pending orders
-        $pending_orders = $order_model
-            ->where('status', 'pending')
-            ->findAll();
+        $todayPickups     = [];
+        $todayDropoffs    = [];
+        $calendarPickups  = [];
+        $calendarDropoffs = [];
 
-        $transaction = $transaction_model->orderBy('created_at', 'DESC')->findAll();
+        foreach ($allActiveOrders as $ord) {
+            $details = @json_decode($ord['order_details_json'] ?? '{}', true);
+            if (!is_array($details)) continue;
 
-        $customer = $order_model->select('first_name, created_date')
-            ->orderBy('created_date', 'DESC')
-            ->limit(5)
-            ->findAll();
+            $pickupRaw  = trim($details['Pickup DateTime']    ?? '');
+            $dropoffRaw = trim($details['Drop-off DateTime'] ?? '');
 
-        $messages = $messageModel->orderBy('created_date', 'DESC')
-            ->limit(4)
-            ->findAll();
+            if ($pickupRaw && $pickupRaw !== 'Null') {
+                $pickupDate = substr($pickupRaw, 0, 10);
+                if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $pickupDate)) {
+                    $calendarPickups[$pickupDate] = ($calendarPickups[$pickupDate] ?? 0) + 1;
+                    if ($pickupDate === $today) {
+                        $atPos        = strpos($pickupRaw, 'at ');
+                        $todayPickups[] = $ord + ['event_time' => $atPos !== false ? trim(substr($pickupRaw, $atPos + 3)) : ''];
+                    }
+                }
+            }
 
-        $data = [ 'order_count'    => $order,
-                  'user_count'     => $user,
-                  'sales'          => $sales,
-                  'orders'         => $totalOrders,
-                  'pending_orders' => $pending_orders,
-                  'transactions'   => $transaction,
-                  'new_customers'  => $customer,
-                  'messages'        => $messages
+            if ($dropoffRaw && $dropoffRaw !== 'Null') {
+                $dropoffDate = substr($dropoffRaw, 0, 10);
+                if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $dropoffDate)) {
+                    $calendarDropoffs[$dropoffDate] = ($calendarDropoffs[$dropoffDate] ?? 0) + 1;
+                    if ($dropoffDate === $today) {
+                        $atPos         = strpos($dropoffRaw, 'at ');
+                        $todayDropoffs[] = $ord + ['event_time' => $atPos !== false ? trim(substr($dropoffRaw, $atPos + 3)) : ''];
+                    }
+                }
+            }
+        }
+
+        // ── Calendar heatmap (pickup + drop-off dates only) ───────────────
+        $allCalDates = array_unique(array_merge(
+            array_keys($calendarPickups),
+            array_keys($calendarDropoffs)
+        ));
+        sort($allCalDates);
+        $calendarHeatmap = [];
+        foreach ($allCalDates as $d) {
+            $pickups  = $calendarPickups[$d]  ?? 0;
+            $dropoffs = $calendarDropoffs[$d] ?? 0;
+            $calendarHeatmap[$d] = [
+                'pickups'  => $pickups,
+                'dropoffs' => $dropoffs,
+                'total'    => $pickups + $dropoffs,
+            ];
+        }
+
+        // ── Pending orders (status = 0) with next-day fallback ───────────
+        $pending_orders = $db->table('`order`')
+            ->where('is_deleted', 0)->where('status', 0)
+            ->orderBy('created_date', 'ASC')
+            ->get()->getResultArray();
+
+        $pendingFallbackDate   = null;
+        $pendingFallbackOrders = [];
+        if (empty($pending_orders)) {
+            $nextDate = null;
+            foreach ($allActiveOrders as $ord) {
+                $details = @json_decode($ord['order_details_json'] ?? '{}', true);
+                if (!is_array($details)) continue;
+                foreach (['Pickup DateTime', 'Drop-off DateTime'] as $k) {
+                    $raw = trim($details[$k] ?? '');
+                    if ($raw && $raw !== 'Null') {
+                        $date = substr($raw, 0, 10);
+                        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) && $date > $today) {
+                            if ($nextDate === null || $date < $nextDate) $nextDate = $date;
+                        }
+                    }
+                }
+            }
+            if ($nextDate) {
+                $pendingFallbackDate = $nextDate;
+                $seen = [];
+                foreach ($allActiveOrders as $ord) {
+                    if (isset($seen[$ord['order_id']])) continue;
+                    $details = @json_decode($ord['order_details_json'] ?? '{}', true);
+                    if (!is_array($details)) continue;
+                    foreach (['Pickup DateTime', 'Drop-off DateTime'] as $k) {
+                        $raw = trim($details[$k] ?? '');
+                        if ($raw && $raw !== 'Null' && substr($raw, 0, 10) === $nextDate) {
+                            $pendingFallbackOrders[]     = $ord;
+                            $seen[$ord['order_id']] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // ── Calendar order data for JS day list (pickup / drop-off only) ─
+        $calendarOrders = array_map(static function ($o) {
+            $d = @json_decode($o['order_details_json'] ?? '{}', true);
+            $d = is_array($d) ? $d : [];
+            $pickupRaw  = trim($d['Pickup DateTime']    ?? '');
+            $dropoffRaw = trim($d['Drop-off DateTime'] ?? '');
+            if ($pickupRaw === 'Null')  $pickupRaw  = '';
+            if ($dropoffRaw === 'Null') $dropoffRaw = '';
+            $atP = strpos($pickupRaw,  'at ');
+            $atD = strpos($dropoffRaw, 'at ');
+            $from = trim($d['Origin Location'] ?? $d['Origin Address'] ?? $d['Storage Location'] ?? '');
+            $to   = trim($d['Destination Location'] ?? $d['Destination Address'] ?? '');
+            return [
+                'id'        => (int)$o['order_id'],
+                'name'      => trim(($o['first_name'] ?? '') . ' ' . ($o['last_name'] ?? '')),
+                'pickup'    => $pickupRaw  ? substr($pickupRaw,  0, 10) : null,
+                'dropoff'   => $dropoffRaw ? substr($dropoffRaw, 0, 10) : null,
+                'pickup_t'  => $atP !== false ? trim(substr($pickupRaw,  $atP + 3)) : null,
+                'dropoff_t' => $atD !== false ? trim(substr($dropoffRaw, $atD + 3)) : null,
+                'from'      => $from ?: '—',
+                'to'        => $to   ?: '—',
+            ];
+        }, $allActiveOrders);
+
+        // ── Month orders count ──────────────────────────────────────────
+        $monthOrders = (int)$db->table('`order`')->where('is_deleted', 0)
+            ->where('created_date >=', $monthStart)->countAllResults();
+
+        // ── Parse orders for tooltip display data ────────────────────────
+        // Actual JSON keys (from OrderModel::formatOrderDetailsJson):
+        //   Pickup location  → 'Origin Location' / 'Origin Address' (delivery)
+        //                      'Storage Location' (storage)
+        //   Dropoff location → 'Destination Location' / 'Destination Address' (delivery)
+        $parseForDisplay = static function (array $orders): array {
+            return array_map(static function ($o) {
+                $d = @json_decode($o['order_details_json'] ?? '{}', true);
+                $d = is_array($d) ? $d : [];
+                $pickupRaw  = trim($d['Pickup DateTime']    ?? '');
+                $dropoffRaw = trim($d['Drop-off DateTime'] ?? '');
+                // 'Null' string means the field was not filled in
+                if ($pickupRaw  === 'Null') $pickupRaw  = '';
+                if ($dropoffRaw === 'Null') $dropoffRaw = '';
+                $pickupLoc  = trim($d['Origin Location']      ?? $d['Origin Address']      ?? $d['Storage Location']     ?? '');
+                $dropoffLoc = trim($d['Destination Location'] ?? $d['Destination Address'] ?? '');
+                return $o + [
+                    '_pickup_time'      => $pickupRaw,   // full "YYYY-MM-DD at HH:MM" string
+                    '_pickup_location'  => $pickupLoc,
+                    '_dropoff_time'     => $dropoffRaw,  // full "YYYY-MM-DD at HH:MM" string
+                    '_dropoff_location' => $dropoffLoc,
+                    '_created_date_fmt' => substr($o['created_date'] ?? '', 0, 10),
                 ];
+            }, $orders);
+        };
+
+        $storageOrders          = $parseForDisplay(array_values(array_filter($allActiveOrders, fn($o) => strtolower($o['service_type'] ?? '') === 'storage')));
+        $deliveryOrders         = $parseForDisplay(array_values(array_filter($allActiveOrders, fn($o) => strtolower($o['service_type'] ?? '') === 'delivery')));
+        $pending_orders_display = $parseForDisplay($pending_orders);
+
+        // ── News / activity feed ─────────────────────────────────────────
+        $recentActivity = $db->table('activity_log al')
+            ->select('al.log_id, al.order_id, al.username, al.action, al.modified_date, o.first_name, o.last_name, o.service_type')
+            ->join('`order` o', 'o.order_id = al.order_id', 'left')
+            ->orderBy('al.modified_date', 'DESC')
+            ->limit(10)
+            ->get()->getResultArray();
+
+        $recentOrders = $db->table('`order`')
+            ->where('is_deleted', 0)->orderBy('created_date', 'DESC')
+            ->limit(5)->get()->getResultArray();
+
+        $recentMessages = $messageModel->where('is_deleted', 0)
+            ->orderBy('created_date', 'DESC')->limit(5)->findAll();
+
+        // ── Transactions ─────────────────────────────────────────────────
+        $transactions = $transaction_model->orderBy('created_at', 'DESC')->limit(10)->findAll();
+
+        $data = [
+            'totalOrders'           => $totalOrders,
+            'pendingCount'          => $pendingCount,
+            'inProgressCount'       => $inProgressCount,
+            'completedCount'        => $completedCount,
+            'userCount'             => $userCount,
+            'todayRevenue'          => $todayRevenue,
+            'yesterdayRevenue'      => $yesterdayRevenue,
+            'weekRevenue'           => $weekRevenue,
+            'monthRevenue'          => $monthRevenue,
+            'totalRevenue'          => $totalRevenue,
+            'todayRevenueDelta'     => $todayRevenueDelta,
+            'todayOrders'           => $todayOrders,
+            'todayOrdersDelta'      => $todayOrdersDelta,
+            'activeStorageHolds'    => $activeStorageHolds,
+            'unreadMessages'        => $unreadMessages,
+            'pendingRefunds'        => $pendingRefunds,
+            'todayPickups'          => $todayPickups,
+            'todayDropoffs'         => $todayDropoffs,
+            'calendarHeatmap'       => $calendarHeatmap,
+            'pending_orders'        => $pending_orders,
+            'pendingFallbackDate'   => $pendingFallbackDate,
+            'pendingFallbackOrders' => $pendingFallbackOrders,
+            'recentActivity'        => $recentActivity,
+            'recentOrders'          => $recentOrders,
+            'recentMessages'        => $recentMessages,
+            'transactions'          => $transactions,
+            'calendarOrders'        => $calendarOrders,
+            'monthOrders'           => $monthOrders,
+            'storageOrders'         => $storageOrders,
+            'deliveryOrders'        => $deliveryOrders,
+            'pending_orders_display'=> $pending_orders_display,
+            // legacy aliases kept for compatibility
+            'user_count'            => $userCount,
+            'sales'                 => number_format($totalRevenue, 2),
+            'orders'                => $totalOrders,
+        ];
 
         return $this->render('admin/dashboard', $data);
     }
@@ -82,7 +311,7 @@ class Admin extends BaseController
     public function contact()
     {
         $messageModel = new MessageModel();
-        $perPage = 15;
+        $perPage = 10;
         $filter = $this->request->getGet('filter');
         $messageId = $this->request->getGet('message_id');
 
@@ -888,12 +1117,23 @@ class Admin extends BaseController
                 'modified_date' => date('Y-m-d H:i:s')
             ]);
             
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON([
+                'success'     => true,
+                'new_status'  => $newStatus,
+                'status_text' => $statusText[$newStatus],
+            ]);
+        }
+
         session()->setFlashdata('order_status_success', [
             'order_id' => $order_id,
             'status'   => $statusText[$newStatus],
             'username' => session()->get('username') ?: 'Unknown'
         ]);
         } else {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['success' => false, 'message' => 'Order not found.']);
+            }
             session()->setFlashdata('error', 'Order not found.');
         }
 
@@ -902,34 +1142,85 @@ class Admin extends BaseController
 
     public function user()
     {
-        $user_model = new User_model();
-        $perPage = 10;
-        $users = $user_model->where('is_deleted', 0)->paginate($perPage, 'group1');
-        $pager = $user_model->pager;
+        if (session()->get('role') !== '1') {
+            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
+        }
 
-        $data = [
-            'users' => $users,
-            'pager' => $pager
-        ];
-        // print_r($users);exit;
-        return $this->render('admin/user', $data);
+        $user_model = new User_model();
+        $search     = trim($this->request->getGet('search') ?? '');
+        $perPage    = 10;
+
+        if ($search !== '') {
+            $users = $user_model->where('is_deleted', 0)
+                ->groupStart()
+                    ->like('username', $search)
+                    ->orLike('email', $search)
+                ->groupEnd()
+                ->findAll();
+            $pager = null;
+        } else {
+            $users = $user_model->where('is_deleted', 0)->paginate($perPage, 'group1');
+            $pager = $user_model->pager;
+        }
+
+        return $this->render('admin/user', [
+            'users'         => $users,
+            'pager'         => $pager,
+            'search'        => $search,
+            'currentUserId' => (int) session()->get('user_id'),
+        ]);
     }
 
     public function create_user()
     {
+        if (session()->get('role') !== '1') {
+            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
+        }
+
         $userModel = new User_model();
 
         if ($this->request->getMethod() === 'POST') {
-            $data = [
-                'role'          => $this->request->getPost('role'),
-                'username'      => $this->request->getPost('username'),
-                'email'      => $this->request->getPost('email'),
-                'password'      => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-                'created_date'  => date('Y-m-d H:i:s'),
-            ];
+            $validation = \Config\Services::validation();
+            $validation->setRules([
+                'role'     => 'required|in_list[0,1]',
+                'username' => 'required|min_length[3]|max_length[100]',
+                'email'    => 'required|valid_email|max_length[255]',
+                'password' => 'required|min_length[6]',
+            ]);
 
-            $userModel->insert($data);
-            return redirect()->to(base_url('/user'))->with('success', 'User created successfully!');
+            if (!$validation->withRequest($this->request)->run()) {
+                return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+            }
+
+            $username = trim($this->request->getPost('username'));
+            $email    = trim($this->request->getPost('email'));
+
+            if ($userModel->where('username', $username)->where('is_deleted', 0)->first()) {
+                return redirect()->back()->withInput()->with('errors', ['username' => 'That username is already taken.']);
+            }
+
+            if ($userModel->where('email', $email)->where('is_deleted', 0)->first()) {
+                return redirect()->back()->withInput()->with('errors', ['email' => 'That email is already registered.']);
+            }
+
+            $roleVal = $this->request->getPost('role');
+            $userModel->insert([
+                'role'         => $roleVal,
+                'username'     => $username,
+                'email'        => $email,
+                'password'     => $this->request->getPost('password'),
+                'created_date' => date('Y-m-d H:i:s'),
+            ]);
+            $newId = $userModel->getInsertID();
+
+            return redirect()->to(base_url('/user'))->with('toast', [
+                'title'   => 'User Created',
+                'icon'    => 'fas fa-user-plus',
+                'user_id' => (int) $newId,
+                'username' => $username,
+                'email'   => $email,
+                'role'    => $roleVal == '1' ? 'Superadmin' : 'Admin',
+            ]);
         }
 
         return $this->render('admin/create_user');
@@ -977,79 +1268,143 @@ class Admin extends BaseController
 
     public function save_note()
     {
-        $orderId = $this->request->getPost('order_id');
-        $note = $this->request->getPost('note');
-        $userId = session()->get('user_id');
+        $orderId  = $this->request->getPost('order_id');
+        $note     = trim($this->request->getPost('note') ?? '');
+        $userId   = session()->get('user_id');
 
         $orderModel = new Order_model();
-        $orderModel->update($orderId, ['comment' => $note,
-                'modified_date' => date('Y-m-d H:i:s'),
-                'modified_by' => session()->get('user_id')]);
+        $existing   = $orderModel->find($orderId);
+        $prevNote   = trim($existing['comment'] ?? '');
+
+        $orderModel->update($orderId, [
+            'comment'       => $note,
+            'modified_date' => date('Y-m-d H:i:s'),
+            'modified_by'   => $userId,
+        ]);
+
+        if ($note === '') {
+            $action     = 'Deleted note';
+            $actionType = 'deleted';
+        } elseif ($prevNote === '') {
+            $action     = 'Added note: "' . $note . '"';
+            $actionType = 'added';
+        } else {
+            $action     = 'Edited note: "' . $note . '"';
+            $actionType = 'edited';
+        }
 
         $logModel = new ActivityLogModel();
         $logModel->insert([
-            'order_id' => $orderId,
-            'user_id' => $userId,
-            'username' => session()->get('username'),
-            'action' => 'Changed note to "' . $note . '"',
-            'modified_date' => date('Y-m-d H:i:s')
+            'order_id'      => $orderId,
+            'user_id'       => $userId,
+            'username'      => session()->get('username'),
+            'action'        => $action,
+            'modified_date' => date('Y-m-d H:i:s'),
         ]);
 
-        return $this->response->setJSON(['status' => 'success']);
+        return $this->response->setJSON(['status' => 'success', 'action' => $actionType]);
     }
 
     public function edit($user_id)
     {
+        if (session()->get('role') !== '1') {
+            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
+        }
+
         $userModel = new User_model();
         $user = $userModel->find($user_id);
 
         if (!$user) {
-            return redirect()->to(base_url('admin/user'))->with('error', 'User not found.');
+            return redirect()->to(base_url('/user'))->with('error', 'User not found.');
         }
         return $this->render('admin/edit_user', ['user' => $user]);
     }
 
     public function update($user_id)
     {
+        if (session()->get('role') !== '1') {
+            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
+        }
+
         $userModel = new User_model();
 
-        $data = [
-            'username' => $this->request->getPost('username'),
-            'email'    => $this->request->getPost('email'),
-            'role'     => $this->request->getPost('role'),
-            'modified_date' => date('Y-m-d H:i:s')
-        ];
-
-        // Optional: add validation
         $validation = \Config\Services::validation();
         $validation->setRules([
-            'username' => 'required|min_length[3]',
-            'email'    => 'required|valid_email',
+            'username' => 'required|min_length[3]|max_length[100]',
+            'email'    => 'required|valid_email|max_length[255]',
             'role'     => 'required|in_list[0,1]',
         ]);
 
-        if (!$validation->run($data)) {
+        if (!$validation->withRequest($this->request)->run()) {
             return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
 
-        $userModel->update($user_id, $data);
-        return redirect()->to(base_url('/user'))->with('message', "User $user_id updated successfully.");
+        $username = trim($this->request->getPost('username'));
+        $email    = trim($this->request->getPost('email'));
+
+        $dupUsername = $userModel->where('username', $username)
+            ->where('is_deleted', 0)
+            ->where('user_id !=', $user_id)
+            ->first();
+        if ($dupUsername) {
+            return redirect()->back()->withInput()->with('errors', ['username' => 'That username is already taken.']);
+        }
+
+        $dupEmail = $userModel->where('email', $email)
+            ->where('is_deleted', 0)
+            ->where('user_id !=', $user_id)
+            ->first();
+        if ($dupEmail) {
+            return redirect()->back()->withInput()->with('errors', ['email' => 'That email is already registered.']);
+        }
+
+        $roleVal = $this->request->getPost('role');
+        $userModel->update($user_id, [
+            'username'      => $username,
+            'email'         => $email,
+            'role'          => $roleVal,
+            'modified_date' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to(base_url('/user'))->with('toast', [
+            'title'   => 'User Updated',
+            'icon'    => 'fas fa-user-edit',
+            'user_id' => (int) $user_id,
+            'username' => $username,
+            'email'   => $email,
+            'role'    => $roleVal == '1' ? 'Superadmin' : 'Admin',
+        ]);
     }
 
     public function delete($user_id)
     {
-        $userModel = new User_model();
-
-        $user = $userModel->find($user_id);
-        if (!$user) {
-            return redirect()->to(base_url('admin/user'))->with('error', 'User not found.');
+        if (session()->get('role') !== '1') {
+            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
         }
 
-        // Soft delete: set is_deleted to 1
-        $userModel->update($user_id, ['is_deleted' => 1,
-                                    'modified_date' => date('Y-m-d H:i:s')]);
+        if ((int) $user_id === (int) session()->get('user_id')) {
+            return redirect()->to(base_url('/user'))->with('error', 'You cannot delete your own account.');
+        }
 
-        return redirect()->to(base_url('/user'))->with('message', "User $user_id deleted successfully.");
+        $userModel = new User_model();
+        $user = $userModel->find($user_id);
+        if (!$user) {
+            return redirect()->to(base_url('/user'))->with('error', 'User not found.');
+        }
+
+        $userModel->update($user_id, [
+            'is_deleted'    => 1,
+            'modified_date' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to(base_url('/user'))->with('toast', [
+            'title'   => 'User Deleted',
+            'icon'    => 'fas fa-trash-alt',
+            'user_id' => (int) $user_id,
+            'username' => $user['username'],
+            'email'   => $user['email'],
+            'role'    => $user['role'] == 1 ? 'Superadmin' : 'Admin',
+        ]);
     }
     
     public function service_management()
@@ -1087,21 +1442,23 @@ class Admin extends BaseController
     public function transaction_history()
     {
         $paymentModel = new PaymentModel();
-        // Fetch all transactions, you can add filters or pagination as needed
-        $transactions = $paymentModel->orderBy('created_at', 'DESC')->findAll();
-        $db = \Config\Database::connect();
+        $search = trim($this->request->getGet('search') ?? '');
 
-        $data = [
-            'transactions' => $transactions
-        ];
-        $refunds = $db->table('refund_form')
-            ->orderBy('created_at', 'DESC')
-            ->get()
-            ->getResultArray();
+        if ($search !== '') {
+            $paymentModel->groupStart()
+                ->like('stripe_payment_id', $search)
+                ->orLike('payment_intent_id', $search)
+                ->orLike('status', $search)
+                ->groupEnd();
+        }
 
-        return $this->render('admin/transaction_history', $data);
-        return $this->render('admin/refund_request', [
-            'refunds' => $refunds
+        $transactions = $paymentModel->orderBy('created_at', 'DESC')->paginate(10, 'group1');
+        $pager = $paymentModel->pager;
+
+        return $this->render('admin/transaction_history', [
+            'transactions' => $transactions,
+            'pager'        => $pager,
+            'search'       => $search,
         ]);
     }
 
@@ -1224,17 +1581,35 @@ class Admin extends BaseController
     
     public function refund_request()
     {
-        $db = \Config\Database::connect();
+        $db      = \Config\Database::connect();
+        $search  = trim($this->request->getGet('search') ?? '');
+        $perPage = 10;
+        $page    = max(1, (int) ($this->request->getGet('page') ?? 1));
+        $offset  = ($page - 1) * $perPage;
 
-        $refunds = $db->table('refund_form rf')
+        $builder = $db->table('refund_form rf')
             ->select('rf.*, u.username AS status_updated_username')
             ->join('user u', 'u.user_id = rf.status_updated_by', 'left')
-            ->orderBy('rf.created_at', 'DESC')
-            ->get()
-            ->getResultArray();
+            ->orderBy('rf.created_at', 'DESC');
+
+        if ($search !== '') {
+            $builder->groupStart()
+                ->like('rf.full_name', $search)
+                ->orLike('rf.email', $search)
+                ->orLike('rf.reason_for_refund', $search)
+                ->groupEnd();
+        }
+
+        $total   = $builder->countAllResults(false);
+        $refunds = $builder->limit($perPage, $offset)->get()->getResultArray();
+
+        $pager = service('pager');
+        $pager->store('group1', $page, $perPage, $total);
 
         return $this->render('admin/refund_request', [
-            'refunds' => $refunds
+            'refunds' => $refunds,
+            'pager'   => $pager,
+            'search'  => $search,
         ]);
     }
 
@@ -1245,7 +1620,7 @@ class Admin extends BaseController
 
         $statusMap = [
             0 => 'In Progress',
-            1 => 'Agreed',
+            1 => 'Approved',
             2 => 'Rejected',
         ];
 

@@ -10,20 +10,17 @@ function pretty_label($key)
 ?>
 
 <div class="container mt-4">
-    <div class="page-inner" style="padding-top: 80px;">
-        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <div class="page-inner">
+        <div class="ease-page-head d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
-                <h3 class="fw-bold mb-1">
-                    <i class="fas fa-file-alt me-2"></i>Order Details
-                </h3>
-                <div class="text-muted">Order ID: #<?= esc($order['order_id']) ?></div>
+                <div class="ease-crumb">EASE Admin &middot; Orders &middot; <b>#<?= esc($order['order_id']) ?></b></div>
+                <h1 class="ease-page-title">Order Details</h1>
             </div>
-
-            <div class="mt-2 mt-md-0">
-                <a href="<?= base_url('/admin/refund_request') ?>" class="btn btn-cancel me-2">
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="<?= base_url('/admin/refund_request') ?>" class="btn btn-cancel">
                     <i class="fa fa-arrow-left me-1"></i>Refund Request
                 </a>
-                <a href="<?= base_url('/order') ?>" class="btn btn-update">
+                <a href="<?= base_url('/order') ?>" class="btn rpt-export-btn">
                     <i class="fa fa-list me-1"></i>Order List
                 </a>
             </div>

@@ -1,132 +1,161 @@
 <?= $this->include('admin/header'); ?>
 
-<style>
-    .dataTables_filter { display: none; }
-    .refund-status-btn {
-    min-width: 44px;
-    }
-</style>
+<link rel="stylesheet" href="<?= base_url('assets/css/admin/order.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/admin/refund_request.css') ?>">
 
-<div class="container mt-4">
-    <div class="page-inner" style="padding-top: 80px;">
-        <div class="d-flex align-items-center mb-4">
-            <h3 class="fw-bold mb-0 me-3">
-                <i class="fas fa-file-invoice-dollar me-2"></i>Refund Request
-            </h3>
+<?php
+function refundRowClass(int $status): string
+{
+    return match ($status) {
+        1       => 'ord-row--done',
+        2       => 'ord-row--rejected',
+        default => 'ord-row--progress',
+    };
+}
+
+function refundStatusBadge(int $status): array
+{
+    return match ($status) {
+        1       => ['ord-status--done', 'Approved'],
+        2       => ['ord-status--rejected', 'Rejected'],
+        default => ['ord-status--progress', 'In Progress'],
+    };
+}
+?>
+
+<div class="ord-page">
+
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <div class="ease-crumb">EASE Admin &middot; <b>Refund Requests</b></div>
+            <h1 class="ease-page-title">Refund Requests</h1>
+        </div>
+    </div>
+
+    <div class="ord-card">
+        <div class="ord-card__bar">
+            <form method="get" action="" class="ord-srch" id="refundSearchForm">
+                <i class="fas fa-search"></i>
+                <input type="text" name="search" id="refundSearch"
+                       placeholder="Search refund requests…"
+                       value="<?= esc($search ?? '') ?>"
+                       autocomplete="off">
+            </form>
         </div>
 
-        <div class="card shadow-sm border-0 rounded-3">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">Refund Form Database</h5>
-                <div class="input-group" style="max-width: 280px;">
-                    <input type="text" id="refundSearch" class="form-control form-control-sm" placeholder="Search refund request...">
-                    <button class="btn btn-light btn-sm"><i class="fa fa-search"></i></button>
-                </div>
-            </div>
+        <div class="table-responsive">
+            <table class="ord-tbl" id="refundTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Contact</th>
+                        <th>Order ID</th>
+                        <th>Purchase Date</th>
+                        <th>Reason</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">PDF</th>
+                        <th>Submitted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($refunds)): ?>
+                        <?php foreach ($refunds as $refund): ?>
+                            <?php
+                                $pdfLink = '';
+                                if (!empty($refund['pdf_path'])) {
+                                    $pdfLink = preg_match('#^https?://#', $refund['pdf_path'])
+                                        ? $refund['pdf_path']
+                                        : base_url($refund['pdf_path']);
+                                }
 
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-striped mb-0 align-middle" id="refundTable">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Order ID</th>
-                                <th>Purchase Date</th>
-                                <th>Reason</th>
-                                <th>Status Progress</th>                                
-                                <th>PDF</th>
-                                <th>Created At</th>
+                                $refundStatus = isset($refund['status_progress']) ? (int) $refund['status_progress'] : 0;
+                                [$statusCls, $statusLabel] = refundStatusBadge($refundStatus);
+                                $updatedBy = $refund['status_updated_username'] ?? '';
+                                $updatedAt = $refund['status_updated_at'] ?? '-';
+                                $name      = trim((string) ($refund['full_name'] ?? ''));
+                            ?>
+                            <tr class="<?= esc(refundRowClass($refundStatus)) ?>">
+                                <td>
+                                    <span class="ord-id">#<?= esc($refund['id'] ?? '-') ?></span>
+                                </td>
+                                <td>
+                                    <div class="ord-customer">
+                                        <span class="ord-customer__name"><?= esc($name !== '' ? $name : '—') ?></span>
+                                        <span class="ord-customer__phone"><?= esc($refund['email'] ?? '—') ?></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="refund-phone"><?= esc($refund['phone_number'] ?? '—') ?></span>
+                                </td>
+                                <td>
+                                    <?php if (!empty($refund['order_id'])): ?>
+                                        <a href="<?= base_url('/admin/order_details/' . $refund['order_id']) ?>"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="ord-kv__link order-id-link"
+                                           data-order-id="<?= esc($refund['order_id']) ?>">
+                                            #<?= esc($refund['order_id']) ?>
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="refund-muted">—</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <span class="ord-date"><?= esc($refund['date_of_purchase'] ?? '—') ?></span>
+                                </td>
+                                <td>
+                                    <span class="refund-reason" title="<?= esc($refund['reason_for_refund'] ?? '', 'attr') ?>">
+                                        <?= esc($refund['reason_for_refund'] ?? '—') ?>
+                                    </span>
+                                </td>
+                                <td class="text-center ord-tbl__status">
+                                    <span class="ord-status-badge <?= esc($statusCls) ?> refund-status-btn"
+                                        role="button"
+                                        data-refund-id="<?= esc($refund['id']) ?>"
+                                        data-current-status="<?= esc($statusLabel) ?>"
+                                        data-updated-by="<?= esc($updatedBy ?: '-') ?>"
+                                        title="Status: <?= esc($statusLabel) ?> | By: <?= esc($updatedBy ?: '-') ?> | At: <?= esc($updatedAt) ?>">
+                                        <?= esc($statusLabel) ?>
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <?php if ($pdfLink): ?>
+                                        <a href="<?= esc($pdfLink) ?>" target="_blank" rel="noopener noreferrer"
+                                           class="ord-act-btn refund-pdf-btn" title="View PDF">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="refund-muted">No PDF</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <div class="ord-date-wrap">
+                                        <?php
+                                            $created = $refund['created_at'] ?? '';
+                                            $createdTs = $created !== '' && $created !== '-' ? strtotime($created) : false;
+                                        ?>
+                                        <?php if ($createdTs): ?>
+                                            <span class="ord-date"><?= date('d M Y', $createdTs) ?></span>
+                                            <span class="ord-time"><?= date('H:i', $createdTs) ?></span>
+                                        <?php else: ?>
+                                            <span class="ord-date">—</span>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($refunds)): ?>
-                                <?php foreach ($refunds as $refund): ?>
-                                    <?php
-                                        $pdfLink = '';
-                                        if (!empty($refund['pdf_path'])) {
-                                            $pdfLink = preg_match('#^https?://#', $refund['pdf_path'])
-                                                ? $refund['pdf_path']
-                                                : base_url($refund['pdf_path']);
-                                        }
-                                    ?>
-                                    <tr>
-                                        <td><?= esc($refund['id'] ?? '-') ?></td>
-                                        <td><?= esc($refund['full_name'] ?? '-') ?></td>
-                                        <td><?= esc($refund['email'] ?? '-') ?></td>
-                                        <td><?= esc($refund['phone_number'] ?? '-') ?></td>
-                                        <td>
-                                            <?php if (!empty($refund['order_id'])): ?>
-                                                <a href="<?= base_url('/admin/order_details/' . $refund['order_id']) ?>"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="order-id-link"
-                                                data-order-id="<?= esc($refund['order_id']) ?>"
-                                                style="color: black; text-decoration: none;">
-                                                    <?= esc($refund['order_id']) ?>
-                                                </a>
-                                            <?php else: ?>
-                                                <span>-</span>
-                                            <?php endif; ?>
-                                        </td>                                       
-                                        <td><?= esc($refund['date_of_purchase'] ?? '-') ?></td>
-                                        <td><?= esc($refund['reason_for_refund'] ?? '-') ?></td>
-                                        <td class="text-center">
-                                            <?php
-                                                $refundStatus = isset($refund['status_progress']) ? (int) $refund['status_progress'] : 0;
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="9" class="ord-empty">No refund requests found.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
 
-                                                if ($refundStatus === 1) {
-                                                    $statusLabel = 'Agreed';
-                                                    $statusClass = 'btn-completed';
-                                                    $statusIcon  = 'fa-check';
-                                                } elseif ($refundStatus === 2) {
-                                                    $statusLabel = 'Rejected';
-                                                    $statusClass = 'btn-pending';
-                                                    $statusIcon  = 'fa-times';
-                                                } else {
-                                                    $statusLabel = 'In Progress';
-                                                    $statusClass = 'btn-progress';
-                                                    $statusIcon  = 'fa-spinner fa-spin';
-                                                }
-
-                                                $updatedBy = $refund['status_updated_username'] ?? '';
-                                                $updatedAt = $refund['status_updated_at'] ?? '-';
-                                            ?>
-
-                                            <div class="d-inline-flex align-items-center gap-2">
-                                                <button type="button"
-                                                        class="btn btn-sm refund-status-btn <?= esc($statusClass) ?>"
-                                                        data-refund-id="<?= esc($refund['id']) ?>"
-                                                        data-current-status="<?= esc($statusLabel) ?>"
-                                                        data-updated-by="<?= esc($updatedBy ?: '-') ?>"
-                                                        title="Current status: <?= esc($statusLabel) ?> | Updated by: <?= esc($updatedBy ?: '-') ?> | Updated at: <?= esc($updatedAt) ?>">
-                                                    <i class="fa <?= esc($statusIcon) ?>"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <?php if ($pdfLink): ?>
-                                                <a href="<?= esc($pdfLink) ?>" target="_blank" class="btn btn-sm btn-primary">
-                                                    View PDF
-                                                </a>
-                                            <?php else: ?>
-                                                <span class="text-muted">No PDF</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td><?= esc($refund['created_at'] ?? '-') ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="10" class="text-center py-4 text-muted">No refund requests found.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="ord-pagination d-flex justify-content-center">
+            <?= $pager->links('group1', 'pagination') ?>
         </div>
     </div>
 </div>
@@ -134,21 +163,23 @@
 <!-- Order Details Modal -->
 <div class="modal fade" id="refundOrderModal" tabindex="-1" aria-labelledby="refundOrderModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" id="refundOrderModalDialog">
-        <div class="modal-content border-0 shadow-lg rounded-3">
-            <div class="modal-header bg-softblue text-white draggable-modal-header" style="cursor: move;">
-                <h5 class="modal-title fw-semibold" id="refundOrderModalLabel">
-                    <i class="fa fa-file-alt me-2"></i>Order Details
+        <div class="modal-content ord-modal-content">
+            <div class="modal-header ord-modal-head draggable-modal-header">
+                <h5 class="modal-title" id="refundOrderModalLabel">
+                    <i class="fas fa-file-alt me-2"></i>Order Details
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="ease-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body">
                 <div id="refundOrderDetailsContent" class="py-3 text-muted">
-                    <i class="fa fa-spinner fa-spin me-2"></i>Loading...
+                    <i class="fas fa-spinner fa-spin me-2"></i>Loading...
                 </div>
             </div>
-            <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
-                    <i class="fa fa-times me-1"></i>Close
+            <div class="modal-footer ord-modal-foot d-flex justify-content-end">
+                <button type="button" class="ord-btn-ghost" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Close
                 </button>
             </div>
         </div>
@@ -159,333 +190,128 @@
 
 <script>
 (function () {
-    const search = document.getElementById('refundSearch');
-    if (search) {
-        search.addEventListener('keyup', function () {
-            const filter = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#refundTable tbody tr');
+    var modalElement = document.getElementById('refundOrderModal');
+    if (modalElement && modalElement.parentNode !== document.body) {
+        document.body.appendChild(modalElement);
+    }
 
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(filter) ? '' : 'none';
-            });
+    var searchInput = document.getElementById('refundSearch');
+    var searchForm  = document.getElementById('refundSearchForm');
+    if (searchInput && searchForm) {
+        var searchTimer;
+        searchInput.addEventListener('keyup', function () {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function () { searchForm.submit(); }, 400);
         });
     }
 
-    const modalElement = document.getElementById('refundOrderModal');
-    const modalDialog = document.getElementById('refundOrderModalDialog');
-    const modalContent = document.getElementById('refundOrderDetailsContent');
-    const modalHeader = modalElement.querySelector('.draggable-modal-header');
-
-    document.querySelectorAll('.refund-order-link').forEach(button => {
-        button.addEventListener('click', function () {
-            const orderId = this.getAttribute('data-id');
-            const modal = new bootstrap.Modal(modalElement);
-
-            modalContent.innerHTML = `
-                <div class="text-center py-4 text-muted">
-                    <i class="fa fa-spinner fa-spin me-2"></i>Loading order details...
-                </div>
-            `;
-
-            modal.show();
-
-            fetch(`<?= base_url('/order/getDetails'); ?>/${orderId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const o = data.order;
-                        let detailsObj = {};
-
-                        try {
-                            detailsObj = JSON.parse(o.order_details_json || '{}');
-                        } catch (e) {
-                            detailsObj = {};
-                        }
-
-                        let tableRows = '';
-
-                        Object.entries(detailsObj).forEach(([key, value]) => {
-                            const prettyKey = key.replace(/([A-Z])/g, ' $1')
-                                                 .replace(/^./, str => str.toUpperCase());
-
-                            tableRows += `
-                                <tr>
-                                    <td class="fw-semibold">${prettyKey}</td>
-                                    <td>${value || '-'}</td>
-                                </tr>
-                            `;
-                        });
-
-                        modalContent.innerHTML = `
-                            <div class="container-fluid">
-                                <div class="card border-0 shadow-sm mb-3 rounded-3">
-                                    <div class="card-header fw-semibold" style="background: #f2be00ff;">
-                                        Customer Information
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <p><strong>First Name:</strong> ${o.first_name || '-'}</p>
-                                                <p><strong>Last Name:</strong> ${o.last_name || '-'}</p>
-                                                <p><strong>Email:</strong> ${o.email || '-'}</p>
-                                                <p><strong>Phone:</strong> ${o.phone || '-'}</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p><strong>ID Number:</strong> ${o.id_num || '-'}</p>
-                                                <p><strong>Social:</strong> ${
-                                                    o.social == 1 ? 'WhatsApp' :
-                                                    o.social == 2 ? 'WeChat' :
-                                                    o.social == 3 ? 'LINE' :
-                                                    'Unknown'
-                                                }</p>
-                                                <p><strong>Social Number:</strong> ${o.social_num || '-'}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card border-0 shadow-sm mb-3 rounded-3">
-                                    <div class="card-header fw-semibold" style="background: #f2be00ff;">
-                                        Order Information
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <p><strong>Service Type:</strong> ${o.service_type || '-'}</p>
-                                                <p><strong>Special:</strong> ${o.special || '-'}</p>
-                                                <p><strong>Special Note:</strong> ${o.special_note || '-'}</p>
-                                                <p><strong>Promo Code:</strong> ${o.promo_code || '-'}</p>
-                                                <p><strong>Last Modified:</strong> ${o.modified_date || '-'}</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p><strong>Status:</strong> ${
-                                                    o.status == 0
-                                                        ? '<span class="badge bg-warning text-dark">Pending</span>'
-                                                        : o.status == 1
-                                                        ? '<span class="badge bg-primary">In Progress</span>'
-                                                        : '<span class="badge bg-success">Completed</span>'
-                                                }</p>
-                                                <p><strong>Amount:</strong> RM${o.amount || '0.00'}</p>
-                                                <p><strong>Payment Method:</strong> ${o.payment_method || '-'}</p>
-                                                <p><strong>Upload:</strong> ${
-                                                    o.upload
-                                                        ? `<a href="<?= base_url('uploads/'); ?>${o.upload}" target="_blank" class="text-decoration-none">View File</a>`
-                                                        : 'No file uploaded'
-                                                }</p>
-                                                <p><strong>Modified By:</strong> ${o.modified_by_username || '-'}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card border-0 shadow-sm mb-3 rounded-3">
-                                    <div class="card-header fw-semibold" style="background: #f2be00ff;">
-                                        Order Details
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="table table-bordered table-sm">
-                                            <tbody>
-                                                ${tableRows || '<tr><td colspan="2">No order details found.</td></tr>'}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <div class="card border-0 shadow-sm rounded-3">
-                                    <div class="card-header fw-semibold" style="background: #f2be00ff;">
-                                        Comment
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="bg-light p-3 rounded" style="font-size: 0.9rem; white-space: pre-wrap;">${o.comment || '-'}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        modalContent.innerHTML = `
-                            <div class="alert alert-danger mb-0">
-                                ${data.message || 'Order not found.'}
-                            </div>
-                        `;
-                    }
-                })
-                .catch(() => {
-                    modalContent.innerHTML = `
-                        <div class="alert alert-danger mb-0">
-                            Error loading order details.
-                        </div>
-                    `;
-                });
-        });
-    });
-
-    let isDragging = false;
-    let startX = 0;
-    let startY = 0;
-    let initialLeft = 0;
-    let initialTop = 0;
-
-    modalHeader.addEventListener('mousedown', function (e) {
-        isDragging = true;
-
-        const rect = modalDialog.getBoundingClientRect();
-        startX = e.clientX;
-        startY = e.clientY;
-        initialLeft = rect.left;
-        initialTop = rect.top;
-
-        modalDialog.style.left = initialLeft + 'px';
-        modalDialog.style.top = initialTop + 'px';
-        modalDialog.style.transform = 'none';
-
-        document.body.style.userSelect = 'none';
-    });
-
-    document.addEventListener('mousemove', function (e) {
-        if (!isDragging) return;
-
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-
-        modalDialog.style.left = (initialLeft + dx) + 'px';
-        modalDialog.style.top = (initialTop + dy) + 'px';
-    });
-
-    document.addEventListener('mouseup', function () {
-        isDragging = false;
-        document.body.style.userSelect = '';
-    });
-
-    modalElement.addEventListener('hidden.bs.modal', function () {
-        modalDialog.style.top = '80px';
-        modalDialog.style.left = '50%';
-        modalDialog.style.transform = 'translateX(-50%)';
-    });
-})();
-
-    document.querySelectorAll('.order-id-link').forEach(link => {
+    document.querySelectorAll('.order-id-link').forEach(function (link) {
         link.addEventListener('click', function (e) {
             e.preventDefault();
+            var orderId   = this.getAttribute('data-order-id');
+            var detailUrl = this.getAttribute('href');
 
-            const orderId = this.getAttribute('data-order-id');
-            const detailUrl = this.getAttribute('href');
-
-            fetch(`<?= base_url('/order/getDetails') ?>/${orderId}`)
-                .then(response => response.json())
-                .then(data => {
+            fetch('<?= base_url('/order/getDetails') ?>/' + orderId)
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
                     if (data.success) {
                         window.open(detailUrl, '_blank');
                     } else {
-                        swal({
-                            title: "Order not found",
-                            text: "Order ID " + orderId + " does not exist in the Order page.",
-                            icon: "warning",
-                            button: "OK"
-                        });
+                        swal({ title: 'Order not found', text: 'Order ID ' + orderId + ' does not exist.', icon: 'warning', button: 'OK' });
                     }
                 })
-                .catch(() => {
-                    swal({
-                        title: "Error",
-                        text: "Unable to check the order right now. Please try again.",
-                        icon: "error",
-                        button: "OK"
-                    });
+                .catch(function () {
+                    swal({ title: 'Error', text: 'Unable to check the order right now.', icon: 'error', button: 'OK' });
                 });
         });
     });
 
-</script>
+    var modalDialog = document.getElementById('refundOrderModalDialog');
+    var modalHeader = modalElement ? modalElement.querySelector('.draggable-modal-header') : null;
+    if (modalHeader && modalDialog) {
+        var isDragging = false, startX = 0, startY = 0, initialLeft = 0, initialTop = 0;
 
-<script>
-(function () {
-    const search = document.getElementById('refundSearch');
-    if (search) {
-        search.addEventListener('keyup', function () {
-            const filter = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#refundTable tbody tr');
+        modalHeader.addEventListener('mousedown', function (e) {
+            isDragging = true;
+            var rect = modalDialog.getBoundingClientRect();
+            startX = e.clientX;
+            startY = e.clientY;
+            initialLeft = rect.left;
+            initialTop = rect.top;
+            modalDialog.style.left = initialLeft + 'px';
+            modalDialog.style.top = initialTop + 'px';
+            modalDialog.style.transform = 'none';
+            document.body.style.userSelect = 'none';
+        });
 
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(filter) ? '' : 'none';
-            });
+        document.addEventListener('mousemove', function (e) {
+            if (!isDragging) return;
+            modalDialog.style.left = (initialLeft + e.clientX - startX) + 'px';
+            modalDialog.style.top  = (initialTop  + e.clientY - startY) + 'px';
+        });
+
+        document.addEventListener('mouseup', function () {
+            isDragging = false;
+            document.body.style.userSelect = '';
+        });
+
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            modalDialog.style.top = '80px';
+            modalDialog.style.left = '50%';
+            modalDialog.style.transform = 'translateX(-50%)';
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('padding-right');
+            document.body.style.removeProperty('overflow');
+            document.querySelectorAll('.modal-backdrop').forEach(function (b) { b.remove(); });
         });
     }
 
-    const currentAdmin = <?= json_encode(session()->get('username') ?? 'Unknown') ?>;
+    var currentAdmin = <?= json_encode(session()->get('username') ?? 'Unknown') ?>;
 
-    document.querySelectorAll('.refund-status-btn').forEach(button => {
+    document.querySelectorAll('.refund-status-btn').forEach(function (button) {
         button.addEventListener('click', function () {
-        const refundId = this.getAttribute('data-refund-id');
-        const currentStatus = this.getAttribute('data-current-status');
-        const updatedBy = this.getAttribute('data-updated-by');
+            var refundId      = this.getAttribute('data-refund-id');
+            var currentStatus = this.getAttribute('data-current-status');
+            var updatedBy     = this.getAttribute('data-updated-by');
 
-        swal({
-            title: "Select refund status",
-            text: "Refund ID: " + refundId +
-                "\nCurrent status: " + currentStatus +
-                (updatedBy && updatedBy !== '-' ? "\nChanged by: " + updatedBy : ""),
+            swal({
+                title: 'Select refund status',
+                text: 'Refund ID: ' + refundId +
+                    '\nCurrent status: ' + currentStatus +
+                    (updatedBy && updatedBy !== '-' ? '\nChanged by: ' + updatedBy : ''),
                 buttons: {
-                    cancel: "Cancel",
-                    reject: {
-                        text: "Reject",
-                        value: "2"
-                    },
-                    agree: {
-                        text: "Agreed",
-                        value: "1"
-                    }
+                    cancel: 'Cancel',
+                    reject:  { text: 'Reject',   value: '2' },
+                    approve: { text: 'Approve', value: '1' }
                 }
-            }).then((selectedStatus) => {
+            }).then(function (selectedStatus) {
                 if (!selectedStatus) return;
-
-                const newStatusText = selectedStatus === "1" ? "Agreed" : "Rejected";
+                var newStatusText = selectedStatus === '1' ? 'Approved' : 'Rejected';
 
                 swal({
-                    title: "Change refund status?",
-                    text: "Refund ID: " + refundId +
-                          "\nCurrent status: " + currentStatus +
-                          "\nNew status: " + newStatusText +
-                          "\nChanged by: " + currentAdmin,
-                    icon: "warning",
-                    buttons: ["Cancel", "Yes, change it"],
+                    title: 'Change refund status?',
+                    text: 'Refund ID: ' + refundId + '\nCurrent: ' + currentStatus + '\nNew: ' + newStatusText + '\nBy: ' + currentAdmin,
+                    icon: 'warning',
+                    buttons: ['Cancel', 'Yes, change it'],
                     dangerMode: true
-                }).then((willChange) => {
+                }).then(function (willChange) {
                     if (!willChange) return;
 
                     $.ajax({
                         url: '<?= base_url('/admin/refund_request/change_status') ?>',
                         type: 'POST',
                         dataType: 'json',
-                        data: {
-                            refund_id: refundId,
-                            new_status: selectedStatus
-                        },
-                        success: function(response) {
+                        data: { refund_id: refundId, new_status: selectedStatus },
+                        success: function (response) {
                             if (response.success) {
-                                swal({
-                                    title: "Updated",
-                                    text: "Refund status changed to " + response.status_label +
-                                          "\nChanged by: " + response.username,
-                                    icon: "success"
-                                }).then(() => {
-                                    window.location.reload();
-                                });
+                                swal({ title: 'Updated', text: 'Status changed to ' + response.status_label + '\nBy: ' + response.username, icon: 'success' })
+                                    .then(function () { window.location.reload(); });
                             } else {
-                                swal({
-                                    title: "Error",
-                                    text: response.message || "Unable to update refund status.",
-                                    icon: "error"
-                                });
+                                swal({ title: 'Error', text: response.message || 'Unable to update.', icon: 'error' });
                             }
                         },
-                        error: function() {
-                            swal({
-                                title: "Error",
-                                text: "Unable to update refund status. Please try again.",
-                                icon: "error"
-                            });
+                        error: function () {
+                            swal({ title: 'Error', text: 'Unable to update refund status.', icon: 'error' });
                         }
                     });
                 });

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Admin sidebar &amp; rail</title>
+<link rel="stylesheet" href="_base.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+  body { background: var(--paper); }
+  .card { padding: 12px; background: transparent; gap: 14px; }
+  .lbl {
+    font-family: var(--font-admin);
+    font-size: 9.5px; font-weight: 800;
+    letter-spacing: 1.4px; color: var(--fg4); text-transform: uppercase;
+  }
+
+  /* 72px rail */
+  .rail {
+    width: 72px; background: var(--ink-1); color: rgba(247,242,220,.7);
+    display: flex; flex-direction: column;
+    align-items: center; padding: 16px 0;
+    border-right: 3px solid var(--gold);
+    border-radius: 12px;
+    min-height: 280px;
+  }
+  .rail .lg {
+    width: 36px; height: 36px;
+    object-fit: contain;
+    filter: invert(1) grayscale(1) brightness(1.6) contrast(1.1);
+    margin-bottom: 14px;
+  }
+  .rail-nv { display: flex; flex-direction: column; gap: 2px; width: 100%; align-items: center; }
+  .rail-nv a {
+    width: 48px; height: 44px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2px;
+    color: rgba(247,242,220,.55);
+    font-family: var(--font-admin);
+    font-size: 8px; font-weight: 800;
+    letter-spacing: .03em; text-transform: uppercase;
+    border-radius: 10px;
+    position: relative;
+    text-decoration: none;
+  }
+  .rail-nv a i { font-size: 14px; opacity: .85; }
+  .rail-nv a.act { color: var(--gold); }
+  .rail-nv a.act i { color: var(--gold); opacity: 1; }
+  .rail-nv a.act::before {
+    content: ""; position: absolute;
+    left: -3px; top: 6px; bottom: 6px;
+    width: 3px; background: var(--gold);
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* 220px sidebar */
+  .sb {
+    flex: 1;
+    background: var(--ink-1); color: rgba(247,242,220,.75);
+    border-right: 3px solid var(--gold);
+    border-radius: 12px;
+    padding: 14px 0;
+    min-height: 280px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 2px 16px 14px;
+    border-bottom: 1px solid rgba(247,242,220,.08);
+  }
+  .brand img {
+    width: 28px; height: 28px;
+    filter: invert(1) grayscale(1) brightness(1.6) contrast(1.1);
+  }
+  .brand .name {
+    font-family: var(--font-display);
+    font-size: 16px; color: #fff;
+    line-height: 1;
+  }
+  .brand .tag {
+    font-family: var(--font-admin);
+    font-size: 8px; font-weight: 800;
+    letter-spacing: 1.4px; color: var(--gold);
+    margin-top: 3px;
+    text-transform: uppercase;
+  }
+
+  .sec {
+    padding: 12px 16px 4px;
+    font-family: var(--font-admin);
+    font-size: 9px; font-weight: 800;
+    letter-spacing: 1.6px;
+    color: rgba(247,242,220,.35);
+    text-transform: uppercase;
+  }
+  .nav {
+    list-style: none; margin: 0; padding: 0 0 4px;
+  }
+  .nav li a {
+    display: flex; align-items: center; gap: 11px;
+    padding: 7px 16px;
+    font-family: var(--font-admin);
+    font-size: 11px; font-weight: 600;
+    color: rgba(247,242,220,.6);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+  }
+  .nav li a i { width: 14px; text-align: center; font-size: 12px; opacity: .75; }
+  .nav li a.act {
+    color: #fff;
+    background: var(--ink-3);
+    border-left-color: var(--gold);
+  }
+  .nav li a.act i { opacity: 1; color: var(--gold); }
+  .nav li a .bub {
+    margin-left: auto;
+    background: var(--gold); color: var(--ink-1);
+    font-size: 8px; font-weight: 800;
+    padding: 1px 5px; border-radius: 999px;
+  }
+
+  .pair { display: flex; gap: 12px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <span class="lbl">Black sidebar + 72 px rail · gold border</span>
+
+  <div class="pair">
+
+    <div class="rail">
+      <img class="lg" src="../assets/logo-ease-mark.png" alt="">
+      <div class="rail-nv">
+        <a class="act"><i class="fas fa-home"></i><span>Home</span></a>
+        <a><i class="fas fa-shopping-bag"></i><span>Orders</span></a>
+        <a><i class="fas fa-calendar-alt"></i><span>Cal.</span></a>
+        <a><i class="fas fa-coins"></i><span>Rev.</span></a>
+        <a><i class="fas fa-tag"></i><span>Promo</span></a>
+      </div>
+    </div>
+
+    <div class="sb">
+      <div class="brand">
+        <img src="../assets/logo-ease-mark.png" alt="">
+        <div>
+          <div class="name">EASE</div>
+          <div class="tag">Operations</div>
+        </div>
+      </div>
+      <div class="sec">Overview</div>
+      <ul class="nav">
+        <li><a class="act"><i class="fas fa-home"></i>Dashboard</a></li>
+      </ul>
+      <div class="sec">Orders</div>
+      <ul class="nav">
+        <li><a><i class="fas fa-shopping-bag"></i>Order Management <span class="bub">7</span></a></li>
+        <li><a><i class="fas fa-calendar-alt"></i>Booking Calendar</a></li>
+      </ul>
+      <div class="sec">Users</div>
+      <ul class="nav">
+        <li><a><i class="fas fa-th-list"></i>User Management</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+</body></html>

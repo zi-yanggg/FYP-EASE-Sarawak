@@ -150,282 +150,12 @@ function timeAgo($datetime)
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/bootstrap.min.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/plugins.min.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/kaiadmin.min.css') ?>" />
-    <link rel="stylesheet" href="<?= base_url('assets/css/admin/header.css') ?>" />
-    <style>
-        html,
-        body {
-            margin: 0 ;
-            padding: 0 ;
-        }
-
-        #orderModal .card {
-            border-radius: 1rem;
-        }
-
-        #orderModal .card-header {
-            border-bottom: 1px solid #e9ecef;
-            font-size: 1rem;
-        }
-
-        #orderModal p {
-            margin-bottom: 0.4rem;
-        }
-
-        .badge-superadmin {
-            background: #900707ff;
-            color: white;
-            font-size: 1rem;
-            padding: 6px 12px;
-        }
-
-        .badge-admin {
-            background: #5B532C;
-            color: white;
-            font-size: 1rem;
-            padding: 6px 12px;
-        }
-
-        .badge-pending {
-            background-color: #f2be00;
-            color: #000;
-            font-size: 1rem;
-            padding: 6px 12px;
-            font-weight: 600;
-        }
-
-        .badge-progress {
-            background-color: #5B532C;
-            color: #ffffff;
-            font-size: 1rem;
-            padding: 6px 12px;
-            font-weight: 600;
-        }
-
-        .badge-completed {
-            background-color: #ABE7B2;
-            color: #000;
-            font-size: 1rem;
-            padding: 6px 12px;
-            font-weight: 600;
-        }
-
-        .btn-update {
-            background-color: #f2be00;
-            color: #000;
-        }
-
-        .btn-update:hover {
-            background-color: #e6ac00;
-            color: #000;
-        }
-
-        .btn-cancel {
-            background-color: #5B532C;
-            color: #fff;
-        }
-
-        .btn-cancel:hover {
-            background-color: #47421f;
-            color: #fff;
-        }
-
-        .status-indicator {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-
-        .notif-img {
-            position: relative;
-        }
-
-        .avatar-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-weight: bold;
-            color: white;
-        }
-
-        /* Color sets */
-        .bg-a {
-            background-color: #5B532C ;
-        }
-
-        .bg-b {
-            background-color: #47421f ;
-        }
-
-        .bg-c {
-            background-color: #51cf66 ;
-        }
-
-        .bg-d {
-            background-color: #845ef7 ;
-        }
-
-        .bg-e {
-            background-color: #ffa94d ;
-        }
-
-        .icon-visitor {
-            background-color: #f2be00 ;
-            color: #fff ;
-            border-radius: 10px;
-        }
-
-        .icon-admin {
-            background-color: #900707ff ;
-            color: #fff ;
-            border-radius: 10px;
-        }
-
-        .icon-sales {
-            background-color: #84994F ;
-            color: #fff ;
-            border-radius: 10px;
-        }
-
-        .icon-order {
-            background-color: #A18D6D ;
-            color: #fff ;
-            border-radius: 10px;
-        }
-
-        .btn-pending {
-            background-color: #A72703;
-            color: #fff;
-            font-size: 15px;
-        }
-
-        .btn-pending:hover {
-            background-color: #921f03;
-            color: #fff;
-        }
-
-        .btn-progress {
-            background-color: #5B532C;
-            color: #fff;
-            font-size: 15px;
-        }
-
-        .btn-progress:hover {
-            background-color: #47421f;
-            color: #fff;
-        }
-
-        .btn-completed {
-            background-color: #63A361;
-            color: #fff;
-            font-size: 15px;
-        }
-
-        .btn-completed:hover {
-            background-color: #4d844d;
-            color: #fff;
-        }
-
-        body.dark-mode {
-            background-color: #18191a;
-            color: #e4e6eb;
-        }
-
-        body.dark-mode .card,
-        body.dark-mode .navbar,
-        body.dark-mode .footer,
-        body.dark-mode .sidebar,
-        body.dark-mode .main-header,
-        body.dark-mode .main-panel {
-            background-color: #242526 ;
-            color: #e4e6eb ;
-        }
-
-        body.dark-mode .table,
-        body.dark-mode .table th,
-        body.dark-mode .table td {
-            background-color: #242526 ;
-            color: #e4e6eb ;
-            border-color: #3a3b3c ;
-        }
-
-        body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > * {
-            background-color: #2d2e2f ;
-            color: #e4e6eb ;
-        }
-
-        body.dark-mode .table-hover > tbody > tr:hover > * {
-            background-color: #3a3b3c ;
-            color: #fff ;
-        }
-
-        body.dark-mode .table-light th,
-        body.dark-mode .table-light td,
-        body.dark-mode thead.table-light th {
-            background-color: #1e1f20 ;
-            color: #e4e6eb ;
-        }
-
-        body.dark-mode,
-        body.dark-mode p,
-        body.dark-mode span,
-        body.dark-mode label,
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
-        body.dark-mode h4, body.dark-mode h5, body.dark-mode h6,
-        body.dark-mode a:not(.btn),
-        body.dark-mode .card-title,
-        body.dark-mode .card-body {
-            color: #e4e6eb ;
-        }
-
-        body.dark-mode .text-muted {
-            color: #adb5bd ;
-        }
-
-        .form-switch .form-check-input {
-            width: 2.5em;
-            height: 1.3em;
-        }
-
-        .form-switch .form-check-input:checked {
-            background-color: #5B532C;
-            border-color: #5B532C;
-        }
-
-        .nav-pills.nav-secondary .nav-link.active,
-        .nav-pills.nav-secondary .nav-link.active:hover,
-        .nav-pills.nav-secondary .nav-link.active:focus {
-            background-color: #f2be00 ;
-            color: #000 ;
-            border: none ;
-            box-shadow: none ;
-        }
-
-        .btn-secondary {
-            background-color: #f2be00 ;
-            border-color: #f2be00 ;
-            color: #000 ;
-        }
-
-        .btn-secondary:hover {
-            background-color: #e6ac00 ;
-            border-color: #e6ac00 ;
-            color: #000 ;
-        }
-
-        /* Profile dropdown visuals live in assets/css/admin/header.css
-           (gold band + black border, same as other topbar menus). */
-    </style>
+    <link rel="stylesheet" href="<?= base_url('assets/css/admin/navigation.css') ?>" />
+    <link rel="stylesheet" href="<?= base_url('assets/css/admin/components.css') ?>" />
 </head>
 
 <body>
-    <div class="wrapper">
+    <div class="wrapper ease-dir">
         <!-- Sidebar -->
         <div class="sidebar" data-background-color="white">
             <div class="sidebar-logo">
@@ -459,9 +189,7 @@ function timeAgo($datetime)
                         $isSidebarActive = static function (array $routes) use ($currentPath): bool {
                             foreach ($routes as $route) {
                                 $route = trim((string) $route, '/');
-                                if ($route === $currentPath) {
-                                    return true;
-                                }
+                                if ($route === $currentPath) return true;
                             }
                             return false;
                         };
@@ -476,6 +204,7 @@ function timeAgo($datetime)
                                 <p>Dashboard</p>
                             </a>
                         </li>
+
                         <li class="nav-section">
                             <h4 class="text-section">Orders</h4>
                         </li>
@@ -491,6 +220,7 @@ function timeAgo($datetime)
                                 <p>Booking Calendar</p>
                             </a>
                         </li>
+
                         <li class="nav-section">
                             <h4 class="text-section">Users</h4>
                         </li>
@@ -501,13 +231,14 @@ function timeAgo($datetime)
                             </a>
                         </li>
                         <?php if (session()->get('role') === '1'): ?>
-                            <li class="nav-item<?= $isSidebarActive(['create_user']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/create_user'); ?>">
-                                    <i class="fas fa-user-plus"></i>
-                                    <p>Add User</p>
-                                </a>
-                            </li>
+                        <li class="nav-item<?= $isSidebarActive(['create_user']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/create_user'); ?>">
+                                <i class="fas fa-user-plus"></i>
+                                <p>Add User</p>
+                            </a>
+                        </li>
                         <?php endif; ?>
+
                         <li class="nav-section">
                             <h4 class="text-section">Reports</h4>
                         </li>
@@ -525,165 +256,36 @@ function timeAgo($datetime)
                         </li>
 
                         <?php if (session()->get('role') === '1'): ?>
-                            <li class="nav-section">
-                                <h4 class="text-section">Management</h4>
-                            </li>
-                            <li class="nav-item<?= $isSidebarActive(['admin/service_management']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/admin/service_management'); ?>">
-                                    <i class="fas fa-table"></i>
-                                    <p>Service Management</p>
-                                </a>
-                            </li>
-                            <li class="nav-item<?= $isSidebarActive(['admin/promo_code']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/admin/promo_code'); ?>">
-                                    <i class="fas fa-tag"></i>
-                                    <p>Promo Code</p>
-                                </a>
-                            </li>
-                            <li class="nav-item<?= $isSidebarActive(['admin/contact']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/admin/contact'); ?>">
-                                    <i class="fas fa-envelope"></i>
-                                    <p>Contact</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item<?= $isSidebarActive(['admin/refund_request']) ? ' active' : '' ?>">
-                                <a href="<?= base_url('/admin/refund_request'); ?>">
-                                    <i class="fas fa-file-invoice-dollar"></i>
-                                    <p>Refund Request</p>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-
-                        <!-- <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#tables">
+                        <li class="nav-section">
+                            <h4 class="text-section">Management</h4>
+                        </li>
+                        <li class="nav-item<?= $isSidebarActive(['admin/service_management']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/admin/service_management'); ?>">
                                 <i class="fas fa-table"></i>
-                                <p>History</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="tables">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="tables/tables.html">
-                                            <span class="sub-item">Basic Table</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="tables/datatables.html">
-                                            <span class="sub-item">Datatables</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li> -->
-                        <!-- <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#maps">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <p>Maps</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="maps">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="maps/googlemaps.html">
-                                            <span class="sub-item">Google Maps</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="maps/jsvectormap.html">
-                                            <span class="sub-item">Jsvectormap</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#charts">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Charts</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="charts">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="charts/charts.html">
-                                            <span class="sub-item">Chart Js</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="charts/sparkline.html">
-                                            <span class="sub-item">Sparkline</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a href="widgets.html">
-                                <i class="fas fa-desktop"></i>
-                                <p>Widgets</p>
-                                <span class="badge badge-success">4</span>
+                                <p>Service Management</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="../../documentation/index.html">
-                                <i class="fas fa-file"></i>
-                                <p>Documentation</p>
-                                <span class="badge badge-secondary">1</span>
+                        <li class="nav-item<?= $isSidebarActive(['admin/promo_code']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/admin/promo_code'); ?>">
+                                <i class="fas fa-tag"></i>
+                                <p>Promo Code</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#submenu">
-                                <i class="fas fa-bars"></i>
-                                <p>Menu Levels</p>
-                                <span class="caret"></span>
+                        <li class="nav-item<?= $isSidebarActive(['admin/contact']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/admin/contact'); ?>">
+                                <i class="fas fa-envelope"></i>
+                                <p>Contact</p>
                             </a>
-                            <div class="collapse" id="submenu">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a data-bs-toggle="collapse" href="#subnav1">
-                                            <span class="sub-item">Level 1</span>
-                                            <span class="caret"></span>
-                                        </a>
-                                        <div class="collapse" id="subnav1">
-                                            <ul class="nav nav-collapse subnav">
-                                                <li>
-                                                    <a href="#">
-                                                        <span class="sub-item">Level 2</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <span class="sub-item">Level 2</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a data-bs-toggle="collapse" href="#subnav2">
-                                            <span class="sub-item">Level 1</span>
-                                            <span class="caret"></span>
-                                        </a>
-                                        <div class="collapse" id="subnav2">
-                                            <ul class="nav nav-collapse subnav">
-                                                <li>
-                                                    <a href="#">
-                                                        <span class="sub-item">Level 2</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="sub-item">Level 1</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li> -->
+                        </li>
+                        <li class="nav-item<?= $isSidebarActive(['admin/refund_request']) ? ' active' : '' ?>">
+                            <a href="<?= base_url('/admin/refund_request'); ?>">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <p>Refund Request</p>
+                            </a>
+                        </li>
+                        <?php endif; ?>
                     </ul>
+
                     <div class="sidebar-darkmode-wrap">
                         <div class="form-check form-switch sidebar-darkmode-toggle">
                             <label class="form-check-label mode-label" for="darkModeToggle">
@@ -698,12 +300,11 @@ function timeAgo($datetime)
         </div>
         <!-- End Sidebar -->
 
-        <div class="main-panel">
             <div class="main-header">
                 <div class="main-header-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="white">
-                        <a href="index.html" class="logo">
+                        <a href="<?= base_url('/admin'); ?>" class="logo">
                             <img
                                 src="<?= base_url('assets/images/Ease_PNG_File-01-1.png') ?>"
                                 alt="navbar brand"
@@ -1162,7 +763,7 @@ function timeAgo($datetime)
                                                 <i class="fas fa-key"></i>
                                                 <span>Change Password</span>
                                             </a>
-                                            <div class="ease-user-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <a class="dropdown-item ease-user-item ease-user-logout" href="<?= base_url('/logout') ?>">
                                                 <i class="fas fa-sign-out-alt"></i>
                                                 <span>Logout</span>
@@ -1176,3 +777,4 @@ function timeAgo($datetime)
                 </nav>
                 <!-- End Navbar -->
             </div>
+        <div class="main-panel">

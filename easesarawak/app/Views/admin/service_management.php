@@ -1,131 +1,133 @@
 <?= $this->include('admin/header'); ?>
 
-<style>
-    .service-container {
-        max-width: 900px;
-        margin: 2.5rem auto;
-        margin-top: 8rem;
-        background: #fff;
-        border-radius: 14px;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.09);
-        padding: 2.5rem 2rem 2rem 2rem;
-    }
-    .service-container h3 {
-        font-weight: 700;
-        margin-bottom: 2rem;
-        color: #1e88e5;
-        text-align: center;
-    }
-    .service-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 1.5rem;
-        table-layout: fixed;
-    }
-    .service-table th, .service-table td {
-        border: 1px solid #e0e0e0;
-        padding: 0.8rem 0.6rem;
-        text-align: left;
-        vertical-align: middle;
-    }
-    .service-table th {
-        background: #f5f7fa;
-        font-weight: 600;
-        color: #2a3b4c;
-    }
-    .service-table input[type="number"] {
-        width: 130px;
-        border-radius: 6px;
-        border: 1px solid #d1d5db;
-        padding: 0.4rem 0.7rem;
-        font-size: 1rem;
-    }
-    .service-table .btn-primary {
-        background: #1e88e5;
-        border: none;
-        padding: 0.4rem 1.2rem;
-        font-size: 1rem;
-        border-radius: 6px;
-        font-weight: 600;
-        transition: background 0.2s;
-    }
-    .service-table .btn-primary:hover {
-        background: #1565c0;
-    }
-    .alert-success, .alert-danger {
-        margin-bottom: 1.2rem;
-    }
-</style>
+<link rel="stylesheet" href="<?= base_url('assets/css/admin/service_management.css') ?>">
 
-<div class="container mt-5 pt-4">
-    <div class="d-flex align-items-center mb-4" style="padding-top: 70px; padding-left: 20px;">
-        <h3 class="fw-bold mb-0 me-3"><i class="fas fa-cogs me-2"></i>Service Pricing Management</h3>
-        <span class="text-muted">Manage base and extra rates for each service</span>
+<div class="svc-page">
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <div class="ease-crumb">EASE Admin &middot; <b>Service Management</b></div>
+            <h1 class="ease-page-title">Service Pricing Management</h1>
+        </div>
     </div>
 
     <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success text-center"><?= session()->getFlashdata('success') ?></div>
+        <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
     <?php endif; ?>
-
     <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger text-center"><?= session()->getFlashdata('error') ?></div>
+        <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
     <?php endif; ?>
 
-    <div class="card shadow-sm" style="margin: 10px;">
-        <div class="card-body">
-            <table class="table table-hover align-middle service-table">
-                <thead class="table-light">
+    <div class="svc-card">
+        <div class="svc-card__bar">
+            <span class="svc-card__title">Service Pricing</span>
+        </div>
+        <div class="table-responsive">
+            <table class="svc-tbl">
+                <thead>
                     <tr>
                         <th>Service Type</th>
                         <th>Base Price (RM)</th>
                         <th>Extra Rate (RM / 12 Hours)</th>
-                        <th>Action</th>
+                        <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($services as $service): ?>
-                    <?php $formId = 'service-form-' . (int)$service['id']; ?>
-                    <tr>
-                        <td><?= esc(ucfirst($service['service_type'])) ?></td>
-
-                        <td>
-                            <input
-                                type="number"
-                                step="1"
-                                min="1"
-                                name="base_price"
-                                value="<?= esc($service['base_price']) ?>"
-                                class="form-control d-inline-block"
-                                form="<?= esc($formId) ?>"
-                                required
-                            >
-                        </td>
-
-                        <td>
-                            <input
-                                type="number"
-                                step="1"
-                                min="1"
-                                name="extra_rate"
-                                value="<?= esc($service['extra_rate'] ?? 0) ?>"
-                                class="form-control d-inline-block"
-                                form="<?= esc($formId) ?>"
-                                required
-                            >
-                        </td>
-
-                        <td>
-                            <form id="<?= esc($formId) ?>" method="post" action="<?= base_url('/admin/service_management/update/' . $service['id']) ?>" style="display:inline;">
-                                <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                    <?php foreach ($services as $service): ?>
+                        <tr>
+                            <td><span class="svc-name"><?= esc(ucfirst($service['service_type'])) ?></span></td>
+                            <td>
+                                <span class="svc-price">
+                                    <span class="svc-price__prefix">RM</span><?= esc($service['base_price']) ?>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="svc-price">
+                                    <span class="svc-price__prefix">RM</span><?= esc($service['extra_rate'] ?? 0) ?>
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="svc-actions">
+                                    <button type="button"
+                                        class="svc-act-btn svc-edit-btn"
+                                        title="Edit <?= esc(ucfirst($service['service_type'])) ?>"
+                                        data-id="<?= esc($service['id']) ?>"
+                                        data-type="<?= esc(ucfirst($service['service_type'])) ?>"
+                                        data-base="<?= esc($service['base_price']) ?>"
+                                        data-extra="<?= esc($service['extra_rate'] ?? 0) ?>"
+                                        data-url="<?= base_url('/admin/service_management/update/' . $service['id']) ?>">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
+<!-- Edit Service Modal -->
+<div class="modal fade" id="svcEditModal" tabindex="-1" aria-labelledby="svcEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+        <div class="modal-content svc-modal-content">
+            <div class="modal-header svc-modal-head">
+                <h5 class="modal-title" id="svcEditModalLabel">Edit Service Pricing</h5>
+                <button type="button" class="ease-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="svcEditForm" method="post" action="">
+                <?= csrf_field() ?>
+                <div class="modal-body p-4">
+                    <div class="mb-4">
+                        <label class="svc-field-label">Service Type</label>
+                        <input type="text" id="svcModalType" class="svc-field-input" readonly>
+                    </div>
+                    <div class="mb-4">
+                        <label class="svc-field-label">Base Price (RM)</label>
+                        <input type="number" name="base_price" id="svcModalBase" class="svc-field-input" step="1" min="1" required>
+                    </div>
+                    <div class="mb-0">
+                        <label class="svc-field-label">Extra Rate (RM / 12 Hours)</label>
+                        <input type="number" name="extra_rate" id="svcModalExtra" class="svc-field-input" step="1" min="1" required>
+                    </div>
+                </div>
+                <div class="modal-footer svc-modal-foot justify-content-end">
+                    <button type="submit" class="svc-btn-gold">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <?= $this->include('admin/footer'); ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var modalEl = document.getElementById('svcEditModal');
+
+    if (modalEl && modalEl.parentNode !== document.body) {
+        document.body.appendChild(modalEl);
+    }
+
+    var svcModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+
+    document.querySelectorAll('.svc-edit-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.getElementById('svcModalType').value  = this.dataset.type;
+            document.getElementById('svcModalBase').value  = this.dataset.base;
+            document.getElementById('svcModalExtra').value = this.dataset.extra;
+            document.getElementById('svcEditForm').action  = this.dataset.url;
+            svcModal.show();
+        });
+    });
+
+    modalEl.addEventListener('hidden.bs.modal', function () {
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('padding-right');
+        document.body.style.removeProperty('overflow');
+        document.querySelectorAll('.modal-backdrop').forEach(function (b) { b.remove(); });
+    });
+});
+</script>

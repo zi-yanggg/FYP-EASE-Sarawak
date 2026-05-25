@@ -1,21 +1,15 @@
-<?= $this->include('admin/header'); ?>
+﻿<?= $this->include('admin/header'); ?>
 
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/report.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/profile.css') ?>">
 
-<div class="rpt-page container-fluid py-3">
+<div class="rpt-page container-fluid prof-page--tight-head">
 
     <!-- ── Page Header ── -->
-    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+    <div class="ease-page-head d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div>
-            <h3 class="fw-bold mb-0 rpt-h3">Edit Profile</h3>
-            <ul class="breadcrumbs mb-0">
-                <li class="nav-home"><a href="<?= base_url('/admin/dashboard') ?>"><i class="fa fa-home"></i></a></li>
-                <li class="separator"><i class="fa fa-angle-right"></i></li>
-                <li class="nav-item"><a href="<?= base_url('/profile') ?>">Profile</a></li>
-                <li class="separator"><i class="fa fa-angle-right"></i></li>
-                <li class="nav-item">Edit</li>
-            </ul>
+            <div class="ease-crumb">EASE Admin &middot; Profile &middot; <b>Edit</b></div>
+            <h1 class="mb-0 prof-page-title">Edit Profile</h1>
         </div>
         <div>
             <a href="<?= base_url('/profile') ?>" class="btn rpt-export-btn">
@@ -39,7 +33,7 @@
         <div class="col-lg-4 col-md-5 d-flex">
             <div class="rpt-card prof-card w-100">
                 <div class="rpt-card-header">
-                    <span class="rpt-title"><i class="fas fa-camera me-2"></i>Profile Picture</span>
+                    <span class="rpt-title"><i class="fas fa-camera me-2"></i>Picture</span>
                 </div>
                 <div class="card-body prof-card-body d-flex flex-column align-items-center text-center">
 
@@ -88,7 +82,7 @@
         <div class="col-lg-8 col-md-7 d-flex">
             <div class="rpt-card prof-card w-100">
                 <div class="rpt-card-header">
-                    <span class="rpt-title"><i class="fas fa-user-edit me-2"></i>Account Details</span>
+                    <span class="rpt-title"><i class="fas fa-user-edit me-2"></i>Details</span>
                 </div>
                 <div class="card-body prof-card-body d-flex flex-column">
 
@@ -106,8 +100,8 @@
                                 class="form-control rpt-input"
                                 value="<?= esc(old('username', $user['username'])) ?>"
                                 required>
-                            <?php if (isset($validation) && $validation->hasError('username')): ?>
-                                <small class="text-danger d-block mt-1"><?= $validation->getError('username') ?></small>
+                            <?php if (!empty($errors['username'])): ?>
+                                <small class="text-danger d-block mt-1"><?= esc($errors['username']) ?></small>
                             <?php endif; ?>
                         </div>
 
@@ -123,8 +117,8 @@
                                 class="form-control rpt-input"
                                 value="<?= esc(old('email', $user['email'])) ?>"
                                 required>
-                            <?php if (isset($validation) && $validation->hasError('email')): ?>
-                                <small class="text-danger d-block mt-1"><?= $validation->getError('email') ?></small>
+                            <?php if (!empty($errors['email'])): ?>
+                                <small class="text-danger d-block mt-1"><?= esc($errors['email']) ?></small>
                             <?php endif; ?>
                         </div>
 

@@ -1,0 +1,1073 @@
+/* ── Surface / text / border design tokens (light mode) ─── */
+:root {
+  --surface-card:      #fff;
+  --surface-card-warm: #FFFDF5;
+  --surface-row-odd:   rgba(242,190,0,.04);
+  --surface-hover:     #FFFEF5;
+  --surface-header:    #FBF4D8;
+  --border-subtle:     #ECE2B4;
+  --text-primary:      #0A0A0A;
+  --text-secondary:    #333333;
+  --text-muted:        #6B7280;
+}
+
+body.dark-mode {
+  --surface-card:      #242526;
+  --surface-card-warm: #1e1f20;
+  --surface-row-odd:   rgba(255,255,255,.03);
+  --surface-hover:     #2d2e2f;
+  --surface-header:    #1e1f20;
+  --border-subtle:     #3a3b3c;
+  --text-primary:      #e4e6eb;
+  --text-secondary:    #c8cace;
+  --text-muted:        #adb5bd;
+}
+
+/* ============================================================
+   EASE Global Action Toast
+   Loaded globally via components.css
+   ============================================================ */
+.ease-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 340px;
+    background: var(--surface-card);
+    border: 1.5px solid var(--border-subtle);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+    z-index: 9999;
+    animation: easeToastIn .35s cubic-bezier(.22, .68, 0, 1.2) forwards;
+}
+
+.ease-toast--out {
+    animation: easeToastOut .3s ease forwards;
+}
+
+@keyframes easeToastIn {
+    from { opacity: 0; transform: translateX(70px) scale(.95); }
+    to   { opacity: 1; transform: translateX(0)    scale(1);   }
+}
+
+@keyframes easeToastOut {
+    from { opacity: 1; transform: translateX(0) scale(1); }
+    to   { opacity: 0; transform: translateX(70px) scale(.95); }
+}
+
+/* ── Header ── */
+.ease-toast__head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 16px;
+    background: #0A0A0A;
+    color: #F2BE00;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
+.ease-toast__head > i { font-size: 14px; flex-shrink: 0; }
+
+.ease-toast__close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: rgba(242, 190, 0, .5);
+    cursor: pointer;
+    padding: 3px 5px;
+    font-size: 13px;
+    line-height: 1;
+    border-radius: 5px;
+    transition: color .15s, background .15s;
+}
+
+.ease-toast__close:hover {
+    color: #F2BE00;
+    background: rgba(242, 190, 0, .12);
+}
+
+/* ── Body ── */
+.ease-toast__body {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+}
+
+.ease-toast__av {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    flex-shrink: 0;
+    text-transform: uppercase;
+}
+
+.ease-toast__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ease-toast__name {
+    font-family: 'Oxanium', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.ease-toast__email {
+    font-family: 'Oxanium', monospace;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 7px;
+}
+
+.ease-toast__role {
+    display: inline-block;
+    font-family: 'Oxanium', sans-serif;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.ease-toast__role--super {
+    background: #0A0A0A;
+    color: #F2BE00;
+}
+
+.ease-toast__role--admin {
+    background: var(--surface-header);
+    color: #5B4400;
+}
+
+.ease-toast__msg {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* ── Progress bar ── */
+.ease-toast__progress {
+    height: 4px;
+    background: #F2BE00;
+    width: 100%;
+}
+
+#orderModal .card {
+            border-radius: 1rem;
+        }
+
+
+        #orderModal .card-header {
+            border-bottom: 1px solid #e9ecef;
+            font-size: 1rem;
+        }
+
+        #orderModal p {
+            margin-bottom: 0.4rem;
+        }
+
+        .badge-superadmin {
+            background: #900707ff;
+            color: white;
+            font-size: 1rem;
+            padding: 6px 12px;
+        }
+
+        .badge-admin {
+            background: #5B532C;
+            color: white;
+            font-size: 1rem;
+            padding: 6px 12px;
+        }
+
+        .badge-pending {
+            background-color: #f2be00;
+            color: #000;
+            font-size: 1rem;
+            padding: 6px 12px;
+            font-weight: 600;
+        }
+
+        .badge-progress {
+            background-color: #5B532C;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 6px 12px;
+            font-weight: 600;
+        }
+
+        .badge-completed {
+            background-color: #ABE7B2;
+            color: #000;
+            font-size: 1rem;
+            padding: 6px 12px;
+            font-weight: 600;
+        }
+
+        .btn-update {
+            background-color: #f2be00;
+            color: #000;
+        }
+
+        .btn-update:hover {
+            background-color: #e6ac00;
+            color: #000;
+        }
+
+        .btn-cancel {
+            background-color: #5B532C;
+            color: #fff;
+        }
+
+        .btn-cancel:hover {
+            background-color: #47421f;
+            color: #fff;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .notif-img {
+            position: relative;
+        }
+
+        .avatar-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Color sets */
+        .bg-a {
+            background-color: #5B532C ;
+        }
+
+        .bg-b {
+            background-color: #47421f ;
+        }
+
+        .bg-c {
+            background-color: #51cf66 ;
+        }
+
+        .bg-d {
+            background-color: #845ef7 ;
+        }
+
+        .bg-e {
+            background-color: #ffa94d ;
+        }
+
+        .icon-visitor {
+            background-color: #f2be00 ;
+            color: #111 ;
+            border-radius: 10px;
+        }
+
+        .icon-admin {
+            background-color: #900707ff ;
+            color: #fff ;
+            border-radius: 10px;
+        }
+
+        .icon-sales {
+            background-color: #84994F ;
+            color: #fff ;
+            border-radius: 10px;
+        }
+
+        .icon-order {
+            background-color: #A18D6D ;
+            color: #fff ;
+            border-radius: 10px;
+        }
+
+        .btn-pending {
+            background-color: #A72703;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .btn-pending:hover {
+            background-color: #921f03;
+            color: #fff;
+        }
+
+        .btn-progress {
+            background-color: #5B532C;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .btn-progress:hover {
+            background-color: #47421f;
+            color: #fff;
+        }
+
+        .btn-completed {
+            background-color: #63A361;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .btn-completed:hover {
+            background-color: #4d844d;
+            color: #fff;
+        }
+
+        body.dark-mode {
+            background-color: #18191a;
+            color: #e4e6eb;
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .navbar,
+        body.dark-mode .footer,
+        body.dark-mode .sidebar,
+        body.dark-mode .main-header,
+        body.dark-mode .main-panel {
+            background-color: #242526 ;
+            color: #e4e6eb ;
+        }
+
+        body.dark-mode .table,
+        body.dark-mode .table th,
+        body.dark-mode .table td {
+            background-color: #242526 ;
+            color: #e4e6eb ;
+            border-color: #3a3b3c ;
+        }
+
+        body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > * {
+            background-color: #2d2e2f ;
+            color: #e4e6eb ;
+        }
+
+        body.dark-mode .table-hover > tbody > tr:hover > * {
+            background-color: #3a3b3c ;
+            color: #fff ;
+        }
+
+        body.dark-mode .table-light th,
+        body.dark-mode .table-light td,
+        body.dark-mode thead.table-light th {
+            background-color: #1e1f20 ;
+            color: #e4e6eb ;
+        }
+
+        body.dark-mode,
+        body.dark-mode p,
+        body.dark-mode span,
+        body.dark-mode label,
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+        body.dark-mode h4, body.dark-mode h5, body.dark-mode h6,
+        body.dark-mode a:not(.btn),
+        body.dark-mode .card-title,
+        body.dark-mode .card-body {
+            color: #e4e6eb ;
+        }
+
+        body.dark-mode .text-muted {
+            color: #adb5bd ;
+        }
+
+        /* ── Form switch (global toggle size) ── */
+        .form-switch .form-check-input {
+            width: 2.5em;
+            height: 1.3em;
+        }
+
+        .form-switch .form-check-input:checked {
+            background-color: #5B532C;
+            border-color: #5B532C;
+        }
+
+/* ============================================================
+   EASE Shared Modal Close Button
+   Used across all admin modals in place of Bootstrap btn-close.
+   Font Awesome fa-times with explicit gold colour — CSS filter
+   approach is unreliable cross-browser on dark headers.
+   ============================================================ */
+.ease-modal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #F2BE00;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color .15s, background .15s;
+    flex-shrink: 0;
+}
+.ease-modal-close:hover {
+    color: #FFD54A;
+    background: rgba(242, 190, 0, .12);
+}
+
+/* ============================================================
+   EASE Design System — tokens · animations · shared components
+   Consolidated from ease-design-system.css (Direction D/A
+   prototype sidebar code removed; active rules only)
+   ============================================================ */
+
+@font-face {
+  font-family: 'EurostarRegular';
+  src: url('../../fonts/EurostarRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Design tokens ────────────────────────────────────────── */
+.ease-dir {
+  --gold:       #F2BE00;
+  --gold-soft:  #FFD54A;
+  --gold-dark:  #D4A700;
+  --gold-pale:  #FFF4CC;
+
+  --ink-0: #000000;
+  --ink-1: #0A0A0A;
+  --ink-2: #131313;
+  --ink-3: #1E1E1E;
+  --ink-4: #2A2A2A;
+
+  --paper:   #FFFDF5;
+  --surface: #FFFFFF;
+
+  --pending:  #F2BE00;
+  --progress: #5B532C;
+  --done:     #1E8E3E;
+  --danger:   #C04545;
+
+  --fg1: #111827;
+  --fg2: #333333;
+  --fg3: #555555;
+  --fg4: #6B7280;
+  --fg5: #9CA3AF;
+
+  --font-display: 'EurostarRegular', Arial, sans-serif;
+  --font-admin:   'Oxanium', 'Montserrat', sans-serif;
+  --font-mono:    ui-monospace, 'JetBrains Mono', Menlo, Consolas, monospace;
+
+  font-family: var(--font-admin);
+  color: var(--fg1);
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ease-dir *, .ease-dir *::before, .ease-dir *::after { box-sizing: border-box; }
+.ease-dir img { display: block; max-width: 100%; }
+.ease-dir a   { color: inherit; text-decoration: none; }
+.ease-dir button { font: inherit; color: inherit; background: transparent; border: none; cursor: pointer; }
+
+/* ── Animation ────────────────────────────────────────────── */
+@keyframes dirApulse {
+  0%   { box-shadow: 0 0 0 0   rgba(242,190,0,.6); }
+  70%  { box-shadow: 0 0 0 8px rgba(242,190,0,0);  }
+  100% { box-shadow: 0 0 0 0   rgba(242,190,0,0);  }
+}
+
+/* ── Shared components ────────────────────────────────────── */
+
+/* PILL TITLE eyebrow */
+.ease-pill {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: var(--gold); color: var(--ink-1);
+  padding: 5px 13px 5px 11px;
+  font-size: 10px; font-weight: 800; letter-spacing: 1.4px;
+  text-transform: uppercase; border-radius: 999px;
+  font-family: var(--font-admin);
+}
+.ease-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-1); }
+.ease-pill--ghost { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+.ease-pill--ghost .dot { background: var(--gold); }
+
+/* Service pill */
+.ease-svc {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 8px; font-size: 9.5px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+  border-radius: 4px; border: 1px solid;
+}
+.ease-svc.delivery { background: #FFFDF0; border-color: var(--gold); color: #8A6E00; }
+.ease-svc.storage  { background: #FBF7E3; border-color: #5B532C; color: #5B532C; }
+
+/* Status pill */
+.ease-st {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px; font-size: 9.5px; font-weight: 800;
+  letter-spacing: .06em; text-transform: uppercase; border-radius: 999px;
+}
+.ease-st::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: .8; }
+.ease-st.pending  { background: var(--pending);  color: var(--ink-1); }
+.ease-st.progress { background: var(--progress); color: #fff; }
+.ease-st.done     { background: var(--done);     color: #fff; }
+.ease-st.refund   { background: rgba(192,69,69,.12); color: var(--danger); border: 1px solid rgba(192,69,69,.4); }
+.ease-st.click    { cursor: pointer; transition: filter .15s, transform .12s; }
+.ease-st.click:hover  { filter: brightness(1.08); }
+.ease-st.click:active { transform: translateY(1px); }
+
+/* Button — primary gold pill */
+.dirD-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px; font-size: 11px; font-weight: 800;
+  letter-spacing: 1.3px; text-transform: uppercase;
+  background: var(--gold); color: var(--ink-1);
+  border-radius: 999px; transition: all .18s;
+  font-family: var(--font-admin); border: none; cursor: pointer;
+}
+.dirD-btn:hover { background: var(--ink-1); color: var(--gold); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.15); }
+.dirD-btn.ghost { background: transparent; border: 1px solid var(--border-subtle); color: var(--fg2); }
+.dirD-btn.ghost:hover { background: var(--ink-1); color: var(--gold); border-color: var(--ink-1); }
+.dirD-btn.sm { padding: 6px 12px; font-size: 10px; }
+
+.ease-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 14px; font-size: 11px; font-weight: 800;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  background: var(--gold); color: var(--ink-1); border-radius: 10px;
+  font-family: var(--font-admin); border: none; cursor: pointer;
+}
+.ease-btn:hover { background: var(--ink-1); color: var(--gold); }
+.ease-btn.ghost { background: var(--surface-card); color: var(--fg2); border: 1px solid var(--border-subtle); }
+.ease-btn.ghost:hover { background: var(--paper); border-color: var(--gold); color: var(--ink-1); }
+
+/* Avatar colour helpers */
+.av-c0 { background: #5B532C; } .av-c1 { background: #1A6CB0; }
+.av-c2 { background: #2BA869; } .av-c3 { background: #B8860B; }
+.av-c4 { background: #6A4FBB; } .av-c5 { background: #C04545; }
+.av-c6 { background: #2E7D32; } .av-c7 { background: var(--gold); color: var(--ink-1); }
+
+/* ── Order Detail Drawer ──────────────────────────────────── */
+.ease-drawer-scrim {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  z-index: 900; opacity: 0; pointer-events: none;
+  transition: opacity .22s;
+}
+.ease-drawer-scrim.open { opacity: 1; pointer-events: auto; }
+
+.ease-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: min(520px, 90%);
+  background: var(--surface-card);
+  display: flex; flex-direction: column;
+  transform: translateX(102%);
+  transition: transform .28s cubic-bezier(.2,.7,.2,1);
+  box-shadow: -16px 0 40px rgba(0,0,0,.18);
+  font-size: 13px; color: var(--fg1);
+  z-index: 901;
+}
+.ease-drawer.open { transform: translateX(0); }
+
+.ease-drawer__h {
+  padding: 16px 22px 14px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--ink-1); color: #fff;
+}
+.ease-drawer__h .id  { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.55); letter-spacing: .04em; }
+.ease-drawer__h .ttl { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; margin-top: 2px; }
+.ease-drawer__h .x   { margin-left: auto; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: rgba(255,255,255,.7); background: rgba(255,255,255,.06); cursor: pointer; }
+.ease-drawer__h .x:hover { background: var(--gold); color: var(--ink-1); }
+
+.ease-drawer__b { flex: 1; overflow-y: auto; padding: 18px 22px 22px; }
+.ease-drawer__top { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle); margin-bottom: 18px; }
+.ease-drawer__kv .k { font-size: 9.5px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: var(--fg4); margin-bottom: 3px; }
+.ease-drawer__kv .v { font-size: 13.5px; font-weight: 700; color: var(--ink-1); }
+.ease-drawer__kv .v a { color: var(--ink-1); }
+.ease-drawer__kv .v a:hover { color: var(--gold); }
+
+.ease-drawer__route { display: flex; gap: 14px; padding: 14px 16px; background: var(--surface-header); border: 1px solid var(--border-subtle); border-radius: 10px; margin-bottom: 18px; }
+.ease-drawer__route .ic { width: 36px; height: 36px; background: var(--gold); border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--ink-1); }
+.ease-drawer__route .lab { font-size: 9.5px; font-weight: 800; letter-spacing: 1.2px; color: var(--fg4); text-transform: uppercase; }
+.ease-drawer__route .lo  { font-size: 13px; font-weight: 700; color: var(--ink-1); margin-top: 2px; }
+.ease-drawer__route .tm  { font-size: 11px; color: var(--fg4); margin-top: 1px; }
+
+.ease-drawer__rule { display: flex; align-items: center; gap: 8px; margin: 18px 0 10px; }
+.ease-drawer__rule .lbl  { font-size: 9.5px; font-weight: 800; letter-spacing: 1.4px; color: var(--fg3); text-transform: uppercase; }
+.ease-drawer__rule .line { flex: 1; height: 1px; background: var(--border-subtle); }
+
+.ease-drawer__tl { display: flex; flex-direction: column; gap: 14px; padding-left: 4px; }
+.ease-drawer__tl .row { display: flex; gap: 14px; position: relative; }
+.ease-drawer__tl .row::before { content: ""; position: absolute; left: 11px; top: 22px; bottom: -14px; width: 1px; background: var(--border-subtle); }
+.ease-drawer__tl .row:last-child::before { display: none; }
+.ease-drawer__tl .bul { width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; background: var(--gold-pale); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold-dark); font-size: 9px; font-weight: 800; z-index: 1; }
+.ease-drawer__tl .row.done .bul   { background: var(--gold); color: var(--ink-1); }
+.ease-drawer__tl .row.muted .bul  { background: var(--surface-card); border-color: var(--border-subtle); color: var(--fg5); }
+.ease-drawer__tl .body .t { font-size: 13px; font-weight: 700; color: var(--ink-1); }
+.ease-drawer__tl .row.muted .body .t { color: var(--fg4); }
+.ease-drawer__tl .body .d { font-size: 11px; color: var(--fg4); margin-top: 2px; }
+
+.ease-drawer__f { padding: 12px 22px; border-top: 1px solid var(--border-subtle); display: flex; gap: 8px; justify-content: flex-end; background: var(--surface-header); }
+
+/* ── Command Palette ─────────────────────────────────────── */
+.ease-cmdk-scrim {
+  position: fixed; inset: 0; background: rgba(0,0,0,.55);
+  z-index: 950; display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 10vh; opacity: 0; pointer-events: none; transition: opacity .15s;
+}
+.ease-cmdk-scrim.open { opacity: 1; pointer-events: auto; }
+
+.ease-cmdk {
+  width: min(560px, 92%); background: var(--surface-card);
+  border: 1px solid var(--border-subtle); border-radius: 14px;
+  display: flex; flex-direction: column; max-height: 70vh; overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,.32);
+  transform: translateY(-10px) scale(.98); transition: transform .2s; font-size: 13px;
+}
+.ease-cmdk-scrim.open .ease-cmdk { transform: translateY(0) scale(1); }
+.ease-cmdk__s { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border-subtle); }
+.ease-cmdk__s i { color: var(--gold); font-size: 14px; }
+.ease-cmdk__s input { flex: 1; border: none; outline: none; font-size: 14px; background: transparent; color: var(--ink-1); font-family: inherit; }
+.ease-cmdk__s kbd { background: var(--surface-header); border: 1px solid var(--border-subtle); padding: 2px 7px; font-size: 10.5px; font-weight: 700; border-radius: 4px; color: var(--fg3); }
+.ease-cmdk__l { flex: 1; overflow-y: auto; padding: 6px 0; }
+.ease-cmdk__sec { padding: 8px 18px 4px; font-size: 9px; font-weight: 800; letter-spacing: 1.4px; color: var(--fg4); text-transform: uppercase; }
+.ease-cmdk__it { display: flex; align-items: center; gap: 12px; padding: 9px 18px; cursor: pointer; font-size: 13px; color: var(--fg1); }
+.ease-cmdk__it i { width: 16px; text-align: center; color: var(--fg3); }
+.ease-cmdk__it .gr { flex: 1; }
+.ease-cmdk__it .hint { font-size: 10px; color: var(--fg4); padding: 2px 7px; background: var(--paper); border: 1px solid #ECE2B4; border-radius: 4px; font-family: var(--font-mono); font-weight: 600; }
+.ease-cmdk__it:hover, .ease-cmdk__it.act { background: var(--gold-pale); }
+.ease-cmdk__it:hover i, .ease-cmdk__it.act i { color: var(--gold-dark); }
+.ease-cmdk__empty { padding: 26px 18px; text-align: center; color: var(--fg4); font-size: 13px; }
+
+/* (old pill toast removed — replaced by the card toast at the top of this file) */
+
+/* ── Sparkline SVG helpers ───────────────────────────────── */
+.spark-path { fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.spark-fill { fill: rgba(242,190,0,.12); stroke: none; }
+
+/* ============================================================
+   Direction A — Page-level Theme Overrides
+   All scoped under .ease-dir so they only affect admin pages
+   ============================================================ */
+
+/* ── Page background ────────────────────────────────────────── */
+.ease-dir body,
+.ease-dir .main-panel { background: var(--paper); }
+
+/* ── Breadcrumb strip ───────────────────────────────────────── */
+.ease-dir .ease-crumb {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 1.3px; text-transform: uppercase;
+  color: var(--fg4); margin-bottom: 6px;
+  font-family: var(--font-admin);
+}
+.ease-dir .ease-crumb b { color: var(--gold); }
+
+/* ── Page header wrapper ────────────────────────────────────── */
+.ease-dir .ease-page-head {
+  margin-top: 24px;
+  margin-bottom: 20px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* ── Page / greeting titles — display font ──────────────────── */
+.ease-dir .prof-page-title,
+.ease-dir .ease-page-title,
+.ease-dir .dsh-greeting-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 400;
+  color: var(--ink-1);
+  letter-spacing: -0.01em;
+}
+.ease-dir .dsh-greeting-title b { font-family: var(--font-display); color: var(--gold); font-weight: 400; }
+
+/* ── KPI value numbers — display font ──────────────────────── */
+.ease-dir .rpt-kpi-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 400;
+}
+
+/* ── Cards — rounded corners ────────────────────────────────── */
+.ease-dir .rpt-card,
+.ease-dir .rpt-kpi-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(242,190,0,.18);
+}
+.ease-dir .rpt-card-header {
+  border-radius: 0;
+  background: var(--ink-1);
+  border-bottom: 2px solid var(--gold);
+}
+
+/* ── KPI icon — rounded ─────────────────────────────────────── */
+.ease-dir .rpt-kpi-icon { border-radius: 10px; }
+
+/* ── Buttons — gold pill ────────────────────────────────────── */
+.ease-dir .rpt-export-btn,
+.ease-dir .btn.rpt-export-btn {
+  background: var(--gold);
+  color: var(--ink-1);
+  border: none;
+  border-radius: 999px;
+  font-family: var(--font-admin);
+  font-size: 10.5px; font-weight: 800;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 8px 18px;
+  transition: background .15s, color .15s;
+}
+.ease-dir .rpt-export-btn:hover,
+.ease-dir .btn.rpt-export-btn:hover {
+  background: var(--ink-1); color: var(--gold);
+}
+
+/* ── Tab pills ──────────────────────────────────────────────── */
+.ease-dir .dsh-tab-pill {
+  font-family: var(--font-admin);
+  font-size: 10px; font-weight: 800;
+  letter-spacing: .8px; text-transform: uppercase;
+}
+.ease-dir .dsh-tab-pill.active {
+  background: var(--gold);
+  color: var(--ink-1);
+  border-color: var(--gold);
+}
+
+/* ── Profile name ───────────────────────────────────────────── */
+.ease-dir .prof-name {
+  font-family: var(--font-display);
+  font-weight: 400; color: var(--ink-1);
+  letter-spacing: -0.01em;
+}
+
+/* ── Profile avatar ─────────────────────────────────────────── */
+.ease-dir .prof-avatar { border-color: var(--gold); }
+.ease-dir .prof-avatar-edit {
+  background: var(--gold); color: var(--ink-1);
+}
+.ease-dir .prof-avatar-edit:hover { background: var(--ink-1); color: var(--gold); }
+
+/* ── Role / status badges ───────────────────────────────────── */
+.ease-dir .prof-badge-super { background: var(--ink-1); color: var(--gold); }
+.ease-dir .prof-badge-admin { background: var(--gold); color: var(--ink-1); }
+.ease-dir .prof-badge-active { background: var(--done); color: #fff; }
+
+/* ============================================================
+   Direction A — Global Bootstrap Overrides (all admin pages)
+   ============================================================ */
+
+/* ── Page background ─────────────────────────────────────────── */
+.ease-dir .page-inner { background: var(--paper); }
+.ease-dir .container,
+.ease-dir .container-fluid { background: transparent; }
+
+/* ── Bootstrap cards ─────────────────────────────────────────── */
+.ease-dir .card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(242,190,0,.2);
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.ease-dir .card-header {
+  background: var(--ink-1);
+  border-bottom: 2px solid var(--gold);
+  border-radius: 0;
+  padding: 11px 16px;
+  min-height: unset;
+}
+.ease-dir .card-header,
+.ease-dir .card-header h1, .ease-dir .card-header h2,
+.ease-dir .card-header h3, .ease-dir .card-header h4,
+.ease-dir .card-header h5, .ease-dir .card-header h6,
+.ease-dir .card-header p,  .ease-dir .card-header span,
+.ease-dir .card-header label { color: var(--gold); }
+.ease-dir .card-header i   { color: var(--gold); }
+/* keep search inputs and action buttons readable inside card headers */
+.ease-dir .card-header .form-control,
+.ease-dir .card-header input { color: var(--ink-1); background: var(--surface-card); }
+
+/* ── Tables ──────────────────────────────────────────────────── */
+.ease-dir .table thead th,
+.ease-dir .table thead td,
+.ease-dir thead.table-light th,
+.ease-dir thead.table-light td {
+  background: var(--ink-1);
+  color: var(--gold);
+  border-color: transparent;
+  font-family: var(--font-admin);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ease-dir .table-striped > tbody > tr:nth-of-type(odd) > * { background-color: rgba(242,190,0,.04); }
+.ease-dir .table > :not(caption) > * > * { border-color: rgba(242,190,0,.1); }
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.ease-dir .btn-primary {
+  background: var(--ink-1); color: var(--gold);
+  border: 1px solid var(--gold); border-radius: 999px;
+  font-family: var(--font-admin); font-weight: 700;
+}
+.ease-dir .btn-primary:hover { background: var(--gold); color: var(--ink-1); }
+
+.ease-dir .btn-secondary,
+.ease-dir .btn-outline-secondary {
+  background: transparent; color: var(--fg2);
+  border: 1px solid #ccc; border-radius: 999px;
+  font-family: var(--font-admin); font-weight: 700;
+}
+.ease-dir .btn-secondary:hover,
+.ease-dir .btn-outline-secondary:hover { border-color: var(--gold); color: var(--ink-1); }
+
+.ease-dir .btn-update {
+  background: var(--gold); color: var(--ink-1);
+  border: none; border-radius: 999px;
+  font-weight: 700;
+}
+.ease-dir .btn-cancel {
+  background: var(--ink-1); color: #fff;
+  border: none; border-radius: 999px;
+  font-weight: 700;
+}
+.ease-dir .btn-danger {
+  background: var(--danger); color: #fff;
+  border: none; border-radius: 999px;
+}
+
+/* ── Form controls ───────────────────────────────────────────── */
+.ease-dir .form-control:focus,
+.ease-dir .form-select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(242,190,0,.15);
+}
+.ease-dir .form-label {
+  font-family: var(--font-admin);
+  font-size: 10px; font-weight: 800;
+  letter-spacing: .9px; text-transform: uppercase;
+  color: var(--fg3);
+}
+
+/* ── Page title (shared across all pages) ────────────────────── */
+.ease-dir .ease-page-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  font-weight: 400;
+  color: var(--ink-1);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* ============================================================
+   Direction A — Pagination (Order Management pattern)
+   CI4 ease-pager + DataTables bootstrap .pagination
+   ============================================================ */
+
+.ease-admin-pager .ease-pager-nav { margin: 0; }
+
+.ease-admin-pager .ease-pager {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: center;
+}
+
+.ease-admin-pager .ease-pager__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: auto;
+  padding: 4px 9px;
+  line-height: 1.2;
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.ease-admin-pager .ease-pager__link:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.ease-admin-pager .ease-pager__link--active,
+.ease-admin-pager .ease-pager__item--active .ease-pager__link {
+  background: #0A0A0A;
+  border-color: #0A0A0A;
+  color: #F2BE00;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.ease-admin-pager .ease-pager__link i {
+  font-size: 10px;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+/* DataTables bootstrap4 paginator inside admin tables */
+.ease-admin-pager .dataTables_paginate,
+.ease-dir .ease-admin-pager .dataTables_paginate {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.ease-admin-pager .pagination {
+  margin: 0;
+  gap: 2px;
+}
+
+.ease-admin-pager .page-link {
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
+  font-family: 'Oxanium', sans-serif;
+  font-size: 10.5px;
+  padding: 4px 9px;
+  line-height: 1.2;
+  min-height: 0;
+}
+
+.ease-admin-pager .page-item.active .page-link,
+.ease-admin-pager .paginate_button.page-item.active .page-link {
+  background: #0A0A0A !important;
+  border-color: #0A0A0A !important;
+  color: #F2BE00 !important;
+}
+
+.ease-admin-pager .page-link:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.ease-admin-pager .page-item.disabled .page-link {
+  background: var(--surface-card);
+  color: #9CA3AF;
+  border-color: var(--border-subtle);
+}
+
+.ease-admin-pager .page-link i {
+  font-size: 10px;
+  pointer-events: none;
+  line-height: 1.2;
+}
+
+.ease-admin-pager .paginate_button.page-item {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Legacy global ease-pager (non-table contexts) */
+.ease-pager-nav { margin: 16px 0 4px; }
+
+.ease-pager {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.ease-pager__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  background: var(--surface-card);
+  color: var(--fg2);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  font-family: var(--font-admin);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.ease-pager__link:hover {
+  background: var(--gold-pale);
+  border-color: var(--gold);
+  color: var(--ink-1);
+}
+
+.ease-pager__link--active,
+.ease-pager__item--active .ease-pager__link {
+  background: var(--gold);
+  color: var(--ink-1);
+  border-color: var(--gold);
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.ease-pager__link i { font-size: 12px; }
+
+/* ── DataTables info text & length select ────────────────────── */
+.ease-dir .dataTables_wrapper .dataTables_info {
+  font-family: var(--font-admin);
+  font-size: 10.5px; color: var(--fg4);
+  padding-top: 10px;
+}
+.ease-dir .dataTables_wrapper .dataTables_length select,
+.ease-dir .dataTables_wrapper .dataTables_filter input {
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  font-family: var(--font-admin);
+  font-size: 11px;
+}
+.ease-dir .dataTables_wrapper .dataTables_length select:focus,
+.ease-dir .dataTables_wrapper .dataTables_filter input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(242,190,0,.15);
+  outline: none;
+}

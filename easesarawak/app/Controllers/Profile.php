@@ -15,7 +15,8 @@ class Profile extends BaseController
     {
         helper('form');
         $userModel = new User_model();
-        $data['user'] = $userModel->where(['user_id' => $userId, 'is_deleted' => 0])->first();
+        $data['user']   = $userModel->where(['user_id' => $userId, 'is_deleted' => 0])->first();
+        $data['errors'] = session()->getFlashdata('errors') ?? [];
         return $this->render('admin/edit_profile', $data);
     }
 
@@ -24,10 +25,22 @@ class Profile extends BaseController
         $userModel = new User_model();
         $rules = [
             'username' => 'required|min_length[3]|max_length[50]',
-            'email'    => "required|valid_email|is_unique[user.email,user_id,{$userId}]",
+            'email'    => 'required|valid_email',
         ];
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('validation', $this->validator);
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $email = $this->request->getPost('email');
+        $dupEmail = $userModel
+            ->where('email', $email)
+            ->where('user_id !=', (int) $userId)
+            ->where('is_deleted', 0)
+            ->first();
+        if ($dupEmail) {
+            return redirect()->back()->withInput()->with('errors', [
+                'email' => 'That email is already in use by another account.',
+            ]);
         }
 
         $data = [
@@ -37,28 +50,39 @@ class Profile extends BaseController
         // Handle profile picture
         $file = $this->request->getFile('profile_picture');
         if ($file && $file->isValid() && !$file->hasMoved()) {
-            $rules['profile_picture'] = 'max_size[profile_picture,2048]|is_image[profile_picture]';
-        }
-        if ($file->isValid()) {
             $newName = $file->getRandomName();
-            $file->move('assets/uploads/profiles/', $newName);
+            $uploadDir = FCPATH . 'assets/uploads/profiles/';
+            if (! is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            $file->move($uploadDir, $newName);
             $data['profile_picture'] = 'assets/uploads/profiles/' . $newName;
 
-            // Delete old picture
+            // Delete old picture — field already stores the full relative path
             $oldUser = $userModel->find($userId);
-            if ($oldUser['profile_picture'] && file_exists('assets/uploads/profiles/' . $oldUser['profile_picture'])) {
-                unlink('assets/uploads/profiles/' . $oldUser['profile_picture']);
+            if (! empty($oldUser['profile_picture'])) {
+                $oldPath = FCPATH . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $oldUser['profile_picture']);
+                if (is_file($oldPath)) {
+                    unlink($oldPath);
+                }
             }
         }
 
         $userModel->update($userId, $data);
 
-        // Update session data
         session()->set([
             'username' => $data['username'],
-            'email'    => $data['email']
+            'email'    => $data['email'],
         ]);
-        return redirect()->to('/profile')->with('success', 'Profile update successfully!');
+
+        $picUpdated = isset($data['profile_picture']);
+        return redirect()->to('/profile')->with('toast', [
+            'title'   => $picUpdated ? 'Picture Updated' : 'Profile Updated',
+            'icon'    => $picUpdated ? 'fas fa-camera'   : 'fas fa-user-check',
+            'user_id' => (int) $userId,
+            'username' => $data['username'],
+            'email'   => $data['email'],
+        ]);
     }
 
     public function change_password_form()
@@ -72,7 +96,7 @@ class Profile extends BaseController
         helper(['form', 'url']);
 
         $userModel = new User_model();
-        $userId = session()->get('id');
+        $userId = session()->get('user_id');
         $user = $userModel->find($userId);
 
         $rules = [
@@ -98,6 +122,10 @@ class Profile extends BaseController
             'password' => $newPassword  // Will be hashed by beforeUpdate callback
         ]);
 
-        return redirect()->to('/change_password')->with('success', 'Password changed successfully!');
+        return redirect()->to('/change_password')->with('toast', [
+            'title'   => 'Password Changed',
+            'icon'    => 'fas fa-key',
+            'message' => 'Your password has been updated successfully.',
+        ]);
     }
 }
