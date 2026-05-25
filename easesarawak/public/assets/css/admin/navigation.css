@@ -1944,3 +1944,295 @@
             outline: none ;
         }
 
+
+
+        /* ============================================================
+           FLUID RESPONSIVE SIDEBAR
+           Sidebar always visible at every breakpoint. Width shrinks
+           proportionally; text labels always shown; only .main-panel
+           scrolls. Stickiness is preserved at all sizes.
+           ============================================================ */
+
+        /* -- Small desktop (992px - 1199px) ----------------------------
+           Sidebar narrows 265px to 220px. Minimise toggle still works.
+           --------------------------------------------------------------- */
+        @media screen and (min-width: 992px) and (max-width: 1199px) {
+            .wrapper:not(.sidebar_minimize) {
+                padding-left: 220px;
+            }
+
+            .wrapper:not(.sidebar_minimize) .sidebar,
+            .wrapper:not(.sidebar_minimize) .sidebar .sidebar-wrapper,
+            .wrapper:not(.sidebar_minimize) .sidebar .logo-header {
+                width: 220px;
+                min-width: 220px;
+                max-width: 220px;
+            }
+
+            .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-item > a > p {
+                font-size: 0.82rem;
+            }
+
+            .wrapper:not(.sidebar_minimize) .sidebar .nav .nav-section .text-section {
+                font-size: 0.68rem;
+            }
+
+            .wrapper:not(.sidebar_minimize) .sidebar .logo-header .logo img.navbar-brand {
+                max-width: 120px;
+                height: auto;
+                max-height: 55px;
+            }
+        }
+
+        /* -- Tablet (576px - 991px) ------------------------------------
+           Force sidebar always visible at 200px. Override Kaiadmin
+           transform-hide. Full text labels always shown.
+           --------------------------------------------------------------- */
+        @media screen and (max-width: 991px) {
+
+            /* Always on-screen - override any Kaiadmin slide-out transform */
+            .wrapper .sidebar,
+            .wrapper.sidebar_minimize .sidebar,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar {
+                transform: none !important;
+                left: 0 !important;
+                width: 200px !important;
+                min-width: 200px !important;
+                max-width: 200px !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                box-shadow: none !important;
+            }
+
+            /* Inner containers match the new width */
+            .wrapper .sidebar .sidebar-wrapper,
+            .wrapper .sidebar .logo-header,
+            .wrapper.sidebar_minimize .sidebar .sidebar-wrapper,
+            .wrapper.sidebar_minimize .sidebar .logo-header,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header {
+                width: 200px !important;
+                min-width: 200px !important;
+                max-width: 200px !important;
+            }
+
+            /* Push header + content right of the sidebar */
+            .wrapper,
+            .wrapper.sidebar_minimize,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover {
+                padding-left: 200px !important;
+            }
+
+            /* Restore full text labels (override minimized-state hiding) */
+
+            .wrapper .sidebar .nav .nav-item > a > p,
+            .wrapper.sidebar_minimize .sidebar .nav .nav-item > a > p,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a > p {
+                visibility: visible !important;
+                opacity: 1 !important;
+                position: static !important;
+                left: auto !important;
+                top: auto !important;
+                transform: none !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                pointer-events: auto !important;
+                white-space: normal !important;
+                z-index: auto !important;
+                display: block !important;
+                font-size: 0.80rem;
+                color: inherit !important;
+            }
+
+            /* Restore section dividers */
+            .wrapper .sidebar .nav .nav-section,
+            .wrapper.sidebar_minimize .sidebar .nav .nav-section,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-section {
+                display: block !important;
+            }
+
+            /* Restore badges / carets hidden in minimized mode */
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a .badge,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a span,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper .nav-item a .caret {
+                display: inline !important;
+            }
+
+            /* Icon + text row layout (not icon-only centering) */
+
+            .wrapper .sidebar .nav .nav-item > a,
+            .wrapper.sidebar_minimize .sidebar .nav .nav-item > a,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a {
+                padding-left: 10px !important;
+                padding-right: 8px !important;
+                justify-content: flex-start !important;
+                gap: 8px !important;
+                width: 100% !important;
+            }
+
+            .wrapper .sidebar .nav .nav-item > a > i,
+            .wrapper.sidebar_minimize .sidebar .nav .nav-item > a > i,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a > i {
+                width: 18px !important;
+                min-width: 18px !important;
+                height: auto !important;
+                font-size: 0.88rem !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background: transparent !important;
+                margin: 0 !important;
+            }
+
+            /* Active icon: no block highlight - use full-row highlight instead */
+            .wrapper.sidebar_minimize .sidebar .nav .nav-item.active > a > i,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item.active > a > i,
+            .wrapper.sidebar_minimize .sidebar .nav .nav-item > a[aria-expanded="true"] > i,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a[aria-expanded="true"] > i {
+                width: 18px !important;
+                min-width: 18px !important;
+                height: auto !important;
+                background: transparent !important;
+            }
+
+            /* Full-row active highlight */
+            .wrapper.sidebar_minimize .sidebar .nav .nav-item.active > a,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item.active > a {
+                background: #ffd24d !important;
+                color: #2b2200 !important;
+            }
+
+            .wrapper .sidebar .nav .nav-section .text-section {
+                font-size: 0.65rem;
+            }
+
+            /* Logo: visible and capped within the narrower column */
+
+            .wrapper .sidebar .logo-header .logo,
+            .wrapper.sidebar_minimize .sidebar .logo-header .logo,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .logo,
+            .wrapper.sidebar_minimize .sidebar:hover .logo-header .logo,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar:hover .logo-header .logo {
+                visibility: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                transform: none !important;
+                position: static !important;
+                display: block !important;
+            }
+
+            .wrapper .sidebar .logo-header .logo img,
+            .wrapper.sidebar_minimize .sidebar .logo-header .logo img,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .logo img {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                max-width: 110px !important;
+                height: auto !important;
+                max-height: 50px !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
+            /* Hide topbar centred minimized-brand - sidebar brand is visible */
+            .wrapper.sidebar_minimize .ease-minimized-brand,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .ease-minimized-brand {
+                display: none !important;
+            }
+
+            /* Dark-mode toggle: keep full row layout */
+
+            .wrapper.sidebar_minimize .sidebar-darkmode-wrap,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar-darkmode-wrap {
+                padding: 12px 4px 10px !important;
+            }
+
+            .wrapper.sidebar_minimize .sidebar-darkmode-toggle,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar-darkmode-toggle {
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                gap: 8px !important;
+            }
+
+            .wrapper.sidebar_minimize .sidebar-darkmode-toggle .mode-text,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar-darkmode-toggle .mode-text {
+                display: inline !important;
+            }
+
+            .wrapper.sidebar_minimize .sidebar-darkmode-toggle .form-check-input,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar-darkmode-toggle .form-check-input {
+                transform: none !important;
+            }
+        }
+
+        /* -- Mobile (< 576px) -----------------------------------------
+           Sidebar narrows further 200px to 160px. All other rules are
+           inherited from the tablet block above.
+           --------------------------------------------------------------- */
+        @media screen and (max-width: 575px) {
+
+            .wrapper .sidebar,
+            .wrapper.sidebar_minimize .sidebar,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar {
+                width: 160px !important;
+                min-width: 160px !important;
+                max-width: 160px !important;
+            }
+
+            .wrapper .sidebar .sidebar-wrapper,
+            .wrapper .sidebar .logo-header,
+            .wrapper.sidebar_minimize .sidebar .sidebar-wrapper,
+            .wrapper.sidebar_minimize .sidebar .logo-header,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .sidebar-wrapper,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header {
+                width: 160px !important;
+                min-width: 160px !important;
+                max-width: 160px !important;
+            }
+
+            .wrapper,
+            .wrapper.sidebar_minimize,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover {
+                padding-left: 160px !important;
+            }
+
+            /* Tighter text on the narrowest sidebar */
+            .wrapper .sidebar .nav .nav-item > a > p,
+            .wrapper.sidebar_minimize .sidebar .nav .nav-item > a > p,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a > p {
+                font-size: 0.72rem !important;
+            }
+
+            .wrapper .sidebar .nav .nav-section .text-section,
+            .wrapper.sidebar_minimize .sidebar .nav .nav-section .text-section {
+                font-size: 0.60rem !important;
+                letter-spacing: 0.06em !important;
+            }
+
+            /* Tighter item padding */
+            .wrapper .sidebar .nav .nav-item > a,
+            .wrapper.sidebar_minimize .sidebar .nav .nav-item > a,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a {
+                padding-left: 8px !important;
+                padding-right: 6px !important;
+                gap: 6px !important;
+            }
+
+            .wrapper .sidebar .nav .nav-item > a > i,
+            .wrapper.sidebar_minimize .sidebar .nav .nav-item > a > i,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .nav .nav-item > a > i {
+                width: 15px !important;
+                min-width: 15px !important;
+                font-size: 0.80rem !important;
+            }
+
+            /* Logo: smaller on mobile */
+            .wrapper .sidebar .logo-header .logo img,
+            .wrapper.sidebar_minimize .sidebar .logo-header .logo img,
+            .wrapper.sidebar_minimize.sidebar_minimize_hover .sidebar .logo-header .logo img {
+                max-width: 85px !important;
+                max-height: 42px !important;
+            }
+        }
