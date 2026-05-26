@@ -40,25 +40,25 @@
     <?php endif; ?>
 
     <div class="usr-card">
-        <form action="<?= base_url('/update_user/' . $user['user_id']) ?>" method="post" style="padding: 28px 24px;">
+        <form action="<?= base_url('/update_user/' . $target_user['user_id']) ?>" method="post" style="padding: 28px 24px;">
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Username</label>
                 <input type="text" name="username" class="form-control"
-                       value="<?= esc(old('username', $user['username'])) ?>" required>
+                       value="<?= esc(old('username', $target_user['username'])) ?>" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Email</label>
                 <input type="email" name="email" class="form-control"
-                       value="<?= esc(old('email', $user['email'])) ?>" required>
+                       value="<?= esc(old('email', $target_user['email'])) ?>" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Role</label>
                 <select name="role" class="form-select" required>
-                    <option value="0" <?= (old('role', $user['role'])) == 0 ? 'selected' : '' ?>>Admin</option>
-                    <option value="1" <?= (old('role', $user['role'])) == 1 ? 'selected' : '' ?>>Superadmin</option>
+                    <option value="0" <?= (old('role', $target_user['role'])) == 0 ? 'selected' : '' ?>>Admin</option>
+                    <option value="1" <?= (old('role', $target_user['role'])) == 1 ? 'selected' : '' ?>>Superadmin</option>
                 </select>
             </div>
 
