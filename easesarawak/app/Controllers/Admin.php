@@ -1142,10 +1142,6 @@ class Admin extends BaseController
 
     public function user()
     {
-        if (session()->get('role') !== '1') {
-            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
-        }
-
         $user_model = new User_model();
         $search     = trim($this->request->getGet('search') ?? '');
         $perPage    = 10;
@@ -1174,7 +1170,7 @@ class Admin extends BaseController
     public function create_user()
     {
         if (session()->get('role') !== '1') {
-            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
+            return redirect()->to(base_url('/admin'))->with('error', 'Access denied. Superadmin only.');
         }
 
         $userModel = new User_model();
@@ -1308,7 +1304,7 @@ class Admin extends BaseController
     public function edit($user_id)
     {
         if (session()->get('role') !== '1') {
-            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
+            return redirect()->to(base_url('/admin'))->with('error', 'Access denied. Superadmin only.');
         }
 
         $userModel = new User_model();
@@ -1323,7 +1319,7 @@ class Admin extends BaseController
     public function update($user_id)
     {
         if (session()->get('role') !== '1') {
-            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
+            return redirect()->to(base_url('/admin'))->with('error', 'Access denied. Superadmin only.');
         }
 
         $userModel = new User_model();
@@ -1379,7 +1375,7 @@ class Admin extends BaseController
     public function delete($user_id)
     {
         if (session()->get('role') !== '1') {
-            return redirect()->to(base_url('/dashboard'))->with('error', 'Access denied. Superadmin only.');
+            return redirect()->to(base_url('/admin'))->with('error', 'Access denied. Superadmin only.');
         }
 
         if ((int) $user_id === (int) session()->get('user_id')) {
