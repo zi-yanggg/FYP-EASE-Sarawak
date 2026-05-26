@@ -38,7 +38,9 @@
       "Bash(dir \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" /b)",
       "Bash(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" -Recurse -Directory)",
       "Bash(Get-ChildItem -Path \"e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak\" -Directory)",
-      "Bash(Select-Object Name)"
+      "Bash(Select-Object Name)",
+      "Bash(dir e:\\\\xampp\\\\htdocs\\\\New\\\\FYP-EASE-Sarawak\\\\easesarawak /b)",
+      "Bash(Select-Object -First 30 FullName)"
     ]
   }
 }
