@@ -1,3 +1,39 @@
+/* ── Inter-page navigation — eliminate MPA flash ────────── */
+/* View Transitions API: browser captures the current page as a
+   screenshot, loads the next page, then crossfades between them.
+   No white gap between pages. Both pages must opt in — automatic
+   here because components.css loads on every admin page.
+   Falls back to instant navigation on unsupported browsers (Firefox,
+   older Safari); the html background-color in header.php keeps the
+   fallback flash colour-matched so it is invisible either way. */
+@view-transition {
+  navigation: auto;
+}
+
+/* ── Dark mode flash prevention ─────────────────────────── */
+/* Applied for two animation frames on page load to prevent kaiadmin's
+   "transition: all .3s" from animating white → dark on first paint.
+   Removed after the first paint via requestAnimationFrame in header.php. */
+body.preload,
+body.preload * {
+  transition: none !important;
+}
+
+/* Override kaiadmin's broad "transition: all .3s/.5s" on layout elements.
+   Keep only structural transitions (width, margin for sidebar collapse)
+   and strip background/color transitions that cause the "stuck" visual
+   when toggling dark mode — those should be instant and consistent. */
+.main-panel {
+  transition: width .3s, margin-left .3s, margin-right .3s !important;
+}
+.sidebar,
+.sidebar .sidebar-wrapper {
+  transition: width .3s, left .3s !important;
+}
+.sidebar .nav > .nav-item > a {
+  transition: color .18s !important;
+}
+
 /* ── Surface / text / border design tokens (light mode) ─── */
 :root {
   --surface-card:      #fff;

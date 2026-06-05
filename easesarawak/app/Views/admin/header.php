@@ -61,11 +61,22 @@ function timeAgo($datetime)
                 if (localStorage.getItem('easeSidebarMinimized') === '1') {
                     document.documentElement.classList.add('ease-restore-minimized');
                 }
-            } catch (e) {
-                // Ignore storage-access issues and fall back to default layout.
-            }
+                // Apply dark-mode to <html> NOW — before any CSS files download.
+                // The inline <style> below makes html.dark-mode background dark
+                // immediately, preventing the white flash during CSS load.
+                if (localStorage.getItem('darkMode') === 'enabled') {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            } catch (e) {}
         })();
     </script>
+    <style>
+        /* Runs before any CSS file loads — sets the viewport colour so there
+           is no visible flash during the CSS download phase between pages.
+           Light mode matches kaiadmin's body background (#F5F7FD). */
+        html            { background: #F5F7FD; }
+        html.dark-mode  { background: #15191C; color-scheme: dark; }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const toggle = document.getElementById('darkModeToggle');
@@ -84,6 +95,9 @@ function timeAgo($datetime)
                 body.classList.add('dark-mode');
                 toggle.checked = true;
             }
+            // html.dark-mode was set early in <head> to prevent the CSS-download
+            // flash. Body now owns the class — remove it from <html>.
+            document.documentElement.classList.remove('dark-mode');
             syncModeIcon();
 
             toggle.addEventListener('change', function() {
@@ -155,6 +169,24 @@ function timeAgo($datetime)
 </head>
 
 <body>
+    <script>
+        (function() {
+            try {
+                // Suppress all CSS transitions for the initial paint so dark mode
+                // applies instantly rather than animating from white → dark.
+                document.body.classList.add('preload');
+                if (localStorage.getItem('darkMode') === 'enabled') {
+                    document.body.classList.add('dark-mode');
+                }
+                // Two rAF = wait until after the first paint before re-enabling transitions.
+                requestAnimationFrame(function() {
+                    requestAnimationFrame(function() {
+                        document.body.classList.remove('preload');
+                    });
+                });
+            } catch (e) {}
+        })();
+    </script>
     <div class="wrapper ease-dir">
         <!-- Sidebar -->
         <div class="sidebar" data-background-color="white">
