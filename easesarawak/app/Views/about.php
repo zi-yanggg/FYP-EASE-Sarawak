@@ -1,10 +1,11 @@
+﻿<?php helper('translation'); ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EASE SARAWAK | About Us</title>
+    <title>EASE SARAWAK | <?= ease_translate('About Us') ?></title>
     <link rel="icon" type="image/png" href="assets/images/cropped-Ease_PNG_File-09.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/footer_style.css">
@@ -471,7 +472,7 @@
     <!-- Title -->
     <section class="about-title">
         <div class="title-overlay"></div>
-        <h1>About Us</h1>
+        <h1><?= ease_translate('About Us') ?></h1>
     </section>
 
     <!-- Offer -->
@@ -479,20 +480,13 @@
         <div class="left">
             <h2 class="pill-title">
                 <span class="dot"></span>
-                WHAT WE OFFER?
+                <?= ease_translate('WHAT WE OFFER?') ?>
                 <span class="dot"></span>
             </h2>
-            <h3>ABOUT EASE BAGGAGE STORAGE & DELIVERY</h3>
-            <p>Founded in 2024, EASE is Kuching’s leading baggage storage and delivery service, offering a simple solution to one of the most common travel hassles: managing your luggage. We’re here to give travelers the freedom to explore the wonderful city of Kuching without the burden of baggage.
-
-                Our mission is extremely clear—we take care of your belongings so you can explore Sarawak and create unforgettable moments. Whether you’re waiting for check-in, navigating an early check-out, or simply want to enjoy the city without the bother of luggage, we provide secure, convenient options for all your needs.
-
-                Our commitment to customer satisfaction is reflected in our easy-to-use platform and friendly customer support. We understand that time is money and we do our best to ensure your process is quick and stress-free. We pride ourselves on offering a service that’s safe, reliable, and affordable. With us, your baggage is always in good hands.
-
-                So let us handle the heavy lifting while you explore Kuching to the fullest.
-            </p>
+            <h3><?= ease_translate('ABOUT EASE BAGGAGE STORAGE & DELIVERY') ?></h3>
+            <p><?= ease_translate("Founded in 2024, EASE is Kuching’s leading baggage storage and delivery service, offering a simple solution to one of the most common travel hassles: managing your luggage. We’re here to give travelers the freedom to explore the wonderful city of Kuching without the burden of baggage. Our mission is extremely clear—we take care of your belongings so you can explore Sarawak and create unforgettable moments. Whether you’re waiting for check-in, navigating an early check-out, or simply want to enjoy the city without the bother of luggage, we provide secure, convenient options for all your needs. Our commitment to customer satisfaction is reflected in our easy-to-use platform and friendly customer support. We understand that time is money and we do our best to ensure your process is quick and stress-free. We pride ourselves on offering a service that’s safe, reliable, and affordable. With us, your baggage is always in good hands. So let us handle the heavy lifting while you explore Kuching to the fullest.") ?></p>
             <div class="btn-wrapper">
-                <a href="#book" class="btn-offer">CONTACT US TODAY</a>
+                <a href="#book" class="btn-offer"><?= ease_translate('CONTACT US TODAY') ?></a>
             </div>
         </div>
         <div class="right">
@@ -504,40 +498,38 @@
         <div class="impact-content">
             <h2 class="pill-title">
                 <span class="dot"></span>
-                WHY CHOOSE EASE?
+                <?= ease_translate('WHY CHOOSE EASE?') ?>
                 <span class="dot"></span>
             </h2>
-            <h3>OUR IMPACT AT EASE</h3>
-            <p>
-                We have proudly served numerous customers and stored countless pieces of luggage to ensure travelers can explore freely. Our efficient service has covered a significant distance, achieving a remarkable customer satisfaction rate.
-            </p>
+            <h3><?= ease_translate('OUR IMPACT AT EASE') ?></h3>
+            <p><?= ease_translate('We have proudly served numerous customers and stored countless pieces of luggage to ensure travelers can explore freely. Our efficient service has covered a significant distance, achieving a remarkable customer satisfaction rate.') ?></p>
             <div class="impact-flex">
                 <div class="impact-item">
                     <img src="assets/images/customer.png" alt="customer icon">
                     <div class="impact-text">
                         <h4>1,250</h4>
-                        <p>Customers Served</p>
+                        <p><?= ease_translate('Customers Served') ?></p>
                     </div>
                 </div>
                 <div class="impact-item">
                     <img src="assets/images/luggage.png" alt="luggage icon">
                     <div class="impact-text">
                         <h4>5600</h4>
-                        <p>Luggage Stored</p>
+                        <p><?= ease_translate('Luggage Stored') ?></p>
                     </div>
                 </div>
                 <div class="impact-item">
                     <img src="assets/images/distance.png" alt="distance icon">
                     <div class="impact-text">
                         <h4>1,250 km</h4>
-                        <p>Km Covered</p>
+                        <p><?= ease_translate('Km Covered') ?></p>
                     </div>
                 </div>
                 <div class="impact-item">
                     <img src="assets/images/satisfaction.png" alt="satisfaction icon">
                     <div class="impact-text">
                         <h4>99%</h4>
-                        <p>Customer Satisfaction</p>
+                        <p><?= ease_translate('Customer Satisfaction') ?></p>
                     </div>
                 </div>
             </div>
@@ -548,10 +540,10 @@
         <div class="client-experience-content">
             <h2 class="pill-title">
                 <span class="dot"></span>
-                CLIENT EXPERIENCE WITH EASE
+                <?= ease_translate('CLIENT EXPERIENCE WITH EASE') ?>
                 <span class="dot"></span>
             </h2>
-            <h3>HEAR FROM OUR HAPPY CUSTOMERS</h3>
+            <h3><?= ease_translate('HEAR FROM OUR HAPPY CUSTOMERS') ?></h3>
 
             <div class="testimonial-carousel">
                 <div class="testimonial active">
