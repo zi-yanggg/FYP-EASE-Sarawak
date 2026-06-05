@@ -344,3 +344,44 @@
     .contact-kv-grid { grid-template-columns: 1fr; }
     .contact-kv--full { grid-column: 1; }
 }
+
+/* ============================================================
+   DARK MODE — Contact
+   ============================================================ */
+
+/* Modal frame border (background handled by global .modal-content rule in components.css) */
+body.dark-mode .contact-modal-content { border-color: #2A3540; }
+
+/* Modal footer */
+body.dark-mode .contact-modal-foot {
+    background: #222930;
+    border-top-color: #2A3540;
+}
+
+/* Detail section cards inside modal */
+body.dark-mode .contact-detail-section {
+    background: #181E24;
+    border-color: #2A3540;
+}
+
+/* Message body block */
+body.dark-mode .contact-msg-body {
+    background: #15191C;
+    border-color: #2A3540;
+    color: #c8cace;
+}
+
+/* KV labels */
+body.dark-mode .contact-kv__k { color: #6B7280; }
+body.dark-mode .contact-kv__v { color: #e4e6eb; }
+
+/* Ghost close button */
+body.dark-mode .contact-btn-ghost {
+    color: #c8cace;
+    border-color: #2A3540;
+}
+body.dark-mode .contact-btn-ghost:hover {
+    background: #222930;
+    border-color: rgba(242,190,0,0.4);
+    color: #F2BE00;
+}
