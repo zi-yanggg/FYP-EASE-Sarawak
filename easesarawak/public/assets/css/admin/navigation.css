@@ -741,8 +741,22 @@
 
         .sidebar .nav.nav-secondary {
             margin-top: 4px;
-            flex: 0 0 auto;
+            flex: 1 1 0;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
             gap: 0;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(242,190,0,.35) transparent;
+        }
+        .sidebar .nav.nav-secondary::-webkit-scrollbar { width: 3px; }
+        .sidebar .nav.nav-secondary::-webkit-scrollbar-track { background: transparent; }
+        .sidebar .nav.nav-secondary::-webkit-scrollbar-thumb {
+            background: rgba(242,190,0,.35);
+            border-radius: 2px;
+        }
+        .sidebar .nav.nav-secondary::-webkit-scrollbar-thumb:hover {
+            background: rgba(242,190,0,.6);
         }
 
         /* Section header â€” sits indented from the bar's left edge so items
