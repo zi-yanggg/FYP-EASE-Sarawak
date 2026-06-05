@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Spacing & radii</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .card { gap: 18px; padding: 24px; }
+  .grid {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px;
+  }
+  .sp {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .sp .box { background: var(--gold); border-radius: 4px; }
+  .sp .nm { font-family: var(--font-admin); font-size: 9px; font-weight: 800; color: var(--ink-1); letter-spacing: .6px; }
+  .sp .vl { font-family: var(--font-mono); font-size: 9px; color: var(--fg4); }
+
+  .rad-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px;
+  }
+  .rd {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .rd .shape {
+    width: 64px; height: 64px;
+    background: #fff;
+    border: 1px solid var(--gold-line);
+  }
+  .rd .nm { font-family: var(--font-admin); font-size: 9px; font-weight: 800; color: var(--ink-1); letter-spacing: .6px; }
+  .rd .vl { font-family: var(--font-mono); font-size: 9px; color: var(--fg4); }
+  .group-title {
+    font-family: var(--font-admin); font-size: 9.5px; font-weight: 800;
+    letter-spacing: 1.4px; color: var(--fg4); text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="group-title">Spacing scale</div>
+  <div class="grid">
+    <div class="sp"><div class="box" style="width:4px;height:4px"></div><div class="nm">sp-1</div><div class="vl">4</div></div>
+    <div class="sp"><div class="box" style="width:8px;height:8px"></div><div class="nm">sp-2</div><div class="vl">8</div></div>
+    <div class="sp"><div class="box" style="width:12px;height:12px"></div><div class="nm">sp-3</div><div class="vl">12</div></div>
+    <div class="sp"><div class="box" style="width:16px;height:16px"></div><div class="nm">sp-4</div><div class="vl">16</div></div>
+    <div class="sp"><div class="box" style="width:20px;height:20px"></div><div class="nm">sp-5</div><div class="vl">20</div></div>
+    <div class="sp"><div class="box" style="width:24px;height:24px"></div><div class="nm">sp-6</div><div class="vl">24</div></div>
+    <div class="sp"><div class="box" style="width:32px;height:32px"></div><div class="nm">sp-8</div><div class="vl">32</div></div>
+    <div class="sp"><div class="box" style="width:48px;height:48px"></div><div class="nm">sp-12</div><div class="vl">48</div></div>
+  </div>
+
+  <div class="group-title">Corner radii</div>
+  <div class="rad-grid">
+    <div class="rd"><div class="shape" style="border-radius:4px"></div><div class="nm">xs</div><div class="vl">4</div></div>
+    <div class="rd"><div class="shape" style="border-radius:6px"></div><div class="nm">sm</div><div class="vl">6</div></div>
+    <div class="rd"><div class="shape" style="border-radius:8px"></div><div class="nm">md</div><div class="vl">8</div></div>
+    <div class="rd"><div class="shape" style="border-radius:12px"></div><div class="nm">lg</div><div class="vl">12</div></div>
+    <div class="rd"><div class="shape" style="border-radius:14px"></div><div class="nm">xl</div><div class="vl">14</div></div>
+    <div class="rd"><div class="shape" style="border-radius:18px"></div><div class="nm">2xl</div><div class="vl">18</div></div>
+    <div class="rd"><div class="shape" style="border-radius:999px"></div><div class="nm">pill</div><div class="vl">∞</div></div>
+  </div>
+
+</div>
+</body></html>

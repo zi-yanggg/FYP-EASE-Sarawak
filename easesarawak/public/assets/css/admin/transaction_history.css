@@ -111,20 +111,20 @@
     padding: 2px 6px;
 }
 
-/* Status pills */
+/* Status pills — structure mirrors .promo-type-pill exactly */
 .txn-status {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 11px;
+    padding: 6px 12px;
     border-radius: 999px;
     font-family: 'Oxanium', sans-serif;
     font-size: 10.5px;
     font-weight: 800;
-    white-space: nowrap;
-    letter-spacing: .06em;
     text-transform: uppercase;
+    letter-spacing: .06em;
     border: 1.5px solid transparent;
+    white-space: nowrap;
 }
 .txn-status::before {
     content: '';
@@ -134,8 +134,8 @@
     background: currentColor;
     flex-shrink: 0;
 }
-.txn-status--paid    { background: #E8F5E9; color: #1E8E3E; border-color: #1E8E3E; }
-.txn-status--failed  { background: #FDECEA; color: #C04545; border-color: #C04545; }
+.txn-status--paid    { background: #1E8E3E; color: #fff;    border-color: #1E8E3E; }
+.txn-status--failed  { background: #C04545; color: #fff;    border-color: #C04545; }
 .txn-status--pending { background: #F2BE00; color: #0A0A0A; border-color: #F2BE00; }
 
 /* Date */
@@ -166,3 +166,42 @@
     .txn-page { padding: 0 12px 40px; }
     .txn-srch { min-width: 160px; }
 }
+
+/* ============================================================
+   DARK MODE — Transaction History
+   ============================================================ */
+
+/* Card shell — already uses var(--surface-card) so tokens handle it,
+   but border needs an explicit override */
+body.dark-mode .txn-card {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+/* Table head */
+body.dark-mode .txn-tbl th {
+    background: #181E24;
+    color: #e4e6eb;
+}
+
+/* Table body cells */
+body.dark-mode .txn-tbl tbody td {
+    border-bottom-color: rgba(42, 53, 64, 0.8);
+}
+
+/* Currency badge */
+body.dark-mode .txn-currency {
+    background: rgba(255, 255, 255, 0.06);
+    color: #adb5bd;
+}
+
+/* Solid-fill pills are readable on dark backgrounds without overrides.
+   Only pending needs a tweak — gold on dark is fine but slightly softer. */
+body.dark-mode .txn-status--pending {
+    background: rgba(242, 190, 0, 0.15);
+    color: #F2BE00;
+    border-color: rgba(242, 190, 0, 0.45);
+}
+
+/* Pagination border */
+body.dark-mode .txn-pagination { border-top-color: #2A3540; }

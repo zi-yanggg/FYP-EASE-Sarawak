@@ -241,7 +241,7 @@
         body.dark-mode .main-header .dropdown-menu.quick-actions,
         body.dark-mode .navbar .ease-user-dropdown,
         body.dark-mode .main-header .dropdown-menu.ease-user-dropdown {
-            background: #111827 ;
+            background: #15191C ;
             border-color: #D4A700 ;
         }
 
@@ -254,7 +254,7 @@
         body.dark-mode .main-header .quick-actions .quick-actions-item:hover,
         body.dark-mode .navbar .dropdown-menu .see-all:hover,
         body.dark-mode .main-header .dropdown-menu .see-all:hover {
-            background: #1f2937 ;
+            background: #222930 ;
             color: #ffffff ;
         }
 
@@ -269,7 +269,7 @@
         }
 
         body.dark-mode .main-header .quick-actions .quick-actions-item .avatar-item {
-            background: #0b1220 ;
+            background: #15191C ;
             color: #f2be00 ;
         }
 

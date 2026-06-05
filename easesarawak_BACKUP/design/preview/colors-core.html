@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Brand colors</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .card { gap: 14px; }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .sw {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .sw .chip {
+    height: 88px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .sw .name {
+    font-family: var(--font-admin);
+    font-size: 10px; font-weight: 800;
+    letter-spacing: .8px; text-transform: uppercase;
+    color: var(--ink-1);
+  }
+  .sw .hex {
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--fg4);
+  }
+  .row-1 .sw .chip { box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="swatch-grid row-1">
+    <div class="sw"><div class="chip" style="background:#F2BE00"></div><span class="name">Gold</span><span class="hex">#F2BE00</span></div>
+    <div class="sw"><div class="chip" style="background:#FFD54A"></div><span class="name">Soft</span><span class="hex">#FFD54A</span></div>
+    <div class="sw"><div class="chip" style="background:#D4A700"></div><span class="name">Dark</span><span class="hex">#D4A700</span></div>
+    <div class="sw"><div class="chip" style="background:#FFF4CC"></div><span class="name">Pale</span><span class="hex">#FFF4CC</span></div>
+    <div class="sw"><div class="chip" style="background:#FBF4D8"></div><span class="name">Tint</span><span class="hex">#FBF4D8</span></div>
+    <div class="sw"><div class="chip" style="background:#ECE2B4"></div><span class="name">Line</span><span class="hex">#ECE2B4</span></div>
+  </div>
+  <div class="swatch-grid">
+    <div class="sw"><div class="chip" style="background:#000000"></div><span class="name">Ink 0</span><span class="hex">#000000</span></div>
+    <div class="sw"><div class="chip" style="background:#0A0A0A"></div><span class="name">Ink 1</span><span class="hex">#0A0A0A</span></div>
+    <div class="sw"><div class="chip" style="background:#131313"></div><span class="name">Ink 2</span><span class="hex">#131313</span></div>
+    <div class="sw"><div class="chip" style="background:#1E1E1E"></div><span class="name">Ink 3</span><span class="hex">#1E1E1E</span></div>
+    <div class="sw"><div class="chip" style="background:#2A2A2A"></div><span class="name">Ink 4</span><span class="hex">#2A2A2A</span></div>
+    <div class="sw"><div class="chip" style="background:#FFFDF5"></div><span class="name">Paper</span><span class="hex">#FFFDF5</span></div>
+  </div>
+</div>
+</body></html>

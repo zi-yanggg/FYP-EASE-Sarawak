@@ -1105,3 +1105,240 @@ a.dsh-qrow {
     letter-spacing: .06em;
     text-transform: uppercase;
 }
+
+/* ============================================================
+   DARK MODE — Dashboard
+   ============================================================ */
+
+body.dark-mode .dsh-page,
+body.dark-mode .dsh-bg-override,
+body.dark-mode .dsh-bg-override .main-panel {
+    background: #15191C;
+}
+
+/* KPI grid */
+body.dark-mode .dsh-kpis {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+body.dark-mode .dsh-kpi {
+    border-right-color: #2A3540;
+}
+
+body.dark-mode .dsh-kpi:hover { background: #222930; }
+
+body.dark-mode .dsh-kpi__m {
+    border-top-color: #2A3540;
+}
+
+/* Section rule */
+body.dark-mode .dsh-shead__rule { background: #2A3540; }
+
+/* Cards */
+body.dark-mode .dsh-card {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+body.dark-mode .dsh-card__head {
+    background: #1D2329;
+    border-bottom-color: #2A3540;
+}
+
+body.dark-mode .dsh-card__pill {
+    background: #1D2329;
+    border-color: #2A3540;
+    color: #e4e6eb;
+}
+
+/* Queue card header — replaces the #F2E3A8 amber band */
+body.dark-mode .dsh-card--queue .dsh-card__head {
+    background: #181E24;
+    border-bottom-color: #2A3540;
+}
+
+body.dark-mode .dsh-card--queue .dsh-card__pill {
+    border-color: rgba(242, 190, 0, 0.4);
+}
+
+body.dark-mode .dsh-card--queue .dsh-queue-active {
+    color: #adb5bd;
+}
+
+/* Calendar card header */
+body.dark-mode .dsh-card--calendar .dsh-card__head {
+    background: #181E24;
+    border-bottom-color: #2A3540;
+}
+
+/* Queue column header — replaces #F0D86A */
+body.dark-mode .dsh-queue-head {
+    background: #181E24;
+    border-bottom-color: #2A3540;
+}
+
+body.dark-mode .dsh-queue-head > div {
+    color: #e4e6eb;
+}
+
+body.dark-mode .dsh-queue-head > div::after {
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0.15) 50%, transparent 50%);
+}
+
+/* Queue rows */
+body.dark-mode .dsh-qrow {
+    background: #1D2329;
+    border-bottom-color: #2A3540;
+}
+
+body.dark-mode .dsh-qrow:hover { background: #222930; }
+
+body.dark-mode .dsh-qrow__cell::after {
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 50%, transparent 50%);
+}
+
+/* More link footer */
+body.dark-mode .dsh-more-link--foot {
+    background: linear-gradient(180deg, #1D2329 0%, #181E24 100%);
+    border-top-color: #2A3540;
+}
+
+body.dark-mode .dsh-more-link--foot a {
+    background: #1D2329;
+    border-color: #2A3540;
+    color: #e4e6eb;
+}
+
+body.dark-mode .dsh-more-link--foot a:hover {
+    background: #F2BE00;
+    border-color: #F2BE00;
+    color: #0A0A0A;
+}
+
+/* Calendar nav buttons */
+body.dark-mode .dsh-cal-nav-btn {
+    background: #222930;
+    color: #adb5bd;
+}
+
+body.dark-mode .dsh-cal-nav-btn:hover {
+    background: rgba(242, 190, 0, 0.15);
+    color: #F2BE00;
+}
+
+body.dark-mode .dsh-cal-month-label,
+body.dark-mode #calMonthLabel.dsh-cal-month-label {
+    color: #e4e6eb;
+}
+
+/* Mini calendar inside dashboard */
+body.dark-mode .dsh-cal .cal-day {
+    background: #222930;
+    border-color: #2A3540;
+    color: #c8cace;
+}
+
+body.dark-mode .dsh-cal .cal-day.cal-clickable:hover {
+    background: rgba(242, 190, 0, 0.12);
+    color: #F2BE00;
+}
+
+body.dark-mode .dsh-cal .cal-day.cal-today {
+    border-color: #F2BE00;
+    box-shadow: inset 0 0 0 1px #F2BE00;
+}
+
+body.dark-mode .dsh-cal .cal-day.cal-has-data-l1 { background: rgba(255,233,166,.12); border-color: #2A3540; }
+body.dark-mode .dsh-cal .cal-day.cal-has-data-l2 { background: rgba(255,217,94,.15);  border-color: #2A3540; }
+body.dark-mode .dsh-cal .cal-day.cal-has-data-l3 { background: rgba(242,190,0,.3);    border-color: #D7A300; color: #fff; }
+body.dark-mode .dsh-cal .cal-day.cal-has-data-l4 { background: rgba(215,163,0,.4);    border-color: #B88900; color: #fff; }
+
+body.dark-mode .dsh-cal-dow { color: #adb5bd; }
+
+/* Day detail panel — replaces #fffde7 */
+body.dark-mode .dsh-cal-detail {
+    background: #181E24;
+    border-color: #2A3540;
+    border-left-color: #F2BE00;
+    color: #c8cace;
+}
+
+body.dark-mode .dsh-cal-detail-hint { color: #adb5bd; }
+body.dark-mode .dsh-cal-detail-title { color: #e4e6eb; }
+
+body.dark-mode .dsh-cal-order-link {
+    background: #1D2329;
+    border-color: rgba(242,190,0,.2);
+    color: #e4e6eb;
+}
+
+body.dark-mode .dsh-cal-order-link:hover {
+    background: rgba(242,190,0,.06);
+    border-color: #F2BE00;
+}
+
+body.dark-mode .dsh-cal-order-link__head { color: #e4e6eb; }
+body.dark-mode .dsh-cal-order-link__route { color: #adb5bd; }
+
+body.dark-mode .dsh-cal-detail-row {
+    border-bottom-color: rgba(42,53,64,.8);
+}
+
+/* Activity feed */
+body.dark-mode .dsh-activity-item {
+    border-bottom-color: rgba(255,255,255,.05);
+    color: #c8cace;
+}
+
+body.dark-mode .dsh-activity-item:hover { background: rgba(242,190,0,.04); }
+
+body.dark-mode .dsh-activity-icon--order    { background: rgba(46,125,50,.2);    color: #81c784; }
+body.dark-mode .dsh-activity-icon--message  { background: rgba(21,101,192,.2);   color: #64b5f6; }
+body.dark-mode .dsh-activity-icon--activity { background: rgba(123,31,162,.2);   color: #ce93d8; }
+
+/* Feed nav */
+body.dark-mode .dsh-feed-nav { border-top-color: #2A3540; }
+
+body.dark-mode .dsh-feed-nav-btn {
+    border-color: #2A3540;
+    background: #1D2329;
+    color: #c8cace;
+}
+
+body.dark-mode .dsh-feed-nav-btn:hover:not(:disabled) {
+    background: #F2BE00;
+    border-color: #F2BE00;
+    color: #0A0A0A;
+}
+
+/* Fallback notice */
+body.dark-mode .dsh-fallback-notice {
+    background: #181E24;
+    border-left-color: #F2BE00;
+    color: #adb5bd;
+}
+
+/* Empty state */
+body.dark-mode .dsh-empty { color: #adb5bd; }
+
+/* Tab pills */
+body.dark-mode .dsh-tabs .dsh-tab {
+    background: #181E24;
+    border-color: #2A3540;
+    color: #c8cace;
+}
+
+body.dark-mode .dsh-tabs .dsh-tab.act {
+    background: #F2BE00;
+    color: #0A0A0A;
+    border-color: #F2BE00;
+}
+
+body.dark-mode .dsh-tabs .dsh-tab:hover:not(.act) {
+    background: rgba(242,190,0,.1);
+    border-color: rgba(242,190,0,.4);
+}
+
+body.dark-mode .dsh-tab__num { background: rgba(255,255,255,.1); }
+body.dark-mode .dsh-tab.act .dsh-tab__num { background: rgba(10,10,10,.2); color: #0A0A0A; }

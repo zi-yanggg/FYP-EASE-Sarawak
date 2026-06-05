@@ -1,0 +1,91 @@
+.footer {
+    background: #111;
+    color: #ddd;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.footer-logo img {
+    width: 150px;
+    margin-bottom: 20px;
+    /* Turn black → white */
+    filter: invert(1) grayscale(1) brightness(1.8) contrast(1.2);}
+
+.footer hr {
+    border: none;
+    border-top: 2px solid #f2be00;
+    margin: 20px auto;
+    max-width: 850px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+.footer-links li a {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.footer-links li a:hover {
+    color: #f2be00;
+}
+
+.footer-copy {
+    font-size: 14px;
+    color: #f2be00;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .footer-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Container for the icons */
+.icons {
+    display: flex; /* Arranges icons in a row */
+    gap: 1rem; /* Adds space between the icons */
+    align-items: center;
+    justify-content: center; /* Center the whole group */
+    padding: 15px;
+}
+
+/* Style for the link element wrapping the icon */
+.icons a {
+    text-decoration: none; /* Remove underline */
+    color: #4b4b4b; /* Default icon color (dark gray) */
+    font-size: 28px; /* Standard icon size */
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Hover effect: lift the icon slightly */
+.icons a:hover {
+    transform: translateY(-3px);
+}
+
+/* Specific colors for each platform on hover */
+.icons a:hover .fa-instagram {
+    color: #E4405F; /* Instagram gradient/pink */
+}
+
+.icons a:hover .fa-tiktok {
+    color: #000000; /* TikTok dark color */
+}
+
+.icons a:hover .fa-facebook-f {
+    color: #3b5998; /* Facebook blue */
+}
+
+

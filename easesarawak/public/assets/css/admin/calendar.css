@@ -1088,3 +1088,293 @@
 }
 
 /* Summary text — default .cal-day-sum-* colours (ink on light bg) */
+
+/* ============================================================
+   DARK MODE — Booking Calendar
+   ============================================================ */
+
+/* Card shell */
+body.dark-mode .cal-card {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+/* Card body areas */
+body.dark-mode .cal-body {
+    background: #15191C;
+}
+
+body.dark-mode .cal-mini-body {
+    background: #1D2329;
+}
+
+body.dark-mode .cal-day-body {
+    background: #1D2329;
+}
+
+/* Heatmap legend swatches */
+body.dark-mode .cal-hm-none {
+    background: #1D2329;
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #adb5bd;
+}
+
+/* Day order list items */
+body.dark-mode .cal-day-item {
+    background: #1D2329;
+    border-color: rgba(255, 255, 255, 0.07);
+    color: #e4e6eb;
+}
+
+body.dark-mode .cal-day-item:hover {
+    background: #222930;
+    border-color: rgba(242, 190, 0, 0.35);
+}
+
+body.dark-mode .cal-day-oid { color: #e4e6eb; }
+body.dark-mode .cal-day-name { color: #c8cace; }
+body.dark-mode .cal-day-meta { color: #adb5bd; }
+body.dark-mode .cal-day-empty { color: #adb5bd; }
+
+/* Status badges inside day panel stay coloured — readable on dark */
+body.dark-mode .cal-day-st--pending  { background: rgba(242,190,0,.15); color: #F2BE00; }
+body.dark-mode .cal-day-st--progress { background: rgba(37,99,235,.18);  color: #93c5fd; }
+body.dark-mode .cal-day-st--done     { background: rgba(30,142,62,.18);  color: #6ee7b7; }
+
+/* Day summary text on calendar cells */
+body.dark-mode .cal-day-sum-lbl,
+body.dark-mode .cal-day-sum-val { color: #c8cace; }
+body.dark-mode .cal-day-sum-del .cal-day-sum-lbl,
+body.dark-mode .cal-day-sum-del .cal-day-sum-val { color: #F2BE00; }
+body.dark-mode .cal-day-sum-sto .cal-day-sum-lbl,
+body.dark-mode .cal-day-sum-sto .cal-day-sum-val { color: #adb5bd; }
+
+/* Popup */
+body.dark-mode .cal-popup-box {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+body.dark-mode .cal-popup-body {
+    background: #15191C;
+}
+
+body.dark-mode .cal-popup-foot {
+    border-top-color: #2A3540;
+    background: #1D2329;
+}
+
+/* ── FullCalendar grid — dark theme ── */
+
+/* Toolbar (month/week/day nav bar) */
+body.dark-mode .admin-booking-cal-wrap .fc .fc-header-toolbar {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc .fc-toolbar-title {
+    color: #e4e6eb;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc-button-primary {
+    color: #c8cace;
+    border-color: rgba(242, 190, 0, 0.35);
+    background: transparent;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc-button-primary:hover {
+    background: #F2BE00;
+    border-color: #F2BE00;
+    color: #0A0A0A;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc-button-primary:not(:disabled):active,
+body.dark-mode .admin-booking-cal-wrap .fc-button-primary:not(:disabled).fc-button-active {
+    background: #15191C;
+    border-color: #F2BE00;
+    color: #F2BE00;
+}
+
+/* Grid border */
+body.dark-mode .admin-booking-cal-wrap .fc-view-harness {
+    border-color: #2A3540;
+}
+
+/* Cell borders */
+body.dark-mode .admin-booking-cal-wrap .fc .fc-scrollgrid td,
+body.dark-mode .admin-booking-cal-wrap .fc .fc-scrollgrid th {
+    border-right-color: rgba(42, 53, 64, 0.8) !important;
+    border-bottom-color: rgba(42, 53, 64, 0.8) !important;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc .fc-scrollgrid .fc-col-header-cell:first-child,
+body.dark-mode .admin-booking-cal-wrap .fc .fc-scrollgrid .fc-daygrid-day:first-child,
+body.dark-mode .admin-booking-cal-wrap .fc .fc-scrollgrid td.fc-timegrid-axis,
+body.dark-mode .admin-booking-cal-wrap .fc .fc-scrollgrid td:first-child {
+    border-left-color: rgba(42, 53, 64, 0.8) !important;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc .fc-scrollgrid thead tr:first-child th,
+body.dark-mode .admin-booking-cal-wrap .fc .fc-scrollgrid thead tr:first-child td {
+    border-top-color: rgba(42, 53, 64, 0.8) !important;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc td,
+body.dark-mode .admin-booking-cal-wrap .fc th {
+    border-color: rgba(42, 53, 64, 0.8);
+}
+
+/* Day cell backgrounds */
+body.dark-mode .admin-booking-cal-wrap .fc .fc-daygrid-day {
+    background: #15191C;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc-dayGridMonth-view .fc-daygrid-day:hover,
+body.dark-mode .admin-booking-cal-wrap .fc-multiMonthYear-view .fc-daygrid-day:hover {
+    background-color: rgba(242, 190, 0, 0.06) !important;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc .fc-day-today {
+    background-color: rgba(242, 190, 0, 0.06) !important;
+}
+
+/* Day number */
+body.dark-mode .admin-booking-cal-wrap .fc .fc-daygrid-day-number {
+    color: #c8cace;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc .fc-day-today .fc-daygrid-day-number {
+    color: #F2BE00;
+}
+
+/* Time slot label */
+body.dark-mode .admin-booking-cal-wrap .fc .fc-timegrid-slot-label-cushion {
+    color: #adb5bd;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc .fc-timegrid-slot {
+    border-color: rgba(42, 53, 64, 0.5);
+}
+
+/* All-day row */
+body.dark-mode .admin-booking-cal-wrap .fc-timeGridDay-view .fc-daygrid-body tr td,
+body.dark-mode .admin-booking-cal-wrap .fc-timeGridWeek-view .fc-daygrid-body tr td,
+body.dark-mode .admin-booking-cal-wrap .fc td.fc-timegrid-allday,
+body.dark-mode .admin-booking-cal-wrap .fc td.fc-timegrid-allday.fc-cell-shaded {
+    background: #181E24 !important;
+    box-shadow: inset 0 2px 0 #F2BE00;
+    color: #c8cace;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc-timeGridDay-view .fc-daygrid-body .fc-daygrid-day,
+body.dark-mode .admin-booking-cal-wrap .fc-timeGridWeek-view .fc-daygrid-body .fc-daygrid-day {
+    background: #181E24 !important;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc-timeGridDay-view .fc-daygrid-body tr:hover td,
+body.dark-mode .admin-booking-cal-wrap .fc-timeGridWeek-view .fc-daygrid-body tr:hover td,
+body.dark-mode .admin-booking-cal-wrap .fc-timeGridDay-view .fc-daygrid-body .fc-daygrid-day:hover,
+body.dark-mode .admin-booking-cal-wrap .fc-timeGridWeek-view .fc-daygrid-body .fc-daygrid-day:hover,
+body.dark-mode .admin-booking-cal-wrap .fc td.fc-timegrid-allday:hover,
+body.dark-mode .admin-booking-cal-wrap .fc td.fc-timegrid-allday.fc-cell-shaded:hover {
+    background: #181E24 !important;
+}
+
+/* "All Day" text inside axis cell */
+body.dark-mode .admin-booking-cal-wrap .fc .fc-timegrid-allday .fc-timegrid-axis-frame,
+body.dark-mode .admin-booking-cal-wrap .fc .fc-timegrid-allday .fc-timegrid-axis-cushion,
+body.dark-mode .admin-booking-cal-wrap .fc .fc-timegrid-allday-text,
+body.dark-mode .admin-booking-cal-wrap .fc td.fc-timegrid-allday span {
+    color: #c8cace !important;
+}
+
+/* Year view month cards */
+body.dark-mode .admin-booking-cal-wrap .fc .fc-multimonth-month {
+    border-color: rgba(42, 53, 64, 0.6) !important;
+    background: #1D2329;
+}
+
+body.dark-mode .admin-booking-cal-wrap .fc-multiMonthYear-view .fc-multimonth-title {
+    color: #e4e6eb;
+}
+
+/* Mini calendar */
+body.dark-mode #mini-calendar .fc-toolbar-title { color: #c8cace; }
+body.dark-mode #mini-calendar .fc-daygrid-day-number { color: #c8cace; }
+
+body.dark-mode #mini-calendar .fc td,
+body.dark-mode #mini-calendar .fc th {
+    border-right-color: rgba(42, 53, 64, 0.6) !important;
+    border-bottom-color: rgba(42, 53, 64, 0.6) !important;
+}
+
+body.dark-mode #mini-calendar .fc td:first-child,
+body.dark-mode #mini-calendar .fc th:first-child {
+    border-left-color: rgba(42, 53, 64, 0.6) !important;
+}
+
+body.dark-mode #mini-calendar .fc thead tr:first-child th {
+    border-top-color: rgba(42, 53, 64, 0.6) !important;
+}
+
+body.dark-mode #mini-calendar .fc-day-today {
+    background-color: rgba(242, 190, 0, 0.08) !important;
+    outline-color: #F2BE00;
+}
+
+body.dark-mode .cal-hm-label { color: #adb5bd; }
+body.dark-mode .cal-hm-swatch {
+    border-color: rgba(42, 53, 64, 0.6);
+    color: #c8cace;
+}
+
+/* ── FullCalendar scrollgrid/scroller — browsers default these to white ── */
+body.dark-mode .admin-booking-cal-wrap .fc-scrollgrid,
+body.dark-mode .admin-booking-cal-wrap .fc-scroller,
+body.dark-mode .admin-booking-cal-wrap .fc-view-harness,
+body.dark-mode .admin-booking-cal-wrap .fc-daygrid-body,
+body.dark-mode .admin-booking-cal-wrap table {
+    background: #15191C;
+}
+
+/* Heatmap cells use !important so they override the base cell background.
+   Restate them in dark mode at the correct body.dark-mode specificity
+   so the dark base (#15191C) shows through at reduced opacity. */
+body.dark-mode .admin-booking-cal-wrap .fc .fc-daygrid-day.cal-heat-1 {
+    background-color: rgba(242, 190, 0, 0.08) !important;
+}
+body.dark-mode .admin-booking-cal-wrap .fc .fc-daygrid-day.cal-heat-2 {
+    background-color: rgba(242, 190, 0, 0.22) !important;
+}
+body.dark-mode .admin-booking-cal-wrap .fc .fc-daygrid-day.cal-heat-3 {
+    background-color: rgba(242, 190, 0, 0.42) !important;
+}
+body.dark-mode .admin-booking-cal-wrap .fc .fc-daygrid-day.cal-heat-4 {
+    background-color: rgba(242, 190, 0, 0.65) !important;
+}
+
+/* Mini calendar — cell and scrollgrid backgrounds */
+body.dark-mode #mini-calendar .fc-scrollgrid,
+body.dark-mode #mini-calendar .fc-scroller,
+body.dark-mode #mini-calendar .fc-daygrid-body,
+body.dark-mode #mini-calendar table {
+    background: #1D2329 !important;
+}
+body.dark-mode #mini-calendar .fc-daygrid-day {
+    background: #1D2329 !important;
+}
+body.dark-mode #mini-calendar .fc-daygrid-day:hover {
+    background-color: rgba(242, 190, 0, 0.08) !important;
+}
+body.dark-mode #mini-calendar .fc-daygrid-day.cal-heat-1 {
+    background-color: rgba(242, 190, 0, 0.12) !important;
+}
+body.dark-mode #mini-calendar .fc-daygrid-day.cal-heat-2 {
+    background-color: rgba(242, 190, 0, 0.32) !important;
+}
+body.dark-mode #mini-calendar .fc-daygrid-day.cal-heat-3 {
+    background-color: rgba(242, 190, 0, 0.60) !important;
+}
+
+/* Page meta text (date + bookings count line) */
+body.dark-mode .ease-dir .cal-page-meta { color: #adb5bd; }

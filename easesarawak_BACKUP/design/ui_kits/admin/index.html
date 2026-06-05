@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EASE Sarawak — Admin UI kit</title>
+<link rel="icon" type="image/png" href="../../assets/favicon-ease.png">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+function AdminApp() {
+  const [page, setPage]         = useState("login");
+  const [drawerOrder, setDrawer] = useState(null);
+  const [toast, setToast]        = useState(null);
+
+  // initial: show login briefly then drop into dashboard if visiting via demo
+  const onLogin = () => {
+    setPage("dashboard");
+    showToast(<>Welcome back, <b>Benjamin</b>.</>);
+  };
+
+  const showToast = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2400);
+  };
+
+  const openOrder = (o) => setDrawer(o);
+  const closeOrder = () => setDrawer(null);
+  const advanceOrder = (o) => {
+    showToast(<>Order <b>{o.id}</b> advanced.</>);
+    closeOrder();
+  };
+
+  const onNavigate = (id) => {
+    if (id === "createuser") { showToast(<>Add User form not yet wired.</>); return; }
+    setPage(id);
+  };
+
+  if (page === "login") {
+    return (
+      <>
+        <LoginScreen onLogin={onLogin} />
+        <Toast open={!!toast}>{toast}</Toast>
+      </>
+    );
+  }
+
+  let screen;
+  switch (page) {
+    case "dashboard": screen = <DashboardScreen onOpenOrder={openOrder} />; break;
+    case "orders":    screen = <OrdersScreen    onOpenOrder={openOrder} />; break;
+    case "calendar":  screen = <CalendarScreen />; break;
+    case "profile":   screen = <ProfileScreen />; break;
+    default:          screen = <Placeholder name={page} />;
+  }
+
+  return (
+    <div className="shell">
+      <Sidebar current={page} onNavigate={onNavigate} badges={{ orders: 7, refund: 2 }} />
+      <div className="main">
+        {screen}
+      </div>
+      <Drawer
+        open={!!drawerOrder}
+        order={drawerOrder}
+        onClose={closeOrder}
+        onAdvance={advanceOrder}
+      />
+      <Toast open={!!toast}>{toast}</Toast>
+    </div>
+  );
+}
+
+function Placeholder({ name }) {
+  const labels = {
+    users:    "User Management",
+    revenue:  "Revenue Report",
+    txn:      "Transaction History",
+    service:  "Service Management",
+    promo:    "Promo Code",
+    contact:  "Contact",
+    refund:   "Refund Request",
+  };
+  return (
+    <>
+      <Topbar
+        crumb={<>EASE Admin &middot; <b>{labels[name] || name}</b></>}
+        action={<button className="btn"><i className="fas fa-plus"></i> New</button>}
+      />
+      <div className="content">
+        <PageHead
+          crumb={<>EASE Admin &middot; <b>{labels[name] || name}</b></>}
+          title={labels[name] || name}
+        />
+        <div className="card" style={{ padding: 40, textAlign: "center", color: "var(--fg4)" }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: "1.4rem", color: "var(--ink-1)", marginBottom: 8 }}>
+            {labels[name] || name}
+          </div>
+          <p style={{ maxWidth: 520, margin: "0 auto", fontSize: 13, lineHeight: 1.5 }}>
+            This screen exists in the production EASE Admin portal but isn't fully mocked in this kit.
+            See <code>app/Views/admin/{name}.php</code> in the source codebase for the full implementation.
+          </p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<AdminApp />);
+</script>
+</body>
+</html>

@@ -367,3 +367,125 @@
 
     .usr-srch { min-width: 0; flex: 1; }
 }
+
+/* ============================================================
+   DARK MODE — User Management
+   ============================================================ */
+
+/* Card shell */
+body.dark-mode .usr-card {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+/* Table head row */
+body.dark-mode .usr-tbl th {
+    background: #181E24;
+    color: #e4e6eb;
+    border-bottom-color: #F2BE00;
+}
+
+/* Table body cells */
+body.dark-mode .usr-tbl tbody td {
+    color: #c8cace;
+    border-bottom-color: rgba(42, 53, 64, 0.8);
+    background: transparent;
+}
+
+body.dark-mode .usr-tbl tbody tr:hover td {
+    background: #222930;
+}
+
+body.dark-mode .usr-tbl tbody tr:nth-child(odd) td {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* User name & identifiers */
+body.dark-mode .usr-name  { color: #e4e6eb; }
+body.dark-mode .usr-email { color: #adb5bd; }
+body.dark-mode .usr-idx   { color: #adb5bd; }
+
+/* Date cells */
+body.dark-mode .usr-date       { color: #adb5bd; }
+body.dark-mode .usr-date__time { color: #6B7280; }
+body.dark-mode .usr-date--na   { color: #6B7280; }
+
+/* Avatar border */
+body.dark-mode .usr-av--img { border-color: #2A3540; }
+
+/* Role pills */
+body.dark-mode .usr-role--admin {
+    color: #c8cace;
+    border-color: #2A3540;
+}
+
+/* Empty state */
+body.dark-mode .usr-empty { color: #adb5bd; }
+
+/* Flash messages */
+body.dark-mode .usr-flash--info {
+    background: rgba(242, 190, 0, 0.06);
+    border-color: rgba(242, 190, 0, 0.25);
+    color: #F2BE00;
+}
+
+body.dark-mode .usr-flash--error {
+    background: rgba(192, 69, 69, 0.1);
+    border-color: rgba(192, 69, 69, 0.3);
+    color: #f87171;
+}
+
+/* Form labels inside user cards (create/edit user pages) */
+body.dark-mode .usr-card .form-label {
+    color: #c8cace;
+}
+
+/* Form inputs — !important needed to override Bootstrap/KaAdmin background: #fff */
+body.dark-mode .usr-card .form-control,
+body.dark-mode .usr-card .form-select {
+    background-color: #15191C !important;
+    color:            #e4e6eb !important;
+    border-color:     #2A3540 !important;
+}
+body.dark-mode .usr-card .form-control::placeholder {
+    color: #6B7280 !important;
+    opacity: 1 !important;
+}
+body.dark-mode .usr-card .form-control:focus,
+body.dark-mode .usr-card .form-select:focus {
+    border-color: rgba(242, 190, 0, 0.6) !important;
+    box-shadow: 0 0 0 3px rgba(242, 190, 0, 0.12) !important;
+}
+
+/* Select dropdown options (browser-rendered, needs background on the popdown) */
+body.dark-mode .usr-card .form-select option {
+    background: #1D2329;
+    color: #e4e6eb;
+}
+
+/* Pagination */
+body.dark-mode .usr-pager { border-top-color: #2A3540; }
+
+body.dark-mode .usr-pager .page-item .page-link {
+    background: #1D2329;
+    border-color: #2A3540;
+    color: #c8cace;
+}
+
+body.dark-mode .usr-pager .page-item.active .page-link {
+    background: #F2BE00;
+    border-color: #F2BE00;
+    color: #0A0A0A;
+}
+
+body.dark-mode .usr-pager .page-item.disabled .page-link {
+    background: #181E24;
+    color: #6B7280;
+    border-color: #2A3540;
+}
+
+body.dark-mode .usr-pager .page-item:not(.active):not(.disabled) .page-link:hover {
+    background: #222930;
+    border-color: rgba(242, 190, 0, 0.4);
+    color: #F2BE00;
+}

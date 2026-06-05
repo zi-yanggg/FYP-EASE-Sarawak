@@ -12,12 +12,12 @@
 }
 
 body.dark-mode {
-  --surface-card:      #242526;
-  --surface-card-warm: #1e1f20;
+  --surface-card:      #1D2329;
+  --surface-card-warm: #181E24;
   --surface-row-odd:   rgba(255,255,255,.03);
-  --surface-hover:     #2d2e2f;
-  --surface-header:    #1e1f20;
-  --border-subtle:     #3a3b3c;
+  --surface-hover:     #222930;
+  --surface-header:    #181E24;
+  --border-subtle:     #2A3540;
   --text-primary:      #e4e6eb;
   --text-secondary:    #c8cace;
   --text-muted:        #adb5bd;
@@ -350,42 +350,48 @@ body.dark-mode {
         }
 
         body.dark-mode {
-            background-color: #18191a;
+            background-color: #15191C;
             color: #e4e6eb;
         }
 
+        /* Sidebar, navbar, cards — elevated surface (#1D2329) */
         body.dark-mode .card,
         body.dark-mode .navbar,
         body.dark-mode .footer,
         body.dark-mode .sidebar,
-        body.dark-mode .main-header,
+        body.dark-mode .main-header {
+            background-color: #1D2329 ;
+            color: #e4e6eb ;
+        }
+
+        /* Main panel IS the page background — use the true base (#15191C) */
         body.dark-mode .main-panel {
-            background-color: #242526 ;
+            background-color: #15191C ;
             color: #e4e6eb ;
         }
 
         body.dark-mode .table,
         body.dark-mode .table th,
         body.dark-mode .table td {
-            background-color: #242526 ;
+            background-color: #1D2329 ;
             color: #e4e6eb ;
-            border-color: #3a3b3c ;
+            border-color: #2A3540 ;
         }
 
         body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > * {
-            background-color: #2d2e2f ;
+            background-color: #222930 ;
             color: #e4e6eb ;
         }
 
         body.dark-mode .table-hover > tbody > tr:hover > * {
-            background-color: #3a3b3c ;
+            background-color: #2A3540 ;
             color: #fff ;
         }
 
         body.dark-mode .table-light th,
         body.dark-mode .table-light td,
         body.dark-mode thead.table-light th {
-            background-color: #1e1f20 ;
+            background-color: #181E24 ;
             color: #e4e6eb ;
         }
 
@@ -1070,4 +1076,42 @@ body.dark-mode {
   border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(242,190,0,.15);
   outline: none;
+}
+
+/* ============================================================
+   DARK MODE — page-level backgrounds and header text
+   The .ease-dir design tokens (--paper, --fg2, --fg4, --ink-1)
+   are defined on the child wrapper div, so they can't be
+   overridden via body.dark-mode on the body ancestor. These
+   rules use direct property overrides instead.
+   ============================================================ */
+
+/* Content area wrapper — the main culprit: --paper (#FFFDF5) stays
+   cream without this override because .ease-dir is a closer ancestor */
+body.dark-mode .page-inner { background: #15191C !important; }
+
+/* Page header text — .ease-dir specificity (0,2,0) beats
+   the generic body.dark-mode h1/span rules (0,1,1) */
+body.dark-mode .ease-dir .ease-page-title       { color: #e4e6eb; }
+body.dark-mode .ease-dir .ease-page-title b     { color: #F2BE00; }
+body.dark-mode .ease-dir .ease-crumb            { color: #adb5bd; }
+body.dark-mode .ease-dir .ease-crumb b          { color: #F2BE00; }
+body.dark-mode .ease-dir .ease-page-head        { border-bottom-color: #2A3540; }
+
+/* Form controls — browsers add their own white background */
+body.dark-mode .ease-dir .form-control,
+body.dark-mode .ease-dir .form-select {
+  background-color: #1D2329;
+  color:            #e4e6eb;
+  border-color:     #2A3540;
+}
+body.dark-mode .ease-dir .form-control::placeholder { color: #6B7280; }
+
+/* DataTables search / length inputs */
+body.dark-mode .ease-dir .dataTables_wrapper .dataTables_info { color: #adb5bd; }
+body.dark-mode .ease-dir .dataTables_wrapper .dataTables_length select,
+body.dark-mode .ease-dir .dataTables_wrapper .dataTables_filter input {
+  background-color: #1D2329;
+  color:            #e4e6eb;
+  border-color:     #2A3540;
 }

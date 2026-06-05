@@ -1008,6 +1008,292 @@ button.cal-clear-btn:focus-visible {
 /* utility */
 .min-w-0 { min-width: 0; }
 
+/* ============================================================
+   DARK MODE — Report & Revenue Page (also covers profile.css
+   which inherits these same :root tokens)
+   ============================================================ */
+
+body.dark-mode .rpt-page,
+body.dark-mode .rpt-page * {
+    --text-dark:   #e4e6eb;
+    --text-mid:    #adb5bd;
+    --text-light:  #6B7280;
+    --bg-page:     #15191C;
+    --bg-card:     #1D2329;
+    --bg-muted:    #222930;
+    --border-soft: #2A3540;
+    --shadow-card: 0 2px 16px rgba(0,0,0,.35);
+}
+
+/* Page background */
+body.dark-mode .rpt-page { background: #15191C; }
+
+/* Cards */
+body.dark-mode .rpt-card {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+/* KPI grid */
+body.dark-mode .rpt-kpis {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+body.dark-mode .rpt-kpi {
+    border-right-color: #2A3540;
+}
+
+body.dark-mode .rpt-kpi:hover { background: #222930; }
+
+body.dark-mode .rpt-kpi-foot {
+    border-top-color: #2A3540;
+}
+
+body.dark-mode .rpt-kpi-value { color: #e4e6eb; }
+
+body.dark-mode .rpt-kpi-label { color: #adb5bd; }
+
+/* Period / chart toggles */
+body.dark-mode .period-toggle {
+    background: #181E24;
+    box-shadow: inset 0 0 0 1px #2A3540;
+}
+
+body.dark-mode .period-toggle .pt-btn {
+    color: #adb5bd;
+}
+
+body.dark-mode .period-toggle .pt-btn.active {
+    background: #F2BE00;
+    color: #0A0A0A;
+    box-shadow: inset 0 0 0 1px rgba(212,167,0,.55);
+}
+
+body.dark-mode .period-toggle .pt-btn:not(.active):hover {
+    background: rgba(255,255,255,.04);
+    color: #e4e6eb;
+}
+
+body.dark-mode .chart-toggle {
+    background: #181E24;
+    box-shadow: inset 0 0 0 1px #2A3540;
+}
+
+body.dark-mode .chart-toggle .ct-btn {
+    color: #adb5bd;
+}
+
+body.dark-mode .chart-toggle .ct-btn.active {
+    background: #F2BE00;
+    color: #0A0A0A;
+}
+
+/* Selects & date pickers */
+body.dark-mode .report-select,
+body.dark-mode .rpt-sm-select,
+body.dark-mode .rpt-date-pick,
+body.dark-mode .export-range-select {
+    background-color: #222930;
+    color: #c8cace;
+    border-color: #2A3540;
+}
+
+body.dark-mode .report-select:hover,
+body.dark-mode .rpt-date-pick:hover { background-color: #2A3540; }
+
+body.dark-mode .report-select:focus,
+body.dark-mode .rpt-date-pick:focus {
+    box-shadow: 0 0 0 3px rgba(242,190,0,.15);
+    background: #222930;
+}
+
+body.dark-mode .report-select option { background: #1D2329; color: #c8cace; }
+
+/* Form inputs */
+body.dark-mode .rpt-input {
+    border-color: #2A3540;
+    background: #222930;
+    color: #e4e6eb;
+}
+
+body.dark-mode .rpt-input:focus {
+    border-color: #F2BE00;
+    background: #1D2329;
+    box-shadow: 0 0 0 3px rgba(242,190,0,.15);
+}
+
+/* Stats strip — replaces #F2E3A8 */
+body.dark-mode .rpt-stats-strip {
+    background: #181E24;
+}
+
+body.dark-mode .rpt-stat-divider {
+    background-image: linear-gradient(to bottom, rgba(255,255,255,.15) 50%, transparent 50%);
+}
+
+/* Bar detail panel */
+body.dark-mode .rev-bar-detail {
+    background: linear-gradient(90deg, #181E24 0%, #1D2329 100%);
+    border-color: rgba(42,53,64,.8);
+}
+
+body.dark-mode .rev-bar-detail .rbd-date    { color: #e4e6eb; }
+body.dark-mode .rev-bar-detail .rbd-revenue { color: #e4e6eb; }
+body.dark-mode .rev-bar-detail .rbd-meta    { color: #adb5bd; }
+
+body.dark-mode .rev-bar-detail .rbd-table {
+    background: rgba(29,35,41,.9);
+    border-color: rgba(42,53,64,.6);
+}
+
+body.dark-mode .rev-bar-detail .rbd-table th,
+body.dark-mode .rev-bar-detail .rbd-table td {
+    border-color: rgba(42,53,64,.6);
+    color: #e4e6eb;
+}
+
+body.dark-mode .rev-bar-detail .rbd-table th {
+    background: rgba(42,53,64,.4);
+    color: #adb5bd;
+}
+
+body.dark-mode .rev-bar-detail .rbd-close {
+    background: rgba(255,255,255,.06);
+    color: #adb5bd;
+}
+
+body.dark-mode .rev-bar-detail .rbd-close:hover {
+    background: rgba(255,255,255,.12);
+    color: #e4e6eb;
+}
+
+/* Chart export panel */
+body.dark-mode .chart-export-panel {
+    background: #181E24;
+}
+
+/* Export dropdown */
+body.dark-mode .rpt-export-dropdown {
+    background: #1D2329;
+    border-color: #2A3540;
+}
+
+body.dark-mode .rpt-export-dropdown-title {
+    background: #F2BE00;
+    color: #0A0A0A;
+}
+
+body.dark-mode .rpt-export-dropdown-body { background: #1D2329; }
+body.dark-mode .export-label { color: #adb5bd; }
+
+/* Export buttons */
+body.dark-mode .btn-export-csv {
+    background: #222930;
+    color: #c8cace;
+}
+
+body.dark-mode .btn-export-csv:hover {
+    background: #2A3540;
+    color: #e4e6eb;
+}
+
+/* Mini calendar (report page) */
+body.dark-mode .cal-card-body { background: #1D2329; }
+body.dark-mode .cal-nav-title  { color: #e4e6eb; }
+
+body.dark-mode .cal-nav-btn {
+    background: #222930;
+    color: #adb5bd;
+}
+
+body.dark-mode .cal-nav-btn:hover {
+    background: rgba(242,190,0,.12);
+    color: #F2BE00;
+}
+
+body.dark-mode .cal-grid .cal-day {
+    background: #222930;
+    border-color: #2A3540;
+    color: #c8cace;
+}
+
+body.dark-mode .cal-grid .cal-day:not(.cal-blank):hover {
+    background: rgba(242,190,0,.1);
+    color: #F2BE00;
+}
+
+body.dark-mode .cal-grid .cal-day.cal-past   { color: #6B7280; }
+body.dark-mode .cal-grid .cal-day.cal-has-data { border-color: #D4A700; color: #e4e6eb; }
+body.dark-mode .cal-grid .cal-day.cal-has-data-l1 { background: rgba(255,233,166,.12); }
+body.dark-mode .cal-grid .cal-day.cal-has-data-l2 { background: rgba(255,217,94,.15);  }
+body.dark-mode .cal-grid .cal-day.cal-has-data-l3 { background: rgba(242,190,0,.3); color: #fff; }
+body.dark-mode .cal-grid .cal-day.cal-has-data-l4 { background: rgba(215,163,0,.4); color: #fff; }
+body.dark-mode .cal-grid .cal-day.cal-in-range     { background: rgba(242,190,0,.1); color: #F2BE00; }
+body.dark-mode .cal-grid .cal-day.cal-range-preview { background: rgba(242,190,0,.06); color: #F2BE00; }
+
+/* Metric box — stays gold, no dark override needed */
+
+/* Top customers list */
+body.dark-mode .rpt-cust-border { border-bottom-color: #2A3540; }
+body.dark-mode .rpt-cust-name   { color: #e4e6eb; }
+body.dark-mode .rpt-cust-email  { color: #adb5bd; }
+body.dark-mode .rpt-cust-amount { color: #e4e6eb; }
+body.dark-mode .rpt-cust-orders { color: #adb5bd; }
+
+body.dark-mode .rpt-rank-2 { background: #222930; color: #adb5bd; }
+body.dark-mode .rpt-rank-3 { background: rgba(192,86,33,.15); color: #fb923c; }
+body.dark-mode .rpt-rank-n { background: #222930; color: #adb5bd; }
+
+/* ── Profile page (inherits .rpt-page tokens above) ── */
+
+body.dark-mode .prof-page--tight-head .rpt-card {
+    border-color: #2A3540;
+}
+
+body.dark-mode .prof-avatar-edit {
+    border-color: #1D2329;
+}
+
+body.dark-mode .prof-badge-active {
+    background: rgba(30,142,62,.15);
+    color: #6ee7b7;
+}
+
+body.dark-mode .prof-security-heading { color: #e4e6eb; }
+
+body.dark-mode .prof-tips-list li { color: #adb5bd; }
+
+body.dark-mode .prof-divider { border-top-color: #2A3540; }
+
+body.dark-mode .rpt-page .form-control.rpt-input:disabled,
+body.dark-mode .rpt-page .form-control.rpt-input[readonly] {
+    background: #181E24;
+    color: #6B7280;
+}
+
+body.dark-mode .rpt-cancel-btn {
+    background: #222930;
+    color: #adb5bd;
+    border-color: #2A3540;
+}
+
+body.dark-mode .rpt-cancel-btn:hover {
+    background: #2A3540;
+    color: #e4e6eb;
+    border-color: #adb5bd;
+}
+
+body.dark-mode .prof-toast {
+    background: #1D2329;
+    border-color: #2A3540;
+    border-left-color: #1E8E3E;
+}
+
+body.dark-mode .prof-toast__msg   { color: #c8cace; }
+body.dark-mode .prof-toast__close { color: #adb5bd; }
+body.dark-mode .prof-toast__close:hover { background: rgba(255,255,255,.07); color: #e4e6eb; }
+
 /* ════════════════════════════════════════
    KPI DOT INDICATORS
 ════════════════════════════════════════ */
