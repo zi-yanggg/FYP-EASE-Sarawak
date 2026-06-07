@@ -376,6 +376,9 @@ if (! function_exists('ease_translation_catalog')) {
                 'Select where you would like to store your luggage.' => 'Pilih tempat anda ingin menyimpan bagasi anda.',
                 'Select the number of bags you want to store.' => 'Pilih bilangan beg yang ingin anda simpan.',
                 'Select date and time you will collect your luggage.' => 'Pilih tarikh dan masa anda akan mengambil bagasi anda.',
+                'Information' => 'Maklumat',
+                'IN-TOWN DELIVERY' => 'Penghantaran Dalam Bandar',
+                'LUGGAGE STORAGE' => 'Penyimpanan Bagasi',
             ],
             'zh' => [
                 'Menu' => '菜单',
@@ -699,9 +702,9 @@ if (! function_exists('ease_translation_catalog')) {
                 'Select where you would like to store your luggage.' => '请选择您希望存放行李的位置。',
                 'Select the number of bags you want to store.' => '请选择您要存放的袋子数量。',
                 'Select date and time you will collect your luggage.' => '请选择您领取行李的日期和时间。',
-                'Time:' => '时间：',
-                'Time:' => '时间：',
-
+                'Information' => '信息',
+                'IN-TOWN DELIVERY' => '市区配送',
+                'LUGGAGE STORAGE' => '行李寄存',
             ],
         ];
     }
