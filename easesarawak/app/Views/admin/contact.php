@@ -231,7 +231,7 @@ function contactRowClass(bool $isRead): string
         if (messageData.msg_id) {
             fetch('<?= base_url('admin/markMessageRead') ?>/' + messageData.msg_id, {
                 method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': getCsrfToken() }
             }).then(function () {
                 var row = document.getElementById('message-row-' + messageData.msg_id);
                     if (row) {

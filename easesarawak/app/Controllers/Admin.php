@@ -1181,7 +1181,14 @@ class Admin extends BaseController
                 'role'     => 'required|in_list[0,1]',
                 'username' => 'required|min_length[3]|max_length[100]',
                 'email'    => 'required|valid_email|max_length[255]',
-                'password' => 'required|min_length[6]',
+                'password' => [
+                    'label'  => 'Password',
+                    'rules'  => 'required|min_length[8]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/]',
+                    'errors' => [
+                        'min_length'  => 'Password must be at least 8 characters.',
+                        'regex_match' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+                    ],
+                ],
             ]);
 
             if (!$validation->withRequest($this->request)->run()) {

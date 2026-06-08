@@ -47,7 +47,7 @@
 
                     <div class="prof-tips-label">Password Tips</div>
                     <ul class="prof-tips-list">
-                        <li><i class="fas fa-check-circle"></i> Use at least 6 characters</li>
+                        <li><i class="fas fa-check-circle"></i> Use at least 8 characters</li>
                         <li><i class="fas fa-check-circle"></i> Mix letters, numbers &amp; symbols</li>
                         <li><i class="fas fa-check-circle"></i> Avoid reusing old passwords</li>
                         <li><i class="fas fa-check-circle"></i> Don't share it with anyone</li>
@@ -100,7 +100,7 @@
                                     name="new_password"
                                     id="new_password"
                                     class="form-control rpt-input"
-                                    minlength="6"
+                                    minlength="8"
                                     autocomplete="new-password"
                                     required>
                                 <button type="button" class="prof-pass-toggle toggle-password" tabindex="-1" aria-label="Show password">
@@ -110,7 +110,7 @@
                             <?php if (isset($validation) && $validation->hasError('new_password')): ?>
                                 <small class="text-danger d-block mt-1"><?= $validation->getError('new_password') ?></small>
                             <?php else: ?>
-                                <small class="prof-form-help">Minimum 6 characters.</small>
+                                <small class="prof-form-help">Min 8 chars, with uppercase, lowercase, number &amp; symbol.</small>
                             <?php endif; ?>
                         </div>
 
@@ -125,7 +125,7 @@
                                     name="confirm_password"
                                     id="confirm_password"
                                     class="form-control rpt-input"
-                                    minlength="6"
+                                    minlength="8"
                                     autocomplete="new-password"
                                     required>
                                 <button type="button" class="prof-pass-toggle toggle-password" tabindex="-1" aria-label="Show password">

@@ -29,6 +29,9 @@
  </div>
  <!--   Core JS Files   -->
  <script src="<?= base_url('assets/js/admin/core/jquery-3.7.1.min.js') ?>"></script>
+ <script>
+     $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': getCsrfToken() } });
+ </script>
  <script src="<?= base_url('assets/js/admin/core/popper.min.js') ?>"></script>
  <script src="<?= base_url('assets/js/admin/core/bootstrap.min.js') ?>"></script>
 

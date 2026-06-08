@@ -75,11 +75,17 @@ class AuthController extends BaseController
     {
         helper(['form', 'url']);
         $rules = [
-            'password' => 'required|min_length[3]',
-            'confirm_password' => 'required|matches[password]'
+            'password'         => 'required|min_length[8]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/]',
+            'confirm_password' => 'required|matches[password]',
+        ];
+        $messages = [
+            'password' => [
+                'min_length'  => 'Password must be at least 8 characters.',
+                'regex_match' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+            ],
         ];
 
-        if (!$this->validate($rules)) {
+        if (!$this->validate($rules, $messages)) {
             return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 

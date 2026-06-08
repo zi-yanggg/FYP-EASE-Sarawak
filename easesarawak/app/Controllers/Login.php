@@ -3,8 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\User_model;
-use CodeIgniter\Cookie\Cookie;
-
 class Login extends BaseController
 {
     public function index()
@@ -25,6 +23,9 @@ class Login extends BaseController
         ])->first();
 
         if ($userData && password_verify($password, $userData['password'])) {
+            $cache = \Config\Services::cache();
+            $cache->delete('login_fail_' . md5($this->request->getIPAddress()));
+
             $session = session();
             $session->set([
                 'user_id' => $userData['user_id'],
@@ -40,17 +41,17 @@ class Login extends BaseController
                     'remember_token' => $token
                 ]);
 
-                // Set cookie for 30 days
+                // Set cookie for 7 days
                 $cookie = cookie(
                     'remember_me',
                     $token,
                     [
-                        'expires'  => time() + (60 * 60 * 24 * 30), // 30 days
+                        'expires'  => time() + (60 * 60 * 24 * 7), // 7 days
                         'path'     => '/',
                         'domain'   => '',
-                        'secure'   => false, // Set to true if using HTTPS
+                        'secure'   => ENVIRONMENT === 'production',
                         'httponly' => true,
-                        'samesite' => 'Lax'
+                        'samesite' => 'Strict'
                     ]
                 );
                 $this->response->setCookie($cookie);
@@ -60,6 +61,12 @@ class Login extends BaseController
 
             return redirect()->to(base_url('/admin'));
         } else {
+            $cache   = \Config\Services::cache();
+            $ip      = $this->request->getIPAddress();
+            $key     = 'login_fail_' . md5($ip);
+            $current = (int) ($cache->get($key) ?? 0);
+            $cache->save($key, $current + 1, 900);
+
             return redirect()->back()->with('error', 'Incorrect username or password');
         }
     }

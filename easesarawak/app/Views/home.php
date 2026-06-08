@@ -1404,6 +1404,7 @@
                 <p class="message-desc">Travel Light. Travel Smart. Travel with EASE.</p>
 
                 <form class="contact-form" method="post" action="<?= base_url('/message'); ?>">
+                    <?= csrf_field() ?>
                     <div class="row-inputs">
                         <input type="email" placeholder="Your Email" name="email" required>
                         <input type="text" placeholder="Your Phone Number" name="phone" required>

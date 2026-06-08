@@ -1266,10 +1266,12 @@ $easeCatalog = ease_translation_catalog();
             console.log('Sending request to check promo code...');
             
             // Check promo code with server
+            var promoCsrf = decodeURIComponent(('; ' + document.cookie).split('; <?= config('Security')->cookieName ?>=').pop().split(';').shift());
             fetch('checkPromoCode', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': promoCsrf,
                 },
                 body: JSON.stringify({ promo_code: promoCode })
             })

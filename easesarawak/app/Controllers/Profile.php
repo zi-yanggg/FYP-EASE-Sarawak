@@ -101,11 +101,17 @@ class Profile extends BaseController
 
         $rules = [
             'current_password' => 'required',
-            'new_password'     => 'required|min_length[6]',
-            'confirm_password' => 'required|matches[new_password]'
+            'new_password'     => 'required|min_length[8]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/]',
+            'confirm_password' => 'required|matches[new_password]',
+        ];
+        $messages = [
+            'new_password' => [
+                'min_length'  => 'Password must be at least 8 characters.',
+                'regex_match' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+            ],
         ];
 
-        if (!$this->validate($rules)) {
+        if (!$this->validate($rules, $messages)) {
             return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 

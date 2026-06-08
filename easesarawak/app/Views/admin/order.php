@@ -566,6 +566,11 @@ document.getElementById('orderSearch').addEventListener('keyup', function() {
     });
 });
 
+function escHtml(s) {
+    if (s == null) return '';
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 document.querySelectorAll('.viewOrderBtn').forEach(function(btn) {
     btn.addEventListener('click', function() {
         var orderId    = this.dataset.id;
@@ -583,8 +588,8 @@ document.querySelectorAll('.viewOrderBtn').forEach(function(btn) {
                     Object.entries(detailsObj).forEach(function(entry) {
                         var key = entry[0];
                         var value = entry[1];
-                        var prettyKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, function(s) { return s.toUpperCase(); });
-                        detailRows += '<div class="ord-kv"><div class="ord-kv__k">' + prettyKey + '</div><div class="ord-kv__v">' + (value || '—') + '</div></div>';
+                        var prettyKey = escHtml(key.replace(/([A-Z])/g, ' $1').replace(/^./, function(s) { return s.toUpperCase(); }));
+                        detailRows += '<div class="ord-kv"><div class="ord-kv__k">' + prettyKey + '</div><div class="ord-kv__v">' + escHtml(value || '—') + '</div></div>';
                     });
                     var statusIdx = parseInt(o.status, 10);
                     var statusBadge = '<span class="ord-status-badge ' + ORD_STATUS_CLASSES[statusIdx] + '">'
@@ -597,12 +602,12 @@ document.querySelectorAll('.viewOrderBtn').forEach(function(btn) {
                             '<div class="ord-detail-section__head">Customer Information</div>' +
                             '<div class="ord-detail-section__body">' +
                                 '<div class="ord-kv-grid">' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">First Name</div><div class="ord-kv__v">' + o.first_name + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Last Name</div><div class="ord-kv__v">' + o.last_name + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Email</div><div class="ord-kv__v">' + o.email + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Phone</div><div class="ord-kv__v">' + o.phone + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">ID Number</div><div class="ord-kv__v">' + o.id_num + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Social</div><div class="ord-kv__v">' + (socialMap[o.social] || 'Unknown') + (o.social_num ? ' · ' + o.social_num : '') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">First Name</div><div class="ord-kv__v">' + escHtml(o.first_name) + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Last Name</div><div class="ord-kv__v">' + escHtml(o.last_name) + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Email</div><div class="ord-kv__v">' + escHtml(o.email) + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Phone</div><div class="ord-kv__v">' + escHtml(o.phone) + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">ID Number</div><div class="ord-kv__v">' + escHtml(o.id_num) + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Social</div><div class="ord-kv__v">' + escHtml(socialMap[o.social] || 'Unknown') + (o.social_num ? ' · ' + escHtml(o.social_num) : '') + '</div></div>' +
                                 '</div>' +
                             '</div>' +
                         '</div>' +
@@ -610,17 +615,17 @@ document.querySelectorAll('.viewOrderBtn').forEach(function(btn) {
                             '<div class="ord-detail-section__head">Order Information</div>' +
                             '<div class="ord-detail-section__body">' +
                                 '<div class="ord-kv-grid">' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Service Type</div><div class="ord-kv__v">' + o.service_type + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Service Type</div><div class="ord-kv__v">' + escHtml(o.service_type) + '</div></div>' +
                                     '<div class="ord-kv"><div class="ord-kv__k">Status</div><div class="ord-kv__v">' + statusBadge + '</div></div>' +
                                     '<div class="ord-kv"><div class="ord-kv__k">Amount</div><div class="ord-kv__v ord-kv__v--price">RM ' + parseFloat(o.amount).toFixed(2) + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Payment Method</div><div class="ord-kv__v">' + (o.payment_method || '—') + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Special</div><div class="ord-kv__v">' + (o.special || '—') + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Promo Code</div><div class="ord-kv__v">' + (o.promo_code || '—') + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Upload</div><div class="ord-kv__v">' + (o.upload ? '<a href="' + uploadBase + '/' + o.upload + '" target="_blank" class="ord-kv__link">View File</a>' : '—') + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Modified By</div><div class="ord-kv__v">' + (o.modified_by_username || '—') + '</div></div>' +
-                                    '<div class="ord-kv"><div class="ord-kv__k">Last Modified</div><div class="ord-kv__v">' + (o.modified_date || '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Payment Method</div><div class="ord-kv__v">' + escHtml(o.payment_method || '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Special</div><div class="ord-kv__v">' + escHtml(o.special || '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Promo Code</div><div class="ord-kv__v">' + escHtml(o.promo_code || '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Upload</div><div class="ord-kv__v">' + (o.upload ? '<a href="' + uploadBase + '/' + encodeURIComponent(o.upload) + '" target="_blank" class="ord-kv__link">View File</a>' : '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Modified By</div><div class="ord-kv__v">' + escHtml(o.modified_by_username || '—') + '</div></div>' +
+                                    '<div class="ord-kv"><div class="ord-kv__k">Last Modified</div><div class="ord-kv__v">' + escHtml(o.modified_date || '—') + '</div></div>' +
                                 '</div>' +
-                                (o.special_note ? '<div class="ord-kv ord-kv--full" style="margin-top:12px"><div class="ord-kv__k">Special Note</div><div class="ord-kv__v">' + o.special_note + '</div></div>' : '') +
+                                (o.special_note ? '<div class="ord-kv ord-kv--full" style="margin-top:12px"><div class="ord-kv__k">Special Note</div><div class="ord-kv__v">' + escHtml(o.special_note) + '</div></div>' : '') +
                             '</div>' +
                         '</div>' +
                         '<div class="ord-detail-section">' +
@@ -633,12 +638,12 @@ document.querySelectorAll('.viewOrderBtn').forEach(function(btn) {
                         '<div class="ord-detail-section">' +
                             '<div class="ord-detail-section__head">Admin Note</div>' +
                             '<div class="ord-detail-section__body">' +
-                                '<div class="ord-note-display">' + o.comment + '</div>' +
+                                '<div class="ord-note-display">' + escHtml(o.comment) + '</div>' +
                             '</div>' +
                         '</div>' : '') +
                     '</div>';
                 } else {
-                    contentDiv.innerHTML = '<div class="text-danger text-center py-4">' + data.message + '</div>';
+                    contentDiv.innerHTML = '<div class="text-danger text-center py-4">' + escHtml(data.message) + '</div>';
                 }
             })
             .catch(function() {

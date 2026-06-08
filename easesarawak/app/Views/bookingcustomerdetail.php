@@ -890,10 +890,14 @@
             // Debug: Log the data being sent
             console.log('Sending form data with file upload');
 
+            // Attach current CSRF token so the global filter accepts the request
+            var csrfCookie = ('; ' + document.cookie).split('; <?= config('Security')->cookieName ?>=').pop().split(';').shift();
+            formData.append('<?= csrf_token() ?>', decodeURIComponent(csrfCookie));
+
             // Send data to server using FormData (not JSON)
             fetch('saveOrder', {
                 method: 'POST',
-                body: formData 
+                body: formData
             })
             .then(response => {
                 console.log('Response status:', response.status);

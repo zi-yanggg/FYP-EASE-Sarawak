@@ -25,6 +25,12 @@ function timeAgo($datetime)
 
     <!-- Ensure relative asset paths resolve from the application root -->
     <base href="<?= base_url('/') ?>">
+    <meta name="csrf-token" content="<?= csrf_hash() ?>">
+    <script>
+        function getCsrfToken() {
+            return (document.querySelector('meta[name="csrf-token"]') || {}).content || '';
+        }
+    </script>
 
     <!-- Fonts and icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -522,7 +528,8 @@ function timeAgo($datetime)
                                         fetch('<?= base_url('admin/markAllMessagesRead') ?>', {
                                             method: 'POST',
                                             headers: {
-                                                'X-Requested-With': 'XMLHttpRequest'
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'X-CSRF-TOKEN': getCsrfToken()
                                             }
                                         })
                                         .then(response => response.json())
@@ -632,7 +639,8 @@ function timeAgo($datetime)
                                         fetch('<?= base_url('admin/markAllMessagesRead') ?>', {
                                             method: 'POST',
                                             headers: {
-                                                'X-Requested-With': 'XMLHttpRequest'
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'X-CSRF-TOKEN': getCsrfToken()
                                             }
                                         })
                                         .then(response => response.json())
