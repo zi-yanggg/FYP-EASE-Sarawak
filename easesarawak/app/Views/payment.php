@@ -559,27 +559,25 @@ const elements = stripe.elements({
     const orderId = getOrderId();
 
     // Order Summary （RM）
+    if (!orderId) {
+      alert('Order ID is missing. Please complete booking again.');
+      return;
+    }
+
     const orderTotalRm = getOrderTotalFromSummary();
 
-    //  Stripe cents
-    const amountCents = Math.round(orderTotalRm * 100);
-
-    console.log("Final charge amount:", orderTotalRm, "RM →", amountCents, "cents");
-
     try {
-      //  PaymentIntent
+      // Server computes authoritative amount from order_id
       const intentRes = await fetch("<?= site_url('card-payment/intent') ?>", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-        amount: amountCents,
-        currency: "myr",
+        order_id: parseInt(orderId, 10),
         receipt_email: receiptEmail,
         metadata: {
             card_name: cardName,
             customer_email: receiptEmail,
-            order_id: orderId
-
+            order_id: String(orderId)
         }
         })
       });
@@ -598,6 +596,7 @@ const elements = stripe.elements({
 
       const intentData = await intentRes.json();
       const clientSecret = intentData.client_secret;
+      const amountCents = intentData.amount_cents || Math.round(orderTotalRm * 100);
 
       // card payment function
       const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {

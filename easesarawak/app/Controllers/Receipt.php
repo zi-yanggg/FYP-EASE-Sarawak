@@ -2,34 +2,21 @@
 
 namespace App\Controllers;
 
+use App\Services\NotificationService;
+use App\Services\PaymentService;
+use App\Services\PricingService;
 use CodeIgniter\Controller;
-use Config\Services;
 
 class Receipt extends Controller
 {
     /**
-* POST /send-receipt
-
-* Parameters:
-
-* - email
-
-* - amount_cents (integer, in cents, e.g., 7000 = RM70.00)
-
-* - currency (myr)
-
-* - status (succeeded, etc.)
-
-* - payment_intent_id (optional)
+     * POST /send-receipt
      */
     public function send()
     {
         $email           = $this->request->getPost('email');
-        $amountCents     = (int) $this->request->getPost('amount_cents');
-        $currency        = $this->request->getPost('currency') ?: 'myr';
-        $status          = $this->request->getPost('status') ?: 'succeeded';
         $paymentIntentId = $this->request->getPost('payment_intent_id') ?? '';
-        $orderId = $this->request->getPost('order_id') ?? '';
+        $orderId         = (int) ($this->request->getPost('order_id') ?? 0);
 
         if (empty($email)) {
             return $this->response
@@ -37,72 +24,42 @@ class Receipt extends Controller
                 ->setJSON(['error' => 'Missing email']);
         }
 
-        $amountMajor   = $amountCents / 100;
-        $amountDisplay = number_format($amountMajor, 2);
+        $amountCents = (int) $this->request->getPost('amount_cents');
+        $currency    = $this->request->getPost('currency') ?: 'myr';
+        $status      = $this->request->getPost('status') ?: 'succeeded';
 
-    $emailService = Services::email();
-
-    $logoPath = FCPATH . 'assets/images/Ease_PNG_File-01.png';
-
-    $logoHtml = '';
-
-    if (file_exists($logoPath)) {
-        $emailService->attach($logoPath, 'inline');
-        $logoCid = $emailService->setAttachmentCID($logoPath);
-
-        if ($logoCid) {
-            $logoHtml = "
-                <div style='text-align:left; margin-bottom:20px;'>
-                    <img src='cid:{$logoCid}' 
-                        alt='EASE Sarawak Logo' 
-                        style='width:180px; height:auto; display:block; margin:0;'>
-                </div>
-            ";
-        }
-    }
-
-        $message = "
-            <div style='font-family: Arial, sans-serif; color:#222; max-width:600px;'>
-
-                {$logoHtml}
-
-                <h2 style='color:#000;'>EASE Sarawak Payment Receipt</h2>
-                <p>Thank you for your payment.</p>
-        ";
-
-        if ($orderId) {
-            $message .= "<p><strong>Order ID:</strong> #" . esc($orderId) . "</p>";
+        if ($orderId > 0) {
+            try {
+                $pricing     = (new PricingService())->calculateFromOrderId($orderId);
+                $amountCents = $pricing['total_cents'];
+            } catch (\Throwable $e) {
+                log_message('warning', 'Receipt: could not verify order amount: {msg}', ['msg' => $e->getMessage()]);
+            }
         }
 
-        $message .= "
-                <p><strong>Amount:</strong> " . strtoupper($currency) . " {$amountDisplay}</p>
-                <p><strong>Status:</strong> {$status}</p>
-        ";
-
-        if ($paymentIntentId) {
-            $message .= "<p><strong>Payment Intent ID:</strong> {$paymentIntentId}</p>";
+        if ($paymentIntentId !== '') {
+            try {
+                (new PaymentService())->initStripe();
+                $pi = \Stripe\PaymentIntent::retrieve($paymentIntentId);
+                if (($pi->status ?? '') === 'succeeded') {
+                    $amountCents = (int) ($pi->amount_received ?? $amountCents);
+                }
+            } catch (\Throwable $e) {
+                log_message('warning', 'Receipt: could not verify payment intent: {msg}', ['msg' => $e->getMessage()]);
+            }
         }
 
-        $message .= "
-                <p>If you have any questions, please contact our support.</p>
+        $notification = new NotificationService();
+        $sent         = $notification->sendReceipt(
+            $email,
+            $amountCents,
+            $currency,
+            $status,
+            $paymentIntentId,
+            $orderId > 0 ? (string) $orderId : ''
+        );
 
-                <hr>
-
-                <p style='font-size:12px; color:#777;'>
-                    EASE Baggage Storage & Delivery
-                </p>
-
-            </div>
-        ";
-        $emailService->setTo($email);
-        $emailService->setSubject('EASE Sarawak Payment Receipt');
-        $emailService->setMessage($message);
-        $emailService->setMailType('html');
-
-        if (! $emailService->send()) {
-            $debug = $emailService->printDebugger(['headers', 'subject', 'body']);
-            log_message('error', 'Failed to send receipt email: {debug}', ['debug' => $debug]);
-
+        if (! $sent) {
             return $this->response
                 ->setStatusCode(500)
                 ->setJSON(['error' => 'Failed to send email']);

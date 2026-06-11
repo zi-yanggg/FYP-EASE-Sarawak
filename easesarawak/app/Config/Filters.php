@@ -2,7 +2,10 @@
 
 namespace Config;
 
+use App\Filters\ApiThrottleFilter;
+use App\Filters\AuthFilter;
 use App\Filters\LoginThrottle;
+use App\Filters\RoleFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -36,6 +39,9 @@ class Filters extends BaseFilters
         'pagecache'      => PageCache::class,
         'performance'    => PerformanceMetrics::class,
         'loginThrottle'  => LoginThrottle::class,
+        'auth'           => AuthFilter::class,
+        'role'           => RoleFilter::class,
+        'apiThrottle'    => ApiThrottleFilter::class,
     ];
 
     /**

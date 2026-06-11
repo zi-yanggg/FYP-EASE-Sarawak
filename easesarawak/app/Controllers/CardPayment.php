@@ -1,65 +1,51 @@
-<?php namespace App\Controllers;
+<?php
 
-use App\Controllers\BaseController;
+namespace App\Controllers;
+
 use App\Models\PaymentModel;
-use Stripe\Stripe;
-use Stripe\PaymentIntent;
+use App\Services\PaymentService;
 use Stripe\Webhook;
 
 class CardPayment extends BaseController
 {
-    protected $payments;
+    protected PaymentService $paymentService;
+    protected PaymentModel $payments;
 
     public function __construct()
     {
-        $this->payments = new PaymentModel();
-    }
-
-    protected function initStripe(): void
-    {
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        $this->paymentService = new PaymentService();
+        $this->payments       = new PaymentModel();
     }
 
     /**
      * POST /card-payment/intent
+     * Body: { order_id: 123, receipt_email?: "...", metadata?: {} }
      */
     public function createIntent()
     {
-        $body = $this->request->getJSON(true) ?? $this->request->getPost();
-        $amount = intval($body['amount'] ?? 0);    // sen / cents
+        $body    = $this->request->getJSON(true) ?? $this->request->getPost();
+        $orderId = (int) ($body['order_id'] ?? 0);
 
-        if ($amount <= 0) {
+        if ($orderId <= 0) {
             return $this->response
                 ->setStatusCode(422)
-                ->setJSON(['error' => 'Invalid amount']);
+                ->setJSON(['error' => 'Missing or invalid order_id']);
         }
 
-        $currency = strtolower($body['currency'] ?? 'myr');
-        $metadata = $body['metadata'] ?? [];
-        $receiptEmail = trim((string)($body['receipt_email'] ?? ''));
-
-        $this->initStripe();
+        $receiptEmail = trim((string) ($body['receipt_email'] ?? ''));
+        $metadata     = is_array($body['metadata'] ?? null) ? $body['metadata'] : [];
 
         try {
-        $paymentIntentData = [
-            'amount'   => $amount,
-            'currency' => $currency,
-            'automatic_payment_methods' => ['enabled' => true],
-            'metadata' => $metadata,
-        ];
+            $result = $this->paymentService->createIntentForOrder($orderId, $receiptEmail, $metadata);
 
-        if (filter_var($receiptEmail, FILTER_VALIDATE_EMAIL)) {
-            $paymentIntentData['receipt_email'] = $receiptEmail;
-        }
-
-        $pi = PaymentIntent::create($paymentIntentData);
-
-            return $this->response->setJSON([
-                'client_secret' => $pi->client_secret,
-                'payment_intent_id' => $pi->id,
-            ]);
+            return $this->response->setJSON($result);
+        } catch (\InvalidArgumentException $e) {
+            return $this->response
+                ->setStatusCode(422)
+                ->setJSON(['error' => $e->getMessage()]);
         } catch (\Throwable $e) {
             log_message('error', 'Stripe createIntent error: {msg}', ['msg' => $e->getMessage()]);
+
             return $this->response
                 ->setStatusCode(500)
                 ->setJSON(['error' => 'Unable to create payment intent.']);
@@ -69,138 +55,68 @@ class CardPayment extends BaseController
     /**
      * POST /card-payment/store
      * Body: { payment_intent_id: "pi_xxx" }
-     *  Stripe take PaymentIntent field，write in payments database
      */
-   public function store()
-{
-    //  payment_intent_id take from payment
-    $body = $this->request->getJSON(true) ?? [];
-    $piId = $body['payment_intent_id'] ?? null;
+    public function store()
+    {
+        $body = $this->request->getJSON(true) ?? [];
+        $piId = $body['payment_intent_id'] ?? null;
 
-    if (!$piId) {
-        return $this->response
-            ->setStatusCode(422)
-            ->setJSON(['error' => 'Missing payment_intent_id']);
-    }
-
-    // Stripe
-    $this->initStripe();
-
-    try {
-        // Check the PaymentIntent again from Stripe to get the amount, currency, status, and charge ID.
-        $pi = PaymentIntent::retrieve($piId);
-
-        //Retrieve the charge ID (in some scenarios, latest_charge is a string, and in others it is an object).
-        $chargeId = null;
-        if (!empty($pi->latest_charge)) {
-            $chargeId = is_string($pi->latest_charge)
-                ? $pi->latest_charge
-                : ($pi->latest_charge->id ?? null);
+        if (! $piId) {
+            return $this->response
+                ->setStatusCode(422)
+                ->setJSON(['error' => 'Missing payment_intent_id']);
         }
 
-        // Six fields to be inserted into the payments table
-        $data = [
-            'stripe_payment_id' => $chargeId,                                    // ch_...
-            'payment_intent_id' => $pi->id,                                      // pi_...
-            'amount_cents'      => $pi->amount_received ?? $pi->amount ?? 0,
-            'currency'          => $pi->currency ?? 'myr',
-            'status'            => $pi->status ?? 'unknown',
-        ];
+        $this->paymentService->initStripe();
 
-        // Use insert() to explicitly perform "new" operations.
-        if (! $this->payments->insert($data)) {
-            // If model validation fails or database insertion fails, an error array will be returned here.
+        try {
+            $pi = \Stripe\PaymentIntent::retrieve($piId);
+
+            if (! $this->paymentService->recordPaymentIntent($pi)) {
+                return $this->response
+                    ->setStatusCode(500)
+                    ->setJSON([
+                        'error'   => 'DB insert failed',
+                        'details' => $this->payments->errors(),
+                    ]);
+            }
+
+            $orderId = (int) ($pi->metadata->order_id ?? 0);
+            if ($orderId > 0 && ($pi->status ?? '') === 'succeeded') {
+                $this->paymentService->markOrderPaid($orderId, $pi->id, false);
+            }
+
+            return $this->response->setJSON(['ok' => true]);
+        } catch (\Throwable $e) {
+            log_message('error', 'Stripe store error: {msg}', ['msg' => $e->getMessage()]);
+
             return $this->response
                 ->setStatusCode(500)
-                ->setJSON([
-                    'error'   => 'DB insert failed',
-                    'details' => $this->payments->errors(),
-                ]);
-        }
-
-        return $this->response->setJSON(['ok' => true]);
-
-    } catch (\Throwable $e) {
-        // Write real errors to the log and return them to the front end.
-        log_message('error', 'Stripe store error: {msg}', ['msg' => $e->getMessage()]);
-
-        return $this->response
-            ->setStatusCode(500)
-            ->setJSON(['error' => $e->getMessage()]);
+                ->setJSON(['error' => 'Payment storage failed.']);
         }
     }
-        /** Stripe Webhook  */
+
+    /** Stripe Webhook */
     public function webhook()
     {
-        // Read the original body and Stripe signature.
-        $payload = file_get_contents('php://input');
-        $sigHeader = $_SERVER['HTTP_STRIPE_SIGNATURE'] ?? '';
+        $payload    = file_get_contents('php://input');
+        $sigHeader  = $_SERVER['HTTP_STRIPE_SIGNATURE'] ?? '';
+        $endpointSecret = getenv('STRIPE_WEBHOOK_SECRET');
 
-        // Copy the line `whsec_xxx` from the `stripe listen` output.
-        $endpointSecret = getenv('STRIPE_WEBHOOK_SECRET'); 
-
-        // Verify the signature and construct the Event object.
         try {
-            $event = Webhook::constructEvent(
-                $payload,
-                $sigHeader,
-                $endpointSecret
-            );
+            $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
         } catch (\UnexpectedValueException $e) {
-            // Payload 
             log_message('error', 'Stripe webhook invalid payload: {msg}', ['msg' => $e->getMessage()]);
+
             return $this->response->setStatusCode(400)->setBody('Invalid payload');
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
-            // Signature error
             log_message('error', 'Stripe webhook invalid signature: {msg}', ['msg' => $e->getMessage()]);
+
             return $this->response->setStatusCode(400)->setBody('Invalid signature');
         }
 
-        // Handle according to event type
-        switch ($event->type) {
-            // Payment successful
-            case 'payment_intent.succeeded':
-                $pi = $event->data->object; // \Stripe\PaymentIntent
+        $this->paymentService->handleWebhookEvent($event);
 
-                // Try to get the ID of the first charge (if there is no charge, use null).
-                $stripePaymentId = null;
-                if (isset($pi->charges->data[0])) {
-                    $stripePaymentId = $pi->charges->data[0]->id;
-                }
-
-                // update the payments table
-                $this->payments->save([
-                    'payment_intent_id' => $pi->id,
-                    'stripe_payment_id' => $stripePaymentId,
-                    'amount_cents'      => $pi->amount_received, 
-                    'currency'          => $pi->currency,
-                    'status'            => $pi->status,          // succeeded
-                ]);
-
-                log_message('info', 'Stripe webhook handled payment_intent.succeeded: {id}', ['id' => $pi->id]);
-                break;
-
-            // Other scenarios such as failure/cancellation can be added as needed.
-            case 'payment_intent.payment_failed':
-                $pi = $event->data->object;
-
-                $this->payments->save([
-                    'payment_intent_id' => $pi->id,
-                    'amount_cents'      => $pi->amount,
-                    'currency'          => $pi->currency,
-                    'status'            => $pi->status, // payment_failed
-                ]);
-
-                log_message('info', 'Stripe webhook handled payment_intent.payment_failed: {id}', ['id' => $pi->id]);
-                break;
-
-            default:
-                // Other events will only be logged for now.
-                log_message('info', 'Stripe webhook event received: {type}', ['type' => $event->type]);
-        }
-
-        // Return 200 to Stripe to tell them "Received".
         return $this->response->setStatusCode(200)->setBody('OK');
     }
-
 }

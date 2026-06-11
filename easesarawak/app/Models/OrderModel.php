@@ -415,4 +415,20 @@ class OrderModel extends Model
     {
         return $this->update($orderId, ['is_deleted' => 1]);
     }
+
+    /**
+     * Fetch order with modifier username (admin detail views).
+     */
+    public function getOrderWithUserById(int $orderId): ?array
+    {
+        $row = $this->db->table('`order` o')
+            ->select('o.*, u.username AS modified_by_username')
+            ->join('user u', 'u.user_id = o.modified_by', 'left')
+            ->where('o.order_id', $orderId)
+            ->where('o.is_deleted', 0)
+            ->get()
+            ->getRowArray();
+
+        return $row ?: null;
+    }
 }

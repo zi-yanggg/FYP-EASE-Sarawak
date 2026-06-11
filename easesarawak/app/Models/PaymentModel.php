@@ -11,8 +11,9 @@ class PaymentModel extends Model
     protected $returnType       = 'array';
 
     protected $allowedFields = [
-        'stripe_payment_id',   
-        'payment_intent_id',   
+        'stripe_payment_id',
+        'payment_intent_id',
+        'order_id',
         'amount_cents',
         'currency',
         'status',
