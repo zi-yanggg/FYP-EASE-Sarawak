@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Services\OrderDetailsService;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -64,29 +65,30 @@ abstract class BaseAdminController extends BaseController
      */
     protected function buildCalendarEventsFromOrders(array $orders): array
     {
-        $events = [];
+        $events         = [];
+        $detailsService = new OrderDetailsService();
 
         foreach ($orders as $order) {
-            $raw = $order['order_details_json'] ?? '';
-            if ($raw === null || $raw === '') {
-                continue;
+            $bookingRow = [];
+            if (! empty($order['dropoff_at']) || ! empty($order['pickup_at']) || ! empty($order['booking_json'])) {
+                $bookingRow = [
+                    'dropoff_at'   => $order['dropoff_at'] ?? null,
+                    'pickup_at'    => $order['pickup_at'] ?? null,
+                    'booking_json' => $order['booking_json'] ?? null,
+                ];
             }
-
-            $details = json_decode($raw, true);
-            if (! is_array($details)) {
-                continue;
-            }
-
-            $dropoff = $details['Drop-off DateTime'] ?? null;
-            $pickup  = $details['Pickup DateTime'] ?? null;
 
             $customer = trim(($order['first_name'] ?? '') . ' ' . ($order['last_name'] ?? ''));
             $service  = (string) ($order['service_type'] ?? '');
             $orderId  = (int) ($order['order_id'] ?? 0);
             $status   = (int) ($order['status'] ?? 0);
 
-            foreach (['dropoff' => $dropoff, 'pickup' => $pickup] as $type => $dtStr) {
-                $startIso = $this->parseOrderDetailDateTime($dtStr);
+            $eventTimes = [
+                'dropoff' => $detailsService->dropoffIso($order, $bookingRow),
+                'pickup'  => $detailsService->pickupIso($order, $bookingRow),
+            ];
+
+            foreach ($eventTimes as $type => $startIso) {
                 if ($startIso === null) {
                     continue;
                 }

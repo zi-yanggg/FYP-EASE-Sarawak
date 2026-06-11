@@ -18,20 +18,28 @@ class RefundService
         $data['access_token'] = $accessToken;
 
         try {
+            $db->transStart();
+
             $refundTable = $db->table('refund_form');
             if (! $refundTable->insert($data)) {
+                $db->transRollback();
+
                 return ['success' => false, 'message' => 'Refund form submission failed.'];
             }
 
             $refundId  = (int) $db->insertID();
-            $refundRow = $refundTable->where('id', $refundId)->get()->getRowArray();
-            $createdAt = $refundRow['created_at'] ?? date('Y-m-d H:i:s');
-
-            $pdfPath = $this->generatePdf($refundId, $data, $createdAt);
+            $createdAt = date('Y-m-d H:i:s');
+            $pdfPath   = $this->generatePdf($refundId, $data, $createdAt);
 
             $refundTable->where('id', $refundId)->update([
                 'pdf_path' => $pdfPath,
             ]);
+
+            $db->transComplete();
+
+            if ($db->transStatus() === false) {
+                return ['success' => false, 'message' => 'Refund form submission failed.'];
+            }
 
             return [
                 'success'      => true,

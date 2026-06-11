@@ -300,7 +300,8 @@ class ReportController extends BaseAdminController
 
         if ($timeframe === 'day') {
             // Specific date, grouped by hour (time scale labels)
-            $detailBuilder->where('DATE(created_date)', $baseDate);
+            $detailBuilder->where('created_date >=', $baseDate . ' 00:00:00');
+            $detailBuilder->where('created_date <=', $baseDate . ' 23:59:59');
             $detailBuilder->select('HOUR(created_date) AS period_hour');
             $detailBuilder->select('service_type');
             $detailBuilder->select('SUM(amount) AS total');
@@ -334,8 +335,8 @@ class ReportController extends BaseAdminController
         } elseif ($timeframe === 'week') {
             $endDate   = $baseDate;
             $startDate = date('Y-m-d', strtotime($endDate . ' -6 days'));
-            $detailBuilder->where('DATE(created_date) >=', $startDate);
-            $detailBuilder->where('DATE(created_date) <=', $endDate);
+            $detailBuilder->where('created_date >=', $startDate . ' 00:00:00');
+            $detailBuilder->where('created_date <=', $endDate . ' 23:59:59');
             $detailBuilder->select('DATE(created_date) AS period_key');
             $detailBuilder->select('service_type');
             $detailBuilder->select('SUM(amount) AS total');
@@ -370,8 +371,8 @@ class ReportController extends BaseAdminController
             $monthEnd   = date('Y-m-t', strtotime($baseDate));
             $daysInMonth = (int)date('t', strtotime($baseDate));
 
-            $detailBuilder->where('DATE(created_date) >=', $monthStart);
-            $detailBuilder->where('DATE(created_date) <=', $monthEnd);
+            $detailBuilder->where('created_date >=', $monthStart . ' 00:00:00');
+            $detailBuilder->where('created_date <=', $monthEnd . ' 23:59:59');
             $detailBuilder->select('DATE(created_date) AS period_key');
             $detailBuilder->select('service_type');
             $detailBuilder->select('SUM(amount) AS total');
@@ -412,8 +413,8 @@ class ReportController extends BaseAdminController
                 $rangeEnd = date('Y-m-d', $endTs);
             }
 
-            $detailBuilder->where('DATE(created_date) >=', $rangeStart);
-            $detailBuilder->where('DATE(created_date) <=', $rangeEnd);
+            $detailBuilder->where('created_date >=', $rangeStart . ' 00:00:00');
+            $detailBuilder->where('created_date <=', $rangeEnd . ' 23:59:59');
             $detailBuilder->select('DATE(created_date) AS period_key');
             $detailBuilder->select('service_type');
             $detailBuilder->select('SUM(amount) AS total');
@@ -549,8 +550,12 @@ class ReportController extends BaseAdminController
             case 'custom':
                 $start = $this->request->getGet('start');
                 $end   = $this->request->getGet('end');
-                if ($start) $builder->where('DATE(created_date) >=', $start);
-                if ($end)   $builder->where('DATE(created_date) <=', $end);
+                if ($start) {
+                    $builder->where('created_date >=', $start . ' 00:00:00');
+                }
+                if ($end) {
+                    $builder->where('created_date <=', $end . ' 23:59:59');
+                }
                 break;
             // 'all' → no date filter
         }
@@ -575,8 +580,8 @@ class ReportController extends BaseAdminController
         $db      = \Config\Database::connect();
         $builder = $db->table('`order`');
         $builder->where('is_deleted', 0);
-        $builder->where('DATE(created_date) >=', $startDate);
-        $builder->where('DATE(created_date) <=', $endDate);
+        $builder->where('created_date >=', $startDate . ' 00:00:00');
+        $builder->where('created_date <=', $endDate . ' 23:59:59');
         $builder->orderBy('created_date', 'ASC');
         $orders = $builder->get()->getResultArray();
 

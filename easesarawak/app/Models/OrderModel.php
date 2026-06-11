@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\OrderDetailsService;
+use App\Services\PricingService;
 use CodeIgniter\Model;
 
 class OrderModel extends Model
@@ -238,6 +240,8 @@ class OrderModel extends Model
      */
     public function processAndSaveOrder($request)
     {
+        $db = \Config\Database::connect();
+
         try {
             log_message('info', 'OrderModel: processAndSaveOrder called');
             
@@ -253,6 +257,20 @@ class OrderModel extends Model
                     'success' => false,
                     'message' => 'Invalid booking data'
                 ];
+            }
+
+            $detailsService = new OrderDetailsService();
+            $pricingService = new PricingService();
+            $indexedBooking = $detailsService->extractIndexedFields($bookingData);
+
+            $validatedAmount = (int) round($bookingData['totalPrice'] ?? 0);
+            try {
+                $pricing         = $pricingService->calculateFromBookingData($bookingData);
+                $validatedAmount = (int) round($pricing['total_rm']);
+            } catch (\Throwable $e) {
+                log_message('warning', 'OrderModel: server-side pricing failed, using client total: {msg}', [
+                    'msg' => $e->getMessage(),
+                ]);
             }
 
             // Get customer data
@@ -283,8 +301,8 @@ class OrderModel extends Model
                 }
             }
 
-            // Format order details JSON
-            $orderDetailsJson = $this->formatOrderDetailsJson($bookingData);
+            // Store raw wizard payload (display formatting happens in views/services).
+            $orderDetailsJson = json_encode($bookingData, JSON_UNESCAPED_SLASHES);
 
             // Handle special luggage logic
             if ($specialLuggage === '1' && !empty($specialLuggageNote)) {
@@ -330,7 +348,7 @@ class OrderModel extends Model
                 'order_details_json' => $orderDetailsJson,
                 'promo_code' => $bookingData['promoCode'] ?? '',
                 'status' => 0,
-                'amount' => $bookingData['totalPrice'],
+                'amount' => $validatedAmount,
                 'payment_method' => 'pending',
                 'is_deleted' => 0,
                 'created_date' => date('Y-m-d H:i:s'),
@@ -338,28 +356,75 @@ class OrderModel extends Model
                 'insurance_amount' => !empty($bookingData['insuranceAmount']) ? $bookingData['insuranceAmount'] : 0.00
             ];
 
-            // Use CodeIgniter's Query Builder for insert
-            $db = \Config\Database::connect();
+            $db->transStart();
+
             $builder = $db->table($this->table);
             $insertResult = $builder->insert($data);
 
-            if ($insertResult) {
-                $orderId = $db->insertID();
-                log_message('info', 'OrderModel: Order inserted successfully with ID: ' . $orderId);
+            if (! $insertResult) {
+                $db->transRollback();
+                log_message('error', 'OrderModel: Failed to save order');
 
                 return [
-                    'success' => true,
-                    'order_id' => $orderId,
-                    'message' => 'Order saved successfully',
-                    'uploaded_file' => json_encode($uploadedFilePaths)
-                ];
-            } else {
-                log_message('error', 'OrderModel: Failed to save order');
-                return [
                     'success' => false,
-                    'message' => 'Failed to save order'
+                    'message' => 'Failed to save order',
                 ];
             }
+
+            $orderId = (int) $db->insertID();
+            $now     = date('Y-m-d H:i:s');
+
+            if ($db->tableExists('order_customer')) {
+                $db->table('order_customer')->insert([
+                    'order_id'     => $orderId,
+                    'first_name'   => $firstName,
+                    'last_name'    => $lastName,
+                    'id_num'       => $identificationNumber,
+                    'email'        => $email,
+                    'phone'        => (string) $phone,
+                    'social'       => (int) $social,
+                    'social_num'   => $socialContactValue,
+                    'upload'       => json_encode($uploadedFilePaths),
+                    'special'      => $special,
+                    'special_note' => $specialNote,
+                    'created_at'   => $now,
+                ]);
+            }
+
+            if ($db->tableExists('order_booking')) {
+                $db->table('order_booking')->insert([
+                    'order_id'         => $orderId,
+                    'booking_json'     => $orderDetailsJson,
+                    'dropoff_at'       => $indexedBooking['dropoff_at'],
+                    'pickup_at'        => $indexedBooking['pickup_at'],
+                    'origin'           => $indexedBooking['origin'],
+                    'destination'      => $indexedBooking['destination'],
+                    'storage_location' => $indexedBooking['storage_location'],
+                    'quantity'         => $indexedBooking['quantity'],
+                    'created_at'       => $now,
+                ]);
+            }
+
+            $db->transComplete();
+
+            if ($db->transStatus() === false) {
+                log_message('error', 'OrderModel: Transaction failed while saving order {id}', ['id' => $orderId]);
+
+                return [
+                    'success' => false,
+                    'message' => 'Failed to save order',
+                ];
+            }
+
+            log_message('info', 'OrderModel: Order inserted successfully with ID: ' . $orderId);
+
+            return [
+                'success'          => true,
+                'order_id'         => $orderId,
+                'message'          => 'Order saved successfully',
+                'uploaded_file'    => json_encode($uploadedFilePaths),
+                'validated_amount' => $validatedAmount,
+            ];
         } catch (\Exception $e) {
             log_message('error', 'OrderModel: Exception in processAndSaveOrder: ' . $e->getMessage());
             return [

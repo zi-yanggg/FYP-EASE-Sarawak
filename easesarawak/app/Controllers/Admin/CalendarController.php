@@ -7,17 +7,25 @@ use App\Models\PaymentModel;
 use App\Models\User_model;
 use App\Models\ActivityLogModel;
 use App\Models\MessageModel;
+use App\Services\OrderDetailsService;
 class CalendarController extends BaseAdminController
 {
     public function calendar(): string
     {
-        $orderModel = new OrderModel();
-        $orders = $orderModel
-            ->select('order_id, first_name, last_name, service_type, status, order_details_json')
-            ->where('is_deleted', 0)
-            ->orderBy('created_date', 'DESC')
-            ->findAll();
+        $db = \Config\Database::connect();
 
+        $builder = $db->table('`order` o')
+            ->select('o.order_id, o.first_name, o.last_name, o.service_type, o.status, o.order_details_json, b.dropoff_at, b.pickup_at, b.booking_json')
+            ->where('o.is_deleted', 0)
+            ->orderBy('o.created_date', 'DESC');
+
+        if ($db->tableExists('order_booking')) {
+            $builder->join('order_booking b', 'b.order_id = o.order_id', 'left');
+        } else {
+            $builder->select('o.order_id, o.first_name, o.last_name, o.service_type, o.status, o.order_details_json');
+        }
+
+        $orders = $builder->get()->getResultArray();
         $events = $this->buildCalendarEventsFromOrders($orders);
 
         $initialView = $this->request->getGet('view');

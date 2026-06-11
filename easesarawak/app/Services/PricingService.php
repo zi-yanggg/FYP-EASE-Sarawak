@@ -110,64 +110,22 @@ class PricingService
             ];
         }
 
-        $details = json_decode($order['order_details_json'] ?? '{}', true);
-        if (! is_array($details)) {
+        $detailsService = new OrderDetailsService();
+        $bookingRow     = null;
+
+        $db = \Config\Database::connect();
+        if ($db->tableExists('order_booking')) {
+            $bookingRow = $db->table('order_booking')
+                ->where('order_id', $orderId)
+                ->get()
+                ->getRowArray() ?: null;
+        }
+
+        $bookingData = $detailsService->resolveBookingData($order, $bookingRow);
+        if ($bookingData === []) {
             throw new \RuntimeException('Order has no pricing data.');
         }
 
-        $bookingData = $this->orderDetailsToBookingData($order, $details);
-
         return $this->calculateFromBookingData($bookingData);
-    }
-
-    /**
-     * @param array<string, mixed> $order
-     * @param array<string, mixed> $details
-     */
-    private function orderDetailsToBookingData(array $order, array $details): array
-    {
-        $service = strtolower((string) ($order['service_type'] ?? 'delivery'));
-
-        $quantityRaw = (string) ($details['Quantity'] ?? '1');
-        preg_match('/(\d+)/', $quantityRaw, $m);
-        $quantity = max(1, (int) ($m[1] ?? 1));
-
-        $dropoff = $this->parseDetailDateTime($details['Drop-off DateTime'] ?? '');
-        $pickup  = $this->parseDetailDateTime($details['Pickup DateTime'] ?? '');
-
-        $insuranceSelected = stripos((string) ($details['Insurance Selected'] ?? ''), 'yes') !== false;
-
-        $promoCode = (string) ($details['Promo Code'] ?? '');
-        if (strcasecmp($promoCode, 'Null') === 0 || $promoCode === '') {
-            $promoCode = (string) ($order['promo_code'] ?? '');
-        }
-
-        return [
-            'service'           => $service,
-            'quantity'          => $quantity,
-            'dropoffDate'       => $dropoff['date'] ?? '',
-            'dropoffTime'       => $dropoff['time'] ?? '',
-            'pickupDate'        => $pickup['date'] ?? '',
-            'pickupTime'        => $pickup['time'] ?? '',
-            'insuranceSelected' => $insuranceSelected,
-            'promoCode'         => $promoCode,
-        ];
-    }
-
-    /**
-     * @return array{date: string, time: string}|array{}
-     */
-    private function parseDetailDateTime(mixed $value): array
-    {
-        $value = trim((string) $value);
-        if ($value === '' || strcasecmp($value, 'Null') === 0) {
-            return [];
-        }
-
-        if (preg_match('/^(.+?)\s+at\s+(.+)$/u', $value, $m)) {
-            return ['date' => trim($m[1]), 'time' => trim($m[2])];
-        }
-
-        return [];
     }
 }

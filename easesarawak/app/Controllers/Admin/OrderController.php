@@ -7,6 +7,7 @@ use App\Models\PaymentModel;
 use App\Models\User_model;
 use App\Models\ActivityLogModel;
 use App\Models\MessageModel;
+use App\Services\OrderDetailsService;
 class OrderController extends BaseAdminController
 {
     public function order($id = null)
@@ -43,14 +44,24 @@ class OrderController extends BaseAdminController
         }
 
         if (!empty($start)) {
-            $orderModel->where('DATE(created_date) >=', $start);
+            $orderModel->where('created_date >=', $start . ' 00:00:00');
         }
 
         if (!empty($end)) {
-            $orderModel->where('DATE(created_date) <=', $end);
+            $orderModel->where('created_date <=', $end . ' 23:59:59');
         }
 
-        $data['orders'] = $orderModel->where('is_deleted', 0)->paginate(10, 'group1');
+        $orders = $orderModel->where('is_deleted', 0)->paginate(10, 'group1');
+        $detailsService = new OrderDetailsService();
+        $bookingMap     = $detailsService->mapBookingsByOrderId($orders);
+        $enrichedOrders = [];
+
+        foreach ($orders as $order) {
+            $bookingRow       = $bookingMap[(int) ($order['order_id'] ?? 0)] ?? [];
+            $enrichedOrders[] = $detailsService->enrichOrderRow($order, $bookingRow);
+        }
+
+        $data['orders'] = $enrichedOrders;
         $data['pager'] = $orderModel->pager;
         $data['single_order'] = false;
 
@@ -127,6 +138,11 @@ class OrderController extends BaseAdminController
         $order = $orderModel->getOrderWithUserById($order_id);
 
         if ($order) {
+            $detailsService = new OrderDetailsService();
+            $bookingMap     = $detailsService->mapBookingsByOrderId([$order]);
+            $bookingRow     = $bookingMap[(int) $order['order_id']] ?? [];
+            $order          = $detailsService->enrichOrderRow($order, $bookingRow);
+
             return $this->response->setJSON([
                 'success' => true,
                 'order' => $order
@@ -149,11 +165,10 @@ class OrderController extends BaseAdminController
                 ->with('error', 'Order not found.');
         }
 
-        $details = json_decode($order['order_details_json'] ?? '{}', true);
-
-        if (!is_array($details)) {
-            $details = [];
-        }
+        $detailsService = new OrderDetailsService();
+        $bookingMap     = $detailsService->mapBookingsByOrderId([$order]);
+        $bookingRow     = $bookingMap[(int) $order['order_id']] ?? null;
+        $details        = $detailsService->displayDetails($order, $bookingRow);
 
         return $this->render('admin/order_details', [
             'order'   => $order,

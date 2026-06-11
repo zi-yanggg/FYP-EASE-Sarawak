@@ -7,6 +7,7 @@ use App\Models\PaymentModel;
 use App\Models\User_model;
 use App\Models\ActivityLogModel;
 use App\Models\MessageModel;
+use App\Services\OrderDetailsService;
 class DashboardController extends BaseAdminController
 {
     public function index(): string
@@ -21,19 +22,35 @@ class DashboardController extends BaseAdminController
         $weekStart  = date('Y-m-d 00:00:00', strtotime('monday this week'));
         $monthStart = date('Y-m-01 00:00:00');
 
-        // ── Order counts by status ───────────────────────────────────────
-        $totalOrders     = (int)$db->table('`order`')->where('is_deleted', 0)->countAllResults();
-        $pendingCount    = (int)$db->table('`order`')->where('is_deleted', 0)->where('status', 0)->countAllResults();
-        $inProgressCount = (int)$db->table('`order`')->where('is_deleted', 0)->where('status', 1)->countAllResults();
-        $completedCount  = (int)$db->table('`order`')->where('is_deleted', 0)->where('status', 2)->countAllResults();
+        // ── Order counts by status (single aggregate query) ───────────────
+        $statusRows = $db->table('`order`')
+            ->select('status, COUNT(*) AS cnt')
+            ->where('is_deleted', 0)
+            ->groupBy('status')
+            ->get()
+            ->getResultArray();
+
+        $statusMap = [0 => 0, 1 => 0, 2 => 0];
+        foreach ($statusRows as $row) {
+            $statusMap[(int) ($row['status'] ?? -1)] = (int) ($row['cnt'] ?? 0);
+        }
+
+        $totalOrders     = array_sum($statusMap);
+        $pendingCount    = $statusMap[0];
+        $inProgressCount = $statusMap[1];
+        $completedCount  = $statusMap[2];
         $userCount       = (int)$user_model->where('is_deleted', 0)->countAllResults();
 
         // ── Revenue metrics ──────────────────────────────────────────────
         $todayRevenue = (float)($db->table('`order`')->selectSum('amount')
-            ->where('is_deleted', 0)->where('DATE(created_date)', $today)
+            ->where('is_deleted', 0)
+            ->where('created_date >=', $today . ' 00:00:00')
+            ->where('created_date <=', $today . ' 23:59:59')
             ->get()->getRow()->amount ?? 0);
         $yesterdayRevenue = (float)($db->table('`order`')->selectSum('amount')
-            ->where('is_deleted', 0)->where('DATE(created_date)', $yesterday)
+            ->where('is_deleted', 0)
+            ->where('created_date >=', $yesterday . ' 00:00:00')
+            ->where('created_date <=', $yesterday . ' 23:59:59')
             ->get()->getRow()->amount ?? 0);
         $weekRevenue = (float)($db->table('`order`')->selectSum('amount')
             ->where('is_deleted', 0)->where('created_date >=', $weekStart)
@@ -49,9 +66,13 @@ class DashboardController extends BaseAdminController
 
         // ── Today's order count ──────────────────────────────────────────
         $todayOrders     = (int)$db->table('`order`')->where('is_deleted', 0)
-            ->where('DATE(created_date)', $today)->countAllResults();
+            ->where('created_date >=', $today . ' 00:00:00')
+            ->where('created_date <=', $today . ' 23:59:59')
+            ->countAllResults();
         $yesterdayOrders = (int)$db->table('`order`')->where('is_deleted', 0)
-            ->where('DATE(created_date)', $yesterday)->countAllResults();
+            ->where('created_date >=', $yesterday . ' 00:00:00')
+            ->where('created_date <=', $yesterday . ' 23:59:59')
+            ->countAllResults();
         $todayOrdersDelta = $yesterdayOrders > 0
             ? round(($todayOrders - $yesterdayOrders) / $yesterdayOrders * 100, 1) : 0;
 
@@ -69,11 +90,20 @@ class DashboardController extends BaseAdminController
             $pendingRefunds = (int)$db->table('refund_form')->where('status', 'pending')->countAllResults();
         } catch (\Exception $e) { /* table may not exist in all deployments */ }
 
-        // ── All orders for JSON-based pickup / drop-off date parsing ─────
-        $allActiveOrders = $db->table('`order`')
-            ->select('order_id, first_name, last_name, service_type, status, amount, order_details_json, created_date')
-            ->where('is_deleted', 0)
-            ->get()->getResultArray();
+        $detailsService = new OrderDetailsService();
+
+        // ── Active orders with booking schedule data when available ───────
+        $orderBuilder = $db->table('`order` o')
+            ->select('o.order_id, o.first_name, o.last_name, o.service_type, o.status, o.amount, o.order_details_json, o.created_date')
+            ->where('o.is_deleted', 0);
+
+        if ($db->tableExists('order_booking')) {
+            $orderBuilder
+                ->select('b.dropoff_at, b.pickup_at, b.origin, b.destination, b.storage_location, b.booking_json')
+                ->join('order_booking b', 'b.order_id = o.order_id', 'left');
+        }
+
+        $allActiveOrders = $orderBuilder->get()->getResultArray();
 
         $todayPickups     = [];
         $todayDropoffs    = [];
@@ -81,31 +111,45 @@ class DashboardController extends BaseAdminController
         $calendarDropoffs = [];
 
         foreach ($allActiveOrders as $ord) {
-            $details = @json_decode($ord['order_details_json'] ?? '{}', true);
-            if (!is_array($details)) continue;
+            $bookingRow = [
+                'dropoff_at'   => $ord['dropoff_at'] ?? null,
+                'pickup_at'    => $ord['pickup_at'] ?? null,
+                'booking_json' => $ord['booking_json'] ?? null,
+            ];
 
-            $pickupRaw  = trim($details['Pickup DateTime']    ?? '');
-            $dropoffRaw = trim($details['Drop-off DateTime'] ?? '');
+            $pickupDate  = ! empty($bookingRow['pickup_at']) ? substr((string) $bookingRow['pickup_at'], 0, 10) : null;
+            $dropoffDate = ! empty($bookingRow['dropoff_at']) ? substr((string) $bookingRow['dropoff_at'], 0, 10) : null;
 
-            if ($pickupRaw && $pickupRaw !== 'Null') {
-                $pickupDate = substr($pickupRaw, 0, 10);
-                if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $pickupDate)) {
-                    $calendarPickups[$pickupDate] = ($calendarPickups[$pickupDate] ?? 0) + 1;
-                    if ($pickupDate === $today) {
-                        $atPos        = strpos($pickupRaw, 'at ');
-                        $todayPickups[] = $ord + ['event_time' => $atPos !== false ? trim(substr($pickupRaw, $atPos + 3)) : ''];
-                    }
+            if ($pickupDate === null || $dropoffDate === null) {
+                $display   = $detailsService->displayDetails($ord, $bookingRow['booking_json'] ? $bookingRow : null);
+                $pickupRaw = trim((string) ($display['Pickup DateTime'] ?? ''));
+                $dropRaw   = trim((string) ($display['Drop-off DateTime'] ?? ''));
+
+                if ($pickupDate === null && $pickupRaw !== '' && strcasecmp($pickupRaw, 'Null') !== 0) {
+                    $pickupDate = substr($pickupRaw, 0, 10);
+                }
+                if ($dropoffDate === null && $dropRaw !== '' && strcasecmp($dropRaw, 'Null') !== 0) {
+                    $dropoffDate = substr($dropRaw, 0, 10);
                 }
             }
 
-            if ($dropoffRaw && $dropoffRaw !== 'Null') {
-                $dropoffDate = substr($dropoffRaw, 0, 10);
-                if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $dropoffDate)) {
-                    $calendarDropoffs[$dropoffDate] = ($calendarDropoffs[$dropoffDate] ?? 0) + 1;
-                    if ($dropoffDate === $today) {
-                        $atPos         = strpos($dropoffRaw, 'at ');
-                        $todayDropoffs[] = $ord + ['event_time' => $atPos !== false ? trim(substr($dropoffRaw, $atPos + 3)) : ''];
-                    }
+            if ($pickupDate && preg_match('/^\d{4}-\d{2}-\d{2}$/', $pickupDate)) {
+                $calendarPickups[$pickupDate] = ($calendarPickups[$pickupDate] ?? 0) + 1;
+                if ($pickupDate === $today) {
+                    $eventTime = ! empty($bookingRow['pickup_at'])
+                        ? substr((string) $bookingRow['pickup_at'], 11, 5)
+                        : '';
+                    $todayPickups[] = $ord + ['event_time' => $eventTime];
+                }
+            }
+
+            if ($dropoffDate && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dropoffDate)) {
+                $calendarDropoffs[$dropoffDate] = ($calendarDropoffs[$dropoffDate] ?? 0) + 1;
+                if ($dropoffDate === $today) {
+                    $eventTime = ! empty($bookingRow['dropoff_at'])
+                        ? substr((string) $bookingRow['dropoff_at'], 11, 5)
+                        : '';
+                    $todayDropoffs[] = $ord + ['event_time' => $eventTime];
                 }
             }
         }
@@ -202,22 +246,17 @@ class DashboardController extends BaseAdminController
         //   Pickup location  → 'Origin Location' / 'Origin Address' (delivery)
         //                      'Storage Location' (storage)
         //   Dropoff location → 'Destination Location' / 'Destination Address' (delivery)
-        $parseForDisplay = static function (array $orders): array {
-            return array_map(static function ($o) {
-                $d = @json_decode($o['order_details_json'] ?? '{}', true);
-                $d = is_array($d) ? $d : [];
-                $pickupRaw  = trim($d['Pickup DateTime']    ?? '');
-                $dropoffRaw = trim($d['Drop-off DateTime'] ?? '');
-                // 'Null' string means the field was not filled in
-                if ($pickupRaw  === 'Null') $pickupRaw  = '';
-                if ($dropoffRaw === 'Null') $dropoffRaw = '';
-                $pickupLoc  = trim($d['Origin Location']      ?? $d['Origin Address']      ?? $d['Storage Location']     ?? '');
-                $dropoffLoc = trim($d['Destination Location'] ?? $d['Destination Address'] ?? '');
-                return $o + [
-                    '_pickup_time'      => $pickupRaw,   // full "YYYY-MM-DD at HH:MM" string
-                    '_pickup_location'  => $pickupLoc,
-                    '_dropoff_time'     => $dropoffRaw,  // full "YYYY-MM-DD at HH:MM" string
-                    '_dropoff_location' => $dropoffLoc,
+        $parseForDisplay = static function (array $orders) use ($detailsService): array {
+            $bookingMap = $detailsService->mapBookingsByOrderId($orders);
+
+            return array_map(static function ($o) use ($detailsService, $bookingMap) {
+                $bookingRow = $bookingMap[(int) ($o['order_id'] ?? 0)] ?? [
+                    'dropoff_at'   => $o['dropoff_at'] ?? null,
+                    'pickup_at'    => $o['pickup_at'] ?? null,
+                    'booking_json' => $o['booking_json'] ?? null,
+                ];
+
+                return $detailsService->enrichOrderRow($o, $bookingRow) + [
                     '_created_date_fmt' => substr($o['created_date'] ?? '', 0, 10),
                 ];
             }, $orders);
