@@ -505,6 +505,9 @@ if (! function_exists('ease_translation_catalog')) {
                 'Ringgit Malaysia (RM)' => 'Ringgit Malaysia (RM)',
                 'You will receive a receipt (digital or printed) upon completion of payment.' => 'Anda akan menerima resit (digital atau bercetak) setelah pembayaran selesai.',
                 'Credit/Debit Card (VISA, MasterCard)' => 'Kad Kredit/Debit (VISA, MasterCard)',
+                'Information' => 'Maklumat',
+                'IN-TOWN DELIVERY' => 'Penghantaran Dalam Bandar',
+                'LUGGAGE STORAGE' => 'Penyimpanan Bagasi',
             ],
             'zh' => [
                 'Menu' => '菜单',
@@ -982,6 +985,9 @@ if (! function_exists('ease_translation_catalog')) {
                 'You will receive a receipt (digital or printed) upon completion of payment.' => '付款完成后，您将收到一张收据（电子版或纸质版）。',
                 'Credit/Debit Card (VISA, MasterCard)' => '信用卡/借记卡（VISA、MasterCard）',
 
+                'Information' => '信息',
+                'IN-TOWN DELIVERY' => '市区配送',
+                'LUGGAGE STORAGE' => '行李寄存',
             ],
         ];
     }
