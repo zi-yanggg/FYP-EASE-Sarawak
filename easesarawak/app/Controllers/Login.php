@@ -12,6 +12,10 @@ class Login extends BaseController
 
     public function submit()
     {
+        if (! $this->verifyTurnstile($this->request->getPost('cf-turnstile-response'))) {
+            return redirect()->back()->with('error', 'Bot verification failed. Please try again.');
+        }
+
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $remember = $this->request->getPost('remember');
@@ -71,6 +75,42 @@ class Login extends BaseController
         }
     }
 
+
+    /**
+     * Verifies a Cloudflare Turnstile token server-side.
+     * Fails closed: any error talking to Cloudflare is treated as a failed check.
+     */
+    private function verifyTurnstile(?string $token): bool
+    {
+        $secret = env('TURNSTILE_SECRET_KEY');
+
+        if (empty($secret)) {
+            // Not configured — don't block logins because of a missing key.
+            return true;
+        }
+
+        if (empty($token)) {
+            return false;
+        }
+
+        try {
+            $client   = \Config\Services::curlrequest();
+            $response = $client->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                'form_params' => [
+                    'secret'   => $secret,
+                    'response' => $token,
+                    'remoteip' => $this->request->getIPAddress(),
+                ],
+            ]);
+
+            $result = json_decode($response->getBody(), true);
+
+            return (bool) ($result['success'] ?? false);
+        } catch (\Throwable $e) {
+            log_message('error', 'Turnstile verification failed: ' . $e->getMessage());
+            return false;
+        }
+    }
 
     public function logout()
     {

@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('assets/css/admin/login.css') ?>">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
@@ -47,6 +48,8 @@
                         Remember me
                     </label>
                 </div>
+
+                <div class="cf-turnstile mb-3" data-sitekey="<?= esc(env('TURNSTILE_SITE_KEY')) ?>"></div>
 
                 <button class="btn btn-dark w-100 py-2 mt-2" type="submit">Login</button>
             </form>
