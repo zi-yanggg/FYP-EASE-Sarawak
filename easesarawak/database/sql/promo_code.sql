@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 20, 2026 at 08:20 AM
+-- Generation Time: Nov 21, 2025 at 12:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,26 +28,38 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `promo_code` (
-  `promo_id` int(11) NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
   `code` varchar(100) NOT NULL,
+  `discount_type` varchar(20) NOT NULL DEFAULT 'percentage',
+  `discount_percentage` tinyint(3) UNSIGNED DEFAULT 0,
+  `discount_amount` decimal(10,2) DEFAULT 0.00,
   `validation_date` datetime NOT NULL,
-  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified_date` datetime DEFAULT NULL ON UPDATE current_timestamp(),
-  `deleted_date` datetime DEFAULT NULL,
   `expired_date` datetime NOT NULL,
-  `is_deleted` tinyint(4) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `max_uses` int(10) UNSIGNED DEFAULT NULL COMMENT 'NULL = unlimited uses',
+  `used_count` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `is_deleted` tinyint(4) NOT NULL DEFAULT 0,
+  `created_date` datetime NOT NULL,
+  `modified_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `promo_code`
 --
 
-INSERT INTO `promo_code` (`promo_id`, `code`, `validation_date`, `created_date`, `modified_date`, `deleted_date`, `expired_date`, `is_deleted`) VALUES
-(3, 'EASE01', '2025-10-17 06:40:02', '2025-10-17 12:40:16', NULL, NULL, '2025-10-17 06:40:02', 0),
-(4, 'EASE01', '2025-10-17 06:40:02', '2025-10-17 12:40:21', NULL, NULL, '2025-10-17 06:40:02', 0),
-(5, 'EASE02', '2025-10-17 06:40:31', '2025-10-17 12:40:38', NULL, NULL, '2025-10-17 06:40:31', 0),
-(6, 'EASE02', '2025-10-17 06:40:31', '2025-10-17 12:40:40', NULL, NULL, '2025-10-17 06:40:31', 0),
-(7, 'EASE03', '2025-10-17 06:40:53', '2025-10-17 12:41:03', NULL, NULL, '2025-10-17 06:40:53', 0);
+INSERT INTO `promo_code` (`id`, `code`, `discount_type`, `discount_percentage`, `discount_amount`, `validation_date`, `expired_date`, `is_deleted`, `created_date`, `modified_date`) VALUES
+(1, '12345', 'percentage', 0, 0.00, '2025-11-02 22:04:50', '2025-11-30 22:04:50', 1, '2025-11-03 15:04:50', '2025-11-04 11:04:33'),
+(2, '67890', 'percentage', 0, 0.00, '2025-11-03 19:06:58', '2025-11-30 19:06:58', 1, '2025-11-04 12:06:58', '2025-11-04 11:07:44'),
+(3, '321321', 'percentage', 50, 0.00, '2025-11-03 19:19:00', '2025-11-30 19:19:00', 0, '2025-11-04 11:19:18', NULL),
+(4, '212121', 'percentage', 15, 0.00, '2025-11-03 19:20:00', '2025-11-30 19:20:00', 0, '2025-11-04 11:20:18', '2025-11-19 01:38:08'),
+(5, 'Brian', 'amount', 0, 7.00, '2025-11-03 12:00:00', '2025-11-30 12:00:00', 0, '2025-11-05 06:08:06', '2025-11-19 03:17:40'),
+(6, 'Allanpromo', 'percentage', 75, 0.00, '2025-11-01 12:00:00', '2025-11-30 12:00:00', 0, '2025-11-05 08:59:24', NULL),
+(7, '1234567890', 'percentage', 0, 0.00, '2025-11-19 12:00:00', '2025-12-31 12:00:00', 1, '2025-11-19 03:07:59', '2025-11-19 03:16:49'),
+(8, '0987654321', 'amount', 0, 5.00, '2025-11-19 12:00:00', '2025-12-31 12:00:00', 0, '2025-11-19 03:16:39', NULL),
+(9, 'abcde', 'amount', 0, 8.00, '2025-11-20 12:00:00', '2025-12-31 12:00:00', 0, '2025-11-20 04:07:22', NULL),
+(10, 'abcd', 'amount', 0, 8.00, '2025-11-19 12:00:00', '2025-12-31 12:00:00', 0, '2025-11-20 04:08:29', NULL),
+(11, 'asdf', 'amount', 0, 7.00, '2025-11-19 12:00:00', '2025-12-31 12:00:00', 0, '2025-11-20 05:22:13', NULL),
+(12, '11111', 'amount', 0, 11.00, '2025-11-20 12:00:00', '2025-12-31 12:00:00', 0, '2025-11-21 11:11:43', NULL),
+(13, '22222', 'percentage', 25, 0.00, '2025-11-20 12:00:00', '2025-12-31 12:00:00', 0, '2025-11-21 11:12:08', NULL);
 
 --
 -- Indexes for dumped tables
@@ -57,7 +69,7 @@ INSERT INTO `promo_code` (`promo_id`, `code`, `validation_date`, `created_date`,
 -- Indexes for table `promo_code`
 --
 ALTER TABLE `promo_code`
-  ADD PRIMARY KEY (`promo_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -67,7 +79,7 @@ ALTER TABLE `promo_code`
 -- AUTO_INCREMENT for table `promo_code`
 --
 ALTER TABLE `promo_code`
-  MODIFY `promo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

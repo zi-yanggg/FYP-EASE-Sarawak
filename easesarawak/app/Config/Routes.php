@@ -50,7 +50,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
 
     $routes->get('/order', 'Admin\OrderController::order');
     $routes->get('/order/(:num)', 'Admin\OrderController::order/$1');
-    $routes->get('/change_status/(:num)', 'Admin\OrderController::change_status/$1');
+    $routes->post('/change_status/(:num)', 'Admin\OrderController::change_status/$1');
     $routes->get('/order/getDetails/(:num)', 'Admin\OrderController::getDetails/$1');
     $routes->get('/admin/order_details/(:num)', 'Admin\OrderController::order_details/$1');
     $routes->post('/save_note', 'Admin\OrderController::save_note');

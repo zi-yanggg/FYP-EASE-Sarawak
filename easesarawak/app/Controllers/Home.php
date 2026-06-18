@@ -32,12 +32,27 @@ class Home extends BaseController
 
     public function message()
     {
+        $rules = [
+            'email'   => 'required|valid_email|max_length[255]',
+            'phone'   => 'required|regex_match[/^[+0-9][0-9\s\-()]{6,19}$/]|max_length[20]',
+            'subject' => 'required|max_length[200]',
+            'message' => 'required|max_length[2000]',
+        ];
+        $messages = [
+            'phone' => ['regex_match' => 'Please enter a valid phone number.'],
+        ];
+
+        if (! $this->validate($rules, $messages)) {
+            return redirect()->to('/#contact')
+                ->with('error', implode(' ', $this->validator->getErrors()));
+        }
+
         $data = [
-            'email' => $this->request->getPost('email'),
-            'phone' => $this->request->getPost('phone'),
-            'subject' => $this->request->getPost('subject'),
-            'msg' => $this->request->getPost('message'),
-            'status' => 'new',
+            'email'        => $this->request->getPost('email'),
+            'phone'        => $this->request->getPost('phone'),
+            'subject'      => strip_tags($this->request->getPost('subject')),
+            'msg'          => strip_tags($this->request->getPost('message')),
+            'status'       => 'new',
             'created_date' => date('Y-m-d H:i:s'),
         ];
 
@@ -104,17 +119,20 @@ class Home extends BaseController
 
     public function booking_confirmation(): string
     {
-        $data = [
-            'order_id' => $this->request->getGet('order_id')
-        ];
+        // Consume the one-time session value written by saveOrder().
+        // Ignoring ?order_id= from GET prevents IDOR enumeration.
+        $orderId = session()->getTempdata('confirmed_order_id');
 
-        return view('booking_confirmation', $data);
+        return view('booking_confirmation', ['order_id' => $orderId ?: null]);
     }
 
     public function payment()
     {
-        // from POST get email
-        $email = $this->request->getPost('email');
+        $email = trim((string) $this->request->getPost('email'));
+
+        if ($email !== '' && ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return redirect()->back()->with('error', 'Invalid email address provided.');
+        }
 
         $serviceModel = new \App\Models\ServiceManagementModel();
         $deliveryService = $serviceModel->where('service_type', 'delivery')->first() ?? [];
@@ -133,6 +151,12 @@ class Home extends BaseController
 
         $bookingService = new BookingService();
         $result         = $bookingService->saveOrder($this->request);
+
+        if ($result['success'] ?? false) {
+            // Bind the confirmed order ID to the session so booking_confirmation
+            // can display it without exposing it via a guessable GET parameter.
+            session()->setTempdata('confirmed_order_id', (int) $result['order_id'], 1800);
+        }
 
         return $this->response->setJSON($result);
     }
@@ -178,6 +202,32 @@ class Home extends BaseController
     
     public function submitRefund()
     {
+        $rules = [
+            'full_name'           => 'required|max_length[100]',
+            'email'               => 'required|valid_email|max_length[255]',
+            'phone_number'        => 'required|regex_match[/^[+0-9][0-9\s\-()]{6,19}$/]|max_length[20]',
+            'order_id'            => 'required|max_length[50]',
+            'date_of_purchase'    => 'required',
+            'service_type'        => 'required|in_list[Town Delivery,Luggage Storage]',
+            'bank_name'           => 'permit_empty|max_length[100]',
+            'account_holder_name' => 'permit_empty|max_length[100]',
+            'account_number'      => 'permit_empty|regex_match[/^\d{5,20}$/]',
+            'reason_for_refund'   => 'permit_empty|max_length[1000]',
+            'declaration'         => 'required',
+        ];
+        $messages = [
+            'phone_number'   => ['regex_match' => 'Please enter a valid phone number.'],
+            'account_number' => ['regex_match' => 'Account number must contain only digits (5–20 digits).'],
+            'declaration'    => ['required'    => 'You must agree to the declaration before submitting.'],
+        ];
+
+        if (! $this->validate($rules, $messages)) {
+            return redirect()->to(base_url('/#refund-form'))
+                ->with('refund_status', 'error')
+                ->with('refund_message', implode(' ', $this->validator->getErrors()))
+                ->with('refund_open', 1);
+        }
+
         $data = [
             'full_name'           => trim((string) $this->request->getPost('full_name')),
             'email'               => trim((string) $this->request->getPost('email')),
@@ -188,7 +238,7 @@ class Home extends BaseController
             'bank_name'           => trim((string) $this->request->getPost('bank_name')),
             'account_holder_name' => trim((string) $this->request->getPost('account_holder_name')),
             'account_number'      => trim((string) $this->request->getPost('account_number')),
-            'reason_for_refund'   => trim((string) $this->request->getPost('reason_for_refund')),
+            'reason_for_refund'   => strip_tags(trim((string) $this->request->getPost('reason_for_refund'))),
             'declaration'         => $this->request->getPost('declaration') ? 1 : 0,
         ];
 

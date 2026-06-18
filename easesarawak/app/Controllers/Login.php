@@ -30,13 +30,17 @@ class Login extends BaseController
             $cache = \Config\Services::cache();
             $cache->delete('login_fail_' . md5($this->request->getIPAddress()));
 
+            $stamp = bin2hex(random_bytes(16));
+            $user->update($userData['user_id'], ['security_stamp' => $stamp]);
+
             $session = session();
             $session->set([
-                'user_id' => $userData['user_id'],
-                'username' => $userData['username'],
-                'email'    => $userData['email'],
-                'access'   => 1,
-                'role'     => $userData['role']
+                'user_id'        => $userData['user_id'],
+                'username'       => $userData['username'],
+                'email'          => $userData['email'],
+                'access'         => 1,
+                'role'           => $userData['role'],
+                'security_stamp' => $stamp,
             ]);
 
             if ($remember) {

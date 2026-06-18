@@ -49,8 +49,24 @@ class Profile extends BaseController
         ];
         // Handle profile picture
         $file = $this->request->getFile('profile_picture');
-        if ($file && $file->isValid() && !$file->hasMoved()) {
-            $newName = $file->getRandomName();
+        if ($file && $file->isValid() && ! $file->hasMoved()) {
+            $allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $allowedExts  = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+            if (! in_array($file->getMimeType(), $allowedMimes, true)
+                || ! in_array(strtolower($file->getExtension()), $allowedExts, true)) {
+                return redirect()->back()->withInput()->with('errors', [
+                    'profile_picture' => 'Only JPG, PNG, GIF, and WebP images are allowed.',
+                ]);
+            }
+
+            if ($file->getSizeByUnit('mb') > 5) {
+                return redirect()->back()->withInput()->with('errors', [
+                    'profile_picture' => 'Profile picture must be under 5 MB.',
+                ]);
+            }
+
+            $newName   = $file->getRandomName();
             $uploadDir = FCPATH . 'assets/uploads/profiles/';
             if (! is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
@@ -123,10 +139,12 @@ class Profile extends BaseController
             return redirect()->back()->with('error', 'Current password is incorrect.');
         }
 
-        // Update password
+        $newStamp = bin2hex(random_bytes(16));
         $userModel->update($userId, [
-            'password' => $newPassword  // Will be hashed by beforeUpdate callback
+            'password'       => $newPassword,
+            'security_stamp' => $newStamp,
         ]);
+        session()->set('security_stamp', $newStamp);
 
         return redirect()->to('/change_password')->with('toast', [
             'title'   => 'Password Changed',

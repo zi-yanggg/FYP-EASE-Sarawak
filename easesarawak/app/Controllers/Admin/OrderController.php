@@ -178,9 +178,17 @@ class OrderController extends BaseAdminController
 
     public function save_note()
     {
-        $orderId  = $this->request->getPost('order_id');
-        $note     = trim($this->request->getPost('note') ?? '');
-        $userId   = session()->get('user_id');
+        $orderId = (int) $this->request->getPost('order_id');
+        $note    = trim($this->request->getPost('note') ?? '');
+        $userId  = session()->get('user_id');
+
+        if ($orderId <= 0) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid order ID.']);
+        }
+
+        if (strlen($note) > 1000) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Note must be 1000 characters or fewer.']);
+        }
 
         $orderModel = new OrderModel();
         $existing   = $orderModel->find($orderId);

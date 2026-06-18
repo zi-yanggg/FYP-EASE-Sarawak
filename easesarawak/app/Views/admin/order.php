@@ -3,10 +3,11 @@
 <link rel="stylesheet" href="<?= base_url('assets/css/admin/order.css') ?>">
 
 <?php
-$status    = $_GET['status'] ?? '';
-$service   = $_GET['service_type'] ?? '';
-$startDate = $_GET['start_date'] ?? '';
-$endDate   = $_GET['end_date'] ?? '';
+$request   = service('request');
+$status    = (string) ($request->getGet('status') ?? '');
+$service   = (string) ($request->getGet('service_type') ?? '');
+$startDate = (string) ($request->getGet('start_date') ?? '');
+$endDate   = (string) ($request->getGet('end_date') ?? '');
 $hasActiveFilters = $status !== '' || $service !== '' || $startDate !== '' || $endDate !== '';
 
 function ordSvcPill(string $type): string {
@@ -464,6 +465,8 @@ var ORD_ROUTES = <?= json_encode([
     'activityLog'  => ease_route('order_activity_log') . '/',
     'orderDetails' => ease_route('order_get_details') . '/',
     'saveNote'     => ease_route('save_note'),
+    'csrfHeader'   => config('Security')->headerName,
+    'csrfCookie'   => config('Security')->cookieName,
 ], JSON_THROW_ON_ERROR) ?>;
 
 function ordMountOverlays() {
@@ -500,6 +503,11 @@ var ORD_STATUS_LABELS  = ['Pending', 'In Progress', 'Completed'];
 var ORD_STATUS_CLASSES = ['ord-status--pending', 'ord-status--progress', 'ord-status--done'];
 var ORD_ROW_CLASSES    = ['ord-row--pending', 'ord-row--progress', 'ord-row--done'];
 
+function ordGetCsrfToken() {
+    var match = document.cookie.match(new RegExp('(?:^|;\\s*)' + ORD_ROUTES.csrfCookie + '=([^;]+)'));
+    return match ? decodeURIComponent(match[1]) : '';
+}
+
 function ordCycleStatus(el) {
     var orderId    = el.dataset.order;
     var cur        = parseInt(el.dataset.status, 10);
@@ -512,9 +520,11 @@ function ordCycleStatus(el) {
         dangerMode: true
     }).then(function(ok) {
         if (!ok) return;
+        var headers = { 'X-Requested-With': 'XMLHttpRequest' };
+        headers[ORD_ROUTES.csrfHeader] = ordGetCsrfToken();
         fetch(ORD_ROUTES.changeStatus + orderId, {
-            method: 'GET',
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            method: 'POST',
+            headers: headers
         })
         .then(function(r) { return r.json(); })
         .then(function(data) {
@@ -712,7 +722,7 @@ $(document).ready(function() {
 <?php if ($popup = session()->getFlashdata('order_status_success')): ?>
 swal({
     title: 'Updated',
-    text: 'Order status changed to <?= esc($popup['status']) ?>\nChanged by: <?= esc($popup['username']) ?>',
+    text: 'Order status changed to <?= esc($popup['status'], 'js') ?>\nChanged by: <?= esc($popup['username'], 'js') ?>',
     icon: 'success',
     button: 'OK'
 });

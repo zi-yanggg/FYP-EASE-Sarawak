@@ -1,7 +1,7 @@
 <?php
 helper('translation');
 
-$easeLang = normalize_site_locale(session('site_lang') ?? ($_COOKIE['site_lang'] ?? 'en'));
+$easeLang = normalize_site_locale(session('site_lang') ?? (service('request')->getCookie('site_lang') ?? 'en'));
 $easeCatalog = ease_translation_catalog();
 ?>
 <!DOCTYPE html>

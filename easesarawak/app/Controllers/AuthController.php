@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\User_model;
-use CodeIgniter\Email\Email;
 
 class AuthController extends BaseController
 {
@@ -99,9 +98,10 @@ class AuthController extends BaseController
         }
 
         $userModel->update($user['user_id'], [
-            'password' => $this->request->getPost('password'),
-            'reset_token' => null,
-            'reset_expires' => null
+            'password'       => $this->request->getPost('password'),
+            'reset_token'    => null,
+            'reset_expires'  => null,
+            'security_stamp' => bin2hex(random_bytes(16)),
         ]);
 
         return redirect('login')->with('success', 'Password reset successfully. Please login.');

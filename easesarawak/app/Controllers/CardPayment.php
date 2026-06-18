@@ -35,6 +35,12 @@ class CardPayment extends BaseController
         $receiptEmail = trim((string) ($body['receipt_email'] ?? ''));
         $metadata     = is_array($body['metadata'] ?? null) ? $body['metadata'] : [];
 
+        if ($receiptEmail !== '' && ! filter_var($receiptEmail, FILTER_VALIDATE_EMAIL)) {
+            return $this->response
+                ->setStatusCode(422)
+                ->setJSON(['error' => 'Invalid receipt email address']);
+        }
+
         try {
             $result = $this->paymentService->createIntentForOrder($orderId, $receiptEmail, $metadata);
 

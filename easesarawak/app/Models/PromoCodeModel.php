@@ -9,7 +9,8 @@ class PromoCodeModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'array';
     protected $allowedFields = [
-        'code','discount_type','discount_percentage','discount_amount','validation_date','expired_date',
-        'is_deleted','created_date','modified_date'
+        'code', 'discount_type', 'discount_percentage', 'discount_amount',
+        'validation_date', 'expired_date', 'max_uses', 'used_count',
+        'is_deleted', 'created_date', 'modified_date',
     ];
 }

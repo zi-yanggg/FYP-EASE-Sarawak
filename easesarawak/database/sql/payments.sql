@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `payments` (
   `payment_intent_id` varchar(255) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
   `stripe_payment_id` varchar(255) DEFAULT NULL,
   `amount_cents` int(11) NOT NULL DEFAULT 0,
   `currency` varchar(10) NOT NULL DEFAULT 'myr',

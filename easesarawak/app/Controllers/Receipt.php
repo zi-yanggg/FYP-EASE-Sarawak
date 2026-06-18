@@ -14,14 +14,20 @@ class Receipt extends Controller
      */
     public function send()
     {
-        $email           = $this->request->getPost('email');
+        $email           = trim((string) $this->request->getPost('email'));
         $paymentIntentId = $this->request->getPost('payment_intent_id') ?? '';
         $orderId         = (int) ($this->request->getPost('order_id') ?? 0);
 
-        if (empty($email)) {
+        if ($email === '') {
             return $this->response
                 ->setStatusCode(422)
                 ->setJSON(['error' => 'Missing email']);
+        }
+
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $this->response
+                ->setStatusCode(422)
+                ->setJSON(['error' => 'Invalid email address']);
         }
 
         $amountCents = (int) $this->request->getPost('amount_cents');

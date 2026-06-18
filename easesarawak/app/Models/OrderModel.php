@@ -35,7 +35,9 @@ class OrderModel extends Model
         'created_date',
         'modified_date',
         'insurance_selected',
-        'insurance_amount'
+        'insurance_amount',
+        'modified_by',
+        'comment',
     ];
 
     // Dates
@@ -49,7 +51,7 @@ class OrderModel extends Model
         'service_type' => 'required|max_length[255]',
         'first_name' => 'required|max_length[255]',
         'last_name' => 'required|max_length[255]',
-        'id_num' => 'required|max_length[50]',
+        'id_num' => 'required|max_length[20]|regex_match[/^[A-Za-z0-9\-]{5,20}$/]',
         'email' => 'required|valid_email|max_length[255]',
         'phone' => 'required|max_length[20]',
         'social' => 'required|integer',
@@ -71,8 +73,9 @@ class OrderModel extends Model
             'max_length' => 'Last name cannot exceed 255 characters'
         ],
         'id_num' => [
-            'required' => 'Identification number is required',
-            'max_length' => 'Identification number cannot exceed 50 characters'
+            'required'    => 'Identification number is required',
+            'max_length'  => 'Identification number cannot exceed 20 characters',
+            'regex_match' => 'Identification number must be 5–20 alphanumeric characters (hyphens allowed). Enter your MyKad number (e.g. 990101-13-1234) or passport number.',
         ],
         'email' => [
             'required' => 'Email is required',
@@ -263,14 +266,11 @@ class OrderModel extends Model
             $pricingService = new PricingService();
             $indexedBooking = $detailsService->extractIndexedFields($bookingData);
 
-            $validatedAmount = (int) round($bookingData['totalPrice'] ?? 0);
-            try {
-                $pricing         = $pricingService->calculateFromBookingData($bookingData);
-                $validatedAmount = (int) round($pricing['total_rm']);
-            } catch (\Throwable $e) {
-                log_message('warning', 'OrderModel: server-side pricing failed, using client total: {msg}', [
-                    'msg' => $e->getMessage(),
-                ]);
+            $pricing         = $pricingService->calculateFromBookingData($bookingData);
+            $validatedAmount = (int) round($pricing['total_rm']);
+
+            if ($validatedAmount <= 0) {
+                return ['success' => false, 'message' => 'Invalid order amount calculated.'];
             }
 
             // Get customer data
@@ -353,7 +353,7 @@ class OrderModel extends Model
                 'is_deleted' => 0,
                 'created_date' => date('Y-m-d H:i:s'),
                 'insurance_selected' => !empty($bookingData['insuranceSelected']) ? 1 : 0,
-                'insurance_amount' => !empty($bookingData['insuranceAmount']) ? $bookingData['insuranceAmount'] : 0.00
+                'insurance_amount' => $pricing['breakdown']['insurance_charge'] ?? 0.00
             ];
 
             $db->transStart();
