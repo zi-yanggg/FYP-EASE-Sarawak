@@ -267,8 +267,8 @@ $easeCatalog = ease_translation_catalog();
 
     <!-- Translate script -->
     <script>
-    const EASE_LANG = <?= json_encode($easeLang, JSON_UNESCAPED_UNICODE) ?>;
-    const EASE_TRANSLATIONS = <?= json_encode($easeCatalog, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+    const EASE_LANG = <?= json_encode($easeLang, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
+    const EASE_TRANSLATIONS = <?= json_encode($easeCatalog, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) ?>;
 
     function t(key) {
         return (EASE_TRANSLATIONS[EASE_LANG] && EASE_TRANSLATIONS[EASE_LANG][key]) || key;
