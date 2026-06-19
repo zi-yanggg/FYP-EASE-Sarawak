@@ -1,10 +1,7 @@
 <?php
 helper('translation');
 
-$_allowedLangs = ['en', 'ms', 'bm', 'my', 'bahasa', 'bahasa-melayu', 'zh', 'cn', 'zh-cn', 'zh-hans', 'chinese'];
-$_cookieLang = in_array($_COOKIE['site_lang'] ?? '', $_allowedLangs, true) ? $_COOKIE['site_lang'] : 'en';
-$easeLang = normalize_site_locale(session('site_lang') ?? $_cookieLang);
-unset($_allowedLangs, $_cookieLang);
+$easeLang = normalize_site_locale(session('site_lang') ?? ($_COOKIE['site_lang'] ?? 'en'));
 $easeCatalog = ease_translation_catalog();
 ?>
 <!DOCTYPE html>
