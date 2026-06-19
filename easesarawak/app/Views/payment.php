@@ -1,11 +1,15 @@
 <?php
 helper('translation');
 
-$easeLang = normalize_site_locale(session('site_lang') ?? (service('request')->getCookie('site_lang') ?? 'en'));
+$_allowedLangs = ['en', 'ms', 'bm', 'my', 'bahasa', 'bahasa-melayu', 'zh', 'cn', 'zh-cn', 'zh-hans', 'chinese'];
+$_cookieLang = service('request')->getCookie('site_lang') ?? 'en';
+$_cookieLang = in_array($_cookieLang, $_allowedLangs, true) ? $_cookieLang : 'en';
+$easeLang = normalize_site_locale(session('site_lang') ?? $_cookieLang);
+unset($_allowedLangs, $_cookieLang);
 $easeCatalog = ease_translation_catalog();
 ?>
 <!DOCTYPE html>
-<html lang="<?= esc($easeLang) ?>">
+<html lang="<?= esc($easeLang, 'attr') ?>">
 
 <head>
     <meta charset="UTF-8">
