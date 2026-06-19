@@ -25,7 +25,7 @@ class Profile extends BaseController
         $userModel = new User_model();
         $rules = [
             'username' => 'required|min_length[3]|max_length[50]',
-            'email'    => 'required|valid_email',
+            'email'    => 'required|valid_email|valid_email_domain',
         ];
         if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
@@ -53,14 +53,14 @@ class Profile extends BaseController
             $allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             $allowedExts  = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
-            if (! in_array($file->getMimeType(), $allowedMimes, true)
-                || ! in_array(strtolower($file->getExtension()), $allowedExts, true)) {
+            if (! \in_array($file->getMimeType(), $allowedMimes, true)
+                || ! \in_array(strtolower($file->getExtension()), $allowedExts, true)) {
                 return redirect()->back()->withInput()->with('errors', [
                     'profile_picture' => 'Only JPG, PNG, GIF, and WebP images are allowed.',
                 ]);
             }
 
-            if ($file->getSizeByUnit('mb') > 5) {
+            if ($file->getSizeByMetricUnit('mb') > 5) {
                 return redirect()->back()->withInput()->with('errors', [
                     'profile_picture' => 'Profile picture must be under 5 MB.',
                 ]);

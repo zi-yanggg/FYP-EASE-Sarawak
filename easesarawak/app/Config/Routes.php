@@ -15,9 +15,9 @@ $routes->get('/booking', 'Home::booking');
 $routes->get('/bookingdetail', 'Home::bookingdetail');
 $routes->get('/bookingcustomerdetail', 'Home::bookingcustomerdetail');
 $routes->post('/saveOrder', 'Home::saveOrder', ['filter' => 'apiThrottle']);
-$routes->post('/refund/submit', 'Home::submitRefund');
+$routes->post('/refund/submit', 'Home::submitRefund', ['filter' => 'apiThrottle']);
 $routes->get('refund/view/(:num)', 'Home::viewRefundPdf/$1');
-$routes->post('/message', 'Home::message');
+$routes->post('/message', 'Home::message', ['filter' => 'apiThrottle']);
 $routes->post('/checkPromoCode', 'Home::checkPromoCode', ['filter' => 'apiThrottle']);
 
 // ── Payment flow ────────────────────────────────────────────────────
@@ -33,9 +33,9 @@ $routes->get('/login', 'Login::index');
 $routes->post('/login_submit', 'Login::submit');
 $routes->get('/logout', 'Login::logout');
 $routes->get('forgot_password', 'AuthController::forgotPasswordForm');
-$routes->post('forgot_password', 'AuthController::forgotPassword');
+$routes->post('forgot_password', 'AuthController::forgotPassword', ['filter' => 'apiThrottle']);
 $routes->get('reset_password/(:any)', 'AuthController::resetPasswordForm/$1');
-$routes->post('reset_password/(:any)', 'AuthController::resetPassword/$1');
+$routes->post('reset_password/(:any)', 'AuthController::resetPassword/$1', ['filter' => 'apiThrottle']);
 
 // ── Language ────────────────────────────────────────────────────────
 $routes->get('language/(:segment)', 'LanguageController::change/$1');

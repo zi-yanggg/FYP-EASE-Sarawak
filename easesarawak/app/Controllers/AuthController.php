@@ -17,7 +17,7 @@ class AuthController extends BaseController
         helper(['form', 'url']);
         $email = $this->request->getPost('email');
 
-        $rules = ['email' => 'required|valid_email'];
+        $rules = ['email' => 'required|valid_email|valid_email_domain'];
         if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('validation', $this->validator);
         }

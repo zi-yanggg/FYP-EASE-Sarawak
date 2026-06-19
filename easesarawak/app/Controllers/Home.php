@@ -33,7 +33,7 @@ class Home extends BaseController
     public function message()
     {
         $rules = [
-            'email'   => 'required|valid_email|max_length[255]',
+            'email'   => 'required|valid_email|valid_email_domain|max_length[255]',
             'phone'   => 'required|regex_match[/^[+0-9][0-9\s\-()]{6,19}$/]|max_length[20]',
             'subject' => 'required|max_length[200]',
             'message' => 'required|max_length[2000]',
@@ -204,7 +204,7 @@ class Home extends BaseController
     {
         $rules = [
             'full_name'           => 'required|max_length[100]',
-            'email'               => 'required|valid_email|max_length[255]',
+            'email'               => 'required|valid_email|valid_email_domain|max_length[255]',
             'phone_number'        => 'required|regex_match[/^[+0-9][0-9\s\-()]{6,19}$/]|max_length[20]',
             'order_id'            => 'required|max_length[50]',
             'date_of_purchase'    => 'required',

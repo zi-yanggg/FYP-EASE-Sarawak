@@ -30,6 +30,13 @@ class Receipt extends Controller
                 ->setJSON(['error' => 'Invalid email address']);
         }
 
+        $domain = substr(strrchr($email, '@'), 1);
+        if (! checkdnsrr($domain, 'MX') && ! checkdnsrr($domain, 'A')) {
+            return $this->response
+                ->setStatusCode(422)
+                ->setJSON(['error' => 'Email domain does not exist']);
+        }
+
         $amountCents = (int) $this->request->getPost('amount_cents');
         $currency    = $this->request->getPost('currency') ?: 'myr';
         $status      = $this->request->getPost('status') ?: 'succeeded';
