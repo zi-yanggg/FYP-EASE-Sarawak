@@ -5,7 +5,7 @@ $easeLang = normalize_site_locale(session('site_lang') ?? ($_COOKIE['site_lang']
 $easeCatalog = ease_translation_catalog();
 ?>
 <!DOCTYPE html>
-<html lang="<?= esc($easeLang) ?>">
+<html lang="<?= esc($easeLang, 'attr') ?>">
 
 <head>
     <meta charset="UTF-8">
